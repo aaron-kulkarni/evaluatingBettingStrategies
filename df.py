@@ -10,14 +10,6 @@ from sportsipy.nba.teams import Teams
 from sportsreference.nba.roster import Roster
 from sportsreference.nba.roster import Player
 
-from sportsreference.nba.schedule import Schedule
-from sportsreference.nba.schedule import Boxscore
-
-
-teamSchedule = Schedule('GSW', year = 2022).dataframe
-teamSchedule.to_csv('teamSchedule.csv', index = False)
-gamedata = Boxscore
-
 teams2022 = Teams(year = '2022')
 ids = []
 names = []
@@ -51,4 +43,7 @@ df['weights'] = weights
 df['role'] = roles
 df['salary'] = salary
 df['shoots'] = shoots
+
+
+
         

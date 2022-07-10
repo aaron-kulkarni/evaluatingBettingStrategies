@@ -6,3 +6,6 @@
 teamSchedule.csv
 .\#df.py
 .\#dfScheduleGame.py
+*.log
+*.py~
+.\#collectStaticData.py

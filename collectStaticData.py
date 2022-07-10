@@ -17,13 +17,13 @@ def getPlayersDf():
     logfile = open('collectStaticData.log', 'w')
     logfile.write('Logging CollectStaticData.py on log file collectStaticData.log\n')
     logfile.write("------------------------------\n\n")
-    ids, names, heights, weights, roles, roles2, salaries, shoots, debuts, births = []
+    ids, names, heights, weights, roles, roles2, salaries, shoots, debuts, births = [], [], [], [], [], [], [], [], [], []
 
     for team in teams2022:
         teamDict = Roster(team.abbreviation, year='2022',
                           slim=True).players
         for key, value in teamDict.items():
-            logfile.write('Getting data for player: {0} ({1})'.format(key, value))
+            logfile.write('Getting data for player: {0} ({1})\n'.format(key, value))
             try:
                 if key not in ids:
                     player_dict = getPlayerData(key)
@@ -37,10 +37,10 @@ def getPlayersDf():
                     shoots.append(player_dict['hand'])
                     births.append(player_dict['birth'])
                     debuts.append(player_dict['debut'])
-                    logfile.write('\tSuccessfully appended all data for player: {0} ({1})'.format(key, value))
+                    logfile.write('\tSuccessfully appended all data for player: {0} ({1})\n'.format(key, value))
             except Exception as e:
-                logfile.write('Failed to append all data for player: {0} ({1})'.format(key, value))
-                logfile.write('\t{1}'.format(str(e)))
+                logfile.write('\tFailed to append all data for player: {0} ({1})\n'.format(key, value))
+                logfile.write('\t{0}\n'.format(str(e)))
 
     df = pd.DataFrame()
     df['Name'] = names
@@ -118,7 +118,7 @@ def getPlayerData(playerID):
                 continue
         except:
             raise Exception('Unable to parse line \'{0}\' for player {1}'.format(stat, playerID))
-    return tuple(statsDict.values())
+    return statsDict.values()
 
 
 # print(getPlayerData('labissk01'))
