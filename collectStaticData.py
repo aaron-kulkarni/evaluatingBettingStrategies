@@ -118,7 +118,8 @@ def getPlayerData(playerID):
                 continue
         except:
             raise Exception('Unable to parse line \'{0}\' for player {1}'.format(stat, playerID))
-    return statsDict.values()
+    return statsDict
 
 
 # print(getPlayerData('labissk01'))
+getPlayersDf()
