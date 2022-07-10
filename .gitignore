@@ -1,2 +1,6 @@
 .env
 .idea
+.DS_Store
+\#*\#
+.\#\#
+teamSchedule.csv
