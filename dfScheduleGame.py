@@ -21,10 +21,36 @@ listGames = Boxscores(date(2021, 10, 19), date(2021, 10, 19)).games
 
 df = pd.DataFrame()
 
-teams, gameId, q1Score, q2Score, q3Score, q4Score, points, location, daysSinceLastGame, gamesInPastWeek, timeOfDay, roster, coach, record, winsAgainstTeam = [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
+teams, gameId, q1Score, q2Score, q3Score, q4Score, points, location, daysSinceLastGame, gamesInPastWeek, timeOfDay, roster, coach, record, winsAgainstTeam, streak = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
+
+# wins against team is computed with past 5 years data
+
+i = 0
+gameDay = '10-19-2021'
+game = listGames[gameDay][i]
+
+gameId = [game['boxscore'], game['boxscore']]
+teams = [game['home_abbr'], game['away_abbr']]
+gameData = Boxscore(gameId[0])
+q1Score = [gameData.summary['home'][0],gameData.summary['away'][0]]
+q2Score = [gameData.summary['home'][1],gameData.summary['away'][1]]
+q3Score = [gameData.summary['home'][2],gameData.summary['away'][2]]
+q4Score = [gameData.summary['home'][3],gameData.summary['away'][3]]
+points = [game['home_score'], game['away_score']]
 
 
-df['teams'] = teams
+teamHomeSchedule = Schedule(teams[0], year = 2022).dataframe
+teamAwaySchedule = Schedule(teams[1], year = 2022).dataframe
+timeOfDay = [teamHomeSchedule.loc[gameId[0]][13],teamAwaySchedule.loc[gameId[0]][13]]
+streak = [teamHomeSchedule.loc[gameId[0]][12],teamAwaySchedule.loc[gameId[0]][12]]
+# caution: streak might be included with the current loss/win
+
+teamHomeSchedule.set_index(""
+daysSinceLastGame = 
+gamesInPastWeek = 
+
+
+df['teams'] = teams 
 df['gameId'] = gameId
 df['q1Score'] = q1Score
 df['q2Score'] = q2Score
@@ -42,7 +68,8 @@ df['winsAgainstTeam'] = winsAgainstTeam
 
 df.set_index(['teams'])
 
-teamSchedule = Schedule('GSW', year = 2022).dataframe
 teamSchedule.to_csv('teamSchedule.csv', index = False)
 
+def getGameData('gameid'):
+    return dataframe
     
