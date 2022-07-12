@@ -77,6 +77,12 @@ def getGameData(gameId):
     # in order to access players real information, like ID, you need to do something like this
     # print(gameData.away_players[0].player_id)
 
+    homePlayerRoster = [player.player_id for player in gameData.home_players]
+    awayPlayerRoster = [player.player_id for player in gameData.away_players]
+    roster = [homePlayerRoster, awayPlayerRoster]
+
+
+
     location = [gameData.location, gameData.location]
 
     record = [str(gameData.home_wins) + " - " + str(gameData.home_losses), str(gameData.away_wins) + " - " + str(gameData.away_losses)]
