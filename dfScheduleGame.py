@@ -24,7 +24,8 @@ i = 0
 gameDay = '10-19-2021'
 game = listGames[gameDay][i]
 
-gameId = [game['boxscore'], game['boxscore']]
+gameIdList = [game['boxscore'], game['boxscore']]
+gameId = game['boxscore']
 
 
 def getGameData(gameId):
@@ -35,7 +36,7 @@ def getGameData(gameId):
 
     # wins against team is computed with past 5 years data
     teams = [game['home_abbr'], game['away_abbr']]
-    gameData = Boxscore(gameId[0])
+    gameData = Boxscore(gameIdList[0])
     q1Score = [gameData.summary['home'][0], gameData.summary['away'][0]]
     q2Score = [gameData.summary['home'][1], gameData.summary['away'][1]]
     q3Score = [gameData.summary['home'][2], gameData.summary['away'][2]]
@@ -44,12 +45,12 @@ def getGameData(gameId):
 
     teamHomeSchedule = Schedule(teams[0], year=2022).dataframe
     teamAwaySchedule = Schedule(teams[1], year=2022).dataframe
-    timeOfDay = [teamHomeSchedule.loc[gameId[0]][13], teamAwaySchedule.loc[gameId[0]][13]]
-    streak = [teamHomeSchedule.loc[gameId[0]][12], teamAwaySchedule.loc[gameId[0]][12]]
+    timeOfDay = [teamHomeSchedule.loc[gameIdList[0]][13], teamAwaySchedule.loc[gameIdList[0]][13]]
+    streak = [teamHomeSchedule.loc[gameIdList[0]][12], teamAwaySchedule.loc[gameIdList[0]][12]]
     # caution: streak might be included with the current loss/win
 
     df['teams'] = teams
-    df['gameId'] = gameId
+    df['gameId'] = gameIdList
 
     teamHomeSchedule.sort_values(by='datetime')
     teamAwaySchedule.sort_values(by='datetime')
@@ -57,15 +58,15 @@ def getGameData(gameId):
     daysSinceLastGame = []
     gamesInPastWeek = []
 
-    prevdate = teamHomeSchedule['datetime'].shift().loc[gameId[0]]
-    currentdate = teamHomeSchedule.loc[gameId[0]]['datetime']
+    prevdate = teamHomeSchedule['datetime'].shift().loc[gameIdList[0]]
+    currentdate = teamHomeSchedule.loc[gameIdList[0]]['datetime']
     daysSinceLastGame.append((currentdate - prevdate).total_seconds() / 86400)
 
     temp = teamHomeSchedule[(teamHomeSchedule['datetime'] - currentdate).dt.total_seconds() < 86400 * 7]
     temp = temp[temp['datetime'] < currentdate]
     gamesInPastWeek.append(temp.shape[0])
 
-    prevdate = teamAwaySchedule['datetime'].shift().loc[gameId[0]]
+    prevdate = teamAwaySchedule['datetime'].shift().loc[gameIdList[0]]
     daysSinceLastGame.append((currentdate - prevdate).total_seconds() / 86400)
 
     temp = teamAwaySchedule[(teamAwaySchedule['datetime'] - currentdate).dt.total_seconds() < 86400 * 7]
@@ -88,7 +89,7 @@ def getGameData(gameId):
     winsAgainstTeam = [homeTeamMatchupWins, homeTeamMatchupLosses]
 
     df['teams'] = teams
-    df['gameId'] = gameId
+    df['gameId'] = gameIdList
     df['q1Score'] = q1Score
     df['q2Score'] = q2Score
     df['q3Score'] = q3Score
