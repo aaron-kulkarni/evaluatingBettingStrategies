@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from datetime import date
+import datetime as dt
 import matplotlib.pyplot as plt
 import bs4 as bs
 from urllib.request import urlopen
@@ -45,10 +46,29 @@ timeOfDay = [teamHomeSchedule.loc[gameId[0]][13],teamAwaySchedule.loc[gameId[0]]
 streak = [teamHomeSchedule.loc[gameId[0]][12],teamAwaySchedule.loc[gameId[0]][12]]
 # caution: streak might be included with the current loss/win
 
-teamHomeSchedule.set_index(""
-daysSinceLastGame = 
-gamesInPastWeek = 
+df['teams'] = teams
+df['gameId'] = gameId
 
+teamHomeSchedule.sort_values(by='datetime')
+teamAwaySchedule.sort_values(by='datetime')
+
+daysSinceLastGame = []
+gamesInPastWeek = []
+
+prevdate = teamHomeSchedule['datetime'].shift().loc[gameId[0]]
+currentdate = teamHomeSchedule.loc[gameId[0]]['datetime']
+daysSinceLastGame.append((currentdate-prevdate).dt.total_seconds()/86400)
+
+temp = teamHomeSchedule[(teamHomeSchedule['datetime'] - currentdate).dt.total_seconds() < 86400*7]
+temp = temp[temp['datetime'] < currentdate]
+gamesInPastWeek.append(temp.shape[0])
+
+prevdate = teamAwaySchedule['datetime'].shift().loc[gameId[0]]
+daysSinceLastGame.append((currentdate-prevdate).dt.total_seconds()/86400)
+
+temp = teamAwaySchedule[(teamAwaySchedule['datetime'] - currentdate).dt.total_seconds() < 86400*7]
+temp = temp[temp['datetime'] < currentdate]
+gamesInPastWeek.append(temp.shape[0])
 
 df['teams'] = teams 
 df['gameId'] = gameId
