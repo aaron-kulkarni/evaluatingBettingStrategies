@@ -57,14 +57,14 @@ gamesInPastWeek = []
 
 prevdate = teamHomeSchedule['datetime'].shift().loc[gameId[0]]
 currentdate = teamHomeSchedule.loc[gameId[0]]['datetime']
-daysSinceLastGame.append((currentdate-prevdate).dt.total_seconds()/86400)
+daysSinceLastGame.append((currentdate-prevdate).total_seconds()/86400)
 
 temp = teamHomeSchedule[(teamHomeSchedule['datetime'] - currentdate).dt.total_seconds() < 86400*7]
 temp = temp[temp['datetime'] < currentdate]
 gamesInPastWeek.append(temp.shape[0])
 
 prevdate = teamAwaySchedule['datetime'].shift().loc[gameId[0]]
-daysSinceLastGame.append((currentdate-prevdate).dt.total_seconds()/86400)
+daysSinceLastGame.append((currentdate-prevdate).total_seconds()/86400)
 
 temp = teamAwaySchedule[(teamAwaySchedule['datetime'] - currentdate).dt.total_seconds() < 86400*7]
 temp = temp[temp['datetime'] < currentdate]
@@ -88,8 +88,8 @@ df['winsAgainstTeam'] = winsAgainstTeam
 
 df.set_index(['teams'])
 
-teamSchedule.to_csv('teamSchedule.csv', index = False)
+#teamSchedule.to_csv('teamSchedule.csv', index = False)
 
-def getGameData('gameid'):
-    return dataframe
+#def getGameData('gameid'):
+   # return dataframe
     
