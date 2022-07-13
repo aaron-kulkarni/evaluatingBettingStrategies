@@ -17,26 +17,36 @@ from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 import re
 
-listGames = 0
-listGames = Boxscores(date(2021, 10, 19), date(2021, 10, 19)).games
+#listGames = 0
+#listGames = Boxscores(date(2021, 10, 19), date(2021, 10, 19)).games
 
-i = 0
-gameDay = '10-19-2021'
-game = listGames[gameDay][i]
+#i = 0
+#gameDay = '10-19-2021'
+#game = listGames[gameDay][i]
 
-gameIdList = [game['boxscore'], game['boxscore']]
-gameId = game['boxscore']
+#gameIdList = [game['boxscore'], game['boxscore']]
+#gameId = game['boxscore']
 
 
 def getGameData(gameId):
     df = pd.DataFrame()
 
+    teams, gameIdList, q1Score, q2Score, q3Score, q4Score, points, location, daysSinceLastGame, gamesInPastWeek, timeOfDay, roster, coach, record, winsAgainstTeam, streak = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
 
-    teams, gameId, q1Score, q2Score, q3Score, q4Score, points, location, daysSinceLastGame, gamesInPastWeek, timeOfDay, roster, coach, record, winsAgainstTeam, streak = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
-
+    if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)):
+        gameDate = gameId[0:4] + ', ' + gameId[4:6] + ', ' + gameId[6:8]
+        gamesToday = list(Boxscores(dt.datetime.strptime(gameDate, '%Y, %m, %d')).games.values())[0]
+        a = next(item for item in gamesToday if item["boxscore"] == gameId)
+        away_abbr = a['away_abbr']
+        home_abbr = a['home_abbr']
+        teams = [away_abbr, home_abbr]
+    else:
+        raise Exception('Issue with Game ID')
     # wins against team is computed with past 5 years data
     teams = [game['home_abbr'], game['away_abbr']]
-    gameData = Boxscore(gameIdList[0])
+    gameData = Boxscore(gameId)
+    
+    gameIdList = [gameId, gameId] 
     q1Score = [gameData.summary['home'][0], gameData.summary['away'][0]]
     q2Score = [gameData.summary['home'][1], gameData.summary['away'][1]]
     q3Score = [gameData.summary['home'][2], gameData.summary['away'][2]]
@@ -45,8 +55,8 @@ def getGameData(gameId):
 
     teamHomeSchedule = Schedule(teams[0], year=2022).dataframe
     teamAwaySchedule = Schedule(teams[1], year=2022).dataframe
-    timeOfDay = [teamHomeSchedule.loc[gameIdList[0]][13], teamAwaySchedule.loc[gameIdList[0]][13]]
-    streak = [teamHomeSchedule.loc[gameIdList[0]][12], teamAwaySchedule.loc[gameIdList[0]][12]]
+    timeOfDay = [teamHomeSchedule.loc[gameId][13], teamAwaySchedule.loc[gameId][13]]
+    streak = [teamHomeSchedule.loc[gameId][12], teamAwaySchedule.loc[gameId][12]]
     # caution: streak might be included with the current loss/win
 
     df['teams'] = teams
@@ -58,8 +68,8 @@ def getGameData(gameId):
     daysSinceLastGame = []
     gamesInPastWeek = []
 
-    prevdate = teamHomeSchedule['datetime'].shift().loc[gameIdList[0]]
-    currentdate = teamHomeSchedule.loc[gameIdList[0]]['datetime']
+    prevdate = teamHomeSchedule['datetime'].shift().loc[gameId]
+    currentdate = teamHomeSchedule.loc[gameId]['datetime']
     daysSinceLastGame.append((currentdate - prevdate).total_seconds() / 86400)
 
     temp = teamHomeSchedule[(teamHomeSchedule['datetime'] - currentdate).dt.total_seconds() < 86400 * 7]
@@ -74,14 +84,10 @@ def getGameData(gameId):
     gamesInPastWeek.append(temp.shape[0])
 
     roster = [gameData.home_players, gameData.away_players]
-    # in order to access players real information, like ID, you need to do something like this
-    # print(gameData.away_players[0].player_id)
-
+    
     homePlayerRoster = [player.player_id for player in gameData.home_players]
     awayPlayerRoster = [player.player_id for player in gameData.away_players]
     roster = [homePlayerRoster, awayPlayerRoster]
-
-
 
     location = [gameData.location, gameData.location]
 
@@ -112,8 +118,3 @@ def getGameData(gameId):
 
     df.set_index(['teams'])
     return df
-
-# teamSchedule.to_csv('teamSchedule.csv', index = False)
-
-# def getGameData('gameid'):
-# return dataframe
