@@ -35,7 +35,10 @@ def getGameData(gameId):
     teams, gameIdList, q1Score, q2Score, q3Score, q4Score, points, location, daysSinceLastGame, gamesInPastWeek, timeOfDay, roster, coach, record, winsAgainstTeam, streak = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
 
     if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)):
-        gameDate = gameId[0:4] + ', ' + gameId[4:6] + ', ' + gameId[6:8]
+        gameYear = gameId[0:4]
+        gameMonth = gameId[4:6]
+        gameDay = gameId[6:8]
+        gameDate = gameYear + '-' + gameMonth + '-' + gameDay
         gamesToday = list(Boxscores(dt.datetime.strptime(gameDate, '%Y, %m, %d')).games.values())[0]
         a = next(item for item in gamesToday if item["boxscore"] == gameId)
         home_abbr = a['home_abbr']
@@ -115,7 +118,46 @@ def getGameData(gameId):
 
     location = [gameData.location, gameData.location]
 
-    record = [str(gameData.home_wins) + " - " + str(gameData.home_losses), str(gameData.away_wins) + " - " + str(gameData.away_losses)]
+    '''
+    Find records of home and away teams by searching schedule arrays of home and 
+    away team respectively
+    '''
+    #Calculating Home Record
+    if (int(gameMonth.lstrip("0")) > 6): #converted gameMonth to int without leading 0. check month to find correct season
+        teamHomeSchedule = Schedule(teams[0], int(gameYear) + 1).dataframe
+    else:
+        teamHomeSchedule = Schedule(teams[0], int(gameYear)).dataframe
+
+    homeResults = teamHomeSchedule.result #only show results column
+    homeResults = homeResults.loc[homeResults.index[0]:gameId] #only show up to current game row
+    homeRecord = homeResults.value_counts(ascending=True) #sorts strings 'Win' and 'Loss' alphabetically which makes homeRecord[1] Wins and homeRecord[0] Losses
+    try:
+        homeWins = homeRecord[1]
+    except:
+        homeWins = 0 #sets value to 0 if no 'Win' are found in array
+    try:
+        homeLosses = homeRecord[0]
+    except:
+        homeLosses = 0 #sets value to 0 if no 'Loss' are found in array
+
+    # Calculating Away Record (Same as Home Record)
+    if (int(gameMonth.lstrip("0")) > 6):
+        teamAwaySchedule = Schedule(teams[1], int(gameYear) + 1).dataframe
+    else:
+        teamAwaySchedule = Schedule(teams[1], int(gameYear)).dataframe
+    awayResults = teamAwaySchedule.result
+    awayResults = awayResults.loc[awayResults.index[0]:gameId]
+    awayRecord = awayResults.value_counts(ascending=True)
+    try:
+        awayWins = awayRecord[1]
+    except:
+        awayWins = 0
+    try:
+        awayLosses = awayRecord[0]
+    except:
+        awayLosses = 0
+
+    record = [[homeWins, homeLosses], [awayWins, awayLosses]]
 
     tempDf = teamHomeSchedule.loc[teamHomeSchedule['opponent_abbr'] == game['away_abbr']]
     tempDf = tempDf.loc[teamHomeSchedule['datetime'] < currentdate]
