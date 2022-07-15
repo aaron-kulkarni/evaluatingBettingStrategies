@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import bs4 as bs
 from urllib.request import urlopen
 import requests
+from lxml import html
 from dateutil.relativedelta import relativedelta
 import pdb
 from sportsipy.nba.teams import Teams
@@ -37,13 +38,12 @@ def getGameData(gameId):
         gameDate = gameId[0:4] + ', ' + gameId[4:6] + ', ' + gameId[6:8]
         gamesToday = list(Boxscores(dt.datetime.strptime(gameDate, '%Y, %m, %d')).games.values())[0]
         a = next(item for item in gamesToday if item["boxscore"] == gameId)
-        away_abbr = a['away_abbr']
         home_abbr = a['home_abbr']
-        teams = [away_abbr, home_abbr]
+        away_abbr = a['away_abbr']
+        teams = [home_abbr, away_abbr]
     else:
         raise Exception('Issue with Game ID')
     # wins against team is computed with past 5 years data
-    teams = [game['home_abbr'], game['away_abbr']]
     gameData = Boxscore(gameId)
     
     gameIdList = [gameId, gameId] 
@@ -88,6 +88,30 @@ def getGameData(gameId):
     homePlayerRoster = [player.player_id for player in gameData.home_players]
     awayPlayerRoster = [player.player_id for player in gameData.away_players]
     roster = [homePlayerRoster, awayPlayerRoster]
+
+    '''
+    Gets the name of coaches based on year of game day from https://www.basketball-reference.com/teams/.
+    '''
+    urlHome = f"https://www.basketball-reference.com/teams/{home_abbr}/{gameDate[:4].lower()}.html"
+    try:
+        #print(urlHome)
+        page = requests.get(urlHome)
+        doc = html.fromstring(page.content)
+        homeCoach = doc.xpath('//*[@id="meta"]/div[2]/p[2]/a/text()')
+    except:
+        raise Exception('Coach not found on basketball-reference.com for ' + Teams()(home_abbr).name)
+
+    urlAway = f"https://www.basketball-reference.com/teams/{away_abbr}/{gameDate[:4].lower()}.html"
+
+    try:
+        #print(urlAway)
+        page = requests.get(urlAway)
+        doc2 = html.fromstring(page.content)
+        awayCoach = doc2.xpath('//*[@id="meta"]/div[2]/p[2]/a/text()')
+    except:
+        raise Exception('Coach not found on basketball-reference.com for ' + Teams()(away_abbr).name)
+
+    coach = [homeCoach[0], awayCoach[0]]
 
     location = [gameData.location, gameData.location]
 
