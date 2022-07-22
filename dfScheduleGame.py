@@ -49,8 +49,8 @@ def getGameData(gameId):
     pointsHome = gameData.away_points
     pointsAway = gameData.away_points 
     
-    teamHomeSchedule = Schedule(teams[0], year=2022).dataframe
-    teamAwaySchedule = Schedule(teams[1], year=2022).dataframe
+    teamHomeSchedule = Schedule(teamHome, year=2022).dataframe
+    teamAwaySchedule = Schedule(teamAway, year=2022).dataframe
     
     timeOfDay = teamHomeSchedule.loc[gameId][13]
     streakHome = teamHomeSchedule.loc[gameId][12]
@@ -73,7 +73,7 @@ def getGameData(gameId):
     '''
     Gets the name of coaches based on year of game day from https://www.basketball-reference.com/teams/.
     '''
-    urlHome = f"https://www.basketball-reference.com/teams/{home_abbr}/{gameDate[:4].lower()}.html"
+    urlHome = f"https://www.basketball-reference.com/teams/{teamHome}/{gameDate[:4].lower()}.html"
     try:
         page = requests.get(urlHome)
         doc = html.fromstring(page.content)
@@ -81,7 +81,7 @@ def getGameData(gameId):
     except:
         raise Exception('Coach not found on basketball-reference.com for ' + Teams()(home_abbr).name)
 
-    urlAway = f"https://www.basketball-reference.com/teams/{away_abbr}/{gameDate[:4].lower()}.html"
+    urlAway = f"https://www.basketball-reference.com/teams/{teamAway}/{gameDate[:4].lower()}.html"
 
     try:
         page = requests.get(urlAway)
@@ -100,9 +100,9 @@ def getGameData(gameId):
     
     # Calculating Home Record
     if (int(gameMonth.lstrip("0")) > 6): #converted gameMonth to int without leading 0. check month to find correct season
-        teamHomeSchedule = Schedule(teams[0], int(gameYear) + 1).dataframe
+        teamHomeSchedule = Schedule(teamHome, int(gameYear) + 1).dataframe
     else:
-        teamHomeSchedule = Schedule(teams[0], int(gameYear)).dataframe
+        teamHomeSchedule = Schedule(teamHome, int(gameYear)).dataframe
 
     homeResults = teamHomeSchedule.result #only show results column
     homeResults = homeResults.loc[homeResults.index[0]:gameId] #only show up to current game row
@@ -118,9 +118,9 @@ def getGameData(gameId):
 
     # Calculating Away Record (Same as Home Record)
     if (int(gameMonth.lstrip("0")) > 6):
-        teamAwaySchedule = Schedule(teams[1], int(gameYear) + 1).dataframe
+        teamAwaySchedule = Schedule(teamAway, int(gameYear) + 1).dataframe
     else:
-        teamAwaySchedule = Schedule(teams[1], int(gameYear)).dataframe
+        teamAwaySchedule = Schedule(teamAway, int(gameYear)).dataframe
     awayResults = teamAwaySchedule.result
     awayResults = awayResults.loc[awayResults.index[0]:gameId]
     awayRecord = awayResults.value_counts(ascending = True)
@@ -151,13 +151,19 @@ def getGameDataframe(startTime, endTime):
     startTime and endTime must be in format '%Y, %m, %d'
     
     '''
-    df = pd.DataFrame()
+
     allGames = Boxscores(dt.datetime.strptime(startTime, '%Y, %m, %d'), dt.datetime.strptime(endTime, '%Y, %m, %d')).games
     gameIdList = [] 
     for key in allGames.keys():
-        print(key)
         for i in range(len(allGames[key])):
-            gameIdList.append(allGames[key][i]['boxscore'])
+             gameIdList.append(allGames[key][i]['boxscore'])
+    gameDataList = []
+    for id in gameIdList:
+        gameDataList.append(getGameData(id))
+
+    df = pd.DataFrame(gameDataList, columns = ['gameId', 'teamHome', 'teamAway', 'timeOfDay', 'location', 'q1ScoreHome', 'q2ScoreHome', 'q3ScoreHome', 'q4ScoreHome', 'pointsHome', 'streakHome', 'daysSinceLastGameHome', 'homePlayerRoster', 'homeRecord', 'homeTeamMatchupWins', 'q1ScoreAway', 'q2ScoreAway', 'q3ScoreAway', 'q4ScoreAway', 'pointsAway', 'streakAway', 'daysSinceLastGameAway', 'awayPlayerRoster'])
+    
+    df.set_index('gameId', inplace = True)
     
     return df 
     
