@@ -18,6 +18,7 @@ from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 import re
 
+
 def getGameData(gameId):
 
     '''
@@ -50,8 +51,8 @@ def getGameData(gameId):
     pointsHome = gameData.away_points
     pointsAway = gameData.away_points 
     
-    teamHomeSchedule = Schedule(teamHome, year=2022).dataframe
-    teamAwaySchedule = Schedule(teamAway, year=2022).dataframe
+    teamHomeSchedule = Schedule(teamHome, gameYear).dataframe
+    teamAwaySchedule = Schedule(teamAway, gameYear).dataframe
     
     timeOfDay = teamHomeSchedule.loc[gameId][13]
     streakHome = teamHomeSchedule.loc[gameId][12]
@@ -142,9 +143,12 @@ def getGameData(gameId):
     
     homeTeamMatchupWins = tempDf.loc[teamHomeSchedule['result'] == 'Win'].shape[0]
     awayTeamMatchupWins = tempDf.loc[teamHomeSchedule['result'] == 'Loss'].shape[0]
+    matchupRecord = [homeTeamMatchupWins, awayTeamMatchupWins]
             
-    gameData = [gameId, teamHome, teamAway, timeOfDay, location, q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, homeTeamMatchupWins, q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster] 
+    gameData = [gameId, teamHome, teamAway, timeOfDay, location, q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupRecord, q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster] 
     
+    print(timeOfDay)
+
     return gameData
 
 def getGameDataframe(startTime, endTime):
@@ -162,9 +166,11 @@ def getGameDataframe(startTime, endTime):
     for id in gameIdList:
         gameDataList.append(getGameData(id))
 
-    df = pd.DataFrame(gameDataList, columns = ['gameId', 'teamHome', 'teamAway', 'timeOfDay', 'location', 'q1ScoreHome', 'q2ScoreHome', 'q3ScoreHome', 'q4ScoreHome', 'pointsHome', 'streakHome', 'daysSinceLastGameHome', 'homePlayerRoster', 'homeRecord', 'homeTeamMatchupWins', 'q1ScoreAway', 'q2ScoreAway', 'q3ScoreAway', 'q4ScoreAway', 'pointsAway', 'streakAway', 'daysSinceLastGameAway', 'awayPlayerRoster'])
+    df = pd.DataFrame(gameDataList, columns = ['gameId', 'teamHome', 'teamAway', 'timeOfDay', 'location', 'q1ScoreHome', 'q2ScoreHome', 'q3ScoreHome', 'q4ScoreHome', 'pointsHome', 'streakHome', 'daysSinceLastGameHome', 'homePlayerRoster', 'homeRecord', 'matchupRecord', 'q1ScoreAway', 'q2ScoreAway', 'q3ScoreAway', 'q4ScoreAway', 'pointsAway', 'streakAway', 'daysSinceLastGameAway', 'awayPlayerRoster'])
     
     df.set_index('gameId', inplace = True)
     
     return df 
+
+getGameData('201901100SAS')
     
