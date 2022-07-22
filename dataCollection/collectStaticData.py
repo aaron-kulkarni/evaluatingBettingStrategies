@@ -153,5 +153,4 @@ def _getStaticPlayerData(player_id):
 
 years = np.arange(2015, 2023)
 for year in years:
-    getAllStaticPlayerData(year, logdir='data/staticPlayerData/').to_csv(
-        'data/staticPlayerData/static_player_stats_{0}.csv'.format(year))
+    getAllStaticPlayerData(year).to_csv('static_player_stats_{0}.csv'.format(year))
