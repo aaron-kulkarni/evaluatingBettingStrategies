@@ -3,6 +3,7 @@
 .DS_Store
 \#*\#
 .\#\#
+\.\#\#
 teamSchedule.csv
 .\#df.py
 .\#dfScheduleGame.py
