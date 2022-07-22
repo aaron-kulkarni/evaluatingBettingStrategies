@@ -33,6 +33,7 @@ def getGameData(gameId):
         a = next(item for item in gamesToday if item["boxscore"] == gameId)
         teamHome = a['home_abbr']
         teamAway = a['away_abbr']
+        teams = [teamHome, teamAway]
     else:
         raise Exception('Issue with Game ID')
     # wins against team is computed with past 5 years data
@@ -79,7 +80,7 @@ def getGameData(gameId):
         doc = html.fromstring(page.content)
         homeCoach = doc.xpath('//*[@id="meta"]/div[2]/p[2]/a/text()')
     except:
-        raise Exception('Coach not found on basketball-reference.com for ' + Teams()(home_abbr).name)
+        raise Exception('Coach not found on basketball-reference.com for ' + Teams()(teamHome).name)
 
     urlAway = f"https://www.basketball-reference.com/teams/{teamAway}/{gameDate[:4].lower()}.html"
 
@@ -88,7 +89,7 @@ def getGameData(gameId):
         doc2 = html.fromstring(page.content)
         awayCoach = doc2.xpath('//*[@id="meta"]/div[2]/p[2]/a/text()')
     except:
-        raise Exception('Coach not found on basketball-reference.com for ' + Teams()(away_abbr).name)
+        raise Exception('Coach not found on basketball-reference.com for ' + Teams()(teamAway).name)
 
 
     location = gameData.location
