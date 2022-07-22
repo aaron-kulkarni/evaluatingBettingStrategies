@@ -48,17 +48,29 @@ def getGameData(gameId):
     q4ScoreHome = gameData.summary['home'][3]
     q4ScoreAway = gameData.summary['away'][3]
     
-    pointsHome = gameData.away_points
+    pointsHome = gameData.home_points
     pointsAway = gameData.away_points 
-    
-    teamHomeSchedule = Schedule(teamHome, gameYear).dataframe
-    teamAwaySchedule = Schedule(teamAway, gameYear).dataframe
+
+    if (int(gameMonth.lstrip("0")) > 6): #converted gameMonth to int without leading 0. check month to find correct season
+        teamHomeSchedule = Schedule(teamHome, int(gameYear) + 1).dataframe
+    else:
+        teamHomeSchedule = Schedule(teamHome, int(gameYear)).dataframe
+
+    if (int(gameMonth.lstrip("0")) > 6):
+        teamAwaySchedule = Schedule(teamAway, int(gameYear) + 1).dataframe
+    else:
+        teamAwaySchedule = Schedule(teamAway, int(gameYear)).dataframe
     
     timeOfDay = teamHomeSchedule.loc[gameId][13]
-    streakHome = teamHomeSchedule.loc[gameId][12]
-    streakAway = teamAwaySchedule.loc[gameId][12]
-    
-    # caution: streak is included with the current loss/win
+
+    #since streak counts current game, look at streak based on last game
+    streakHome = teamHomeSchedule.shift().loc[gameId][12]
+    streakAway = teamAwaySchedule.shift().loc[gameId][12]
+
+    #takes care of first game of season problem
+    #also changed format from 'L 5' to -5
+    streakHome = 0 if pd.isna(streakHome) else int(streakHome[-1:]) if streakHome.startswith('W') else -int(streakHome[-1:])
+    streakAway = 0 if pd.isna(streakAway) else int(streakAway[-1:]) if streakAway.startswith('W') else -int(streakAway[-1:])
 
     teamHomeSchedule.sort_values(by='datetime')
     teamAwaySchedule.sort_values(by='datetime')
@@ -101,11 +113,6 @@ def getGameData(gameId):
     '''
     
     # Calculating Home Record
-    if (int(gameMonth.lstrip("0")) > 6): #converted gameMonth to int without leading 0. check month to find correct season
-        teamHomeSchedule = Schedule(teamHome, int(gameYear) + 1).dataframe
-    else:
-        teamHomeSchedule = Schedule(teamHome, int(gameYear)).dataframe
-
     homeResults = teamHomeSchedule.result #only show results column
     homeResults = homeResults.loc[homeResults.index[0]:gameId] #only show up to current game row
     homeRecord = homeResults.value_counts(ascending = True) #sorts strings 'Win' and 'Loss' alphabetically which makes homeRecord[1] Wins and homeRecord[0] Losses
@@ -119,10 +126,7 @@ def getGameData(gameId):
         homeLosses = 0 #sets value to 0 if no 'Loss' are found in array
 
     # Calculating Away Record (Same as Home Record)
-    if (int(gameMonth.lstrip("0")) > 6):
-        teamAwaySchedule = Schedule(teamAway, int(gameYear) + 1).dataframe
-    else:
-        teamAwaySchedule = Schedule(teamAway, int(gameYear)).dataframe
+
     awayResults = teamAwaySchedule.result
     awayResults = awayResults.loc[awayResults.index[0]:gameId]
     awayRecord = awayResults.value_counts(ascending = True)
@@ -135,20 +139,32 @@ def getGameData(gameId):
     except:
         awayLosses = 0
 
+
+    #switches variables for away team. this looks wrong but for some reason makes code work :)
+    tempVar = awayWins
+    awayWins = awayLosses
+    awayLosses = tempVar
+    
+
+    if pointsHome > pointsAway:
+        homeWins-=1
+        awayLosses-=1
+    else:
+        homeLosses-=1
+        awayWins-=1    
+    
     homeRecord = [homeWins, homeLosses]
-    awayRecord = [awayWins, awayLosses]
+    awayRecord = [awayWins, awayLosses] 
+
 
     tempDf = teamHomeSchedule.loc[teamHomeSchedule['opponent_abbr'] == teamHome]
     tempDf = tempDf.loc[teamHomeSchedule['datetime'] < currentdate]
     
-    homeTeamMatchupWins = tempDf.loc[teamHomeSchedule['result'] == 'Win'].shape[0]
-    awayTeamMatchupWins = tempDf.loc[teamHomeSchedule['result'] == 'Loss'].shape[0]
-    matchupRecord = [homeTeamMatchupWins, awayTeamMatchupWins]
+    matchupWinsHome = tempDf.loc[teamHomeSchedule['result'] == 'Win'].shape[0]
+    matchupWinsAway = tempDf.loc[teamHomeSchedule['result'] == 'Loss'].shape[0]
             
-    gameData = [gameId, teamHome, teamAway, timeOfDay, location, q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupRecord, q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster] 
+    gameData = [gameId, teamHome, teamAway, timeOfDay, location, q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupWinsHome, q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster, awayRecord, matchupWinsAway] 
     
-    print(timeOfDay)
-
     return gameData
 
 def getGameDataframe(startTime, endTime):
@@ -166,11 +182,9 @@ def getGameDataframe(startTime, endTime):
     for id in gameIdList:
         gameDataList.append(getGameData(id))
 
-    df = pd.DataFrame(gameDataList, columns = ['gameId', 'teamHome', 'teamAway', 'timeOfDay', 'location', 'q1ScoreHome', 'q2ScoreHome', 'q3ScoreHome', 'q4ScoreHome', 'pointsHome', 'streakHome', 'daysSinceLastGameHome', 'homePlayerRoster', 'homeRecord', 'matchupRecord', 'q1ScoreAway', 'q2ScoreAway', 'q3ScoreAway', 'q4ScoreAway', 'pointsAway', 'streakAway', 'daysSinceLastGameAway', 'awayPlayerRoster'])
+    df = pd.DataFrame(gameDataList, columns = ['gameId', 'teamHome', 'teamAway', 'timeOfDay', 'location', 'q1ScoreHome', 'q2ScoreHome', 'q3ScoreHome', 'q4ScoreHome', 'pointsHome', 'streakHome', 'daysSinceLastGameHome', 'homePlayerRoster', 'homeRecord', 'matchupWinsHome', 'q1ScoreAway', 'q2ScoreAway', 'q3ScoreAway', 'q4ScoreAway', 'pointsAway', 'streakAway', 'daysSinceLastGameAway', 'awayPlayerRoster', 'awayRecord', 'matchupWinsAway'])
     
     df.set_index('gameId', inplace = True)
     
     return df 
-
-getGameData('201901100SAS')
     
