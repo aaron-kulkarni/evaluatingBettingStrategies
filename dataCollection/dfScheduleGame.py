@@ -37,6 +37,8 @@ def getGameData(gameId):
         teams = [teamHome, teamAway]
     else:
         raise Exception('Issue with Game ID')
+
+        
     # wins against team is computed with past 5 years data
     gameData = Boxscore(gameId)
     q1ScoreHome = gameData.summary['home'][0]
@@ -50,20 +52,22 @@ def getGameData(gameId):
     
     pointsHome = gameData.home_points
     pointsAway = gameData.away_points 
-    
-    if (gameYear == 2020 and int(gameMonth.lstrip("0")) < 11):
-        teamHomeSchedule = Schedule(teamHome, int(gameYear)).dataframe
-        teamAwaySchedule = Schedule(teamAway, int(gameYear)).dataframe
-    elif(gameYear == 2020 and int(gameMonth.lstrip("0")) > 11):
-        teamHomeSchedule = Schedule(teamHome, int(gameYear) + 1).dataframe
-        teamAwaySchedule = Schedule(teamAway, int(gameYear) + 1).dataframe    
-    elif (int(gameMonth.lstrip("0")) > 6): #converted gameMonth to int without leading 0. check month to find correct season
-        teamHomeSchedule = Schedule(teamHome, int(gameYear) + 1).dataframe
-        teamAwaySchedule = Schedule(teamAway, int(gameYear) + 1).dataframe
-    else:
-        teamHomeSchedule = Schedule(teamHome, int(gameYear)).dataframe
-        teamAwaySchedule = Schedule(teamAway, int(gameYear)).dataframe
         
+    if (int(gameYear) == 2020): #2020 was exception because covid messed up schedule
+        if int(gameMonth.lstrip("0")) < 11: #converted gameMonth to int without leading 0. check month to find correct season
+            teamHomeSchedule = Schedule(teamHome, int(gameYear)).dataframe
+            teamAwaySchedule = Schedule(teamAway, int(gameYear)).dataframe
+        else:
+            teamHomeSchedule = Schedule(teamHome, int(gameYear) + 1).dataframe
+            teamAwaySchedule = Schedule(teamAway, int(gameYear) + 1).dataframe
+    else:
+        if int(gameMonth.lstrip("0")) > 7: #games played after july are part of next season
+            teamHomeSchedule = Schedule(teamHome, int(gameYear) + 1).dataframe
+            teamAwaySchedule = Schedule(teamAway, int(gameYear) + 1).dataframe
+        else:
+            teamHomeSchedule = Schedule(teamHome, int(gameYear)).dataframe
+            teamAwaySchedule = Schedule(teamAway, int(gameYear)).dataframe
+
     
     timeOfDay = teamHomeSchedule.loc[gameId][13]
 
@@ -191,3 +195,5 @@ def getGameDataframe(startTime, endTime):
     df.set_index('gameId', inplace = True)
     
     return df 
+
+getGameData('202008130LAL')
