@@ -51,19 +51,39 @@ def getPlayerGameStatDataFrame(gameId):
     for k, v in statsDict.items():
         df[k] = v
 
+    print(df)
+
     return df
 
 
 def getPlayerGameStats(teamAbbr, statsDict, url, home):
+    """
+    Scrapes the data for every player on a team in a given game. 
+
+    Parameters
+    ----------
+    teamAbbr : A string representation of team abbreviation
+    statsDict : The statistics dictionary to append the statistics to
+    url : The boxscore URL to scrape from
+    home : Boolean, true if team is home, false if away
+
+    Returns
+    -------
+    The updated statistics dictionary
+    """
     
     try:
+        
+        #gets html of page
         soup = bs.BeautifulSoup(urlopen(url), features='lxml')
         rows = [p for p in soup.find('div', {'id': 'div_box-' + teamAbbr + '-game-basic'}).findAll('tr')]
         
+        #getting all of the elements in each row
         rowList = []
         for row in rows:
             rowList.append([td for td in row.findAll(['td', 'th'])])
 
+        #
         playerids = []
         for row in rowList:
             achildren = row[0].findChildren('a')
@@ -105,6 +125,25 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home):
         statsDict['home'] = []
     if 'playerid' not in statsDict:
         statsDict['playerid'] = []
+    # if 'effectivefg' not in statsDict:
+    #     statsDict['effectivefg'] = []
+    # if 'trueshooting' not in statsDict:
+    #     statsDict['trueshooting'] = []
+    # if 'ftrate' not in statsDict:
+    #     statsDict['ftrate'] = []
+    # if '3rate' not in statsDict:
+    #     statsDict['3rate'] = []
+    # if 'tov%' not in statsDict:
+    #     statsDict['tov%'] = []
+    # if 'dreb%' not in statsDict:
+    #     statsDict['dreb%'] = []
+    # if 'oreb%' not in statsDict:
+    #     statsDict['oreb%'] = []
+    # if 'efficiency' not in statsDict:
+    #     statsDict['efficiency'] = []
+    # if 'ast/tov' not in statsDict:
+    #     statsDict['ast/tov'] = []
+    
         
     isStarted = True
     for j in range(2, len(rowList)):            
@@ -120,8 +159,46 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home):
         statsDict['home'].append(1 if home else 0)
         statsDict['playerid'].append(playerids[j])
 
+    
+    try:
+        
+        #gets html of page
+        soup = bs.BeautifulSoup(urlopen(url), features='lxml')
+        rows = [p for p in soup.find('div', {'id': 'div_box-' + teamAbbr + '-game-advanced'}).findAll('tr')]
+        
+        #getting all of the elements in each row
+        rowList = []
+        for row in rows:
+            rowList.append([td.getText() for td in row.findAll(['td', 'th'])])
+
+              
+            
+            
+    except Exception as e:
+        print(e)
+        raise Exception('Game {0} not found on basketball-reference.com'.format(gameId))
+
+    if not statsDict:
+        statsDict = {}
+    
+    for i in range(len(rowList[1])):
+        if rowList[1][i] not in statsDict:
+            statsDict[rowList[1][i]] = []
+        for j in range(len(rowList)):
+            if rowList[j][0] == 'Reserves' or rowList[j][0] == 'Team Totals' or rowList[j][0] == '' or rowList[j][0] == 'Starters':
+                continue
+            if len(rowList[j]) != len(rowList[1]) and i != 0:
+                statsDict[rowList[1][i]].append(None)
+            else:
+                statsDict[rowList[1][i]].append(rowList[j][i])
+
+
     return statsDict
-                
+
+
+
+
+print(getPlayerGameStatDataFrame('202012230PHI'))                
 
 # print(getPlayerData('labissk01'))
 # print(getPlayersDf(2021))

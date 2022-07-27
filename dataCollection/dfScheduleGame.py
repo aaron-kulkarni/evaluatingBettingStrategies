@@ -195,5 +195,3 @@ def getGameDataframe(startTime, endTime):
     df.set_index('gameId', inplace = True)
     
     return df 
-
-getGameData('202008130LAL')
