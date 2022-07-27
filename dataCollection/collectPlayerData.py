@@ -1,22 +1,9 @@
-import numpy as np
 import pandas as pd
-from datetime import date
 import datetime as dt
-import matplotlib.pyplot as plt
 import bs4 as bs
 from urllib.request import urlopen
-import requests
-from dateutil.relativedelta import relativedelta
-import pdb
-from sportsipy.nba.teams import Teams
-from sportsreference.nba.roster import Roster
-from sportsreference.nba.roster import Player
-
-from sportsreference.nba.schedule import Schedule
-from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 import re
-
 
 def getPlayerGameStatDataFrame(gameId):
     '''
@@ -34,6 +21,8 @@ def getPlayerGameStatDataFrame(gameId):
 
     url = f"https://www.basketball-reference.com/boxscores/{gameId}.html"
     stats = None
+
+    # Checks that the game id is a valid match id and gets it
     if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)):
         gameDate = gameId[0:4] + ', ' + gameId[4:6] + ', ' + gameId[6:8]
         gamesToday = list(Boxscores(dt.datetime.strptime(gameDate, '%Y, %m, %d')).games.values())[0]
@@ -43,15 +32,18 @@ def getPlayerGameStatDataFrame(gameId):
     else:
         raise Exception('Issue with Game ID') 
 
+    # Gets the player stats on the home and away sides
     statsDict = {}
     statsDict = getPlayerGameStats(home_abbr, statsDict, url, True)
     statsDict = getPlayerGameStats(away_abbr, statsDict, url, False)
-    
+
+    # Makes dictionary of lists into dataframe
     df = pd.DataFrame()
     for k, v in statsDict.items():
         df[k] = v
 
-    print(df)
+    df.rename(columns={'Starters':'Name'}, inplace=True)
+    # print(df)
 
     return df
 
@@ -69,21 +61,21 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home):
 
     Returns
     -------
-    The updated statistics dictionary
+    The updated statistics dictionary, see method for content details
     """
     
     try:
         
-        #gets html of page
+        # Gets the html of the page and each row
         soup = bs.BeautifulSoup(urlopen(url), features='lxml')
         rows = [p for p in soup.find('div', {'id': 'div_box-' + teamAbbr + '-game-basic'}).findAll('tr')]
         
-        #getting all of the elements in each row
+        # Gets all of the elements in each row s.t. rowList is a 2-d table
         rowList = []
         for row in rows:
             rowList.append([td for td in row.findAll(['td', 'th'])])
 
-        #
+        # Gets the player ids by accessing the links in the player name column
         playerids = []
         for row in rowList:
             achildren = row[0].findChildren('a')
@@ -92,6 +84,7 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home):
             else:
                 playerids.append(None)
 
+        # Changes rowList from html elements to text
         rowList2 = []
         for row in rowList:
             rowList2.append([td.getText() for td in row])
@@ -102,49 +95,39 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home):
             
     except Exception as e:
         print(e)
-        raise Exception('Game {0} not found on basketball-reference.com'.format(gameId))
+        raise Exception('Game {0} not found on basketball-reference.com'.format(url))
 
+    # If statsDict does not exist, initialize it
     if not statsDict:
         statsDict = {}
-    
+
+    # Go through each column in the table
     for i in range(len(rowList[1])):
+
+        # If the stat does not exist in statsDict, initialize it as empty list
         if rowList[1][i] not in statsDict:
             statsDict[rowList[1][i]] = []
+
+        # Go through each player for a given stat
         for j in range(len(rowList)):
+
+            # Check for special cases like headers or where player did not play in game, otherwise append stat
             if rowList[j][0] == 'Reserves' or rowList[j][0] == 'Team Totals' or rowList[j][0] == '' or rowList[j][0] == 'Starters':
                 continue
-            if len(rowList[j]) != len(rowList[1]) and i != 0:
+            elif len(rowList[j]) != len(rowList[1]) and i != 0:
                 statsDict[rowList[1][i]].append(None)
             else:
                 statsDict[rowList[1][i]].append(rowList[j][i])
 
-
+    # Adds the started, home, and playerid columns
     if 'started' not in statsDict:
         statsDict['started'] = []
     if 'home' not in statsDict:
         statsDict['home'] = []
     if 'playerid' not in statsDict:
         statsDict['playerid'] = []
-    # if 'effectivefg' not in statsDict:
-    #     statsDict['effectivefg'] = []
-    # if 'trueshooting' not in statsDict:
-    #     statsDict['trueshooting'] = []
-    # if 'ftrate' not in statsDict:
-    #     statsDict['ftrate'] = []
-    # if '3rate' not in statsDict:
-    #     statsDict['3rate'] = []
-    # if 'tov%' not in statsDict:
-    #     statsDict['tov%'] = []
-    # if 'dreb%' not in statsDict:
-    #     statsDict['dreb%'] = []
-    # if 'oreb%' not in statsDict:
-    #     statsDict['oreb%'] = []
-    # if 'efficiency' not in statsDict:
-    #     statsDict['efficiency'] = []
-    # if 'ast/tov' not in statsDict:
-    #     statsDict['ast/tov'] = []
-    
-        
+
+    # Loops through the rows to append started, home, and playerid for each player
     isStarted = True
     for j in range(2, len(rowList)):            
         if rowList[j][0] == 'Reserves':
@@ -158,32 +141,27 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home):
         statsDict['started'].append(1 if isStarted else 0)
         statsDict['home'].append(1 if home else 0)
         statsDict['playerid'].append(playerids[j])
-
     
     try:
         
-        #gets html of page
+        # Same as above, but with the advanced stats table
         soup = bs.BeautifulSoup(urlopen(url), features='lxml')
         rows = [p for p in soup.find('div', {'id': 'div_box-' + teamAbbr + '-game-advanced'}).findAll('tr')]
-        
-        #getting all of the elements in each row
+
         rowList = []
         for row in rows:
             rowList.append([td.getText() for td in row.findAll(['td', 'th'])])
 
-              
-            
-            
     except Exception as e:
         print(e)
-        raise Exception('Game {0} not found on basketball-reference.com'.format(gameId))
+        raise Exception('Game {0} not found on basketball-reference.com'.format(url))
 
-    if not statsDict:
-        statsDict = {}
-    
+    # Same as above, but with the advanced stats table
     for i in range(len(rowList[1])):
         if rowList[1][i] not in statsDict:
             statsDict[rowList[1][i]] = []
+        elif rowList[1][i] == "Starters" or rowList[1][i] == "MP":
+            continue;
         for j in range(len(rowList)):
             if rowList[j][0] == 'Reserves' or rowList[j][0] == 'Team Totals' or rowList[j][0] == '' or rowList[j][0] == 'Starters':
                 continue
@@ -197,9 +175,4 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home):
 
 
 
-
-print(getPlayerGameStatDataFrame('202012230PHI'))                
-
-# print(getPlayerData('labissk01'))
-# print(getPlayersDf(2021))
-# getPlayersDf(2021).to_csv('static_player_stats_2021.csv')
+print(getPlayerGameStatDataFrame('202012230PHI').iloc[0])
