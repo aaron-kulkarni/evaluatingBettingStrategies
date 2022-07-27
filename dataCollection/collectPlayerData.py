@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import datetime as dt
 import bs4 as bs
@@ -34,8 +35,8 @@ def getPlayerGameStatDataFrame(gameId):
 
     # Gets the player stats on the home and away sides
     statsDict = {}
-    statsDict = getPlayerGameStats(home_abbr, statsDict, url, True, gameId)
-    statsDict = getPlayerGameStats(away_abbr, statsDict, url, False, gameId)
+    statsDict = getPlayerGameStats(home_abbr, statsDict, url, True)
+    statsDict = getPlayerGameStats(away_abbr, statsDict, url, False)
 
     # Makes dictionary of lists into dataframe
     df = pd.DataFrame()
@@ -48,7 +49,7 @@ def getPlayerGameStatDataFrame(gameId):
     return df
 
 
-def getPlayerGameStats(teamAbbr, statsDict, url, home, gameId):
+def getPlayerGameStats(teamAbbr, statsDict, url, home):
     """
     Scrapes the data for every player on a team in a given game. 
 
@@ -126,8 +127,6 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home, gameId):
         statsDict['home'] = []
     if 'playerid' not in statsDict:
         statsDict['playerid'] = []
-    if 'gameid' not in statsDict:
-        statsDict['gameid'] = []
 
     # Loops through the rows to append started, home, and playerid for each player
     isStarted = True
@@ -143,7 +142,6 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home, gameId):
         statsDict['started'].append(1 if isStarted else 0)
         statsDict['home'].append(1 if home else 0)
         statsDict['playerid'].append(playerids[j])
-        statsDict['gameid'].append(gameId)
     
     try:
         
@@ -176,6 +174,6 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home, gameId):
 
     return statsDict
 
-
-
-print(getPlayerGameStatDataFrame('202003090UTA').loc[0])
+def getGameDataframe(startTime, endTime):
+    
+    
