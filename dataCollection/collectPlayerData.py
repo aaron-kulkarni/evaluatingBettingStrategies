@@ -1,4 +1,4 @@
-import os
+import os 
 import pandas as pd
 import datetime as dt
 import bs4 as bs
@@ -10,11 +10,9 @@ def getPlayerGameStatDataFrame(gameId):
     '''
     Gets the static data about a player by scraping
     it from https://www.basketball-reference.com.
-
     Parameters
     ----------
     The gameID to look for in basketball-reference.com
-
     Returns
     -------
     Dataframe indexed by playerID on player performance statistics
@@ -35,8 +33,8 @@ def getPlayerGameStatDataFrame(gameId):
 
     # Gets the player stats on the home and away sides
     statsDict = {}
-    statsDict = getPlayerGameStats(home_abbr, statsDict, url, True)
-    statsDict = getPlayerGameStats(away_abbr, statsDict, url, False)
+    statsDict = getPlayerGameStats(home_abbr, statsDict, url, True, gameId)
+    statsDict = getPlayerGameStats(away_abbr, statsDict, url, False, gameId)
 
     # Makes dictionary of lists into dataframe
     df = pd.DataFrame()
@@ -49,17 +47,15 @@ def getPlayerGameStatDataFrame(gameId):
     return df
 
 
-def getPlayerGameStats(teamAbbr, statsDict, url, home):
+def getPlayerGameStats(teamAbbr, statsDict, url, home, gameId):
     """
     Scrapes the data for every player on a team in a given game. 
-
     Parameters
     ----------
     teamAbbr : A string representation of team abbreviation
     statsDict : The statistics dictionary to append the statistics to
     url : The boxscore URL to scrape from
     home : Boolean, true if team is home, false if away
-
     Returns
     -------
     The updated statistics dictionary, see method for content details
@@ -127,6 +123,8 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home):
         statsDict['home'] = []
     if 'playerid' not in statsDict:
         statsDict['playerid'] = []
+    if 'gameid' not in statsDict:
+        statsDict['gameid'] = []
 
     # Loops through the rows to append started, home, and playerid for each player
     isStarted = True
@@ -142,6 +140,7 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home):
         statsDict['started'].append(1 if isStarted else 0)
         statsDict['home'].append(1 if home else 0)
         statsDict['playerid'].append(playerids[j])
+        statsDict['gameid'].append(gameId)
     
     try:
         
@@ -174,6 +173,22 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home):
 
     return statsDict
 
-def getGameDataframe(startTime, endTime):
+
+def getGameStatsDataFrame(startTime, endTime):
+    '''
+    startTime and endTime must be in format '%Y, %m, %d'
     
-    
+    '''
+
+    allGames = Boxscores(dt.datetime.strptime(startTime, '%Y, %m, %d'), dt.datetime.strptime(endTime, '%Y, %m, %d')).games
+    gameIdList = [] 
+    for key in allGames.keys():
+        for i in range(len(allGames[key])):
+             gameIdList.append(allGames[key][i]['boxscore'])
+    df = pd.DataFrame()
+    for id in gameIdList:
+        gameData = getPlayerGameStatDataFrame(id) 
+        df = df.append(gameData, ignore_index = True)
+    return df
+
+getGameStatsDataFrame('2015, 10, 27', '2016, 4, 13').to_csv('game_data_player_stats_2015.csv')
