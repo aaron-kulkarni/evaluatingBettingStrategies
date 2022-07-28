@@ -18,6 +18,39 @@ from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 import re
 
+teamsDict = {
+    "TOR": ["Eastern", "Atlantic"],
+    "BOS": ["Eastern", "Atlantic"],
+    "BRK": ["Eastern", "Atlantic"],
+    "PHI": ["Eastern", "Atlantic"],
+    "NYK": ["Eastern", "Atlantic"],
+    "CLE": ["Eastern", "Central"],
+    "CHI": ["Eastern", "Central"],
+    "MIL": ["Eastern", "Central"],
+    "IND": ["Eastern", "Central"],
+    "DET": ["Eastern", "Central"],
+    "ATL": ["Eastern", "Southeast"],
+    "WAS": ["Eastern", "Southeast"],
+    "MIA": ["Eastern", "Southeast"],
+    "CHO": ["Eastern", "Southeast"],
+    "ORL": ["Eastern", "Southeast"],
+    "POR": ["Western", "Northwest"],
+    "OKC": ["Western", "Northwest"],
+    "UTA": ["Western", "Northwest"],
+    "DEN": ["Western", "Northwest"],
+    "MIN": ["Western", "Northwest"],
+    "GSW": ["Western", "Pacific"],
+    "LAC": ["Western", "Pacific"],
+    "PHO": ["Western", "Pacific"],
+    "SAC": ["Western", "Pacific"],
+    "LAL": ["Western", "Pacific"],
+    "HOU": ["Western", "Southwest"],
+    "MEM": ["Western", "Southwest"],
+    "SAS": ["Western", "Southwest"],
+    "DAL": ["Western", "Southwest"],
+    "NOP": ["Western", "Southwest"]
+}
+
 
 def getGameData(gameId):
 
@@ -39,21 +72,30 @@ def getGameData(gameId):
         raise Exception('Issue with Game ID')
 
         
-    # wins against team is computed with past 5 years data
     gameData = Boxscore(gameId)
-    q1ScoreHome = gameData.summary['home'][0]
-    q1ScoreAway = gameData.summary['away'][0]
-    q2ScoreHome = gameData.summary['home'][1]
-    q2ScoreAway = gameData.summary['away'][1]
-    q3ScoreHome = gameData.summary['home'][2]
-    q3ScoreAway = gameData.summary['away'][2]
-    q4ScoreHome = gameData.summary['home'][3]
-    q4ScoreAway = gameData.summary['away'][3]
+    summary = gameData.summary
+    q1ScoreHome = summary['home'][0]
+    q1ScoreAway = summary['away'][0]
+    q2ScoreHome = summary['home'][1]
+    q2ScoreAway = summary['away'][1]
+    q3ScoreHome = summary['home'][2]
+    q3ScoreAway = summary['away'][2]
+    q4ScoreHome = summary['home'][3]
+    q4ScoreAway = summary['away'][3]
+    overtimeScoresHome = []
+    overtimeScoresAway = []
+
+    overtimePeriods = len(summary['home']) - 4
+    for x in range(4, 4+overtimePeriods-1):
+        overtimeScoresHome.append(summary['home'][x])
+        overtimeScoresAway.append(summary['away'][x])
+    
+
     
     pointsHome = gameData.home_points
     pointsAway = gameData.away_points 
         
-    if (int(gameYear) == 2020): #2020 was exception because covid messed up schedule
+    if int(gameYear) == 2020: #2020 was exception because covid messed up schedule
         if int(gameMonth.lstrip("0")) < 11: #converted gameMonth to int without leading 0. check month to find correct season
             teamHomeSchedule = Schedule(teamHome, int(gameYear)).dataframe
             teamAwaySchedule = Schedule(teamAway, int(gameYear)).dataframe
@@ -170,8 +212,15 @@ def getGameData(gameId):
     
     matchupWinsHome = tempDf.loc[teamHomeSchedule['result'] == 'Win'].shape[0]
     matchupWinsAway = tempDf.loc[teamHomeSchedule['result'] == 'Loss'].shape[0]
+
+    if teamsDict[teamHome] == teamsDict[teamAway]:
+        rivalry = 'division'
+    elif teamsDict[teamHome][0] == teamsDict[teamAway][0]:
+        rivalry = 'conference'
+    else:
+        rivalry = 'none'
             
-    gameData = [gameId, teamHome, teamAway, timeOfDay, location, q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupWinsHome, q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster, awayRecord, matchupWinsAway] 
+    gameData = [gameId, teamHome, teamAway, timeOfDay, location, q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, overtimeScoresHome, pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupWinsHome, q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, overtimeScoresAway, pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster, awayRecord, matchupWinsAway, rivalry] 
     
     return gameData
 
@@ -190,7 +239,9 @@ def getGameDataframe(startTime, endTime):
     for id in gameIdList:
         gameDataList.append(getGameData(id))
 
-    df = pd.DataFrame(gameDataList, columns = ['gameId', 'teamHome', 'teamAway', 'timeOfDay', 'location', 'q1ScoreHome', 'q2ScoreHome', 'q3ScoreHome', 'q4ScoreHome', 'pointsHome', 'streakHome', 'daysSinceLastGameHome', 'homePlayerRoster', 'homeRecord', 'matchupWinsHome', 'q1ScoreAway', 'q2ScoreAway', 'q3ScoreAway', 'q4ScoreAway', 'pointsAway', 'streakAway', 'daysSinceLastGameAway', 'awayPlayerRoster', 'awayRecord', 'matchupWinsAway'])
+    df = pd.DataFrame(gameDataList, columns = ['gameId', 'teamHome', 'teamAway', 'timeOfDay', 'location', 'q1ScoreHome', 'q2ScoreHome', 'q3ScoreHome', 'q4ScoreHome', 'overtimeScoresHome', 
+    'pointsHome', 'streakHome', 'daysSinceLastGameHome', 'homePlayerRoster', 'homeRecord', 'matchupWinsHome', 'q1ScoreAway', 'q2ScoreAway', 'q3ScoreAway', 'q4ScoreAway', 
+    'overtimeScoresAway', 'pointsAway', 'streakAway', 'daysSinceLastGameAway', 'awayPlayerRoster', 'awayRecord', 'matchupWinsAway', 'rivalry'])
     
     df.set_index('gameId', inplace = True)
     
