@@ -1,7 +1,7 @@
 import re
 import numpy as np
 
-# Samples to use for testing (#2 should not pass, does not have 0 or 1 for starter/home
+# Samples to use for testing (#2 should not pass, does not have 0 or 1 for starter/home)
 '''
 29402,Sandro Mamukelashvili,22:47,3,6,.500,1,3,.333,1,2,.500,3,1,4,2,0,2,1,1,8,-20,0,1,mamuksa01,202204010MIL,.581,.583,.500,.333,15.4,6.4,11.4,9.6,0.0,8.6,12.7,14.2,126,151,-1.8
 
@@ -46,7 +46,10 @@ def cleanGamePlayerDataFile(filename, delete_all=False):
     clean_data.write(header.strip() + '\n')
     print('Line {0} is clean'.format('header'))
 
+    # Goes through each line
     for line in data_lines:
+
+        # If line does not match, do what user inputs
         if not re.match(line_regex, line.strip()):
             print(u'Line {0} is not clean:\n\t{1}'.format(line.split(',')[0], line.strip()))
             if delete_all:
@@ -62,6 +65,7 @@ def cleanGamePlayerDataFile(filename, delete_all=False):
                     clean_data.write(line.strip() + '\n')
                 else:
                     clean_data.write(line.strip() + '\n')
+        # If line matches, append to clean data
         else:
             print('Line {0} is clean'.format(line.split(',')[0]))
             clean_data.write(line.strip() + '\n')
