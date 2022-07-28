@@ -10,3 +10,4 @@ teamSchedule.csv
 *.log
 *.py~
 .\#collectStaticData.py
+.\#collectPlayerData.py
