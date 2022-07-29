@@ -191,4 +191,4 @@ def getGameStatsDataFrame(startTime, endTime):
         df = df.append(gameData, ignore_index = True)
     return df
 
-getGameStatsDataFrame('2015, 10, 27', '2016, 4, 13').to_csv('game_data_player_stats_2015.csv')
+getGameStatsDataFrame('2014, 10, 28', '2015, 4, 15').to_csv('game_data_player_stats_2015.csv')
