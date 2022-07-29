@@ -93,7 +93,12 @@ def getGameData(gameId):
 
     
     pointsHome = gameData.home_points
-    pointsAway = gameData.away_points 
+    pointsAway = gameData.away_points
+
+    if pointsHome > pointsAway:
+        winner = teamHome
+    else:
+        winner = teamAway 
         
     if int(gameYear) == 2020: #2020 was exception because covid messed up schedule
         if int(gameMonth.lstrip("0")) < 11: #converted gameMonth to int without leading 0. check month to find correct season
@@ -220,7 +225,7 @@ def getGameData(gameId):
     else:
         rivalry = 'none'
             
-    gameData = [gameId, teamHome, teamAway, timeOfDay, location, q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, overtimeScoresHome, pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupWinsHome, q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, overtimeScoresAway, pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster, awayRecord, matchupWinsAway, rivalry] 
+    gameData = [gameId, winner, teamHome, teamAway, timeOfDay, location, q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, overtimeScoresHome, pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupWinsHome, q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, overtimeScoresAway, pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster, awayRecord, matchupWinsAway, rivalry] 
     
     return gameData
 
@@ -239,7 +244,7 @@ def getGameDataframe(startTime, endTime):
     for id in gameIdList:
         gameDataList.append(getGameData(id))
 
-    df = pd.DataFrame(gameDataList, columns = ['gameId', 'teamHome', 'teamAway', 'timeOfDay', 'location', 'q1ScoreHome', 'q2ScoreHome', 'q3ScoreHome', 'q4ScoreHome', 'overtimeScoresHome', 
+    df = pd.DataFrame(gameDataList, columns = ['gameId', 'winner', 'teamHome', 'teamAway', 'timeOfDay', 'location', 'q1ScoreHome', 'q2ScoreHome', 'q3ScoreHome', 'q4ScoreHome', 'overtimeScoresHome', 
     'pointsHome', 'streakHome', 'daysSinceLastGameHome', 'homePlayerRoster', 'homeRecord', 'matchupWinsHome', 'q1ScoreAway', 'q2ScoreAway', 'q3ScoreAway', 'q4ScoreAway', 
     'overtimeScoresAway', 'pointsAway', 'streakAway', 'daysSinceLastGameAway', 'awayPlayerRoster', 'awayRecord', 'matchupWinsAway', 'rivalry'])
     
