@@ -72,7 +72,7 @@ def cleanGamePlayerDataFile(filename, delete_all=False):
 
     clean_data.close()
 
-years = np.arange(2015, 2022)
+years = np.arange(2015, 2023)
 for year in years:
     cleanGamePlayerDataFile('../data/gamePlayerData/game_data_player_stats_{0}.csv'.format(year))
 
