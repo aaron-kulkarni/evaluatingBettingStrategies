@@ -1,4 +1,5 @@
-import os 
+import os
+from unittest import result 
 import pandas as pd
 import datetime as dt
 import bs4 as bs
@@ -173,6 +174,123 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home, gameId):
 
     return statsDict
 
+def getTeamGameStatDataFrame(gameId):
+    '''
+    Gets the static data about a team by scraping
+    it from https://www.basketball-reference.com.
+    Parameters
+    ----------
+    The gameID to look for in basketball-reference.com
+    Returns
+    -------
+    Dataframe indexed by playerID on player performance statistics
+    '''
+    
+    url = f"https://www.basketball-reference.com/boxscores/{gameId}.html"
+    stats = None
+
+    # Checks that the game id is a valid match id and gets it
+    if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)):
+        gameDate = gameId[0:4] + ', ' + gameId[4:6] + ', ' + gameId[6:8]
+        gamesToday = list(Boxscores(dt.datetime.strptime(gameDate, '%Y, %m, %d')).games.values())[0]
+        temp = next(item for item in gamesToday if item["boxscore"] == gameId)
+        away_abbr = temp['away_abbr']
+        home_abbr = temp['home_abbr']
+    else:
+        raise Exception('Issue with Game ID')
+
+    # homeTeamArray = getTeamGameStats(home_abbr, url, True, gameId)
+    # awayTeamArray = getTeamGameStats(away_abbr, url, False, gameId)
+    result = []
+    result = getTeamGameStats(home_abbr, result, url)
+    result = getTeamGameStats(away_abbr, result, url)
+    print(result)
+    
+
+    return result
+
+def getTeamGameStats(teamAbbr, result, url):
+    """
+    Scrapes the data for an entire team in a given game. 
+    Parameters
+    ----------
+    teamAbbr : A string representation of team abbreviation
+    result : The array to return
+    url : The boxscore URL to scrape from
+    Returns
+    -------
+    An array, with format: team1, attr1, attr2, ... team2, attr1, attr2,....
+    """
+
+    try:
+        
+        # Gets the html of the page and each row
+        soup = bs.BeautifulSoup(urlopen(url), features='lxml')
+        rows = [p for p in soup.find('div', {'id': 'div_box-' + teamAbbr + '-game-basic'}).findAll('tr')]
+        
+        # Gets all of the elements in each row s.t. rowList is a 2-d table
+        rowList = []
+        for row in rows:
+            rowList.append([td for td in row.findAll(['td', 'th'])])
+        # Changes rowList from html elements to text
+        rowList2 = []
+        for row in rowList:
+            rowList2.append([td.getText() for td in row])
+
+        rowList = rowList2
+                      
+    except Exception as e:
+        print(e)
+        raise Exception('Game {0} not found on basketball-reference.com'.format(url))
+
+
+    if not result:
+        result = []
+
+    result.append(teamAbbr)    
+
+    # Go through each column in the table
+    for i in range(len(rowList[1])):
+
+        # Go through each player for a given stat
+        for j in range(len(rowList)):
+
+            if rowList[j][0] != 'Team Totals':
+                continue
+            #!!!!!!!!!!!!!!!!! Maybe a logic error
+            else:
+                if len(rowList[j]) != len(rowList[1]) and i != 0:
+                    result.append(None)
+                result.append(rowList[j][i])
+    
+    try:
+        
+        # Same as above, but with the advanced stats table
+        soup = bs.BeautifulSoup(urlopen(url), features='lxml')
+        rows = [p for p in soup.find('div', {'id': 'div_box-' + teamAbbr + '-game-advanced'}).findAll('tr')]
+
+        rowList = []
+        for row in rows:
+            rowList.append([td.getText() for td in row.findAll(['td', 'th'])])
+
+    except Exception as e:
+        print(e)
+        raise Exception('Game {0} not found on basketball-reference.com'.format(url))
+
+    for i in range(len(rowList[1])):
+        if rowList[1][i] == 'Starters' or rowList[1][i] == 'MP':
+            continue
+        for j in range(len(rowList)):
+            if rowList[j][0] != 'Team Totals':
+                continue
+            #!!!!!!!!!!!!!!!!! Maybe a logic error
+            else:
+                if len(rowList[j]) != len(rowList[1]) and i != 0:
+                    result.append(None)
+                result.append(rowList[j][i])
+
+    return result
+
 
 def getGameStatsDataFrame(startTime, endTime):
     '''
@@ -191,4 +309,4 @@ def getGameStatsDataFrame(startTime, endTime):
         df = df.append(gameData, ignore_index = True)
     return df
 
-getGameStatsDataFrame('2015, 10, 27', '2016, 4, 13').to_csv('game_data_player_stats_2015.csv')
+getGameStatsDataFrame('2014, 10, 28', '2015, 4, 15').to_csv('game_data_player_stats_2015.csv')

@@ -11,3 +11,4 @@ teamSchedule.csv
 *.py~
 .\#collectStaticData.py
 .\#collectPlayerData.py
+.\#cleanBettingOdds.py

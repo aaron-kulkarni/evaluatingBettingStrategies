@@ -20,17 +20,17 @@ import signal
 from create_clean_table import *
 
 global DRIVER_LOCATION
-DRIVER_LOCATION = "/usr/local/bin/chromedriver"
+DRIVER_LOCATION = "/opt/homebrew/bin/chromedriver"
 
 global TYPE_ODDS
 TYPE_ODDS = 'CLOSING' # you can change to 'OPENING' if you want to collect opening odds, any other value will make the program collect CLOSING odds
 
 def get_opening_odd(xpath):
     # I. Get the raw data by hovering and collecting
-    data = driver.find_element_by_xpath(xpath)
+    data = driver.find_element("xapth", xpath)
     hov = ActionChains(driver).move_to_element(data)
     hov.perform()
-    data_in_the_bubble = driver.find_element_by_xpath("//*[@id='tooltiptext']")
+    data_in_the_bubble = driver.find_element("xpath", "//*[@id='tooltiptext']")
     hover_data = data_in_the_bubble.get_attribute("innerHTML")
 
     # II. Extract opening odds
