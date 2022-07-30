@@ -41,10 +41,10 @@ def convertBettingOdds(filename):
     # IMPORTANT: MUST CHANGE FOR SPECIFIC FILE WHERE CLEAN DATA FOR CORRESPONDING YEAR IS LOCATED 
     fileLocation = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/gamePlayerData/game_data_player_stats_' + year + '_clean.csv'
 
-    startDate = extract_lines(fileLocation)[0]
-    endDate = extract_lines(fileLocation)[1]
+    startDate = str(extract_lines(fileLocation)[0])[0:10]
+    endDate = str(extract_lines(fileLocation)[1])[0:10]
     
-    df = df[~(df['Date'] < str(startDate)) | (df['Date'] < str(endDate))]
+    df = df[(df['Date'] >= startDate) & (df['Date'] <= endDate)]
 
 
 def cleanBettingOdds(filename):
