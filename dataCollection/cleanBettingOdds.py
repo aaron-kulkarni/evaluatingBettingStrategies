@@ -22,8 +22,7 @@ def convertBettingOdds(filename):
     '''
     function does following:
     1. Removes games that are not in regular season
-    2. Adds columns for betting odds of each website
-    3. Adds GameID
+    2. Adds GameID
     '''
 
     year = re.findall('[0-9]+', filename)[0]
@@ -45,8 +44,9 @@ def convertBettingOdds(filename):
     endDate = str(extract_lines(fileLocation)[1])[0:10]
     
     df = df[(df['Date'] >= startDate) & (df['Date'] <= endDate)]
-
-
+    df['game_id'] = df.apply(lambda d: str(d['Date'])[0:10].replace('-','') + '0' + teamDict[d['Home_id']], axis = 1)
+    
+    
 def cleanBettingOdds(filename):
 
 
