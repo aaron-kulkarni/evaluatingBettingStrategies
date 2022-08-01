@@ -8,7 +8,7 @@ import datetime as dt
 from sportsipy.nba.teams import Teams
 from sportsipy.nba.boxscore import Boxscores
 
-#filename = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/bettingOddsData/closing_betting_odds_2021.csv'
+#filename = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/bettingOddsData/closing_betting_odds_2022.csv'
 
 def extract_lines(filename):
     startGameId = pd.read_csv(filename).head(1)['gameid'].iloc[0]
@@ -24,7 +24,7 @@ def convertBettingOdds(filename):
     function does following:
     1. Removes games that are not in regular season
     2. Adds GameID
-    3. Checks if game exists
+    3. Checks if all games in betting odds file are in regular season and vice versa
     '''
 
     year = re.findall('[0-9]+', filename)[0]
@@ -49,19 +49,18 @@ def convertBettingOdds(filename):
     df = df[(df['Date'] >= startDate) & (df['Date'] <= endDate)]
     df['game_id'] = df.apply(lambda d: str(d['Date'])[0:10].replace('-','') + '0' + teamDict[d['Home_id']], axis = 1)
     
-   # df['game_status'] = df.apply(lambda d: requests.get("https://www.basketball-reference.com/boxscores/{0}.html".format(d['game_id'])).status_code, axis = 1)
-   list(unique(df['game_id']))
    
-    allGames = Boxscores(startDate, endDate)
     gameIdList = [] 
+    allGames = Boxscores(dt.datetime.strptime(startDate, '%Y-%m-%d'), dt.datetime.strptime(endDate, '%Y-%m-%d')).games
     for key in allGames.keys():
         for i in range(len(allGames[key])):
-             gameIdList.append(allGames[key][i]['boxscore'])
-    gameDataList = []
-    for id in gameIdList:
-        gameDataList.append(getGameData(id))
+            gameIdList.append(allGames[key][i]['boxscore'])
+    
+    if set(gameIdList) != set(df['game_id'].unique().tolist()):
+        print('Issue with GameID')
+        
+    return df 
 
-    qq=df['game_id'].unique().tolist()
 def cleanBettingOdds(filename):
 
 

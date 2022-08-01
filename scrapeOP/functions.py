@@ -90,7 +90,7 @@ def get_data_typeA(i, link):
     print("Link",i)
     _a = ffi2(target)
     
-    print("HELLO",_a)
+    print(_a)
     #pdb.set_trace()
     if _a == True:
         print('We wait 4 seconds')
@@ -169,7 +169,7 @@ def get_data_next_games_typeA(i, link):
             print(match, Book, Odd_1, Odd_2, date, i, '/ 500 ')
             L = L + [(match, Book, Odd_1, Odd_2, date)]
 
-    return(L)x
+    return(L)
 
 def scrape_page_typeA(page, sport, country, tournament, SEASON):
     link = 'https://www.oddsportal.com/{}/{}/{}-{}/results/page/1/#/page/{}'.format(sport, country, tournament, SEASON, page)
