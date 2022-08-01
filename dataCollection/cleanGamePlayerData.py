@@ -74,6 +74,6 @@ def cleanGamePlayerDataFile(filename, delete_all=False):
 
 years = np.arange(2015, 2023)
 for year in years:
-    cleanGamePlayerDataFile('../data/gamePlayerData/game_data_player_stats_{0}.csv'.format(year))
+    cleanGamePlayerDataFile('../data/gameStats/game_data_player_stats_{0}.csv'.format(year))
 
-# cleanGamePlayerDataFile('../data/gamePlayerData/game_data_player_stats_{0}.csv'.format(2015))
+# cleanGamePlayerDataFile('../data/gameStats/game_data_player_stats_{0}.csv'.format(2015))

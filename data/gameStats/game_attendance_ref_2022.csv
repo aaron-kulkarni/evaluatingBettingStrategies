@@ -1,0 +1,1324 @@
+,gameid,ref,att
+0,202110190LAL,"['Ray Acosta', 'Mark Lindsay', 'Sean Wright']",18997
+1,202110190MIL,"['Jacyn Goble', 'Natalie Sago', 'Josh Tiven']",17341
+2,202110200CHO,"['Nate Green', 'Rodney Mott', 'Scott Wall']",15521
+3,202110200DET,"['Mousa Dagher', 'Tyler Ford', 'Derek Richardson']",20088
+4,202110200MEM,"['John Conley', 'Kevin Scott', 'Michael Smith']",15975
+5,202110200MIN,"['Curtis Blair', 'Simone Jelks', 'Tre Maddox']",16079
+6,202110200NOP,"['Courtney Kirkland', 'Karl Lane', 'Danielle Scott']",12845
+7,202110200NYK,"['Scott Foster', 'Lauren Holtkamp-Sterling', 'Ed Malloy']",19812
+8,202110200PHO,"['Kevin Cutler', 'Marc Davis', 'Leon Wood']",16074
+9,202110200POR,"['Nick Buchert', 'Phenizee Ransom', 'Sean Wright']",17467
+10,202110200SAS,"['Sean Corbin', 'Jenna Schroeder', 'Ben Taylor']",16697
+11,202110200TOR,"['John Butler', 'Eric Dalen', 'Bill Kennedy']",19800
+12,202110200UTA,"['Ray Acosta', 'Mark Lindsay', 'Zach Zarba']",18306
+13,202110210ATL,"['James Capers Jr.', 'Dedric Taylor', 'Scott Twardoski']",17162
+14,202110210GSW,"['Justin Van Duyne', 'Tom Washington', 'Zach Zarba']",18064
+15,202110210MIA,"['Mitchell Ervin', 'David Guthrie', 'Jonathan Sterling']",19600
+16,202110220BOS,"['Curtis Blair', 'Brian Forte', 'Derek Richardson']",19156
+17,202110220CHI,"['Scott Foster', 'Jacyn Goble', 'Brandon Schwab']",20995
+18,202110220CLE,"['John Butler', 'Eric Dalen', 'Bill Kennedy']",17116
+19,202110220DEN,"['Mark Lindsay', 'Phenizee Ransom', 'Sean Wright']",19520
+20,202110220HOU,"['Sean Corbin', 'Courtney Kirkland', 'Danielle Scott']",15674
+21,202110220LAL,"['Tony Brothers', 'Nick Buchert', 'Justin Van Duyne']",18997
+22,202110220ORL,"['Bennie Adams', 'J.B. DeRosa', 'Rodney Mott']",18846
+23,202110220PHI,"['David Guthrie', 'Marat Kogut', 'Tre Maddox']",20367
+24,202110220SAC,"['Brent Barnaky', 'Kevin Cutler', 'J.T. Orr']",17583
+25,202110220WAS,"['Mousa Dagher', 'Eric Lewis', 'Gediminas Petraitis']",15407
+26,202110230CHI,"['Ray Acosta', 'Eric Dalen', 'Pat Fraher']",18888
+27,202110230CLE,"['Curtis Blair', 'Nate Green', 'Scott Wall']",16846
+28,202110230IND,"['John Conley', 'Michael Smith', 'James Williams']",17147
+29,202110230LAC,"['Tony Brothers', 'Nick Buchert', 'Brett Nansel']",16748
+30,202110230MIN,"['Matt Boland', 'Gediminas Petraitis', 'Kevin Scott']",15343
+31,202110230POR,"['Jenna Schroeder', 'Tom Washington', 'Zach Zarba']",18558
+32,202110230SAS,"['Karl Lane', 'Ed Malloy', 'Scott Twardoski']",14353
+33,202110230TOR,"['Andy Nagy', 'Aaron Smith', 'Josh Tiven']",19800
+34,202110240BRK,"['James Capers Jr.', 'Suyash Mehta', 'Derek Richardson']",17732
+35,202110240HOU,"['Bennie Adams', 'J.B. DeRosa', 'Ben Taylor']",16069
+36,202110240LAL,"['Brandon Adair', 'Kevin Cutler', 'Marc Davis']",18997
+37,202110240NYK,"['John Butler', 'Bill Kennedy', 'Tre Maddox']",16273
+38,202110240OKC,"['Jacyn Goble', 'Rodney Mott', 'Phenizee Ransom']",14256
+39,202110240SAC,"['Brent Barnaky', 'Derrick Collins', 'Jenna Schroeder']",13876
+40,202110250ATL,"['Aaron Smith', 'Jonathan Sterling', 'Josh Tiven']",14209
+41,202110250BRK,"['Ray Acosta', 'Tyler Ford', 'Scott Wall']",14487
+42,202110250CHO,"['Matt Boland', 'Courtney Kirkland', 'Matt Myers']",17238
+43,202110250DEN,"['Tony Brothers', 'Nick Buchert', 'Tom Washington']",14221
+44,202110250IND,"['Mark Lindsay', 'C.J. Washington', 'Leon Wood']",10339
+45,202110250LAC,"['Brent Barnaky', 'Eric Lewis', 'Natalie Sago']",15672
+46,202110250MIA,"['Evan Scott', 'Kevin Scott', 'Dedric Taylor']",19600
+47,202110250MIN,"['Eric Dalen', 'Nate Green', 'Ed Malloy']",14435
+48,202110250TOR,"['Suyash Mehta', 'Michael Smith', 'James Williams']",19800
+49,202110260DAL,"['John Conley', 'Justin Van Duyne', 'Sean Wright']",19337
+50,202110260NYK,"['Mitchell Ervin', 'Brett Nansel', 'James Williams']",15218
+51,202110260OKC,"['J.B. DeRosa', 'Marat Kogut', 'Ben Taylor']",0
+52,202110260SAS,"['Curtis Blair', 'Brian Forte', 'Andy Nagy']",18354
+53,202110260UTA,"['Brandon Adair', 'Derrick Collins', 'David Guthrie']",18306
+54,202110270BOS,"['James Capers Jr.', 'Michael Smith', 'Leon Wood']",0
+55,202110270BRK,"['Jacyn Goble', 'Ed Malloy', 'Brandon Schwab']",17732
+56,202110270LAC,"['Derrick Collins', 'Mousa Dagher', 'Tre Maddox']",13276
+57,202110270MIL,"['Matt Myers', 'Dedric Taylor', 'Zach Zarba']",17341
+58,202110270NOP,"['Brian Forte', 'Pat Fraher', 'Evan Scott']",15541
+59,202110270OKC,"['Scott Foster', 'Lauren Holtkamp-Sterling', 'Gediminas Petraitis']",15783
+60,202110270ORL,"['Danielle Scott', 'Josh Tiven', 'Scott Wall']",14082
+61,202110270PHO,"['Eric Lewis', 'Suyash Mehta', 'Natalie Sago']",14678
+62,202110270POR,"['Rodney Mott', 'J.T. Orr', 'Scott Twardoski']",16241
+63,202110270TOR,"['Matt Boland', 'Marc Davis', 'Karl Lane']",19800
+64,202110280CHI,"['Nate Green', 'David Guthrie', 'Justin Van Duyne']",20972
+65,202110280DAL,"['Brandon Adair', 'Sean Corbin', 'Tyler Ford']",19228
+66,202110280GSW,"['Eric Dalen', 'Bill Kennedy', 'Jonathan Sterling']",18064
+67,202110280HOU,"['Curtis Blair', 'Mitchell Ervin', 'Marat Kogut']",15858
+68,202110280PHI,"['J.B. DeRosa', 'Andy Nagy', 'Tom Washington']",20017
+69,202110280WAS,"['Derek Richardson', 'Ben Taylor', 'C.J. Washington']",13653
+70,202110290BRK,"['Phenizee Ransom', 'Dedric Taylor', 'Sean Wright']",16139
+71,202110290DEN,"['Bennie Adams', 'Scott Foster', 'J.T. Orr']",18315
+72,202110290LAL,"['John Butler', 'Eric Lewis', 'Natalie Sago']",18997
+73,202110290MIA,"['Tony Brothers', 'Brian Forte', 'Aaron Smith']",19600
+74,202110290NOP,"['Mitchell Ervin', 'Matt Myers', 'Kevin Scott']",17507
+75,202110290POR,"['Eric Dalen', 'Courtney Kirkland', 'Suyash Mehta']",16510
+76,202110290TOR,"['James Capers Jr.', 'Brett Nansel', 'Leon Wood']",19800
+77,202110300CHI,"['Tyler Ford', 'Matt Myers', 'Scott Wall']",20668
+78,202110300DET,"['Marc Davis', 'Lauren Holtkamp-Sterling', 'Brandon Schwab']",11423
+79,202110300GSW,"['Nate Green', 'Bill Kennedy', 'Tre Maddox']",18064
+80,202110300IND,"['Nick Buchert', 'Jenna Schroeder', 'Tom Washington']",10578
+81,202110300MEM,"['Brent Barnaky', 'Derek Richardson', 'Josh Tiven']",15989
+82,202110300MIL,"['Matt Boland', 'Evan Scott', 'James Williams']",17341
+83,202110300MIN,"['Ray Acosta', 'Kevin Cutler', 'Justin Van Duyne']",17136
+84,202110300NOP,"['Curtis Blair', 'Gediminas Petraitis', 'C.J. Washington']",16508
+85,202110300PHI,"['Ed Malloy', 'Phenizee Ransom', 'Michael Smith']",20031
+86,202110300PHO,"['Sean Corbin', 'Rodney Mott', 'Jonathan Sterling']",14516
+87,202110300WAS,"['John Conley', 'J.B. DeRosa', 'Zach Zarba']",15813
+88,202110310BRK,"['Mark Lindsay', 'Aaron Smith', 'Scott Twardoski']",13507
+89,202110310CHO,"['James Capers Jr.', 'John Conley', 'Dedric Taylor']",14960
+90,202110310DAL,"['Derrick Collins', 'Mousa Dagher', 'Pat Fraher']",19231
+91,202110310LAL,"['Eric Dalen', 'Nate Green', 'Courtney Kirkland']",16448
+92,202110310MIL,"['Scott Foster', 'Brett Nansel', 'Leon Wood']",17341
+93,202111010ATL,"['Brandon Adair', 'Marc Davis', 'Suyash Mehta']",14632
+94,202111010BOS,"['Ray Acosta', 'Ed Malloy', 'Natalie Sago']",19156
+95,202111010CHO,"['Nick Buchert', 'Pat Fraher', 'Brandon Schwab']",13889
+96,202111010IND,"['Jacyn Goble', 'David Guthrie', 'Danielle Scott']",10227
+97,202111010LAC,"['Sean Corbin', 'Jonathan Sterling', 'James Williams']",13722
+98,202111010MEM,"['Curtis Blair', 'Matt Boland', 'Jenna Schroeder']",12683
+99,202111010MIN,"['Mitchell Ervin', 'Tyler Ford', 'Andy Nagy']",14744
+100,202111010NYK,"['Kevin Cutler', 'Marat Kogut', 'Phenizee Ransom']",16528
+101,202111010PHI,"['Evan Scott', 'Ben Taylor', 'Scott Wall']",20115
+102,202111020DAL,"['Rodney Mott', 'Brett Nansel', 'Dedric Taylor']",19255
+103,202111020DET,"['John Butler', 'Brian Forte', 'Marat Kogut']",9254
+104,202111020LAL,"['J.B. DeRosa', 'Jonathan Sterling', 'James Williams']",18997
+105,202111020PHO,"['Lauren Holtkamp-Sterling', 'Courtney Kirkland', 'Justin Van Duyne']",14323
+106,202111020UTA,"['Nate Green', 'Bill Kennedy', 'Michael Smith']",18306
+107,202111030BRK,"['Brent Barnaky', 'Matt Boland', 'Josh Tiven']",17323
+108,202111030CLE,"['Ray Acosta', 'Danielle Scott', 'Zach Zarba']",16231
+109,202111030GSW,"['J.B. DeRosa', 'Derek Richardson', 'Kevin Scott']",18064
+110,202111030IND,"['Bennie Adams', 'Aaron Smith', 'Ben Taylor']",11607
+111,202111030MEM,"['Karl Lane', 'Brandon Schwab', 'Tom Washington']",12977
+112,202111030MIN,"['Derrick Collins', 'Marc Davis', 'Jenna Schroeder']",15386
+113,202111030ORL,"['Brandon Adair', 'Sean Wright']",12735
+114,202111030PHI,"['Brian Forte', 'J.T. Orr', 'Scott Twardoski']",20438
+115,202111030SAC,"['Tony Brothers', 'Sean Corbin', 'Andy Nagy']",0
+116,202111030SAS,"['Eric Lewis', 'Gediminas Petraitis', 'C.J. Washington']",16356
+117,202111030WAS,"['Mark Lindsay', 'Natalie Sago', 'Evan Scott']",13538
+118,202111040ATL,"['John Butler', 'Derrick Collins', 'Mark Lindsay']",16590
+119,202111040DET,"['Ray Acosta', 'Pat Fraher', 'Tre Maddox']",8702
+120,202111040LAL,"['John Conley', 'Lauren Holtkamp-Sterling', 'Kevin Scott']",18997
+121,202111040MIA,"['Nick Buchert', 'Mitchell Ervin', 'Scott Foster']",19600
+122,202111040PHO,"['James Capers Jr.', 'Andy Nagy', 'Michael Smith']",15058
+123,202111050DET,"['Bennie Adams', 'Brian Forte', 'Eric Lewis']",14235
+124,202111050GSW,"['Jacyn Goble', 'David Guthrie', 'Leon Wood']",18064
+125,202111050MIL,"['Ed Malloy', 'Scott Twardoski', 'Tom Washington']",17341
+126,202111050MIN,"['Marat Kogut', 'Ben Taylor', 'C.J. Washington']",17136
+127,202111050ORL,"['Brandon Adair', 'Nick Buchert', 'Zach Zarba']",14101
+128,202111050POR,"['Tony Brothers', 'Sean Corbin', 'Justin Van Duyne']",16841
+129,202111050SAC,"['Tyler Ford', 'Rodney Mott', 'Danielle Scott']",14905
+130,202111050TOR,"['Curtis Blair', 'J.T. Orr', 'Jenna Schroeder']",19800
+131,202111050WAS,"['Kevin Cutler', 'Gediminas Petraitis', 'Phenizee Ransom']",16302
+132,202111060CHI,"['Bill Kennedy', 'Brett Nansel', 'Dedric Taylor']",20936
+133,202111060DAL,"['John Butler', 'Tre Maddox', 'Scott Wall']",20052
+134,202111060DEN,"['Lauren Holtkamp-Sterling', 'Evan Scott', 'Josh Tiven']",16046
+135,202111060MIA,"['Ray Acosta', 'Brandon Adair', 'Zach Zarba']",19600
+136,202111060PHO,"['John Conley', 'Karl Lane', 'Kevin Scott']",15412
+137,202111060POR,"['James Capers Jr.', 'Andy Nagy', 'Michael Smith']",19393
+138,202111070GSW,"['Tony Brothers', 'Tyler Ford', 'Scott Twardoski']",18064
+139,202111070LAC,"['Jacyn Goble', 'David Guthrie', 'Matt Myers']",15781
+140,202111070NYK,"['Pat Fraher', 'Suyash Mehta', 'Natalie Sago']",19040
+141,202111070OKC,"['Bennie Adams', 'Derrick Collins', 'James Williams']",12972
+142,202111070ORL,"['Courtney Kirkland', 'J.T. Orr', 'C.J. Washington']",13386
+143,202111070SAC,"['Mitchell Ervin', 'Marat Kogut', 'Sean Wright']",12993
+144,202111070TOR,"['Kevin Cutler', 'Brian Forte', 'Nate Green']",19800
+145,202111070WAS,"['J.B. DeRosa', 'Scott Foster', 'Jonathan Sterling']",15570
+146,202111080CHI,"['J.B. DeRosa', 'Tre Maddox', 'Brett Nansel']",19459
+147,202111080DAL,"['Nick Buchert', 'Lauren Holtkamp-Sterling', 'Mark Lindsay']",19231
+148,202111080DEN,"['John Conley', 'Kevin Scott', 'Michael Smith']",15577
+149,202111080GSW,"['James Capers Jr.', 'Marat Kogut', 'Matt Myers']",18064
+150,202111080LAL,"['Karl Lane', 'Scott Twardoski', 'Sean Wright']",18997
+151,202111080MEM,"['Bill Kennedy', 'Dedric Taylor', 'Leon Wood']",12416
+152,202111080PHI,"['Brent Barnaky', 'Marc Davis', 'Scott Wall']",20224
+153,202111080SAC,"['Jacyn Goble', 'Evan Scott', 'Josh Tiven']",13566
+154,202111090LAC,"['Ray Acosta', 'Tyler Ford', 'David Guthrie']",14131
+155,202111090PHI,"['Sean Corbin', 'Eric Lewis', 'Aaron Smith']",20029
+156,202111090UTA,"['Curtis Blair', 'Mitchell Ervin', 'Derek Richardson']",18306
+157,202111100BOS,"['Brent Barnaky', 'Pat Fraher', 'C.J. Washington']",19156
+158,202111100CHI,"['Michael Smith', 'Zach Zarba']",20910
+159,202111100CLE,"['Brandon Adair', 'Nate Green', 'Tre Maddox']",18056
+160,202111100DEN,"['Jacyn Goble', 'Bill Kennedy', 'Jonathan Sterling']",15232
+161,202111100GSW,"['John Butler', 'Karl Lane', 'Sean Wright']",18064
+162,202111100HOU,"['Rodney Mott', 'Gediminas Petraitis', 'Dedric Taylor']",15350
+163,202111100LAL,"['Marat Kogut', 'J.T. Orr', 'Josh Tiven']",18997
+164,202111100MEM,"['Tony Brothers', 'Derrick Collins', 'Brett Nansel']",13880
+165,202111100NOP,"['Scott Foster', 'Natalie Sago', 'Jenna Schroeder']",15355
+166,202111100NYK,"['Brian Forte', 'Phenizee Ransom', 'James Williams']",18027
+167,202111100ORL,"['Brandon Schwab', 'Ben Taylor', 'Scott Wall']",13882
+168,202111100PHO,"['Bennie Adams', 'Curtis Blair', 'Mitchell Ervin']",15672
+169,202111100SAS,"['Matt Myers', 'Tom Washington', 'Leon Wood']",15065
+170,202111110LAC,"['James Capers Jr.', 'Kevin Cutler', 'Mousa Dagher']",16150
+171,202111110PHI,"['Brandon Adair', 'Mark Lindsay', 'Suyash Mehta']",20112
+172,202111110UTA,"['Ray Acosta', 'Tyler Ford', 'Ed Malloy']",18306
+173,202111120BOS,"['Nate Green', 'Courtney Kirkland', 'Dedric Taylor']",19156
+174,202111120CHO,"['Tre Maddox', 'Gediminas Petraitis', 'C.J. Washington']",19257
+175,202111120CLE,"['Brent Barnaky', 'Scott Foster', 'Dannica Mosher']",17095
+176,202111120DEN,"['Ray Acosta', 'Karl Lane', 'Sean Wright']",16849
+177,202111120GSW,"['Nick Buchert', 'J.T. Orr', 'Josh Tiven']",18064
+178,202111120HOU,"['Matt Boland', 'Tony Brothers', 'Jenna Schroeder']",15468
+179,202111120LAL,"['Curtis Blair', 'Brett Nansel', 'Derek Richardson']",18997
+180,202111120MEM,"['David Guthrie', 'Mark Lindsay', 'Jonathan Sterling']",15886
+181,202111120NOP,"['Phenizee Ransom', 'Natalie Sago', 'Tom Washington']",14650
+182,202111120OKC,"['Marc Davis', 'Aaron Smith', 'Justin Van Duyne']",12881
+183,202111120SAS,"['J.B. DeRosa', 'Rodney Mott', 'Evan Scott']",13425
+184,202111130CLE,"['John Conley', 'Gediminas Petraitis', 'James Williams']",19432
+185,202111130IND,"['John Butler', 'Mitchell Ervin', 'Kevin Scott']",14483
+186,202111130LAC,"['Nick Buchert', 'Ed Malloy', 'Brandon Schwab']",15285
+187,202111130NOP,"['J.B. DeRosa', 'Ben Taylor', 'Scott Twardoski']",14358
+188,202111130ORL,"['Sean Corbin', 'Suyash Mehta', 'Michael Smith']",17272
+189,202111130TOR,"['Jacyn Goble', 'Eric Lewis', 'Andy Nagy']",19800
+190,202111130UTA,"['Bennie Adams', 'Pat Fraher', 'Scott Wall']",18306
+191,202111140ATL,"['Tony Brothers', 'Marat Kogut', 'Justin Van Duyne']",16901
+192,202111140CHO,"['David Guthrie', 'Mark Lindsay']",19559
+193,202111140DEN,"['Marc Davis', 'Brett Nansel', 'Derek Richardson']",14583
+194,202111140HOU,"['Derrick Collins', 'Brian Forte', 'Scott Twardoski']",16088
+195,202111140LAC,"['Curtis Blair', 'Matt Boland', 'Leon Wood']",17899
+196,202111140LAL,"['Kevin Cutler', 'Bill Kennedy', 'Danielle Scott']",18997
+197,202111140OKC,"['Ray Acosta', 'Rodney Mott', 'Evan Scott']",15080
+198,202111150ATL,"['Kane Fitzgerald', 'Andy Nagy', 'Gediminas Petraitis']",13061
+199,202111150CLE,"['Tony Brothers', 'Marat Kogut', 'Phenizee Ransom']",17186
+200,202111150DAL,"['Derrick Collins', 'Kevin Scott', 'C.J. Washington']",19797
+201,202111150DET,"['Brandon Adair', 'Jenna Schroeder', 'Zach Zarba']",10092
+202,202111150LAL,"['Bennie Adams', 'Pat Fraher', 'Scott Wall']",18997
+203,202111150MEM,"['John Butler', 'Tyler Ford', 'Natalie Sago']",11482
+204,202111150MIN,"['James Capers Jr.', 'Aaron Smith']",16274
+205,202111150NYK,"['Sean Corbin', 'J.B. DeRosa', 'Lauren Holtkamp-Sterling']",16792
+206,202111150OKC,"['Brent Barnaky', 'Matt Kallio', 'Courtney Kirkland']",12330
+207,202111150POR,"['Nick Buchert', 'Ed Malloy', 'Brandon Schwab']",16142
+208,202111150WAS,"['Karl Lane', 'Matt Myers', 'Sean Wright']",13914
+209,202111160BRK,"['Mitchell Ervin', 'Eric Lewis', 'Justin Van Duyne']",17732
+210,202111160LAC,"['Marc Davis', 'Dedric Taylor', 'Scott Twardoski']",13298
+211,202111160UTA,"['Matt Boland', 'Kevin Cutler', 'Scott Foster']",18306
+212,202111170ATL,"['Suyash Mehta', 'Leon Wood', 'Zach Zarba']",16445
+213,202111170BRK,"['Karl Lane', 'Andy Nagy', 'Ben Taylor']",16922
+214,202111170CHO,"['Ray Acosta', 'Kane Fitzgerald', 'Dannica Mosher']",14402
+215,202111170DET,"['James Capers Jr.', 'Matt Myers', 'Michael Smith']",11457
+216,202111170MIA,"['Brian Forte', 'Marat Kogut', 'Jonathan Sterling']",19600
+217,202111170MIL,"['Brandon Adair', 'Brent Barnaky', 'David Guthrie']",17341
+218,202111170MIN,"['John Butler', 'Mark Lindsay', 'James Williams']",13108
+219,202111170NYK,"['Nate Green', 'Courtney Kirkland', 'Derek Richardson']",16680
+220,202111170OKC,"['J.T. Orr', 'C.J. Washington', 'Tom Washington']",12066
+221,202111170PHO,"['Pat Fraher', 'Tre Maddox', 'Scott Wall']",14838
+222,202111170POR,"['Mousa Dagher', 'Scott Foster', 'Natalie Sago']",17492
+223,202111180CLE,"['Bennie Adams', 'Lauren Holtkamp-Sterling', 'Ed Malloy']",19432
+224,202111180DEN,"['John Butler', 'Pat Fraher', 'Scott Twardoski']",14547
+225,202111180MEM,"['John Conley', 'Mitchell Ervin', 'Zach Zarba']",13419
+226,202111180MIA,"['Nick Buchert', 'Jacyn Goble', 'Brandon Schwab']",19600
+227,202111180MIN,"['Brandon Adair', 'Matt Boland', 'Sean Corbin']",13572
+228,202111180UTA,"['Marc Davis', 'Natalie Sago', 'Dedric Taylor']",18306
+229,202111190BOS,"['Ray Acosta', 'Tyler Ford', 'Sean Wright']",19156
+230,202111190BRK,"['Curtis Blair', 'Jonathan Sterling', 'Leon Wood']",16966
+231,202111190CHO,"['Brian Forte', 'Marat Kogut', 'Justin Van Duyne']",16787
+232,202111190DEN,"['J.B. DeRosa', 'Scott Twardoski', 'James Williams']",19520
+233,202111190DET,"['Brent Barnaky', 'Nate Green', 'Josh Tiven']",20088
+234,202111190MIL,"['Eric Lewis', 'Matt Myers', 'Gediminas Petraitis']",17341
+235,202111190NOP,"['James Capers Jr.', 'Suyash Mehta', 'Scott Wall']",15274
+236,202111190PHO,"['Kevin Cutler', 'Bill Kennedy', 'Evan Scott']",17071
+237,202111190SAC,"['Rodney Mott', 'Brett Nansel', 'Aaron Smith']",13159
+238,202111200ATL,"['Brian Forte', 'Courtney Kirkland', 'Brandon Schwab']",17320
+239,202111200BOS,"['Nick Buchert', 'Mark Lindsay', 'Derek Richardson']",19156
+240,202111200IND,"['Brandon Adair', 'Jenna Schroeder', 'Josh Tiven']",15081
+241,202111200MIL,"['Ray Acosta', 'Sean Corbin', 'Mitchell Ervin']",17341
+242,202111200MIN,"['Suyash Mehta', 'Gediminas Petraitis', 'Ben Taylor']",17136
+243,202111200NYK,"['Bennie Adams', 'Curtis Blair', 'Karl Lane']",19812
+244,202111200POR,"['Marc Davis', 'Brett Nansel', 'Dedric Taylor']",17027
+245,202111200SAC,"['Mousa Dagher', 'Lauren Holtkamp-Sterling', 'Tre Maddox']",13180
+246,202111200WAS,"['Scott Foster', 'Jacyn Goble', 'Andy Nagy']",20476
+247,202111210CHI,"['Marat Kogut', 'Jonathan Sterling', 'Sean Wright']",21813
+248,202111210DET,"['Scott Foster', 'Phenizee Ransom', 'Justin Van Duyne']",15532
+249,202111210GSW,"['Bill Kennedy', 'Evan Scott', 'Aaron Smith']",18064
+250,202111210LAC,"['J.B. DeRosa', 'Nate Green', 'James Williams']",17149
+251,202111210PHO,"['Mousa Dagher', 'Kane Fitzgerald', 'Natalie Sago']",16072
+252,202111220ATL,"['Curtis Blair', 'Matt Boland', 'Phenizee Ransom']",15806
+253,202111220BOS,"['Brian Forte', 'Matt Myers', 'Michael Smith']",19156
+254,202111220CHI,"['Pat Fraher', 'Leon Wood']",21586
+255,202111220CLE,"['Courtney Kirkland', 'Jenna Schroeder', 'Justin Van Duyne']",17387
+256,202111220MIL,"['Jacyn Goble', 'Suyash Mehta', 'Rodney Mott']",17341
+257,202111220NOP,"['Brent Barnaky', 'Tyler Ford', 'Danielle Scott']",15689
+258,202111220SAC,"['John Butler', 'Kevin Cutler', 'J.B. DeRosa']",13948
+259,202111220SAS,"['Mitchell Ervin', 'Tre Maddox', 'Andy Nagy']",14715
+260,202111220UTA,"['Brett Nansel', 'Dedric Taylor', 'James Williams']",18306
+261,202111220WAS,"['John Conley', 'Mark Lindsay', 'Derek Richardson']",16575
+262,202111230DET,"['Matt Kallio', 'Karl Lane', 'Ed Malloy']",13123
+263,202111230LAC,"['Kane Fitzgerald', 'Natalie Sago', 'Scott Twardoski']",17067
+264,202111230NYK,"['Nick Buchert', 'Josh Tiven', 'Scott Wall']",19812
+265,202111230POR,"['Brandon Adair', 'David Guthrie', 'Aaron Smith']",17052
+266,202111240BOS,"['Matt Boland', 'Tony Brothers', 'Evan Scott']",19156
+267,202111240CLE,"['Ray Acosta', 'Sean Corbin', 'Suyash Mehta']",18055
+268,202111240GSW,"['Brandon Adair', 'Kane Fitzgerald', 'Ben Taylor']",18064
+269,202111240HOU,"['Brent Barnaky', 'Tre Maddox', 'Phenizee Ransom']",16074
+270,202111240IND,"['Matt Kallio', 'Karl Lane', 'Rodney Mott']",15572
+271,202111240MEM,"['James Capers Jr.', 'Mitchell Ervin', 'Robert Hussey']",15409
+272,202111240MIL,"['Kevin Cutler', 'Bill Kennedy', 'Danielle Scott']",17341
+273,202111240MIN,"['Curtis Blair', 'Andy Nagy', 'Michael Smith']",17136
+274,202111240NOP,"['Eric Lewis', 'Dedric Taylor']",14659
+275,202111240OKC,"['Marc Davis', 'Marat Kogut', 'Brandon Schwab']",14081
+276,202111240ORL,"['Tyler Ford', 'Lauren Holtkamp-Sterling', 'Matt Myers']",16114
+277,202111240SAC,"['Derrick Collins', 'Jonathan Sterling', 'James Williams']",14997
+278,202111240SAS,"['Jacyn Goble', 'Gediminas Petraitis', 'Kevin Scott']",13161
+279,202111260CHO,"['Scott Foster', 'Robert Hussey', 'Scott Wall']",19314
+280,202111260DEN,"['Gediminas Petraitis', 'Jonathan Sterling', 'Josh Tiven']",19520
+281,202111260GSW,"['Andy Nagy', 'Leon Wood', 'Zach Zarba']",18064
+282,202111260IND,"['Bennie Adams', 'Bill Kennedy', 'Mark Lindsay']",13508
+283,202111260LAC,"['Brandon Adair', 'Mousa Dagher', 'Brian Forte']",18139
+284,202111260LAL,"['David Guthrie', 'Brett Nansel', 'Ben Taylor']",18997
+285,202111260MEM,"['Danielle Scott', 'Michael Smith', 'Sean Wright']",16622
+286,202111260NYK,"['Matt Boland', 'Rodney Mott', 'J.T. Orr']",19812
+287,202111260OKC,"['Derrick Collins', 'Marat Kogut', 'Tre Maddox']",14579
+288,202111260ORL,"['Kevin Cutler', 'Eric Lewis']",18236
+289,202111260SAS,"['Marc Davis', 'Lauren Holtkamp-Sterling', 'Phenizee Ransom']",15360
+290,202111260UTA,"['Derek Richardson', 'Kevin Scott', 'Justin Van Duyne']",18306
+291,202111270ATL,"['Kevin Cutler', 'Ed Malloy']",17287
+292,202111270BRK,"['J.B. DeRosa', 'Pat Fraher', 'Aaron Smith']",18071
+293,202111270CHI,"['Danielle Scott', 'Dedric Taylor', 'James Williams']",21110
+294,202111270CLE,"['James Capers Jr.', 'Evan Scott', 'Tom Washington']",18248
+295,202111270DAL,"['John Goble', 'Karl Lane', 'Brandon Schwab']",20223
+296,202111270HOU,"['Ray Acosta', 'Courtney Kirkland', 'Jenna Schroeder']",14687
+297,202111270PHI,"['Sean Corbin', 'Mitchell Ervin', 'Jacyn Goble']",21011
+298,202111270UTA,"['David Guthrie', 'Jonathan Sterling', 'Ben Taylor']",18306
+299,202111280IND,"['Robert Hussey', 'Scott Wall', 'Sean Wright']",13130
+300,202111280LAC,"['Brian Forte', 'Gediminas Petraitis', 'Kevin Scott']",19068
+301,202111280LAL,"['Andy Nagy', 'Derek Richardson', 'Zach Zarba']",18997
+302,202111280MEM,"['Brent Barnaky', 'Lauren Holtkamp-Sterling', 'Tre Maddox']",12844
+303,202111280TOR,"['Scott Foster', 'Dannica Mosher', 'Michael Smith']",19800
+304,202111290CHI,"['Tony Brothers', 'Jacyn Goble', 'Suyash Mehta']",21366
+305,202111290DAL,"['Brent Barnaky', 'Tyler Ford', 'Marat Kogut']",19229
+306,202111290HOU,"['Mitchell Ervin', 'John Goble']",12829
+307,202111290LAC,"['Bennie Adams', 'Leon Wood', 'Zach Zarba']",15691
+308,202111290MIA,"['Kevin Cutler', 'Pat Fraher', 'Aaron Smith']",19600
+309,202111290MIN,"['Eric Lewis', 'J.T. Orr', 'Jonathan Sterling']",14191
+310,202111290PHI,"['Curtis Blair', 'Matt Boland', 'Nick Buchert']",20193
+311,202111290SAS,"['Ray Acosta', 'Derrick Collins', 'Courtney Kirkland', 'Brett Nansel']",12606
+312,202111290UTA,"['John Butler', 'Karl Lane', 'Josh Tiven']",18306
+313,202111300BRK,"['Scott Foster', 'Jason Goldenberg', 'Mark Lindsay']",18081
+314,202111300PHO,"['Karl Lane', 'Derek Richardson', 'Josh Tiven']",17071
+315,202111300POR,"['Gediminas Petraitis', 'Kevin Scott', 'Justin Van Duyne']",16071
+316,202111300SAC,"['Mousa Dagher', 'Brian Forte', 'Bill Kennedy']",12459
+317,202111300TOR,"['John Conley', 'Rodney Mott', 'Tom Washington']",19800
+318,202112010BOS,"['J.B. DeRosa', 'Kane Fitzgerald', 'Aaron Smith']",19156
+319,202112010IND,"['Brent Barnaky', 'Tony Brothers', 'Dannica Mosher']",12656
+320,202112010LAC,"['Derrick Collins', 'Robert Hussey', 'Courtney Kirkland']",17217
+321,202112010MIA,"['Sean Corbin', 'David Guthrie', 'Jonathan Sterling']",19600
+322,202112010MIL,"['James Capers Jr.', 'Brett Nansel', 'Natalie Sago']",17341
+323,202112010NOP,"['Marc Davis', 'Andy Nagy', 'J.T. Orr']",15558
+324,202112010OKC,"['Mitchell Ervin', 'C.J. Washington', 'Zach Zarba']",13222
+325,202112010ORL,"['Suyash Mehta', 'Dedric Taylor', 'James Williams']",14191
+326,202112010WAS,"['Brandon Adair', 'Lauren Holtkamp-Sterling', 'Sean Wright']",15318
+327,202112020MEM,"['Karl Lane', 'Evan Scott', 'Josh Tiven']",13103
+328,202112020NYK,"['Tyler Ford', 'Natalie Sago', 'Ben Taylor']",19812
+329,202112020PHO,"['Eric Lewis', 'Matt Myers', 'Michael Smith']",0
+330,202112020POR,"['Brian Forte', 'Tre Maddox', 'Phenizee Ransom']",16143
+331,202112020TOR,"['Curtis Blair', 'Pat Fraher']",19800
+332,202112030ATL,"['Mousa Dagher', 'Tyler Ford', 'David Guthrie']",17092
+333,202112030BRK,"['Nick Buchert', 'Kane Fitzgerald', 'Dedric Taylor']",17732
+334,202112030DAL,"['Brandon Adair', 'Tony Brothers', 'Jacyn Goble']",19218
+335,202112030GSW,"['Bennie Adams', 'Bill Kennedy', 'J.T. Orr']",18064
+336,202112030HOU,"['Marat Kogut', 'Mark Lindsay', 'Sean Wright']",13697
+337,202112030IND,"['J.B. DeRosa', 'Brett Nansel', 'James Williams']",13854
+338,202112030LAL,"['Kevin Cutler', 'Eric Lewis', 'Justin Van Duyne']",18997
+339,202112030UTA,"['Derrick Collins', 'Courtney Kirkland', 'Leon Wood']",18306
+340,202112030WAS,"['Matt Boland', 'John Goble', 'C.J. Washington']",17227
+341,202112040BRK,"['Marc Davis', 'Mitchell Ervin', 'Gediminas Petraitis']",18116
+342,202112040DAL,"['Mark Lindsay', 'Suyash Mehta', 'Sean Wright']",19396
+343,202112040GSW,"['James Capers Jr.', 'Sean Corbin', 'Robert Hussey']",18064
+344,202112040MIL,"['Tre Maddox', 'Derek Richardson', 'Kevin Scott']",17341
+345,202112040NYK,"['Brent Barnaky', 'Andy Nagy', 'Tom Washington']",18272
+346,202112040POR,"['Kevin Cutler', 'Rodney Mott', 'Matt Myers']",18193
+347,202112040SAC,"['Scott Foster', 'Phenizee Ransom', 'Michael Smith']",15004
+348,202112050ATL,"['Brian Forte', 'Aaron Smith', 'Zach Zarba']",16383
+349,202112050CLE,"['Curtis Blair', 'Pat Fraher', 'Matt Kallio']",18113
+350,202112050HOU,"['Derrick Collins', 'Eric Lewis']",14771
+351,202112050TOR,"['Mousa Dagher', 'Kane Fitzgerald', 'Tyler Ford']",19800
+352,202112060CHI,"['Nick Buchert', 'Kevin Cutler', 'Sean Wright']",21236
+353,202112060CHO,"['Brandon Adair', 'Jacyn Goble', 'Josh Tiven']",14462
+354,202112060DET,"['John Conley', 'J.B. DeRosa', 'Courtney Kirkland']",10522
+355,202112060GSW,"['Rodney Mott', 'Michael Smith']",18064
+356,202112060IND,"['Mitchell Ervin', 'David Guthrie', 'Derek Richardson']",12581
+357,202112060MIA,"['Brian Forte', 'Bill Kennedy', 'Jenna Schroeder']",19600
+358,202112060MIL,"['Jason Goldenberg', 'Lauren Holtkamp-Sterling', 'Mark Lindsay']",17341
+359,202112060MIN,"['Tre Maddox', 'Phenizee Ransom', 'Kevin Scott']",15736
+360,202112060PHO,"['Suyash Mehta', 'Justin Van Duyne', 'James Williams']",15292
+361,202112060POR,"['John Butler', 'Sean Corbin', 'Ben Taylor']",15865
+362,202112070DAL,"['Aaron Smith', 'Tom Washington', 'Zach Zarba']",19559
+363,202112070LAL,"['Curtis Blair', 'Scott Foster', 'J.T. Orr']",18997
+364,202112070SAS,"['Derrick Collins', 'Eric Lewis']",14698
+365,202112080CHO,"['Bill Kennedy', 'Karl Lane', 'Derek Richardson']",15709
+366,202112080CLE,"['Nick Buchert', 'Courtney Kirkland', 'Jonathan Sterling']",17707
+367,202112080DET,"['Jacyn Goble', 'James Williams']",10499
+368,202112080GSW,"['Curtis Blair', 'Scott Foster', 'Justin Van Duyne']",18064
+369,202112080HOU,"['Tyler Ford', 'Brandon Schwab', 'Josh Tiven']",15834
+370,202112080IND,"['Brandon Adair', 'Marc Davis', 'J.B. DeRosa']",13167
+371,202112080LAC,"['Tre Maddox', 'Andy Nagy', 'Michael Smith']",17064
+372,202112080MEM,"['Matt Boland', 'Sean Corbin', 'John Goble']",14025
+373,202112080MIA,"['Mitchell Ervin', 'Kane Fitzgerald', 'Dedric Taylor']",19600
+374,202112080MIN,"['Kevin Cutler', 'Gediminas Petraitis', 'Phenizee Ransom']",15181
+375,202112080NOP,"['Brian Forte', 'Lauren Holtkamp-Sterling', 'Zach Zarba']",15035
+376,202112080SAC,"['Suyash Mehta', 'J.T. Orr', 'Ben Taylor']",14364
+377,202112080TOR,"['David Guthrie', 'Mark Lindsay', 'C.J. Washington']",19800
+378,202112090MEM,"['Bennie Adams', 'Pat Fraher', 'Tom Washington']",16334
+379,202112090PHI,"['Brent Barnaky', 'Rodney Mott', 'Leon Wood']",20272
+380,202112090SAS,"['Mousa Dagher', 'Tyler Ford', 'Kevin Scott']",12855
+381,202112100ATL,"['Lauren Holtkamp-Sterling', 'Ben Taylor', 'James Williams']",17074
+382,202112100CHO,"['John Butler', 'Dedric Taylor', 'Sean Wright']",16335
+383,202112100HOU,"['Matt Boland', 'Matt Myers', 'Zach Zarba']",16319
+384,202112100IND,"['Nick Buchert', 'Matt Kallio', 'Eric Lewis']",12618
+385,202112100MIN,"['David Guthrie', 'Derek Richardson', 'Aaron Smith']",15694
+386,202112100NOP,"['Curtis Blair', 'Bill Kennedy', 'C.J. Washington']",15828
+387,202112100OKC,"['Ray Acosta', 'Sean Corbin', 'John Goble']",16523
+388,202112100PHO,"['James Capers Jr.', 'Kevin Cutler', 'Natalie Sago']",17071
+389,202112100TOR,"['Courtney Kirkland', 'Karl Lane', 'Jonathan Sterling']",19800
+390,202112110CLE,"['Bennie Adams', 'Eric Lewis', 'Mark Lindsay']",19432
+391,202112110LAC,"['Tyler Ford', 'Jacyn Goble', 'Danielle Scott']",17156
+392,202112110MEM,"['Tony Brothers', 'Suyash Mehta', 'J.T. Orr']",17794
+393,202112110MIA,"['Derrick Collins', 'John Conley', 'Rodney Mott']",19731
+394,202112110PHI,"['David Guthrie', 'Marat Kogut', 'Ed Malloy']",21016
+395,202112110SAS,"['Kane Fitzgerald', 'Jenna Schroeder', 'Tom Washington']",14607
+396,202112110WAS,"['Nick Buchert', 'Scott Foster', 'Justin Van Duyne']",17575
+397,202112120DET,"['Ray Acosta', 'Karl Lane', 'Kevin Scott']",15289
+398,202112120LAL,"['Brent Barnaky', 'Matt Boland', 'Sean Wright']",18997
+399,202112120NYK,"['Brian Forte', 'Brett Nansel', 'Josh Tiven']",19812
+400,202112120OKC,"['John Butler', 'Bill Kennedy', 'Natalie Sago']",15747
+401,202112120POR,"['Tyler Ford', 'Jacyn Goble', 'Scott Twardoski']",16591
+402,202112120SAS,"['Mitchell Ervin', 'Pat Fraher', 'Dedric Taylor']",14990
+403,202112130ATL,"['Derrick Collins', 'Rodney Mott', 'Evan Scott']",14456
+404,202112130BOS,"['Curtis Blair', 'J.T. Orr', 'Kevin Scott']",19156
+405,202112130CLE,"['Marat Kogut', 'Josh Tiven', 'C.J. Washington']",17401
+406,202112130DAL,"['Mousa Dagher', 'Mitchell Ervin', 'Pat Fraher']",19213
+407,202112130DEN,"['Tony Brothers', 'Eric Dalen', 'Dannica Mosher']",14632
+408,202112130IND,['Michael Smith'],17018
+409,202112130LAC,"['Bennie Adams', 'Brent Barnaky', 'Kane Fitzgerald']",17909
+410,202112130MEM,"['Eric Lewis', 'Mark Lindsay', 'Andy Nagy']",13420
+411,202112130TOR,"['John Goble', 'Lauren Holtkamp-Sterling', 'Leon Wood']",19463
+412,202112140BRK,"['Ed Malloy', 'Brett Nansel', 'J.T. Orr']",17325
+413,202112140NYK,"['Ray Acosta', 'Sean Corbin', 'Zach Zarba']",19812
+414,202112140POR,"['Matt Boland', 'Jacyn Goble', 'Sean Wright']",16184
+415,202112150CLE,"['John Goble', 'Lauren Holtkamp-Sterling', 'Leon Wood']",17131
+416,202112150DAL,"['Brian Forte', 'Marat Kogut', 'James Williams']",20270
+417,202112150DEN,"['Nick Buchert', 'Mitchell Ervin', 'Mark Lindsay']",15365
+418,202112150MIL,"['James Capers Jr.', 'Derrick Collins', 'Brandon Schwab']",17341
+419,202112150OKC,"['Jenna Schroeder', 'Michael Smith', 'Josh Tiven']",13253
+420,202112150ORL,"['Pat Fraher', 'Karl Lane', 'Andy Nagy']",13576
+421,202112150PHI,"['Curtis Blair', 'Aaron Smith', 'Justin Van Duyne']",20389
+422,202112150POR,"['Brent Barnaky', 'Kane Fitzgerald', 'Danielle Scott']",15773
+423,202112150SAC,"['Matt Boland', 'Kevin Cutler', 'Jacyn Goble']",13806
+424,202112150SAS,"['Tony Brothers', 'John Conley', 'Gediminas Petraitis']",14354
+425,202112150UTA,"['Mousa Dagher', 'Eric Dalen', 'Sean Wright']",18306
+426,202112160BRK,"['Pat Fraher', 'Natalie Sago', 'Tom Washington']",17053
+427,202112160HOU,"['Brian Forte', 'Ben Taylor', 'Scott Twardoski']",13857
+428,202112160IND,"['Tyler Ford', 'Robert Hussey', 'Kevin Scott']",13596
+429,202112160PHO,"['Mitchell Ervin', 'Tre Maddox', 'Phenizee Ransom']",16177
+430,202112170ATL,"['Sean Corbin', 'Josh Tiven', 'Justin Van Duyne']",16114
+431,202112170BOS,"['James Capers Jr.', 'Tyler Ford', 'Gediminas Petraitis']",19156
+432,202112170MIN,"['John Goble', 'Jonathan Sterling', 'Dedric Taylor']",17136
+433,202112170NOP,"['Tony Brothers', 'Nick Buchert', 'Danielle Scott']",15504
+434,202112170ORL,"['Eric Lewis', 'J.T. Orr']",14103
+435,202112170POR,"['Mousa Dagher', 'Marc Davis', 'J.B. DeRosa']",18399
+436,202112170SAC,"['Bennie Adams', 'Eric Dalen', 'Zach Zarba']",14659
+437,202112170UTA,"['Brent Barnaky', 'Kane Fitzgerald']",18306
+438,202112180BOS,"['Jacyn Goble', 'Marat Kogut', 'Ed Malloy']",19156
+439,202112180BRK,"['Derrick Collins', 'Evan Scott', 'Kevin Scott']",16292
+440,202112180DET,"['Kevin Cutler', 'Andy Nagy', 'Tom Washington']",13722
+441,202112180MIL,"['Brian Forte', 'Karl Lane', 'Jonathan Sterling']",17341
+442,202112180OKC,"['Tre Maddox', 'Suyash Mehta', 'James Williams']",15123
+443,202112180TOR,"['John Conley', 'Natalie Sago', 'Sean Wright']",7988
+444,202112180UTA,"['Brandon Adair', 'Ben Taylor', 'C.J. Washington']",18306
+445,202112190CHI,"['Tony Brothers', 'Tyler Ford', 'Jenna Schroeder']",21560
+446,202112190DET,"['Sean Corbin', 'Phenizee Ransom', 'Dedric Taylor']",15188
+447,202112190MEM,"['Curtis Blair', 'Mitchell Ervin', 'Michael Smith']",15977
+448,202112190MIN,"['J.B. DeRosa', 'Rodney Mott', 'Justin Van Duyne']",16127
+449,202112190PHO,"['Brent Barnaky', 'Eric Dalen', 'Bill Kennedy', 'Zach Zarba']",17071
+450,202112190SAC,"['John Butler', 'Marc Davis', 'Leon Wood']",15091
+451,202112200BOS,"['Marat Kogut', 'Suyash Mehta', 'Sean Wright']",19156
+452,202112200CHI,"['Jacyn Goble', 'Natalie Sago', 'James Williams']",21150
+453,202112200GSW,"['Marc Davis', 'Ben Taylor', 'C.J. Washington']",18064
+454,202112200LAC,"['Brandon Adair', 'Josh Tiven', 'Scott Twardoski']",18096
+455,202112200MEM,"['Brandon Schwab', 'Kevin Scott', 'Aaron Smith']",15721
+456,202112200UTA,"['Pat Fraher', 'Brett Nansel', 'J.T. Orr']",18306
+457,202112210DAL,"['John Butler', 'Karl Lane', 'Eric Lewis']",20056
+458,202112210LAL,"['Brandon Adair', 'Ben Taylor', 'Josh Tiven']",18997
+459,202112210MIA,"['Curtis Blair', 'Nick Buchert', 'Kane Fitzgerald']",19600
+460,202112210NOP,"['John Conley', 'Kevin Cutler', 'Rodney Mott']",15272
+461,202112210NYK,"['Matt Boland', 'James Capers Jr.', 'Lauren Holtkamp-Sterling']",17906
+462,202112220ATL,"['Jacyn Goble', 'David Guthrie', 'Gediminas Petraitis']",15299
+463,202112220BOS,"['Matt Boland', 'Suyash Mehta', 'Tom Washington']",19156
+464,202112220MIL,"['Mitchell Ervin', 'Ed Malloy', 'Evan Scott']",17341
+465,202112220OKC,"['Bill Kennedy', 'Phenizee Ransom', 'Dedric Taylor']",14932
+466,202112220SAC,"['Pat Fraher', 'J.T. Orr', 'Justin Van Duyne']",15386
+467,202112230DAL,"['Ray Acosta', 'John Goble', 'Phenizee Ransom']",19654
+468,202112230DEN,"['Mousa Dagher', 'Karl Lane', 'Ben Taylor']",17003
+469,202112230GSW,"['Kevin Cutler', 'Marat Kogut', 'Josh Tiven']",18064
+470,202112230IND,"['John Conley', 'Sean Corbin', 'Lauren Holtkamp-Sterling']",15089
+471,202112230LAL,"['Tre Maddox', 'Brett Nansel', 'Justin Van Duyne']",18997
+472,202112230MIA,"['Eric Lewis', 'Gediminas Petraitis', 'Jonathan Sterling']",19600
+473,202112230NYK,"['Natalie Sago', 'Danielle Scott', 'Sean Wright']",18208
+474,202112230ORL,"['Brent Barnaky', 'Kane Fitzgerald', 'Brandon Schwab']",13954
+475,202112230PHI,"['Aaron Smith', 'Michael Smith', 'James Williams']",20408
+476,202112230PHO,"['Tony Brothers', 'John Butler', 'J.T. Orr']",17071
+477,202112230UTA,"['Rodney Mott', 'Derek Richardson', 'Scott Twardoski']",18306
+478,202112250LAL,"['Kevin Cutler', 'Mousa Dagher', 'Derek Richardson']",18997
+479,202112250MIL,"['Nick Buchert', 'John Goble', 'Natalie Sago']",17341
+480,202112250NYK,"['Brandon Adair', 'Eric Dalen', 'Ed Malloy']",19812
+481,202112250PHO,"['Ray Acosta', 'Curtis Blair', 'David Guthrie']",17071
+482,202112250UTA,"['Tony Brothers', 'John Butler', 'Dedric Taylor']",18306
+483,202112260CHI,"['Nick Buchert', 'Tre Maddox', 'Suyash Mehta']",20475
+484,202112260CLE,"['Brent Barnaky', 'Sean Corbin', 'Jenna Schroeder']",19432
+485,202112260LAC,"['Curtis Blair', 'Mousa Dagher', 'Bill Kennedy']",17759
+486,202112260MIA,"['Jason Goldenberg', 'Dannica Mosher', 'Ben Taylor']",19600
+487,202112260OKC,"['Derrick Collins', 'Lauren Holtkamp-Sterling', 'Eric Lewis']",15608
+488,202112260SAC,"['Tyler Ford', 'Derek Richardson']",15685
+489,202112260SAS,"['Tony Brothers', 'Sean Wright']",14715
+490,202112260WAS,"['Karl Lane', 'Tom Washington']",16767
+491,202112270ATL,"['John Goble', 'Matt Myers', 'C.J. Washington']",17049
+492,202112270CHO,"['Suyash Mehta', 'Natalie Sago', 'Josh Tiven']",19349
+493,202112270LAC,"['David Guthrie', 'Jonathan Sterling', 'Dedric Taylor']",17128
+494,202112270MIN,"['Brent Barnaky', 'Matt Boland', 'Mark Lindsay']",15962
+495,202112270PHO,"['John Butler', 'Derrick Collins', 'Kevin Cutler']",17071
+496,202112270POR,"['Ray Acosta', 'Scott Twardoski']",18430
+497,202112270SAS,"['Karl Lane', 'Sean Wright']",16255
+498,202112280GSW,"['Nick Buchert', 'John Butler', 'Kevin Scott']",18064
+499,202112280HOU,"['Brandon Adair', 'Eric Lewis']",18104
+500,202112280MIA,"['Lauren Holtkamp-Sterling', 'Ed Malloy', 'Jenna Schroeder']",19600
+501,202112280MIN,"['Matt Boland', 'Courtney Kirkland', 'Matt Myers']",16339
+502,202112280NOP,"['Jason Goldenberg', 'Ben Taylor']",15835
+503,202112280ORL,"['Sean Corbin', 'Natalie Sago', 'C.J. Washington']",16696
+504,202112280SAC,"['Ray Acosta', 'Mousa Dagher', 'Tyler Ford']",14750
+505,202112280TOR,"['Tre Maddox', 'Brett Nansel']",6960
+506,202112290BOS,"['Andy Nagy', 'Josh Tiven']",19156
+507,202112290CHI,"['Eric Lewis', 'Brett Nansel', 'Ben Taylor']",21372
+508,202112290DET,"['Jason Goldenberg', 'Bill Kennedy', 'Scott Twardoski']",18312
+509,202112290IND,"['Brent Barnaky', 'Mark Lindsay', 'Jenna Schroeder']",17608
+510,202112290MEM,"['Brandon Adair', 'John Goble']",17794
+511,202112290PHO,"['Mousa Dagher', 'Kevin Scott', 'Justin Van Duyne']",17071
+512,202112290POR,"['Nick Buchert', 'David Guthrie']",17828
+513,202112290SAC,"['Derrick Collins', 'Dannica Mosher', 'Jonathan Sterling']",16071
+514,202112300BRK,"['Courtney Kirkland', 'Mark Lindsay', 'Suyash Mehta']",17920
+515,202112300ORL,"['Ed Malloy', 'C.J. Washington']",15855
+516,202112300WAS,"['Kevin Cutler', 'Lauren Holtkamp-Sterling', 'Matt Myers']",15637
+517,202112310BOS,"['Bill Kennedy', 'Scott Twardoski']",19156
+518,202112310CLE,"['Matt Boland', 'Josh Tiven']",17745
+519,202112310HOU,"['Brandon Adair', 'John Goble']",16197
+520,202112310IND,"['Brent Barnaky', 'Andy Nagy', 'Natalie Sago']",17515
+521,202112310LAL,"['Derrick Collins', 'Kevin Scott']",18997
+522,202112310MEM,"['Sean Corbin', 'Leon Wood']",15412
+523,202112310OKC,"['Eric Lewis', 'Brett Nansel']",16451
+524,202112310SAC,"['Nick Buchert', 'David Guthrie']",15833
+525,202112310TOR,"['Ray Acosta', 'Suyash Mehta', 'Ben Taylor']",0
+526,202112310UTA,"['Tyler Ford', 'Dannica Mosher', 'Jonathan Sterling']",18306
+527,202201010BRK,"['Ray Acosta', 'Josh Tiven']",17732
+528,202201010DET,"['Kevin Cutler', 'Natalie Sago']",18911
+529,202201010HOU,"['Courtney Kirkland', 'C.J. Washington']",18055
+530,202201010MIL,"['Lauren Holtkamp-Sterling', 'Mark Lindsay', 'Scott Twardoski']",17341
+531,202201010UTA,"['Derrick Collins', 'Jonathan Sterling']",18306
+532,202201010WAS,"['Bennie Adams', 'Matt Boland', 'Jason Goldenberg']",19043
+533,202201020BOS,"['Mousa Dagher', 'Tyler Ford']",19156
+534,202201020CHO,"['Sean Corbin', 'Suyash Mehta']",19088
+535,202201020CLE,"['Brandon Adair', 'Robert Hussey', 'Bill Kennedy']",17808
+536,202201020LAL,"['Nick Buchert', 'Tre Maddox']",18343
+537,202201020OKC,"['Brent Barnaky', 'Dannica Mosher', 'Leon Wood']",14751
+538,202201020SAC,"['Matt Kallio', 'Brett Nansel', 'Kevin Scott']",13699
+539,202201020TOR,"['Matt Myers', 'Andy Nagy', 'Sean Wright']",0
+540,202201030BRK,"['Ray Acosta', 'Robert Hussey', 'Ben Taylor']",17089
+541,202201030CHI,"['Marc Davis', 'Dannica Mosher', 'Jonathan Sterling']",20502
+542,202201030DAL,"['Ed Malloy', 'Natalie Sago']",19767
+543,202201030GSW,"['Nick Buchert', 'Scott Twardoski', 'Zach Zarba']",18064
+544,202201030LAC,"['Derrick Collins', 'Jacyn Goble']",15959
+545,202201030MIL,"['Bennie Adams', 'Pat Fraher']",17341
+546,202201030NOP,"['Lauren Holtkamp-Sterling', 'Courtney Kirkland']",15057
+547,202201030PHI,"['Brandon Adair', 'Kevin Cutler', 'Andy Nagy']",20026
+548,202201030POR,"['J.B. DeRosa', 'Matt Kallio', 'Kevin Scott']",15091
+549,202201030WAS,"['Matt Myers', 'Josh Tiven']",8902
+550,202201040CLE,"['Ray Acosta', 'Tyler Ford']",18178
+551,202201040LAL,"['J.B. DeRosa', 'Brian Forte', 'C.J. Washington']",17919
+552,202201040NOP,"['Sean Corbin', 'Marat Kogut']",15158
+553,202201040NYK,"['Jason Goldenberg', 'Josh Tiven']",18449
+554,202201040TOR,"['Mousa Dagher', 'Bill Kennedy', 'Jonathan Sterling']",0
+555,202201050BOS,"['Ben Taylor', 'Leon Wood']",19156
+556,202201050CHO,"['Brandon Adair', 'Kane Fitzgerald']",14427
+557,202201050DAL,"['Marc Davis', 'Marat Kogut', 'Brandon Schwab']",20441
+558,202201050DEN,"['John Conley', 'Phenizee Ransom', 'Zach Zarba']",14056
+559,202201050IND,"['Tyler Ford', 'James Williams']",14176
+560,202201050MIL,"['Pat Fraher', 'Andy Nagy', 'Gediminas Petraitis']",17341
+561,202201050MIN,"['Ed Malloy', 'Tom Washington']",14375
+562,202201050ORL,"['Jason Goldenberg', 'Scott Wall']",13116
+563,202201050POR,"['Bennie Adams', 'Matt Kallio', 'Derek Richardson']",15773
+564,202201050SAC,"['Jacyn Goble', 'Tre Maddox', 'C.J. Washington']",13104
+565,202201050WAS,"['Mousa Dagher', 'Suyash Mehta', 'Sean Wright']",13014
+566,202201060MEM,"['Marc Davis', 'Lauren Holtkamp-Sterling', 'Brandon Schwab']",12983
+567,202201060NOP,"['J.B. DeRosa', 'Kane Fitzgerald', 'Matt Myers']",15986
+568,202201060NYK,"['Derrick Collins', 'Pat Fraher', 'Evan Scott']",17529
+569,202201060PHO,"['Brian Forte', 'Phenizee Ransom', 'Zach Zarba']",17071
+570,202201070BRK,"['Marat Kogut', 'Scott Twardoski', 'Tom Washington']",17732
+571,202201070CHI,"['Nick Buchert', 'John Conley', 'James Williams']",21700
+572,202201070DEN,"['Brian Forte', 'Suyash Mehta', 'Jenna Schroeder']",15966
+573,202201070HOU,"['J.B. DeRosa', 'Matt Myers', 'Ben Taylor']",15238
+574,202201070LAL,"['Ray Acosta', 'Bennie Adams', 'Courtney Kirkland']",18997
+575,202201070OKC,"['Andy Nagy', 'Josh Tiven']",14874
+576,202201070PHI,"['Jason Goldenberg', 'Michael Smith', 'Scott Wall']",20265
+577,202201070POR,"['Jacyn Goble', 'Ed Malloy', 'C.J. Washington']",16708
+578,202201070TOR,"['Derrick Collins', 'Mitchell Ervin']",0
+579,202201080BOS,"['Pat Fraher', 'Aaron Smith']",19156
+580,202201080CHO,"['Kane Fitzgerald', 'Lauren Holtkamp-Sterling']",19139
+581,202201080DET,"['John Conley', 'Gediminas Petraitis', 'James Williams']",18644
+582,202201080IND,"['Tyler Ford', 'Jason Goldenberg', 'Marat Kogut']",13160
+583,202201080LAC,"['Derek Richardson', 'Leon Wood', 'Sean Wright']",17936
+584,202201080PHO,"['Ray Acosta', 'Bill Kennedy', 'Brandon Schwab']",17071
+585,202201090BRK,"['Nick Buchert', 'Rodney Mott', 'Scott Twardoski']",15606
+586,202201090DAL,"['Ben Taylor', 'Josh Tiven', 'C.J. Washington']",20041
+587,202201090GSW,"['Bennie Adams', 'Brandon Schwab', 'Sean Wright']",18064
+588,202201090HOU,"['Brandon Adair', 'John Butler', 'Marc Davis']",15277
+589,202201090LAC,"['Ed Malloy', 'Natalie Sago', 'Justin Van Duyne']",14836
+590,202201090LAL,"['Tony Brothers', 'Jacyn Goble', 'Suyash Mehta']",18288
+591,202201090OKC,"['Eric Dalen', 'Brian Forte', 'Jenna Schroeder']",14772
+592,202201090ORL,"['Derrick Collins', 'Andy Nagy', 'Michael Smith']",13223
+593,202201090POR,"['Courtney Kirkland', 'Phenizee Ransom']",16408
+594,202201090TOR,"['Mitchell Ervin', 'Gediminas Petraitis', 'Zach Zarba']",0
+595,202201100BOS,"['Nick Buchert', 'Mitchell Ervin', 'James Williams']",19156
+596,202201100CHO,"['John Conley', 'Ben Taylor', 'Scott Twardoski']",14253
+597,202201100DET,"['J.B. DeRosa', 'Tom Washington']",17834
+598,202201100HOU,"['Eric Dalen', 'Marc Davis', 'Jenna Schroeder']",13593
+599,202201100NYK,"['Tyler Ford', 'Matt Myers', 'Scott Wall']",16569
+600,202201100POR,"['Tony Brothers', 'Phenizee Ransom', 'Derek Richardson']",16379
+601,202201100SAC,"['Ray Acosta', 'Bill Kennedy']",12110
+602,202201110CHI,"['Brian Forte', 'Evan Scott', 'Michael Smith']",19886
+603,202201110LAC,"['Courtney Kirkland', 'J.T. Orr', 'Justin Van Duyne']",15077
+604,202201110MEM,"['Curtis Blair', 'Natalie Sago', 'Zach Zarba']",17794
+605,202201110NOP,"['Brandon Adair', 'Brent Barnaky', 'Suyash Mehta']",15155
+606,202201110TOR,"['John Conley', 'Rodney Mott', 'Aaron Smith']",0
+607,202201110WAS,"['John Butler', 'Karl Lane', 'Gediminas Petraitis']",13985
+608,202201120ATL,"['Scott Foster', 'Dedric Taylor']",15355
+609,202201120CHI,"['Jason Goldenberg', 'Karl Lane', 'James Williams']",21698
+610,202201120IND,"['Mitchell Ervin', 'Ed Malloy', 'Danielle Scott']",13560
+611,202201120NYK,"['David Guthrie', 'Mark Lindsay', 'Scott Twardoski']",18215
+612,202201120PHI,"['Nick Buchert', 'Derrick Collins']",20317
+613,202201120SAC,"['Derek Richardson', 'Justin Van Duyne', 'Sean Wright']",12199
+614,202201120SAS,"['Matt Boland', 'Tyler Ford', 'Brandon Schwab']",11314
+615,202201120UTA,"['Tony Brothers', 'Eric Dalen', 'Phenizee Ransom']",18306
+616,202201120WAS,"['Marc Davis', 'Jacyn Goble']",13138
+617,202201130BRK,"['Derrick Collins', 'Zach Zarba']",16964
+618,202201130DEN,"['Bennie Adams', 'James Capers Jr.', 'Tre Maddox']",14972
+619,202201130MEM,"['J.B. DeRosa', 'Bill Kennedy', 'C.J. Washington']",15881
+620,202201130MIL,"['Brian Forte', 'John Goble', 'Aaron Smith']",17848
+621,202201130NOP,"['Brandon Adair', 'Curtis Blair', 'Jenna Schroeder']",15406
+622,202201140CHI,"['Matt Boland', 'Mitchell Ervin', 'David Guthrie']",21174
+623,202201140CHO,"['Scott Foster', 'Natalie Sago', 'Danielle Scott']",16011
+624,202201140DET,"['Jason Goldenberg', 'Ed Malloy', 'Dannica Mosher']",18011
+625,202201140IND,"['John Butler', 'J.T. Orr', 'Tom Washington']",14019
+626,202201140MEM,"['J.B. DeRosa', 'Courtney Kirkland', 'Gediminas Petraitis']",16712
+627,202201140MIA,"['Evan Scott', 'Ben Taylor', 'Scott Wall']",19600
+628,202201140PHI,"['Ray Acosta', 'Marc Davis', 'Mark Lindsay']",20444
+629,202201140SAC,"['Kevin Cutler', 'Eric Dalen', 'Phenizee Ransom']",12857
+630,202201140SAS,"['Brent Barnaky', 'Karl Lane']",12160
+631,202201150ATL,"['Tre Maddox', 'Brett Nansel', 'James Williams']",16414
+632,202201150BOS,"['Derrick Collins', 'Mark Lindsay', 'J.T. Orr']",19156
+633,202201150BRK,"['Jacyn Goble', 'Bill Kennedy']",17034
+634,202201150DAL,"['Justin Van Duyne', 'C.J. Washington', 'Sean Wright']",19816
+635,202201150DEN,"['John Goble', 'Dedric Taylor', 'Scott Twardoski']",19520
+636,202201150MIA,"['Curtis Blair', 'Brandon Schwab', 'Ben Taylor']",19600
+637,202201150MIL,"['Brandon Adair', 'Bennie Adams', 'Tyler Ford']",17341
+638,202201150OKC,"['Matt Boland', 'James Capers Jr.', 'Matt Kallio']",15284
+639,202201150SAS,"['Karl Lane', 'Aaron Smith', 'Michael Smith']",13223
+640,202201150WAS,"['Tony Brothers', 'Matt Myers', 'Natalie Sago']",15124
+641,202201160DEN,"['John Butler', 'Derek Richardson', 'Tom Washington']",15647
+642,202201160DET,"['Kevin Cutler', 'Gediminas Petraitis', 'Evan Scott']",18178
+643,202201160MIN,"['J.B. DeRosa', 'Scott Foster', 'Dannica Mosher']",17136
+644,202201160SAC,"['Brent Barnaky', 'Mousa Dagher', 'David Guthrie']",13601
+645,202201170ATL,"['Curtis Blair', 'Gediminas Petraitis', 'Sean Wright']",16903
+646,202201170BOS,"['Jason Goldenberg', 'Tre Maddox', 'Evan Scott']",19156
+647,202201170CLE,"['Courtney Kirkland', 'Marat Kogut', 'Brett Nansel']",18105
+648,202201170DAL,"['Mitchell Ervin', 'Suyash Mehta', 'James Williams']",19266
+649,202201170LAC,"['John Goble', 'Dedric Taylor', 'Scott Twardoski']",15080
+650,202201170LAL,"['David Guthrie', 'Michael Smith', 'Scott Wall']",17238
+651,202201170MEM,"['Kane Fitzgerald', 'Matt Myers', 'Ben Taylor']",17794
+652,202201170MIA,"['Bill Kennedy', 'Mark Lindsay']",19600
+653,202201170NYK,"['Marc Davis', 'Jacyn Goble', 'J.T. Orr']",19812
+654,202201170ORL,"['Ray Acosta', 'Robert Hussey', 'Zach Zarba']",13648
+655,202201170SAS,"['Kevin Cutler', 'Eric Dalen', 'C.J. Washington']",10422
+656,202201170WAS,"['James Capers Jr.', 'Tyler Ford', 'Phenizee Ransom']",14581
+657,202201180GSW,"['Brent Barnaky', 'Tony Brothers', 'Scott Twardoski']",18064
+658,202201180NYK,"['Bennie Adams', 'Brian Forte', 'Ed Malloy']",16071
+659,202201190ATL,"['Matt Boland', 'Bill Kennedy', 'Mark Lindsay']",15199
+660,202201190BOS,"['Curtis Blair', 'Tyler Ford', 'Natalie Sago']",19156
+661,202201190CHI,"['Jacyn Goble', 'C.J. Washington', 'Zach Zarba']",20824
+662,202201190DAL,"['Marat Kogut', 'Andy Nagy', 'Tom Washington']",19218
+663,202201190DEN,"['Brandon Adair', 'J.B. DeRosa', 'James Williams']",14547
+664,202201190LAL,"['Brent Barnaky', 'Tony Brothers', 'Derek Richardson']",17818
+665,202201190MIA,"['Mousa Dagher', 'Eric Dalen', 'Courtney Kirkland']",19600
+666,202201190MIL,"['James Capers Jr.', 'Brian Forte', 'Brett Nansel']",17341
+667,202201190PHI,"['Tre Maddox', 'Jenna Schroeder', 'Aaron Smith']",20081
+668,202201190SAC,"['John Goble', 'Michael Smith', 'Scott Wall']",12907
+669,202201190SAS,"['Kane Fitzgerald', 'Justin Van Duyne', 'Leon Wood']",11848
+670,202201190UTA,"['Pat Fraher', 'Brandon Schwab', 'Dedric Taylor']",18306
+671,202201190WAS,"['Mitchell Ervin', 'Jonathan Sterling', 'Ben Taylor']",15380
+672,202201200DAL,"['Marc Davis', 'Ed Malloy', 'Justin Van Duyne']",18306
+673,202201200GSW,"['Kevin Cutler', 'David Guthrie', 'Brandon Schwab']",18064
+674,202201200NYK,"['Ray Acosta', 'Mitchell Ervin', 'Sean Wright']",16168
+675,202201210ATL,"['Kane Fitzgerald', 'Jason Goldenberg', 'Leon Wood']",16385
+676,202201210BOS,"['Jacyn Goble', 'Bill Kennedy', 'Brett Nansel']",19156
+677,202201210CHO,"['Matt Boland', 'Mark Lindsay', 'Matt Myers']",15835
+678,202201210DEN,"['Pat Fraher', 'Karl Lane', 'Scott Wall']",17009
+679,202201210GSW,"['John Goble', 'Evan Scott', 'Michael Smith']",18064
+680,202201210MIL,"['John Butler', 'Natalie Sago', 'Josh Tiven', 'Justin Van Duyne']",18013
+681,202201210ORL,"['Lauren Holtkamp-Sterling', 'Courtney Kirkland', 'Marat Kogut']",18846
+682,202201210PHI,"['J.T. Orr', 'Gediminas Petraitis', 'Zach Zarba']",20182
+683,202201210SAS,"['Tony Brothers', 'Tre Maddox', 'Danielle Scott']",15068
+684,202201210UTA,"['Brandon Adair', 'J.B. DeRosa', 'James Williams']",18306
+685,202201210WAS,"['Eric Dalen', 'Scott Foster', 'Aaron Smith']",14755
+686,202201220CLE,"['Ed Malloy', 'J.T. Orr', 'Tom Washington']",19432
+687,202201220MIL,"['John Butler', 'Eric Dalen', 'Zach Zarba']",17341
+688,202201220PHO,"['Brandon Adair', 'James Capers Jr.', 'J.B. DeRosa']",17071
+689,202201230CHO,"['Jacyn Goble', 'Gediminas Petraitis', 'Sean Wright']",15822
+690,202201230DAL,"['Tony Brothers', 'Michael Smith', 'Scott Twardoski']",19701
+691,202201230DEN,"['Eric Lewis', 'Andy Nagy', 'Derek Richardson']",14060
+692,202201230GSW,"['Bennie Adams', 'Pat Fraher', 'Karl Lane']",18064
+693,202201230MIA,"['Phenizee Ransom', 'Dedric Taylor', 'James Williams']",19973
+694,202201230MIN,"['Curtis Blair', 'Kevin Cutler', 'Jason Goldenberg']",16475
+695,202201230NYK,"['Matt Boland', 'Danielle Scott', 'Josh Tiven']",19812
+696,202201230ORL,"['Tyler Ford', 'Aaron Smith', 'Leon Wood']",18846
+697,202201230SAS,"['Ray Acosta', 'Brandon Schwab', 'Ben Taylor']",16437
+698,202201230TOR,"['Brent Barnaky', 'Brian Forte', 'C.J. Washington']",0
+699,202201230WAS,"['David Guthrie', 'Marat Kogut', 'Matt Myers']",16371
+700,202201240CLE,"['Curtis Blair', 'Justin Van Duyne', 'Scott Wall']",17321
+701,202201240NOP,"['Tyler Ford', 'John Goble', 'Lauren Holtkamp-Sterling']",15581
+702,202201240OKC,"['Marc Davis', 'Suyash Mehta', 'Derek Richardson']",14378
+703,202201240PHO,"['J.B. DeRosa', 'Kane Fitzgerald', 'Jonathan Sterling']",17071
+704,202201250BOS,"['James Capers Jr.', 'Brian Forte', 'C.J. Washington']",19156
+705,202201250BRK,"['Matt Boland', 'David Guthrie', 'Tom Washington']",18126
+706,202201250DET,"['Brent Barnaky', 'Mousa Dagher', 'Leon Wood']",16023
+707,202201250GSW,"['Eric Lewis', 'Tre Maddox', 'Jonathan Sterling']",18064
+708,202201250HOU,"['Pat Fraher', 'Gediminas Petraitis', 'Scott Twardoski']",15007
+709,202201250PHI,"['Mark Lindsay', 'Phenizee Ransom', 'Ben Taylor']",20121
+710,202201250POR,"['J.B. DeRosa', 'Matt Kallio', 'Karl Lane']",16422
+711,202201250TOR,"['Kevin Cutler', 'Danielle Scott', 'Dedric Taylor']",0
+712,202201250WAS,"['Ray Acosta', 'Natalie Sago', 'Sean Wright']",13544
+713,202201260ATL,"['Tyler Ford', 'Lauren Holtkamp-Sterling', 'Evan Scott']",15080
+714,202201260BRK,"['Ray Acosta', 'Derek Richardson', 'Sean Wright']",18011
+715,202201260CHI,"['Tony Brothers', 'Aaron Smith', 'Michael Smith']",20269
+716,202201260CLE,"['Brent Barnaky', 'Jenna Schroeder', 'Ben Taylor']",18904
+717,202201260IND,"['Mousa Dagher', 'David Guthrie', 'Marat Kogut']",14116
+718,202201260MIA,"['John Goble', 'Suyash Mehta', 'Gediminas Petraitis']",19600
+719,202201260ORL,"['Mark Lindsay', 'Natalie Sago', 'Justin Van Duyne']",12448
+720,202201260POR,"['Mitchell Ervin', 'Kane Fitzgerald', 'J.T. Orr']",16334
+721,202201260SAS,"['Bennie Adams', 'Curtis Blair', 'Marc Davis']",14662
+722,202201260UTA,"['Jacyn Goble', 'Jason Goldenberg', 'Eric Lewis']",18306
+723,202201270GSW,"['Derrick Collins', 'Brett Nansel', 'James Williams']",18064
+724,202201270PHI,"['James Capers Jr.', 'Kevin Cutler', 'Leon Wood']",20953
+725,202201280ATL,"['Josh Tiven', 'Scott Wall', 'Tom Washington']",16932
+726,202201280CHO,"['Bennie Adams', 'Tony Brothers', 'Tyler Ford']",19469
+727,202201280HOU,"['Matt Boland', 'Evan Scott', 'Ben Taylor']",16100
+728,202201280MEM,"['Pat Fraher', 'Suyash Mehta', 'Dedric Taylor']",16916
+729,202201280MIA,"['David Guthrie', 'Karl Lane', 'Matt Myers']",19600
+730,202201280MIL,"['Marat Kogut', 'Eric Lewis', 'Michael Smith']",17341
+731,202201280NOP,"['Brent Barnaky', 'Phenizee Ransom', 'Natalie Sago']",15254
+732,202201280OKC,"['Jason Goldenberg', 'Mark Lindsay', 'J.T. Orr']",15106
+733,202201280ORL,"['John Butler', 'Kevin Scott', 'Jonathan Sterling']",13156
+734,202201280PHO,"['Mitchell Ervin', 'Tre Maddox', 'Scott Twardoski']",17071
+735,202201280SAS,"['Curtis Blair', 'Mousa Dagher', 'Jacyn Goble']",18354
+736,202201290DAL,"['Ray Acosta', 'Curtis Blair', 'J.B. DeRosa']",19831
+737,202201290GSW,"['Kane Fitzgerald', 'Brian Forte', 'Justin Van Duyne']",18064
+738,202201290MEM,"['Derrick Collins', 'John Goble', 'Evan Scott']",17135
+739,202201290MIA,"['Matt Boland', 'Kevin Scott', 'Jonathan Sterling']",19600
+740,202201290NOP,"['Kevin Cutler', 'Andy Nagy', 'Natalie Sago']",16168
+741,202201290PHI,"['James Capers Jr.', 'Derek Richardson', 'Aaron Smith']",20380
+742,202201300ATL,"['Tony Brothers', 'John Butler', 'Karl Lane']",17391
+743,202201300CHI,"['David Guthrie', 'Robert Hussey', 'Dedric Taylor']",19521
+744,202201300CHO,"['Jenna Schroeder', 'Josh Tiven', 'Tom Washington']",18674
+745,202201300DET,"['Nick Buchert', 'Pat Fraher', 'Brandon Schwab']",16811
+746,202201300MIL,"['Marc Davis', 'Mark Lindsay', 'J.T. Orr']",17341
+747,202201300MIN,"['Tyler Ford', 'Jason Goldenberg', 'Phenizee Ransom']",10407
+748,202201300ORL,"['Ray Acosta', 'Bennie Adams', 'Ben Taylor']",13376
+749,202201300PHO,"['Brian Forte', 'James Williams', 'Leon Wood']",17071
+750,202201310ATL,"['Mitchell Ervin', 'John Goble', 'Matt Myers']",14168
+751,202201310BOS,"['Marat Kogut', 'Aaron Smith', 'Sean Wright']",19156
+752,202201310CLE,"['Marc Davis', 'Nate Green', 'Karl Lane']",17637
+753,202201310HOU,"['Jacyn Goble', 'Andy Nagy', 'Kevin Scott']",16146
+754,202201310IND,"['Nick Buchert', 'J.B. DeRosa', 'Pat Fraher']",14629
+755,202201310NYK,"['Tony Brothers', 'Tre Maddox', 'Gediminas Petraitis']",15925
+756,202201310OKC,"['Kevin Cutler', 'Brett Nansel', 'Derek Richardson']",13812
+757,202201310PHI,"['Brent Barnaky', 'Matt Boland', 'Eric Lewis']",20424
+758,202202010CHI,"['Brent Barnaky', 'James Capers Jr.', 'Lauren Holtkamp-Sterling']",20217
+759,202202010DET,"['J.T. Orr', 'Josh Tiven', 'Scott Twardoski']",15499
+760,202202010MIL,"['Matt Boland', 'Jonathan Sterling', 'James Williams']",17341
+761,202202010MIN,"['J.B. DeRosa', 'Brian Forte', 'Danielle Scott']",15839
+762,202202010PHO,"['Curtis Blair', 'Natalie Sago', 'Dedric Taylor']",17071
+763,202202010SAS,"['Mousa Dagher', 'Mark Lindsay', 'Tom Washington']",17070
+764,202202010TOR,"['Bennie Adams', 'Kane Fitzgerald', 'Gediminas Petraitis']",0
+765,202202020BOS,"['Mitchell Ervin', 'Eric Lewis', 'Phenizee Ransom']",19156
+766,202202020DAL,"['Nick Buchert', 'Jonathan Sterling', 'Ben Taylor']",19200
+767,202202020HOU,"['Ray Acosta', 'Courtney Kirkland', 'Brett Nansel']",14163
+768,202202020IND,"['Tony Brothers', 'Andy Nagy', 'Scott Wall']",14528
+769,202202020LAL,"['Curtis Blair', 'Jason Goldenberg', 'Leon Wood']",17259
+770,202202020NYK,"['Tyler Ford', 'J.T. Orr', 'Sean Wright']",19812
+771,202202020PHI,"['Marc Davis', 'Nate Green', 'Karl Lane']",20089
+772,202202020SAC,"['John Butler', 'Jacyn Goble', 'Bill Kennedy']",13153
+773,202202020UTA,"['Eric Dalen', 'David Guthrie', 'Justin Van Duyne']",18306
+774,202202030ATL,"['Brian Forte', 'Nate Green', 'Ed Malloy']",16958
+775,202202030DET,"['Marc Davis', 'Marat Kogut', 'Andy Nagy']",15523
+776,202202030GSW,"['Jason Goldenberg', 'David Guthrie', 'Dedric Taylor']",18064
+777,202202030LAC,"['Jacyn Goble', 'Aaron Smith', 'Zach Zarba']",19068
+778,202202030SAS,"['Kevin Cutler', 'Brett Nansel', 'Natalie Sago']",14971
+779,202202030TOR,"['J.B. DeRosa', 'Kane Fitzgerald', 'Jenna Schroeder']",0
+780,202202040CHO,"['Matt Boland', 'Brian Forte', 'Marat Kogut']",17733
+781,202202040DAL,"['Courtney Kirkland', 'Natalie Sago', 'Ben Taylor']",19200
+782,202202040DEN,"['Curtis Blair', 'John Butler', 'Leon Wood']",16152
+783,202202040DET,"['Brent Barnaky', 'James Capers Jr.', 'Scott Wall']",17584
+784,202202040IND,"['Tyler Ford', 'John Goble', 'Gediminas Petraitis']",16355
+785,202202040POR,"['Eric Dalen', 'Scott Foster', 'J.T. Orr']",15329
+786,202202040SAS,"['Kevin Cutler', 'Jonathan Sterling', 'Sean Wright']",15344
+787,202202040TOR,"['J.B. DeRosa', 'Pat Fraher', 'Mark Lindsay']",0
+788,202202040UTA,"['Ray Acosta', 'Derek Richardson', 'Zach Zarba']",18306
+789,202202050CHO,"['Nick Buchert', 'Ed Malloy', 'Brandon Schwab']",19420
+790,202202050LAL,"['David Guthrie', 'Dedric Taylor', 'Justin Van Duyne']",18997
+791,202202050ORL,"['Brandon Adair', 'Mitchell Ervin', 'Kane Fitzgerald']",18846
+792,202202050POR,"['Jacyn Goble', 'Bill Kennedy', 'Aaron Smith']",19393
+793,202202050SAC,"['Bennie Adams', 'Lauren Holtkamp-Sterling', 'Josh Tiven']",14097
+794,202202050WAS,"['Tony Brothers', 'Scott Twardoski', 'Tom Washington']",18058
+795,202202060CHI,"['Curtis Blair', 'Matt Boland', 'Marat Kogut']",20233
+796,202202060CLE,"['Pat Fraher', 'Jason Goldenberg', 'Mark Lindsay']",19432
+797,202202060DAL,"['Brent Barnaky', 'Kevin Cutler', 'John Goble']",19887
+798,202202060DEN,"['Tyler Ford', 'Gediminas Petraitis', 'Kevin Scott']",18241
+799,202202060HOU,"['Brian Forte', 'Danielle Scott', 'Jonathan Sterling']",15702
+800,202202060LAC,"['Ray Acosta', 'Scott Foster', 'Brett Nansel']",17395
+801,202202060MIN,"['Eric Dalen', 'Matt Myers', 'Zach Zarba']",16487
+802,202202060ORL,"['Nick Buchert', 'Marc Davis', 'Brandon Schwab']",14402
+803,202202070CHI,"['David Guthrie', 'Evan Scott', 'Leon Wood']",20615
+804,202202070CHO,"['Brandon Adair', 'Marc Davis', 'Justin Van Duyne']",14102
+805,202202070OKC,"['Ed Malloy', 'Natalie Sago', 'Danielle Scott']",17009
+806,202202070UTA,"['Lauren Holtkamp-Sterling', 'Aaron Smith', 'Josh Tiven']",18306
+807,202202070WAS,"['Mitchell Ervin', 'Eric Lewis', 'Derek Richardson']",14222
+808,202202080ATL,"['Mitchell Ervin', 'Justin Van Duyne', 'Zach Zarba']",14265
+809,202202080BRK,"['J.B. DeRosa', 'Pat Fraher', 'Andy Nagy']",17732
+810,202202080DAL,"['Brian Forte', 'Jacyn Goble', 'Jason Goldenberg']",19200
+811,202202080DEN,"['James Capers Jr.', 'Kevin Cutler', 'Jonathan Sterling']",15093
+812,202202080LAL,"['Gediminas Petraitis', 'Josh Tiven', 'Scott Twardoski']",18997
+813,202202080MEM,"['Bill Kennedy', 'Matt Myers', 'Ben Taylor']",16101
+814,202202080NOP,"['Nick Buchert', 'Mark Lindsay', 'Phenizee Ransom']",15121
+815,202202080PHI,"['Brandon Adair', 'Eric Dalen', 'John Goble']",20720
+816,202202080POR,"['Ray Acosta', 'Tyler Ford', 'Nate Green']",16024
+817,202202080SAC,"['Brent Barnaky', 'Brett Nansel', 'Kevin Scott']",12409
+818,202202090CHO,"['Courtney Kirkland', 'Derek Richardson', 'Michael Smith']",19099
+819,202202090CLE,"['Ed Malloy', 'Natalie Sago', 'Aaron Smith']",19432
+820,202202090OKC,"['Karl Lane', 'Evan Scott', 'Dedric Taylor']",13858
+821,202202090POR,"['Brent Barnaky', 'Brett Nansel', 'Kevin Scott']",19393
+822,202202090SAC,"['Tyler Ford', 'J.T. Orr', 'Danielle Scott']",12527
+823,202202090UTA,"['Derrick Collins', 'Kane Fitzgerald', 'Jonathan Sterling']",18306
+824,202202100DAL,"['Mousa Dagher', 'Lauren Holtkamp-Sterling', 'James Williams']",19532
+825,202202100DET,"['Scott Foster', 'Natalie Sago', 'Brandon Schwab']",18744
+826,202202100GSW,"['Nate Green', 'Eric Lewis', 'Scott Twardoski']",18064
+827,202202100HOU,"['Bill Kennedy', 'Matt Myers', 'Gediminas Petraitis']",16129
+828,202202100NOP,"['Marc Davis', 'Jacyn Goble', 'Jason Goldenberg']",16672
+829,202202100PHO,"['James Capers Jr.', 'Derrick Collins', 'Marat Kogut']",17071
+830,202202100WAS,"['Mark Lindsay', 'Suyash Mehta', 'Ben Taylor']",15204
+831,202202110ATL,"['Curtis Blair', 'John Butler', 'Brian Forte']",17234
+832,202202110BOS,"['Ray Acosta', 'Derek Richardson', 'Zach Zarba']",19156
+833,202202110CHI,"['Eric Dalen', 'J.B. DeRosa', 'Kane Fitzgerald']",20092
+834,202202110DET,"['Nick Buchert', 'Karl Lane', 'Leon Wood']",20088
+835,202202110IND,"['Suyash Mehta', 'Ben Taylor', 'Dedric Taylor']",15075
+836,202202110PHI,"['Courtney Kirkland', 'Phenizee Ransom', 'Michael Smith']",20669
+837,202202110UTA,"['Brent Barnaky', 'Andy Nagy', 'Kevin Scott']",18306
+838,202202120CHI,"['Nick Buchert', 'Pat Fraher', 'Jenna Schroeder']",20072
+839,202202120CHO,"['Gediminas Petraitis', 'Jonathan Sterling', 'James Williams']",19454
+840,202202120DAL,"['Curtis Blair', 'Kevin Cutler', 'Scott Twardoski']",20028
+841,202202120GSW,"['James Capers Jr.', 'Marat Kogut', 'Kevin Scott']",18064
+842,202202120MIA,"['Brian Forte', 'John Goble', 'Aaron Smith']",19600
+843,202202120NOP,"['Lauren Holtkamp-Sterling', 'Bill Kennedy', 'Brandon Schwab']",16615
+844,202202120PHI,"['J.B. DeRosa', 'Scott Foster', 'Justin Van Duyne']",21057
+845,202202120PHO,"['Matt Boland', 'Mitchell Ervin', 'Eric Lewis']",17071
+846,202202120POR,"['Derrick Collins', 'Mousa Dagher', 'Ed Malloy']",18521
+847,202202120TOR,"['Eric Dalen', 'Brett Nansel', 'Zach Zarba']",0
+848,202202120WAS,"['Ray Acosta', 'Jason Goldenberg', 'Josh Tiven']",14169
+849,202202130BOS,"['Brandon Adair', 'Kane Fitzgerald', 'Karl Lane']",19156
+850,202202130IND,"['Marc Davis', 'Derek Richardson', 'Leon Wood']",13532
+851,202202140BRK,"['Courtney Kirkland', 'Evan Scott', 'Michael Smith']",16873
+852,202202140CHI,"['Scott Foster', 'Lauren Holtkamp-Sterling', 'Brett Nansel']",21153
+853,202202140DEN,"['Pat Fraher', 'Mark Lindsay', 'Danielle Scott']",15025
+854,202202140LAC,"['Matt Boland', 'Mitchell Ervin', 'Ed Malloy']",19068
+855,202202140MIL,"['Eric Dalen', 'Suyash Mehta', 'Zach Zarba']",17341
+856,202202140NOP,"['John Butler', 'Derrick Collins', 'Josh Tiven']",15319
+857,202202140NYK,"['John Goble', 'Phenizee Ransom', 'Ben Taylor']",18433
+858,202202140UTA,"['Kevin Cutler', 'Eric Lewis', 'Jenna Schroeder']",18306
+859,202202140WAS,"['Aaron Smith', 'Dedric Taylor', 'James Williams']",10793
+860,202202150ATL,"['Phenizee Ransom', 'Kevin Scott', 'Leon Wood']",15947
+861,202202150MIA,"['Nick Buchert', 'Matt Myers', 'Josh Tiven']",19600
+862,202202150MIL,"['Curtis Blair', 'Karl Lane', 'Scott Twardoski']",17341
+863,202202150MIN,"['Brent Barnaky', 'James Capers Jr.', 'Andy Nagy']",17136
+864,202202150NOP,"['J.B. DeRosa', 'Tyler Ford', 'Scott Wall']",15901
+865,202202150PHI,"['Brian Forte', 'David Guthrie', 'Gediminas Petraitis']",20960
+866,202202150PHO,"['Pat Fraher', 'Tre Maddox', 'Justin Van Duyne']",17071
+867,202202160BOS,"['John Goble', 'Evan Scott', 'Tom Washington']",19156
+868,202202160CHI,"['Brent Barnaky', 'Marc Davis', 'Jonathan Sterling']",19166
+869,202202160GSW,"['Kevin Cutler', 'Bill Kennedy', 'Justin Van Duyne']",18064
+870,202202160IND,"['Brandon Adair', 'Brett Nansel', 'Zach Zarba']",14540
+871,202202160LAL,"['Matt Boland', 'Mitchell Ervin', 'Ed Malloy']",17787
+872,202202160MEM,"['Jason Goldenberg', 'Kevin Scott', 'Dedric Taylor']",16834
+873,202202160MIN,"['Tony Brothers', 'Derrick Collins', 'Jenna Schroeder']",15982
+874,202202160NYK,"['Scott Foster', 'Jacyn Goble', 'Natalie Sago']",18916
+875,202202160OKC,"['Mousa Dagher', 'Eric Dalen', 'Eric Lewis']",14920
+876,202202160ORL,"['Nick Buchert', 'Courtney Kirkland', 'Suyash Mehta']",14398
+877,202202160PHO,"['Mark Lindsay', 'J.T. Orr', 'Danielle Scott']",17071
+878,202202170BRK,"['James Capers Jr.', 'Marat Kogut', 'Scott Twardoski']",17477
+879,202202170CHO,"['Ray Acosta', 'J.B. DeRosa', 'Sean Wright']",17029
+880,202202170LAC,"['Bennie Adams', 'Mark Lindsay', 'Derek Richardson']",17519
+881,202202170MIL,"['Tony Brothers', 'Ben Taylor', 'Scott Wall']",17341
+882,202202170NOP,"['Pat Fraher', 'Andy Nagy', 'Michael Smith']",15906
+883,202202240BRK,"['David Guthrie', 'Mark Lindsay', 'Aaron Smith']",17986
+884,202202240CHI,"['Marc Davis', 'Courtney Kirkland', 'Andy Nagy']",21236
+885,202202240DET,"['Mousa Dagher', 'J.B. DeRosa', 'Bill Kennedy']",15622
+886,202202240MIN,"['Pat Fraher', 'Michael Smith', 'Jonathan Sterling']",16326
+887,202202240OKC,"['Bennie Adams', 'Derrick Collins', 'Rodney Mott']",14176
+888,202202240POR,"['Tony Brothers', 'Tre Maddox', 'J.T. Orr']",20098
+889,202202240SAC,"['Scott Foster', 'Ben Taylor', 'Leon Wood']",15855
+890,202202250CHO,"['Eric Dalen', 'Kane Fitzgerald', 'Natalie Sago']",17577
+891,202202250IND,"['Mousa Dagher', 'Mitchell Ervin', 'James Williams']",15182
+892,202202250LAL,"['Nick Buchert', 'Brian Forte', 'Zach Zarba']",18997
+893,202202250MIN,"['Ray Acosta', 'Jacyn Goble', 'Ed Malloy']",16684
+894,202202250NYK,"['Karl Lane', 'Eric Lewis', 'Gediminas Petraitis']",19812
+895,202202250ORL,"['Curtis Blair', 'Danielle Scott', 'Dedric Taylor']",16631
+896,202202250PHO,"['Derek Richardson', 'Ben Taylor', 'Sean Wright']",17071
+897,202202250UTA,"['Brandon Adair', 'John Goble', 'Tom Washington']",18306
+898,202202250WAS,"['J.B. DeRosa', 'Tyler Ford', 'Nate Green']",15302
+899,202202260ATL,"['John Butler', 'Derrick Collins', 'Bill Kennedy']",17870
+900,202202260CHI,"['Matt Boland', 'David Guthrie', 'Tre Maddox']",21959
+901,202202260CLE,"['Mitchell Ervin', 'Courtney Kirkland', 'Evan Scott']",19432
+902,202202260DEN,"['Bennie Adams', 'Tony Brothers', 'J.T. Orr']",19520
+903,202202260DET,"['Suyash Mehta', 'Rodney Mott', 'Michael Smith']",19122
+904,202202260MIA,"['Pat Fraher', 'Jason Goldenberg', 'Scott Wall']",19677
+905,202202260MIL,"['Marc Davis', 'Tyler Ford', 'Lauren Holtkamp-Sterling']",17341
+906,202202270CHO,"['Eric Lewis', 'Dedric Taylor', 'Justin Van Duyne']",15348
+907,202202270GSW,"['Scott Foster', 'Ben Taylor', 'Leon Wood']",18064
+908,202202270HOU,"['Jacyn Goble', 'Ed Malloy', 'Scott Twardoski']",14324
+909,202202270IND,"['Ray Acosta', 'J.B. DeRosa', 'Kane Fitzgerald']",16872
+910,202202270LAL,"['Brandon Adair', 'John Goble', 'Tom Washington']",17536
+911,202202270NYK,"['Marat Kogut', 'Mark Lindsay', 'James Williams']",19812
+912,202202270PHO,"['Nick Buchert', 'Brian Forte', 'Zach Zarba']",17071
+913,202202270POR,"['Brett Nansel', 'Derek Richardson', 'Sean Wright']",17771
+914,202202280BRK,"['Curtis Blair', 'Mitchell Ervin', 'Matt Myers']",17112
+915,202202280CLE,"['Tony Brothers', 'Eric Dalen', 'Gediminas Petraitis']",18421
+916,202202280MEM,"['Karl Lane', 'Rodney Mott', 'Aaron Smith']",16812
+917,202202280MIA,"['Derrick Collins', 'Lauren Holtkamp-Sterling', 'Bill Kennedy']",19683
+918,202202280MIL,"['Courtney Kirkland', 'Tre Maddox', 'J.T. Orr']",17341
+919,202202280OKC,"['John Butler', 'Jacyn Goble', 'David Guthrie']",13945
+920,202202280ORL,"['Marc Davis', 'Natalie Sago', 'Scott Wall']",13014
+921,202203010BOS,"['Curtis Blair', 'Eric Lewis', 'Scott Twardoski']",19156
+922,202203010HOU,"['Brandon Adair', 'John Goble', 'Phenizee Ransom']",12949
+923,202203010LAL,"['Tyler Ford', 'Brett Nansel', 'Sean Wright']",17857
+924,202203010MIN,"['Nick Buchert', 'Justin Van Duyne', 'Zach Zarba']",17136
+925,202203010TOR,"['Tony Brothers', 'J.B. DeRosa', 'Jason Goldenberg']",18903
+926,202203010WAS,"['Ray Acosta', 'Pat Fraher', 'Jonathan Sterling']",12122
+927,202203020CLE,"['Natalie Sago', 'Scott Wall', 'James Williams']",19019
+928,202203020DEN,"['Matt Boland', 'Courtney Kirkland', 'Dedric Taylor']",15167
+929,202203020HOU,"['Tre Maddox', 'Derek Richardson', 'Brandon Schwab']",13583
+930,202203020MIL,"['Scott Foster', 'Mark Lindsay', 'Leon Wood']",17341
+931,202203020NOP,"['Karl Lane', 'Ed Malloy', 'Danielle Scott']",15490
+932,202203020ORL,"['Derrick Collins', 'Lauren Holtkamp-Sterling', 'Bill Kennedy']",11221
+933,202203020PHI,"['James Capers Jr.', 'Brian Forte', 'J.T. Orr']",21333
+934,202203020PHO,"['Kane Fitzgerald', 'Tyler Ford', 'Aaron Smith']",17071
+935,202203030ATL,"['Brandon Adair', 'Josh Tiven', 'Tom Washington']",17522
+936,202203030BOS,"['Brian Forte', 'Pat Fraher', 'Evan Scott']",19156
+937,202203030BRK,"['Eric Lewis', 'J.T. Orr', 'Ben Taylor']",17732
+938,202203030DAL,"['Tony Brothers', 'Mousa Dagher', 'Eric Dalen']",20229
+939,202203030LAC,"['Matt Boland', 'Kevin Cutler', 'David Guthrie']",19068
+940,202203030SAS,"['Mitchell Ervin', 'Justin Van Duyne', 'Sean Wright']",13049
+941,202203030TOR,"['John Conley', 'Marc Davis', 'Jacyn Goble']",19548
+942,202203040CHI,"['J.B. DeRosa', 'Jason Goldenberg', 'Zach Zarba']",21259
+943,202203040DEN,"['Kane Fitzgerald', 'Tyler Ford', 'Aaron Smith']",16254
+944,202203040DET,"['Marat Kogut', 'Ed Malloy', 'Derek Richardson']",17244
+945,202203040NOP,"['Mousa Dagher', 'Bill Kennedy', 'Scott Wall']",16178
+946,202203040OKC,"['John Goble', 'Nate Green', 'Natalie Sago']",15180
+947,202203040PHI,"['Brent Barnaky', 'Jacyn Goble', 'Eric Lewis']",21391
+948,202203040PHO,"['David Guthrie', 'Gediminas Petraitis', 'Dedric Taylor']",17071
+949,202203040TOR,"['Karl Lane', 'Jonathan Sterling', 'James Williams']",19081
+950,202203040WAS,"['Nick Buchert', 'James Capers Jr.', 'Leon Wood']",15927
+951,202203050CHO,"['Bennie Adams', 'Brent Barnaky', 'Ben Taylor']",18941
+952,202203050DAL,"['Curtis Blair', 'Matt Boland', 'Derrick Collins']",20060
+953,202203050LAL,"['Ray Acosta', 'Mark Lindsay', 'Josh Tiven']",18997
+954,202203050MEM,"['Eric Dalen', 'Brandon Schwab', 'Tom Washington']",17794
+955,202203050MIA,"['Courtney Kirkland', 'Michael Smith', 'Scott Twardoski']",19704
+956,202203050MIN,"['John Conley', 'Marc Davis', 'Mitchell Ervin']",17136
+957,202203060BOS,"['Nick Buchert', 'Kevin Cutler', 'Zach Zarba']",19156
+958,202203060CLE,"['Brandon Adair', 'John Goble', 'Ben Taylor']",19432
+959,202203060DEN,"['J.B. DeRosa', 'David Guthrie', 'Gediminas Petraitis']",14962
+960,202203060HOU,"['Marc Davis', 'Jason Goldenberg', 'Dedric Taylor']",18055
+961,202203060LAC,"['Kane Fitzgerald', 'Tre Maddox', 'Justin Van Duyne']",17422
+962,202203060MIL,"['Ed Malloy', 'Natalie Sago', 'Sean Wright']",17495
+963,202203060OKC,"['Tyler Ford', 'Pat Fraher', 'Lauren Holtkamp-Sterling']",15079
+964,202203060WAS,"['Tony Brothers', 'Brian Forte', 'Suyash Mehta']",13937
+965,202203070DAL,"['James Capers Jr.', 'Aaron Smith', 'Michael Smith']",20077
+966,202203070DEN,"['Jacyn Goble', 'Eric Lewis', 'Brett Nansel']",19542
+967,202203070DET,"['Mitchell Ervin', 'Andy Nagy', 'Sean Wright']",14942
+968,202203070MIA,"['Bennie Adams', 'Curtis Blair', 'Karl Lane']",19600
+969,202203070MIN,"['Derrick Collins', 'Bill Kennedy', 'Brandon Schwab']",16035
+970,202203070PHI,"['Eric Dalen', 'Scott Foster', 'Jonathan Sterling']",20381
+971,202203070SAC,"['Ray Acosta', 'Mark Lindsay', 'Josh Tiven']",14720
+972,202203070SAS,"['Courtney Kirkland', 'Scott Twardoski', 'Scott Wall']",18354
+973,202203080CHO,"['Scott Foster', 'Lauren Holtkamp-Sterling', 'Phenizee Ransom']",17230
+974,202203080GSW,"['Brent Barnaky', 'J.T. Orr', 'James Williams']",18064
+975,202203080IND,"['Nick Buchert', 'Gediminas Petraitis', 'Zach Zarba']",14066
+976,202203080MEM,"['Kane Fitzgerald', 'Natalie Sago', 'Jenna Schroeder']",16433
+977,202203080OKC,"['J.B. DeRosa', 'Tre Maddox', 'Leon Wood']",15743
+978,202203080ORL,"['John Butler', 'Sean Corbin', 'John Goble']",14024
+979,202203090CHO,"['Marc Davis', 'Tyler Ford', 'Aaron Smith']",18086
+980,202203090DAL,"['Jason Goldenberg', 'Bill Kennedy', 'Tom Washington']",20182
+981,202203090DET,"['Pat Fraher', 'Matt Myers', 'Scott Wall']",18022
+982,202203090HOU,"['John Butler', 'Michael Smith', 'Ben Taylor']",18055
+983,202203090LAC,"['Mark Lindsay', 'Danielle Scott', 'Josh Tiven']",15282
+984,202203090MIA,"['Matt Boland', 'Kevin Cutler', 'Zach Zarba']",19600
+985,202203090MIL,"['Brian Forte', 'David Guthrie', 'Brett Nansel']",17341
+986,202203090MIN,"['Derek Richardson', 'Jonathan Sterling', 'Sean Wright']",16191
+987,202203090NOP,"['Bennie Adams', 'Derrick Collins', 'Courtney Kirkland']",15633
+988,202203090SAC,"['Brent Barnaky', 'Evan Scott', 'James Williams']",14697
+989,202203090SAS,"['Marat Kogut', 'Ed Malloy', 'Dedric Taylor']",15121
+990,202203090UTA,"['Ray Acosta', 'Jacyn Goble', 'Eric Lewis']",18306
+991,202203100DEN,"['James Capers Jr.', 'Karl Lane', 'Scott Twardoski']",19520
+992,202203100PHI,"['Brandon Adair', 'John Goble', 'Tre Maddox']",21408
+993,202203110ATL,"['Kevin Cutler', 'Tyler Ford', 'Jason Goldenberg']",16862
+994,202203110BOS,"['John Butler', 'Justin Van Duyne', 'Sean Wright']",19156
+995,202203110HOU,"['Lauren Holtkamp-Sterling', 'Rodney Mott', 'Jenna Schroeder']",15060
+996,202203110LAL,"['Jacyn Goble', 'Evan Scott', 'James Williams']",18997
+997,202203110MEM,"['J.B. DeRosa', 'Courtney Kirkland', 'Suyash Mehta']",17188
+998,202203110MIA,"['Tony Brothers', 'Natalie Sago', 'Dedric Taylor']",19600
+999,202203110NOP,"['Mitchell Ervin', 'Matt Myers', 'Ben Taylor']",16838
+1000,202203110ORL,"['Brian Forte', 'Nate Green', 'Ed Malloy']",14557
+1001,202203110PHO,"['Brent Barnaky', 'Eric Lewis', 'Leon Wood']",17071
+1002,202203110SAS,"['Nick Buchert', 'David Guthrie', 'Gediminas Petraitis']",15753
+1003,202203120CHI,"['Brandon Adair', 'Scott Twardoski', 'Sean Wright']",21727
+1004,202203120DEN,"['Pat Fraher', 'Phenizee Ransom', 'Michael Smith']",18659
+1005,202203120GSW,"['Derrick Collins', 'Aaron Smith', 'Zach Zarba']",18064
+1006,202203120MIA,"['Marat Kogut', 'Scott Wall', 'Tom Washington']",19600
+1007,202203120POR,"['Bill Kennedy', 'Karl Lane', 'Andy Nagy']",17524
+1008,202203120SAS,"['Matt Boland', 'David Guthrie', 'J.T. Orr']",14605
+1009,202203120UTA,"['James Capers Jr.', 'Mousa Dagher', 'Eric Dalen']",18306
+1010,202203130ATL,"['Scott Foster', 'Natalie Sago', 'Dedric Taylor']",17038
+1011,202203130BOS,"['Ray Acosta', 'John Goble', 'Mark Lindsay']",19156
+1012,202203130BRK,"['Ed Malloy', 'Josh Tiven', 'Justin Van Duyne']",18057
+1013,202203130DET,"['Courtney Kirkland', 'Gediminas Petraitis', 'C.J. Washington']",19313
+1014,202203130NOP,"['Nick Buchert', 'Tyler Ford', 'Brandon Schwab']",15683
+1015,202203130OKC,"['Brent Barnaky', 'Evan Scott', 'James Williams']",17482
+1016,202203130ORL,"['John Conley', 'Kevin Cutler', 'Rodney Mott']",14444
+1017,202203130PHO,"['Tony Brothers', 'Eric Dalen', 'Derek Richardson']",17071
+1018,202203140ATL,"['Mousa Dagher', 'Kane Fitzgerald', 'Lauren Holtkamp-Sterling']",16432
+1019,202203140CLE,"['Mitchell Ervin', 'Brett Nansel', 'Josh Tiven']",18742
+1020,202203140GSW,"['Pat Fraher', 'Tom Washington', 'Leon Wood']",18064
+1021,202203140LAL,"['James Capers Jr.', 'Derrick Collins', 'Andy Nagy']",18228
+1022,202203140OKC,"['Bill Kennedy', 'J.T. Orr', 'Phenizee Ransom']",15810
+1023,202203140PHI,"['Matt Boland', 'J.B. DeRosa', 'Eric Lewis']",21444
+1024,202203140SAC,"['Karl Lane', 'Aaron Smith', 'Zach Zarba']",15943
+1025,202203140SAS,"['Tre Maddox', 'Danielle Scott', 'Ben Taylor']",14143
+1026,202203140UTA,"['Tony Brothers', 'Michael Smith', 'Scott Wall']",18306
+1027,202203150IND,"['Eric Dalen', 'Justin Van Duyne', 'Sean Wright']",15027
+1028,202203150MIA,"['Mousa Dagher', 'Tyler Ford', 'Jacyn Goble']",19600
+1029,202203150NOP,"['Jason Goldenberg', 'David Guthrie', 'Dedric Taylor']",16789
+1030,202203150ORL,"['Ray Acosta', 'Brent Barnaky', 'Kane Fitzgerald']",15282
+1031,202203160BRK,"['Brandon Adair', 'Mitchell Ervin', 'Scott Foster']",17981
+1032,202203160CHO,"['Jacyn Goble', 'Eric Lewis', 'Jonathan Sterling']",16648
+1033,202203160CLE,"['Mark Lindsay', 'Justin Van Duyne', 'James Williams']",19432
+1034,202203160GSW,"['James Capers Jr.', 'Lauren Holtkamp-Sterling', 'Karl Lane']",18064
+1035,202203160HOU,"['Bill Kennedy', 'J.T. Orr', 'Scott Wall']",18055
+1036,202203160LAC,"['Nick Buchert', 'Natalie Sago', 'Zach Zarba']",19068
+1037,202203160MIN,"['John Goble', 'Aaron Smith', 'Michael Smith']",17136
+1038,202203160NYK,"['Rodney Mott', 'Brett Nansel', 'Ben Taylor']",18213
+1039,202203160SAC,"['Pat Fraher', 'Andy Nagy', 'Tom Washington']",15864
+1040,202203160SAS,"['Tony Brothers', 'Gediminas Petraitis', 'C.J. Washington']",14994
+1041,202203160UTA,"['Derrick Collins', 'Marat Kogut', 'Ed Malloy']",18306
+1042,202203160WAS,"['John Butler', 'Derek Richardson', 'Josh Tiven']",15326
+1043,202203170ORL,"['Marc Davis', 'J.B. DeRosa', 'Jenna Schroeder']",14369
+1044,202203180ATL,"['David Guthrie', 'Suyash Mehta', 'Scott Wall']",18062
+1045,202203180BRK,"['Jacyn Goble', 'Ashley Moyer-Gleich', 'James Williams']",17732
+1046,202203180CLE,"['Scott Foster', 'Michael Smith', 'Leon Wood']",19432
+1047,202203180HOU,"['Ray Acosta', 'Pat Fraher', 'Jonathan Sterling']",13748
+1048,202203180MIA,"['John Butler', 'Marc Davis', 'J.B. DeRosa']",19600
+1049,202203180NYK,"['Eric Dalen', 'Eric Lewis', 'Phenizee Ransom']",19812
+1050,202203180PHI,"['Kane Fitzgerald', 'Derek Richardson', 'Ben Taylor']",21428
+1051,202203180PHO,"['Nick Buchert', 'Rodney Mott', 'Tom Washington']",17071
+1052,202203180SAC,"['Marat Kogut', 'Ed Malloy', 'Natalie Sago']",15313
+1053,202203180SAS,"['Bennie Adams', 'Kevin Cutler', 'Bill Kennedy']",18354
+1054,202203180TOR,"['Courtney Kirkland', 'Mark Lindsay', 'Matt Myers']",19800
+1055,202203180UTA,"['John Goble', 'Lauren Holtkamp-Sterling', 'Tre Maddox']",18306
+1056,202203190CHO,"['Karl Lane', 'Suyash Mehta', 'James Williams']",19279
+1057,202203190CLE,"['Brent Barnaky', 'Nate Green', 'Zach Zarba']",19432
+1058,202203190MIN,"['Brandon Adair', 'Dedric Taylor', 'Josh Tiven']",17136
+1059,202203190WAS,"['Curtis Blair', 'Mitchell Ervin', 'Gediminas Petraitis']",20476
+1060,202203200ATL,"['Brett Nansel', 'Derek Richardson', 'Sean Wright']",17123
+1061,202203200DEN,"['Nick Buchert', 'Bill Kennedy', 'J.T. Orr']",19602
+1062,202203200GSW,"['Marat Kogut', 'Ed Malloy', 'Natalie Sago']",18064
+1063,202203200HOU,"['Tony Brothers', 'Derrick Collins', 'C.J. Washington']",18055
+1064,202203200IND,"['Kevin Cutler', 'Kane Fitzgerald', 'Brandon Schwab']",16067
+1065,202203200NYK,"['Tyler Ford', 'Scott Foster', 'Aaron Smith']",19812
+1066,202203200ORL,"['Bennie Adams', 'James Capers Jr.', 'Michael Smith']",15012
+1067,202203200PHI,"['Curtis Blair', 'David Guthrie', 'Leon Wood']",21180
+1068,202203200SAC,"['John Goble', 'Lauren Holtkamp-Sterling', 'Tre Maddox']",17583
+1069,202203210BRK,"['Marc Davis', 'Mark Lindsay', 'Gediminas Petraitis']",17887
+1070,202203210CHI,"['Brandon Schwab', 'Ben Taylor', 'Josh Tiven']",21778
+1071,202203210CHO,"['Brandon Adair', 'Pat Fraher', 'Dedric Taylor']",13351
+1072,202203210CLE,"['Scott Wall', 'Tom Washington', 'James Williams']",19432
+1073,202203210DAL,"['Ray Acosta', 'Derrick Collins', 'Sean Wright']",20077
+1074,202203210DET,"['Brent Barnaky', 'Tyler Ford', 'Jonathan Sterling']",14923
+1075,202203210HOU,"['Karl Lane', 'Suyash Mehta', 'Justin Van Duyne']",13936
+1076,202203210OKC,"['Brian Forte', 'Jason Goldenberg', 'Rodney Mott']",15345
+1077,202203210PHI,"['Kevin Cutler', 'Scott Twardoski', 'Zach Zarba']",21386
+1078,202203220DEN,"['Brian Forte', 'Ed Malloy', 'Natalie Sago']",16089
+1079,202203220MIL,"['Curtis Blair', 'John Goble', 'J.T. Orr']",17983
+1080,202203220NYK,"['J.B. DeRosa', 'Kane Fitzgerald', 'Leon Wood']",19812
+1081,202203220ORL,"['Tony Brothers', 'Jacyn Goble', 'Derek Richardson']",17164
+1082,202203230BOS,"['Bennie Adams', 'Kevin Cutler', 'Zach Zarba']",0
+1083,202203230CHO,"['John Conley', 'Marc Davis', 'Scott Wall']",16290
+1084,202203230DAL,"['Nick Buchert', 'Nate Green', 'Tre Maddox']",20026
+1085,202203230DET,"['Eric Lewis', 'Aaron Smith', 'Tom Washington']",16212
+1086,202203230IND,"['Mousa Dagher', 'Rodney Mott', 'Dedric Taylor']",14227
+1087,202203230LAL,"['Ray Acosta', 'Brent Barnaky', 'Sean Wright']",18997
+1088,202203230MEM,"['James Capers Jr.', 'Tyler Ford', 'Scott Twardoski']",17794
+1089,202203230MIA,"['Mitchell Ervin', 'David Guthrie', 'C.J. Washington']",19600
+1090,202203230MIN,"['Marat Kogut', 'Karl Lane', 'James Williams']",17136
+1091,202203230OKC,"['Pat Fraher', 'Gediminas Petraitis', 'Brandon Schwab']",14393
+1092,202203230POR,"['John Butler', 'Eric Dalen', 'Josh Tiven']",16610
+1093,202203240DEN,"['Derrick Collins', 'Courtney Kirkland', 'Justin Van Duyne']",19520
+1094,202203240MEM,"['Jason Goldenberg', 'Ben Taylor', 'Leon Wood']",16205
+1095,202203240MIL,"['Kane Fitzgerald', 'Lauren Holtkamp-Sterling', 'Derek Richardson']",18018
+1096,202203240NOP,"['Nate Green', 'Bill Kennedy', 'Natalie Sago']",13973
+1097,202203240TOR,"['Tony Brothers', 'J.T. Orr', 'Michael Smith']",19800
+1098,202203250ATL,"['Bennie Adams', 'Marc Davis', 'Tyler Ford']",17724
+1099,202203250CHO,"['Curtis Blair', 'James Capers Jr.', 'Scott Twardoski']",19162
+1100,202203250DET,"['Tony Brothers', 'J.T. Orr', 'Evan Scott']",18943
+1101,202203250LAC,"['Eric Dalen', 'J.B. DeRosa', 'Josh Tiven']",19068
+1102,202203250MIA,"['Rodney Mott', 'Phenizee Ransom', 'Dedric Taylor']",19600
+1103,202203250MIN,"['Scott Foster', 'Mark Lindsay', 'Andy Nagy']",17136
+1104,202203250POR,"['Ray Acosta', 'Brent Barnaky', 'Sean Wright']",16947
+1105,202203260CLE,"['Marc Davis', 'Jacyn Goble', 'Jenna Schroeder']",19432
+1106,202203260DEN,"['Kevin Cutler', 'Brett Nansel', 'James Williams']",19520
+1107,202203260MEM,"['John Conley', 'Karl Lane', 'Eric Lewis']",17794
+1108,202203260MIA,"['Matt Boland', 'Bill Kennedy', 'Michael Smith']",19600
+1109,202203260NOP,"['Mitchell Ervin', 'Kevin Scott', 'C.J. Washington']",13097
+1110,202203260ORL,"['John Goble', 'Aaron Smith', 'Scott Wall']",16366
+1111,202203260POR,"['J.B. DeRosa', 'Courtney Kirkland', 'Danielle Scott']",17821
+1112,202203260TOR,"['Lauren Holtkamp-Sterling', 'Tom Washington', 'Zach Zarba']",19800
+1113,202203270BOS,"['Gediminas Petraitis', 'Jonathan Sterling', 'Ben Taylor']",19156
+1114,202203270BRK,"['Brian Forte', 'Pat Fraher', 'Justin Van Duyne']",18166
+1115,202203270DAL,"['Kane Fitzgerald', 'Tyler Ford', 'J.T. Orr']",20177
+1116,202203270DET,"['Brandon Adair', 'Curtis Blair', 'Suyash Mehta']",19304
+1117,202203270NOP,"['Tony Brothers', 'Eric Dalen', 'Andy Nagy']",18516
+1118,202203270PHO,"['Scott Foster', 'Jason Goldenberg', 'Tre Maddox']",17071
+1119,202203270WAS,"['Nick Buchert', 'Rodney Mott', 'Ashley Moyer-Gleich']",24760
+1120,202203280CHO,"['Lauren Holtkamp-Sterling', 'Bill Kennedy', 'Mark Lindsay']",17614
+1121,202203280CLE,"['Nick Buchert', 'Ben Taylor', 'C.J. Washington']",19432
+1122,202203280HOU,"['Natalie Sago', 'Aaron Smith', 'James Williams']",18055
+1123,202203280IND,"['John Conley', 'Ed Malloy', 'Scott Wall']",14212
+1124,202203280MEM,"['J.B. DeRosa', 'Courtney Kirkland', 'Brett Nansel']",17011
+1125,202203280MIA,"['Ray Acosta', 'Brent Barnaky', 'Kevin Scott']",19600
+1126,202203280NYK,"['Mousa Dagher', 'Brian Forte', 'Pat Fraher']",19812
+1127,202203280POR,"['Eric Lewis', 'Derek Richardson', 'Leon Wood']",18188
+1128,202203280TOR,"['Mitchell Ervin', 'David Guthrie', 'Evan Scott']",19800
+1129,202203290BRK,"['David Guthrie', 'Marat Kogut', 'Tre Maddox']",17559
+1130,202203290DAL,"['Marc Davis', 'Natalie Sago', 'Dedric Taylor']",20382
+1131,202203290LAC,"['Scott Foster', 'Jacyn Goble', 'Jason Goldenberg']",19068
+1132,202203290PHI,"['Brandon Adair', 'James Capers Jr.', 'Mitchell Ervin']",21467
+1133,202203290WAS,"['John Goble', 'Phenizee Ransom', 'Michael Smith']",15922
+1134,202203300BOS,"['Kane Fitzgerald', 'Ed Malloy', 'Justin Van Duyne']",0
+1135,202203300CLE,"['Eric Dalen', 'Brett Nansel', 'Josh Tiven']",19432
+1136,202203300GSW,"['Jacyn Goble', 'Eric Lewis', 'Leon Wood']",18064
+1137,202203300HOU,"['Curtis Blair', 'Mousa Dagher', 'Mark Lindsay']",13365
+1138,202203300IND,"['Tony Brothers', 'Brian Forte', 'Jonathan Sterling']",15036
+1139,202203300NYK,"['John Butler', 'Kevin Cutler', 'Zach Zarba']",19812
+1140,202203300OKC,"['Matt Myers', 'Gediminas Petraitis', 'Ben Taylor']",15595
+1141,202203300POR,"['Karl Lane', 'Rodney Mott', 'Jenna Schroeder']",18551
+1142,202203300SAS,"['Nick Buchert', 'Kevin Scott', 'Scott Wall']",15821
+1143,202203300TOR,"['J.B. DeRosa', 'Bill Kennedy', 'Aaron Smith']",19800
+1144,202203300WAS,"['Matt Boland', 'Tom Washington', 'Sean Wright']",16455
+1145,202203310ATL,"['Ray Acosta', 'Courtney Kirkland', 'Tre Maddox']",17491
+1146,202203310BRK,"['Brent Barnaky', 'John Goble', 'Derek Richardson']",17917
+1147,202203310CHI,"['Gediminas Petraitis', 'Dedric Taylor', 'James Williams']",21519
+1148,202203310DET,"['Lauren Holtkamp-Sterling', 'Danielle Scott', 'Josh Tiven']",20023
+1149,202203310UTA,"['Karl Lane', 'Eric Lewis', 'Evan Scott']",18306
+1150,202204010BOS,"['Eric Dalen', 'Bill Kennedy', 'Brett Nansel']",19156
+1151,202204010DEN,"['James Capers Jr.', 'Mousa Dagher', 'Jacyn Goble']",19612
+1152,202204010HOU,"['Tyler Ford', 'Marat Kogut', 'Michael Smith']",14857
+1153,202204010LAL,"['Pat Fraher', 'J.T. Orr', 'Leon Wood']",18997
+1154,202204010MEM,"['Natalie Sago', 'Tom Washington', 'Zach Zarba']",17794
+1155,202204010MIL,"['Bennie Adams', 'Derrick Collins', 'Sean Wright']",18023
+1156,202204010OKC,"['Nick Buchert', 'Kevin Scott', 'Scott Twardoski']",16961
+1157,202204010ORL,"['Brandon Adair', 'Curtis Blair', 'Nate Green']",17566
+1158,202204010SAS,"['Mitchell Ervin', 'Matt Myers', 'Ben Taylor']",17512
+1159,202204010WAS,"['Tony Brothers', 'Jason Goldenberg', 'Justin Van Duyne']",17745
+1160,202204020ATL,"['Brandon Adair', 'Karl Lane', 'Kevin Scott']",18126
+1161,202204020CHI,"['J.B. DeRosa', 'Josh Tiven', 'C.J. Washington']",21697
+1162,202204020GSW,"['Matt Boland', 'Tre Maddox', 'J.T. Orr']",18064
+1163,202204020NYK,"['Lauren Holtkamp-Sterling', 'Rodney Mott', 'Ashley Moyer-Gleich']",19812
+1164,202204020PHI,"['Kane Fitzgerald', 'Gediminas Petraitis', 'Phenizee Ransom']",21509
+1165,202204030BOS,"['Nate Green', 'Scott Wall', 'James Williams']",19156
+1166,202204030CLE,"['John Butler', 'Karl Lane', 'Sean Wright']",19432
+1167,202204030HOU,"['Brian Forte', 'Brandon Schwab', 'Josh Tiven']",16539
+1168,202204030IND,"['Brent Barnaky', 'Curtis Blair', 'Derek Richardson']",17407
+1169,202204030LAC,"['Matt Boland', 'Mark Lindsay', 'Michael Smith']",16840
+1170,202204030LAL,"['Mitchell Ervin', 'Ed Malloy', 'Scott Twardoski']",18997
+1171,202204030MIL,"['Jacyn Goble', 'Aaron Smith', 'Zach Zarba']",17902
+1172,202204030OKC,"['James Capers Jr.', 'J.B. DeRosa', 'Brett Nansel']",17078
+1173,202204030ORL,"['Ray Acosta', 'Nick Buchert', 'Tyler Ford']",15747
+1174,202204030SAC,"['Derrick Collins', 'Pat Fraher', 'Evan Scott']",17583
+1175,202204030SAS,"['Eric Dalen', 'Jason Goldenberg', 'Courtney Kirkland']",15816
+1176,202204030TOR,"['Bennie Adams', 'Kevin Cutler', 'Tom Washington']",19800
+1177,202204050BRK,"['Matt Myers', 'Natalie Sago', 'Tom Washington']",17768
+1178,202204050CHI,"['James Capers Jr.', 'Kevin Scott', 'Jonathan Sterling']",20799
+1179,202204050DEN,"['Tony Brothers', 'Tre Maddox', 'Derek Richardson']",17037
+1180,202204050IND,"['Tyler Ford', 'Marat Kogut', 'Eric Lewis']",15583
+1181,202204050MIA,"['Karl Lane', 'Scott Wall', 'James Williams']",19600
+1182,202204050MIN,"['Kevin Cutler', 'Bill Kennedy', 'J.T. Orr']",17136
+1183,202204050OKC,"['Brandon Adair', 'John Goble', 'Andy Nagy']",14674
+1184,202204050ORL,"['Bennie Adams', 'Eric Dalen', 'Josh Tiven']",16897
+1185,202204050PHO,"['Derrick Collins', 'David Guthrie', 'Gediminas Petraitis']",17071
+1186,202204050SAC,"['Mark Lindsay', 'Justin Van Duyne', 'Leon Wood']",16047
+1187,202204050TOR,"['Brian Forte', 'Rodney Mott', 'Danielle Scott']",19800
+1188,202204050UTA,"['Ed Malloy', 'Michael Smith', 'Scott Twardoski']",18306
+1189,202204060ATL,"['Brent Barnaky', 'Matt Boland', 'Pat Fraher']",17381
+1190,202204060CHI,"['Mitchell Ervin', 'Eric Lewis', 'Aaron Smith']",21095
+1191,202204060DET,"['Brian Forte', 'Courtney Kirkland', 'Jenna Schroeder']",18422
+1192,202204060LAC,"['Kane Fitzgerald', 'Lauren Holtkamp-Sterling', 'Dedric Taylor']",19068
+1193,202204060NYK,"['Curtis Blair', 'Jason Goldenberg', 'Sean Wright']",19812
+1194,202204060UTA,"['Tony Brothers', 'Mark Lindsay', 'Gediminas Petraitis']",18306
+1195,202204070CHO,"['Brent Barnaky', 'Rodney Mott', 'Brandon Schwab']",16427
+1196,202204070DEN,"['Derrick Collins', 'J.T. Orr', 'Zach Zarba']",19520
+1197,202204070GSW,"['Brandon Adair', 'Kane Fitzgerald', 'Michael Smith']",18064
+1198,202204070MIL,"['Ray Acosta', 'Kevin Cutler', 'David Guthrie']",18046
+1199,202204070MIN,"['Marc Davis', 'Jacyn Goble', 'Phenizee Ransom']",17136
+1200,202204070NOP,"['Pat Fraher', 'Marat Kogut', 'Tre Maddox']",12432
+1201,202204070TOR,"['Nick Buchert', 'Matt Myers', 'James Williams']",19800
+1202,202204080BRK,"['Eric Lewis', 'Ben Taylor', 'Scott Wall']",18169
+1203,202204080CHI,"['Mark Lindsay', 'Natalie Sago', 'Josh Tiven']",21461
+1204,202204080DAL,"['Tony Brothers', 'Tom Washington', 'Leon Wood']",20174
+1205,202204080DET,"['Nate Green', 'Ed Malloy', 'Sean Wright']",22088
+1206,202204080LAL,"['Lauren Holtkamp-Sterling', 'Bill Kennedy', 'Dedric Taylor']",18997
+1207,202204080MIA,"['Tyler Ford', 'John Goble', 'Aaron Smith']",19993
+1208,202204080TOR,"['Jason Goldenberg', 'Courtney Kirkland', 'Karl Lane']",19800
+1209,202204080UTA,"['Mitchell Ervin', 'Justin Van Duyne', 'Zach Zarba']",18306
+1210,202204080WAS,"['Brian Forte', 'Andy Nagy', 'Gediminas Petraitis']",19472
+1211,202204090LAC,"['Brandon Adair', 'Tre Maddox', 'J.T. Orr']",17568
+1212,202204090MEM,"['Eric Dalen', 'Kane Fitzgerald', 'Jonathan Sterling']",17207
+1213,202204090PHI,"['Curtis Blair', 'Jacyn Goble', 'Ashley Moyer-Gleich']",21171
+1214,202204090SAS,"['James Capers Jr.', 'J.B. DeRosa', 'Suyash Mehta']",18627
+1215,202204100BRK,"['Marc Davis', 'Nate Green', 'Karl Lane']",17967
+1216,202204100CHO,"['Nick Buchert', 'Eric Lewis', 'Aaron Smith']",18465
+1217,202204100CLE,"['Scott Foster', 'Mark Lindsay', 'Gediminas Petraitis']",19432
+1218,202204100DAL,"['Tyler Ford', 'Andy Nagy', 'James Williams']",20270
+1219,202204100DEN,"['Mitchell Ervin', 'Josh Tiven', 'Justin Van Duyne']",19520
+1220,202204100HOU,"['Tony Brothers', 'C.J. Washington', 'Leon Wood']",18055
+1221,202204100LAC,"['Bennie Adams', 'Kevin Cutler', 'Zach Zarba']",18210
+1222,202204100MEM,"['Marat Kogut', 'Ed Malloy', 'Sean Wright']",17441
+1223,202204100MIN,"['Ray Acosta', 'David Guthrie', 'Michael Smith']",17136
+1224,202204100NOP,"['Courtney Kirkland', 'Scott Twardoski', 'Tom Washington']",16595
+1225,202204100NYK,"['Brent Barnaky', 'Matt Boland', 'John Goble']",19812
+1226,202204100ORL,"['Curtis Blair', 'Derrick Collins', 'Jason Goldenberg']",19253
+1227,202204100PHI,"['Pat Fraher', 'Natalie Sago', 'Evan Scott']",21459
+1228,202204100PHO,"['Rodney Mott', 'Brett Nansel', 'Derek Richardson']",17071
+1229,202204100POR,"['Lauren Holtkamp-Sterling', 'Bill Kennedy', 'Dedric Taylor']",18123
+1230,202204120BRK,"['Curtis Blair', 'J.B. DeRosa', 'Kane Fitzgerald', 'Tyler Ford']",17732
+1231,202204120MIN,"['Scott Foster', 'Ed Malloy', 'Justin Van Duyne', 'Tom Washington']",17136
+1232,202204130ATL,"['James Capers Jr.', 'Jacyn Goble', 'James Williams']",18137
+1233,202204130NOP,"['David Guthrie', 'Bill Kennedy', 'Gediminas Petraitis', 'Sean Wright']",18610
+1234,202204150CLE,"['Eric Lewis', 'Tre Maddox', 'Ben Taylor', 'Zach Zarba']",19432
+1235,202204150LAC,"['Marc Davis', 'Brian Forte', 'Mark Lindsay', 'Josh Tiven']",19068
+1236,202204160DAL,"['James Capers Jr.', 'Tyler Ford', 'Pat Fraher', 'Scott Twardoski']",20013
+1237,202204160GSW,"['Kevin Cutler', 'Scott Foster', 'Karl Lane', 'Ed Malloy']",18064
+1238,202204160MEM,"['David Guthrie', 'Justin Van Duyne', 'Tom Washington', 'Sean Wright']",17794
+1239,202204160PHI,"['Derrick Collins', 'Kane Fitzgerald', 'Jacyn Goble', 'Bill Kennedy']",20610
+1240,202204170BOS,"['Rodney Mott', 'James Williams', 'Zach Zarba']",19156
+1241,202204170MIA,"['Eric Dalen', 'Marc Davis', 'Jacyn Goble', 'Josh Tiven']",19514
+1242,202204170MIL,"['Tony Brothers', 'John Goble', 'Michael Smith']",17717
+1243,202204170PHO,"['Eric Lewis', 'Gediminas Petraitis', 'Ben Taylor']",17071
+1244,202204180DAL,"['David Guthrie', 'Courtney Kirkland', 'Ed Malloy', 'Scott Twardoski']",20113
+1245,202204180GSW,"['Brent Barnaky', 'Curtis Blair', 'Kevin Cutler', 'Kane Fitzgerald']",18064
+1246,202204180PHI,"['Ray Acosta', 'James Capers Jr.', 'J.B. DeRosa', 'Mark Lindsay']",20974
+1247,202204190MEM,"['Mitchell Ervin', 'Aaron Smith', 'James Williams', 'Zach Zarba']",17794
+1248,202204190MIA,"['Nick Buchert', 'Eric Dalen', 'John Goble', 'Tre Maddox']",19950
+1249,202204190PHO,"['Tony Brothers', 'Scott Foster', 'Pat Fraher']",17071
+1250,202204200BOS,"['Tyler Ford', 'Jacyn Goble', 'Eric Lewis']",19156
+1251,202204200MIL,"['Curtis Blair', 'Kane Fitzgerald', 'Ben Taylor']",17688
+1252,202204200TOR,"['Marc Davis', 'Justin Van Duyne', 'Sean Wright']",19800
+1253,202204210DEN,"['David Guthrie', 'Courtney Kirkland', 'Karl Lane', 'Mark Lindsay']",19627
+1254,202204210MIN,"['Ray Acosta', 'James Capers Jr.', 'Josh Tiven', 'Scott Twardoski']",19634
+1255,202204210UTA,"['Nick Buchert', 'John Goble', 'Tre Maddox']",18306
+1256,202204220ATL,"['J.B. DeRosa', 'Eric Lewis', 'Ben Taylor']",18421
+1257,202204220CHI,"['Marc Davis', 'Brian Forte', 'Sean Wright']",22667
+1258,202204220NOP,"['Brent Barnaky', 'Curtis Blair', 'Zach Zarba']",18962
+1259,202204230BRK,"['James Capers Jr.', 'Karl Lane', 'Mark Lindsay']",18175
+1260,202204230MIN,"['John Goble', 'Bill Kennedy', 'Tre Maddox']",19832
+1261,202204230TOR,"['Scott Foster', 'Ed Malloy', 'Rodney Mott']",19800
+1262,202204230UTA,"['Kane Fitzgerald', 'Michael Smith', 'James Williams']",18306
+1263,202204240ATL,"['Brent Barnaky', 'David Guthrie', 'Courtney Kirkland']",18951
+1264,202204240CHI,"['Tyler Ford', 'Eric Lewis', 'Gediminas Petraitis', 'Leon Wood']",22020
+1265,202204240DEN,"['Mitchell Ervin', 'Pat Fraher', 'Justin Van Duyne', 'Zach Zarba']",19628
+1266,202204240NOP,"['Kevin Cutler', 'Marc Davis', 'Josh Tiven', 'Tom Washington']",18962
+1267,202204250BRK,"['Derrick Collins', 'Brian Forte', 'Scott Foster', 'Sean Wright']",18099
+1268,202204250DAL,"['Tony Brothers', 'James Capers Jr.', 'Jacyn Goble']",20577
+1269,202204250PHI,"['John Goble', 'Tre Maddox', 'James Williams']",20517
+1270,202204260MEM,"['Marc Davis', 'Tyler Ford', 'Gediminas Petraitis']",17794
+1271,202204260MIA,"['Kevin Cutler', 'Mitchell Ervin', 'Bill Kennedy', 'Zach Zarba']",19553
+1272,202204260PHO,"['J.B. DeRosa', 'David Guthrie', 'Courtney Kirkland', 'Karl Lane']",17071
+1273,202204270GSW,"['James Capers Jr.', 'Brian Forte', 'Josh Tiven', 'Scott Twardoski']",18064
+1274,202204270MIL,"['Scott Foster', 'Mark Lindsay', 'Rodney Mott']",17506
+1275,202204280NOP,"['Tony Brothers', 'Kane Fitzgerald', 'Tyler Ford']",18710
+1276,202204280TOR,"['Curtis Blair', 'Bill Kennedy', 'Zach Zarba']",19800
+1277,202204280UTA,"['Pat Fraher', 'David Guthrie', 'Sean Wright']",18306
+1278,202204290MIN,"['Scott Foster', 'Courtney Kirkland', 'Karl Lane', 'Mark Lindsay']",20323
+1279,202205010BOS,"['Curtis Blair', 'Scott Foster', 'Ed Malloy']",19156
+1280,202205010MEM,"['Kane Fitzgerald', 'Gediminas Petraitis', 'Scott Twardoski', 'James Williams']",17794
+1281,202205020MIA,"['Marc Davis', 'Mark Lindsay', 'Justin Van Duyne', 'Sean Wright']",19620
+1282,202205020PHO,"['Bill Kennedy', 'Josh Tiven', 'Zach Zarba']",17071
+1283,202205030BOS,"['Tyler Ford', 'David Guthrie', 'Courtney Kirkland']",19156
+1284,202205030MEM,"['Mitchell Ervin', 'Scott Foster', 'Eric Lewis']",17794
+1285,202205040MIA,"['Josh Tiven', 'Tom Washington', 'Zach Zarba']",19759
+1286,202205040PHO,"['Tony Brothers', 'James Capers Jr.', 'Ben Taylor']",17071
+1287,202205060DAL,"['Marc Davis', 'John Goble', 'Rodney Mott', 'Michael Smith']",20777
+1288,202205060PHI,"['James Capers Jr.', 'Ed Malloy', 'Ben Taylor', 'Scott Twardoski']",21033
+1289,202205070GSW,"['David Guthrie', 'Courtney Kirkland', 'Tre Maddox']",18064
+1290,202205070MIL,"['Pat Fraher', 'Sean Wright', 'Zach Zarba']",17736
+1291,202205080DAL,"['Curtis Blair', 'Kane Fitzgerald', 'James Williams']",20610
+1292,202205080PHI,"['Brian Forte', 'Scott Foster', 'Eric Lewis']",21194
+1293,202205090GSW,"['Marc Davis', 'John Goble', 'Karl Lane', 'Justin Van Duyne']",18064
+1294,202205090MIL,"['Tony Brothers', 'James Capers Jr.', 'Jacyn Goble']",17505
+1295,202205100MIA,"['Kane Fitzgerald', 'Tyler Ford', 'James Williams']",19868
+1296,202205100PHO,"['David Guthrie', 'Tom Washington', 'Sean Wright']",17071
+1297,202205110BOS,"['Marc Davis', 'Mark Lindsay', 'Josh Tiven']",19156
+1298,202205110MEM,"['Tony Brothers', 'Bill Kennedy', 'Zach Zarba']",17794
+1299,202205120DAL,"['James Capers Jr.', 'Courtney Kirkland', 'Ed Malloy']",20777
+1300,202205120PHI,"['Curtis Blair', 'John Goble', 'David Guthrie']",21082
+1301,202205130GSW,"['Kane Fitzgerald', 'Jacyn Goble', 'Josh Tiven', 'James Williams']",18064
+1302,202205130MIL,"['Eric Lewis', 'Tre Maddox', 'Ben Taylor']",17681
+1303,202205150BOS,"['James Capers Jr.', 'Kane Fitzgerald', 'John Goble']",19156
+1304,202205150PHO,"['Tony Brothers', 'Josh Tiven', 'Zach Zarba']",17071
+1305,202205170MIA,"['Tony Brothers', 'Ed Malloy', 'Zach Zarba']",19774
+1306,202205180GSW,"['James Capers Jr.', 'Courtney Kirkland', 'Mark Lindsay']",18064
+1307,202205190MIA,"['John Goble', 'David Guthrie', 'Bill Kennedy']",20100
+1308,202205200GSW,"['Kane Fitzgerald', 'Eric Lewis', 'Ben Taylor']",18064
+1309,202205210BOS,"['Curtis Blair', 'James Capers Jr.', 'James Williams']",19156
+1310,202205220DAL,"['Marc Davis', 'Tyler Ford', 'Josh Tiven']",20813
+1311,202205230BOS,"['Kane Fitzgerald', 'Scott Foster', 'Pat Fraher']",19156
+1312,202205240DAL,"['David Guthrie', 'Sean Wright', 'Zach Zarba']",20810
+1313,202205250MIA,"['Marc Davis', 'Mark Lindsay', 'Josh Tiven']",19819
+1314,202205260GSW,"['Curtis Blair', 'Scott Foster', 'John Goble']",18064
+1315,202205270BOS,"['Courtney Kirkland', 'Eric Lewis', 'Zach Zarba']",19156
+1316,202205290MIA,"['James Capers Jr.', 'Scott Foster', 'David Guthrie']",20200
+1317,202206020GSW,"['Marc Davis', 'John Goble', 'James Williams']",18064
+1318,202206050GSW,"['Tony Brothers', 'Josh Tiven', 'Zach Zarba']",18064
+1319,202206080BOS,"['Scott Foster', 'David Guthrie', 'Courtney Kirkland']",19156
+1320,202206100BOS,"['James Capers Jr.', 'Kane Fitzgerald', 'Eric Lewis']",19156
+1321,202206130GSW,"['Tony Brothers', 'Marc Davis', 'Josh Tiven']",18064
+1322,202206160BOS,"['John Goble', 'David Guthrie', 'Zach Zarba']",19156
