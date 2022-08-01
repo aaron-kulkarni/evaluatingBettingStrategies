@@ -173,8 +173,10 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home, gameId):
 
 
     return statsDict
-
-def getTeamGameStatDataFrame(gameId):
+def getTeamGameStatDataFrame(startDate, endDate):
+    
+    
+def getTeamGameStat(gameId):
     '''
     Gets the static data about a team by scraping
     it from https://www.basketball-reference.com.
@@ -183,7 +185,7 @@ def getTeamGameStatDataFrame(gameId):
     The gameID to look for in basketball-reference.com
     Returns
     -------
-    Dataframe indexed by playerID on player performance statistics
+    Array indexed by playerID on player performance statistics
     '''
     
     url = f"https://www.basketball-reference.com/boxscores/{gameId}.html"
@@ -204,8 +206,6 @@ def getTeamGameStatDataFrame(gameId):
     result = []
     result = getTeamGameStats(home_abbr, result, url)
     result = getTeamGameStats(away_abbr, result, url)
-    print(result)
-    
 
     return result
 
@@ -309,4 +309,4 @@ def getGameStatsDataFrame(startTime, endTime):
         df = df.append(gameData, ignore_index = True)
     return df
 
-getGameStatsDataFrame('2014, 10, 28', '2015, 4, 15').to_csv('game_data_player_stats_2015.csv')
+
