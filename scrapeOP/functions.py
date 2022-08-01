@@ -27,12 +27,15 @@ TYPE_ODDS = 'CLOSING' # you can change to 'OPENING' if you want to collect openi
 
 def get_opening_odd(xpath):
     # I. Get the raw data by hovering and collecting
-    data = driver.find_element("xapth", xpath)
+    #data = driver.find_element_by_xpath(xpath)
+    data = driver.find_element("xpath",xpath)
+    
     hov = ActionChains(driver).move_to_element(data)
     hov.perform()
-    data_in_the_bubble = driver.find_element("xpath", "//*[@id='tooltiptext']")
+    #data_in_the_bubble = driver.find_element_by_xpath("//*[@id='tooltiptext']")
+    data_in_the_bubble = driver.find_element("xpath","//*[@id='tooltiptext']")
     hover_data = data_in_the_bubble.get_attribute("innerHTML")
-
+    
     # II. Extract opening odds
     b = re.split('<br>', hover_data)
     c = [re.split('</strong>',y)[0] for y in b][-2]
@@ -44,13 +47,14 @@ def get_opening_odd(xpath):
     
 def fi(a):
     try:
-        driver.find_element("xpath", a).text
+        #pdb.set_trace()
+        driver.find_element("xpath",a).text
     except:
         return False
 
 def ffi(a):
     if fi(a) != False :
-        return driver.find_element("xpath", a).text
+        return driver.find_element("xpath",a).text
             
 def fffi(a):
     if TYPE_ODDS == 'OPENING':
@@ -63,12 +67,16 @@ def fffi(a):
 
 def fi2(a):
     try:
-        driver.find_element("xpath", a).click()
+        #pdb.set_trace()
+        el = driver.find_element("xpath",a)
+        el.send_keys("\n")
+        #driver.implicitly_wait(4)
     except:
         return False
 
 def ffi2(a):
     if fi2(a) != False :
+        #pdb.set_trace()
         fi2(a)
         return(True)
     else:
@@ -79,8 +87,12 @@ def ffi2(a):
 def get_data_typeA(i, link):
     driver.get(link)
     target = '//*[@id="tournamentTable"]/tbody/tr[{}]/td[2]/a'.format(i)
-    a = ffi2(target)
-    if a == True:
+    print("Link",i)
+    _a = ffi2(target)
+    
+    print("HELLO",_a)
+    #pdb.set_trace()
+    if _a == True:
         print('We wait 4 seconds')
         L = []
         time.sleep(4)
@@ -91,11 +103,14 @@ def get_data_typeA(i, link):
             Odd_2 = fffi('//*[@id="odds-data-table"]/div[1]/table/tbody/tr[{}]/td[3]/div'.format(j)) # first away odd
             match = ffi('//*[@id="col-content"]/h1') # match teams
             final_score = ffi('//*[@id="event-status"]')
+            #pdb.set_trace()
             date = ffi('//*[@id="col-content"]/p[1]') # Date and time
-            print(match, Book, Odd_1, Odd_2, date, final_score, i, '/ 500 ')
+            #print(match, Book, Odd_1, Odd_2, date, final_score, i, '/ 500 ')
             L = L + [(match, Book, Odd_1, Odd_2, date, final_score)]
+        #driver.back()
+        driver.execute_script("window.history.go(-1)")
         return(L)
-
+    
     return(None)
 
 def get_data_next_games_typeA(i, link):
@@ -154,16 +169,18 @@ def get_data_next_games_typeA(i, link):
             print(match, Book, Odd_1, Odd_2, date, i, '/ 500 ')
             L = L + [(match, Book, Odd_1, Odd_2, date)]
 
-    return(L)
+    return(L)x
 
 def scrape_page_typeA(page, sport, country, tournament, SEASON):
     link = 'https://www.oddsportal.com/{}/{}/{}-{}/results/page/1/#/page/{}'.format(sport, country, tournament, SEASON, page)
     DATA = []
-    for i in range(1,100):
+    #import pdb
+    #pdb.set_trace()
+    for i in range(1,150):
         content = get_data_typeA(i, link)
         if content != None:
             DATA = DATA + content
-    print(DATA)
+    #print(DATA)
     return(DATA)
 
 def scrape_page_next_games_typeA(country, sport, tournament, nmax = 20):
@@ -194,16 +211,19 @@ def scrape_current_tournament_typeA(sport, tournament, country, SEASON, max_page
     for page in range(1, max_page):
         print('We start to scrape the page n°{}'.format(page))
         driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+        driver.get('http://www.oddsportal.com/set-timezone/15/')
         data = scrape_page_typeA(page,sport, country, tournament, SEASON)
         DATA_ALL = DATA_ALL + [y for y in data if y != None]
         driver.close()
 
     data_df = pd.DataFrame(DATA_ALL)
+    
     try:
         data_df.columns = ['TeamsRaw', 'Bookmaker', 'OddHome', 'OddAway', 'DateRaw' ,'ScoreRaw']
     except:
         print('Function crashed, probable reason : no games scraped (empty season)')
         return(1)
+    
     ##################### FINALLY WE CLEAN THE DATA AND SAVE IT ##########################
     '''Now we simply need to split team names, transform date, split score'''
 
@@ -252,6 +272,8 @@ def scrape_current_season_typeA(tournament, sport, country, SEASON, max_page = 2
     for page in range(1, max_page):
         print('We start to scrape the page n°{}'.format(page))
         driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+        driver.get('http://www.oddsportal.com/set-timezone/15/')
+       
         data = scrape_page_current_season_typeA(page, sport, country, tournament)
         DATA_ALL = DATA_ALL + [y for y in data if y != None]
         driver.close()
@@ -305,12 +327,15 @@ def scrape_current_season_typeA(tournament, sport, country, SEASON, max_page = 2
 def scrape_league_typeA(Season, sport, country1, tournament1, nseason, current_season = 'yes', max_page = 25):
     long_season = (len(Season) > 6) # indicates whether Season is in format '2010-2011' or '2011' depends on the league) 
     Season = int(Season[0:4])
+    #import pdb
+    #pdb.set_trace()
     for i in range(nseason):
         SEASON1 = '{}'.format(Season)
         if long_season:
           SEASON1 = '{}-{}'.format(Season, Season+1)
         print('We start to collect season {}'.format(SEASON1))
         scrape_current_tournament_typeA(sport = sport, tournament = tournament1, country = country1, SEASON = SEASON1, max_page = max_page)
+        
         print('We finished to collect season {} !'.format(SEASON1))
         Season+=1
 
@@ -321,8 +346,9 @@ def scrape_league_typeA(Season, sport, country1, tournament1, nseason, current_s
         print('We start to collect current season')
         scrape_current_season_typeA(tournament = tournament1, sport = sport, country = country1, SEASON = 'CurrentSeason', max_page = max_page)
         print('We finished to collect current season !')
-
+    #pdb.set_trace()
     # Finally we merge all files
+    #'./{}/'.format(tournament1) + os.listdir('./{}/'.format(tournament1))[0]
     file1 = pd.read_csv('./{}/'.format(tournament1) + os.listdir('./{}/'.format(tournament1))[0], sep=';')
     print(os.listdir('./{}/'.format(tournament1))[0])
     for filename in os.listdir('./{}/'.format(tournament1))[1:]:
@@ -347,6 +373,7 @@ def scrape_next_games_typeA(tournament, sport, country, SEASON, nmax = 30):
     ############### NOW WE SEEK TO SCRAPE THE ODDS AND MATCH INFO################################
     DATA_ALL = []
     driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+    driver.get('http://www.oddsportal.com/set-timezone/15/')
     data = scrape_page_next_games_typeA(country, sport, tournament, nmax)
     DATA_ALL = DATA_ALL + [y for y in data if y != None]
     driver.close()
@@ -529,6 +556,7 @@ def scrape_current_tournament_typeB(Surface, bestof = 3, tournament = 'wta-lyon'
 
     print("We start to scrape the following tournament :", tournament)
     driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+    
     #SEASON = '''2020'''
     DATA_ALL = []
     for page in range(1, max_page + 1):
@@ -1320,12 +1348,15 @@ def scrape_oddsportal_historical(sport = 'football', country = 'france', league 
     surface = input('Please indicate the surface : \n ')
     
   if sport in ['baseball','esports','basketball','darts', 'american-football', 'volleyball']:
-    df = scrape_league_typeA(Season = start_season, sport = sport, country1 = country, tournament1 = league, nseason = nseasons, current_season = 'yes', max_page = max_page)
+    #df = scrape_league_typeA(Season = start_season, sport = sport, country1 = country, tournament1 = league, nseason = nseasons, current_season = 'yes', max_page = max_page)
+    df = scrape_league_typeA(Season = start_season, sport = sport, country1 = country, tournament1 = league, nseason = nseasons, current_season = current_season, max_page = max_page)
     df = create_clean_table_two_ways(df)
   #elif sport in ['tennis']:
     #df = scrape_league_typeB(Surface = surface, bestof = bestof, Season = start_season, country1 = country, tournament1 = league, nseason = nseasons)
     #df = create_clean_table_two_ways(df)
   elif sport in ['soccer', 'rugby-union', 'rugby-league', 'handball']:
+    #import pdb
+    #pdb.set_trace()
     df = scrape_league_typeC(Season = start_season, sport = sport, country1 = country, tournament1 = league, nseason = nseasons, current_season = 'yes', max_page = max_page)
     df = create_clean_table_three_ways(df)
   elif sport in ['hockey']:
@@ -1363,6 +1394,7 @@ def scrape_oddsportal_next_games(sport = 'football', country = 'france', league 
   elif sport in ['soccer', 'rugby-union', 'rugby-league', 'handball']:
     df = scrape_next_games_typeC(tournament = league, sport = sport, country = country, SEASON = season, nmax = nmax)
     df = create_clean_table_three_ways(df)
+    
   elif sport in ['hockey']:
     df = scrape_next_games_typeD(tournament = league, sport = sport, country = country, SEASON = season, nmax = nmax)
     df = create_clean_table_two_ways(df)
