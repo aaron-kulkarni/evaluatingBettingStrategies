@@ -297,10 +297,10 @@ def getTeamGameStatHelper(teamAbbr, result, url):
     pace = (int(result[2])/240) * possessions
 
     #points per possession
-    ppposs = int(result[length-15])/possessions
+    ppposs = round(int(result[length-15])/possessions, 3)
 
     #assists per possession
-    apposs = int(result[length-20])/possessions
+    apposs = round(int(result[length-20])/possessions, 3)
 
     result.append(possessions)
     result.append(pace)
@@ -326,7 +326,3 @@ def getGameStatsDataFrame(startTime, endTime):
         gameData = getPlayerGameStatDataFrame(id) 
         df = df.append(gameData, ignore_index = True)
     return df
-
-getTeamGameStat('202110310BRK')
-
-
