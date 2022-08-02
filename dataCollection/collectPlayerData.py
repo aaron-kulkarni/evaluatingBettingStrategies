@@ -43,7 +43,6 @@ def getPlayerGameStatDataFrame(gameId):
         df[k] = v
 
     df.rename(columns={'Starters':'Name'}, inplace=True)
-    # print(df)
 
     return df
 
@@ -173,7 +172,7 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home, gameId):
 
 
     return statsDict
-def getTeamGameStatDataFrame(startDate, endDate):
+#def getTeamGameStatDataFrame(startDate, endDate):
     
     
 def getTeamGameStat(gameId):
@@ -204,12 +203,12 @@ def getTeamGameStat(gameId):
     # homeTeamArray = getTeamGameStats(home_abbr, url, True, gameId)
     # awayTeamArray = getTeamGameStats(away_abbr, url, False, gameId)
     result = []
-    result = getTeamGameStats(home_abbr, result, url)
-    result = getTeamGameStats(away_abbr, result, url)
+    result = getTeamGameStatHelper(home_abbr, result, url)
+    result = getTeamGameStatHelper(away_abbr, result, url)
 
     return result
 
-def getTeamGameStats(teamAbbr, result, url):
+def getTeamGameStatHelper(teamAbbr, result, url):
     """
     Scrapes the data for an entire team in a given game. 
     Parameters
@@ -261,7 +260,8 @@ def getTeamGameStats(teamAbbr, result, url):
             else:
                 if len(rowList[j]) != len(rowList[1]) and i != 0:
                     result.append(None)
-                result.append(rowList[j][i])
+                elif rowList[j][i] != '':
+                    result.append(rowList[j][i])
     
     try:
         
@@ -287,7 +287,25 @@ def getTeamGameStats(teamAbbr, result, url):
             else:
                 if len(rowList[j]) != len(rowList[1]) and i != 0:
                     result.append(None)
-                result.append(rowList[j][i])
+                elif rowList[j][i] != '':
+                    result.append(rowList[j][i])
+    length = len(result)
+    #possessions = .5 * (FGA + .475 * FTA - ORB + TOV)
+    possessions = .5 * (int(result[length-31]) + .475 * int(result[length-25]) - int(result[length-23]) + int(result[length-17]))
+
+    #pace = possessions/48 minutes. our pace is kinda different from other websites. ask aaron personally for clarification
+    pace = (int(result[2])/240) * possessions
+
+    #points per possession
+    ppposs = int(result[length-15])/possessions
+
+    #assists per possession
+    apposs = int(result[length-20])/possessions
+
+    result.append(possessions)
+    result.append(pace)
+    result.append(ppposs)
+    result.append(apposs)
 
     return result
 
@@ -308,5 +326,7 @@ def getGameStatsDataFrame(startTime, endTime):
         gameData = getPlayerGameStatDataFrame(id) 
         df = df.append(gameData, ignore_index = True)
     return df
+
+getTeamGameStat('202110310BRK')
 
 
