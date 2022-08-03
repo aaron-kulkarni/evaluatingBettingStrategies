@@ -90,8 +90,6 @@ def getGameData(gameId):
         overtimeScoresHome.append(summary['home'][x])
         overtimeScoresAway.append(summary['away'][x])
     
-
-    
     pointsHome = gameData.home_points
     pointsAway = gameData.away_points
 
@@ -168,43 +166,33 @@ def getGameData(gameId):
     '''
     
     # Calculating Home Record
-    homeResults = teamHomeSchedule.result #only show results column
-    homeResults = homeResults.loc[homeResults.index[0]:gameId] #only show up to current game row
-    homeRecord = homeResults.value_counts(ascending = True) #sorts strings 'Win' and 'Loss' alphabetically which makes homeRecord[1] Wins and homeRecord[0] Losses
+    homeResults = teamHomeSchedule.result.shift()
+    homeResults = homeResults.loc[homeResults.index[0]:gameId] 
+    homeRecord = homeResults.value_counts(ascending = True)
     try:
-        homeWins = homeRecord[1]
+        homeWins = homeRecord[0]
     except:
         homeWins = 0 #sets value to 0 if no 'Win' are found in array
     try:
-        homeLosses = homeRecord[0]
+        homeLosses = homeRecord[1]
     except:
         homeLosses = 0 #sets value to 0 if no 'Loss' are found in array
 
     # Calculating Away Record (Same as Home Record)
-
-    awayResults = teamAwaySchedule.result
+    awayResults = teamAwaySchedule.result.shift()
     awayResults = awayResults.loc[awayResults.index[0]:gameId]
     awayRecord = awayResults.value_counts(ascending = True)
     try:
-        awayWins = awayRecord[1]
+        awayWins = awayRecord[0]
     except:
         awayWins = 0
     try:
-        awayLosses = awayRecord[0]
+        awayLosses = awayRecord[1]
     except:
         awayLosses = 0
-    
 
-    if pointsHome > pointsAway:
-        homeWins-=1
-        awayLosses-=1
-    else:
-        homeLosses-=1
-        awayWins-=1    
-    
     homeRecord = [homeWins, homeLosses]
     awayRecord = [awayWins, awayLosses] 
-
 
     tempDf = teamHomeSchedule.loc[teamHomeSchedule['opponent_abbr'] == teamHome]
     tempDf = tempDf.loc[teamHomeSchedule['datetime'] < currentdate]
