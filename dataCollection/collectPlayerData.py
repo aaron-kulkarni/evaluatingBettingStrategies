@@ -172,9 +172,7 @@ def getPlayerGameStats(teamAbbr, statsDict, url, home, gameId):
 
 
     return statsDict
-#def getTeamGameStatDataFrame(startDate, endDate):
-    
-    
+      
 def getTeamGameStat(gameId):
     '''
     Gets the static data about a team by scraping
@@ -326,3 +324,31 @@ def getGameStatsDataFrame(startTime, endTime):
         gameData = getPlayerGameStatDataFrame(id) 
         df = df.append(gameData, ignore_index = True)
     return df
+
+def extract_lines(filename):
+    startGameId = pd.read_csv(filename).head(1)['gameid'].iloc[0]
+    endGameId = pd.read_csv(filename).tail(1)['gameid'].iloc[0]
+    
+    startDate = dt.datetime.strptime(startGameId[0:4]+', '+startGameId[4:6]+', '+startGameId[6:8], '%Y, %m, %d')
+    endDate = dt.datetime.strptime(endGameId[0:4]+', '+endGameId[4:6]+', '+endGameId[6:8], '%Y, %m, %d')
+    
+    return startDate, endDate
+
+def getTeamGameStatDataFrame(year):
+    fileLocation = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/gameStats/game_data_player_stats_{}_clean.csv'.format(year)
+
+    startDate = str(extract_lines(fileLocation)[0])[0:10]
+    endDate = str(extract_lines(fileLocation)[1])[0:10]
+    gameIdList = []
+    allGames = Boxscores(dt.datetime.strptime(startDate, '%m-%d-%Y'), dt.datetime.strptime(endDate, '%m-%d-%Y')).games
+    for key in allGames.keys():
+        for i in range(len(allGames[key])):
+             gameIdList.append(allGames[key][i]['boxscore'])
+    gameDataList = []
+    for id in gameIdList:
+        gameDataList.append(getTeamGameStat(id))
+    df = pd.DataFrame(gameDataList, columns = ['homeTeamAbbr', 'PlaceholderH', 'MP_H', 'FG_H', 'FGA_H', 'FG%_H', '3P_H', '3PA_H', 'EP%_H', 'FT_H', 'FTA_H', 'FT%_H', 'ORB_H', 'DRB_H', 'TRB_H', 'AST_H', 'STL_H', 'BLK_H', 'TOV_H', 'PF_H', 'PTS_H', 'TS%_H', 'eFG%_H', '3pAr_H', 'FTr_H', 'ORB%_H', 'DRB%_H', 'TRB%_H', 'AST%_H', 'STL%_H', 'BLK%_H', 'TOV%_H', 'USG%_H', 'ORtg_H', 'Drtg_H', 'poss_H', 'pace_H', 'poss_per_poss_H', 'ass_per_poss_H','awayTeamAbbr', 'PlaceholderA', 'MP_A', 'FG_A', 'FGA_A', 'FG%_A', '3P_A', '3PA_A', 'EP%_A', 'FT_A', 'FTA_A', 'FT%_A', 'ORB_A', 'DRB_A', 'TRB_A', 'AST_A', 'STL_A', 'BLK_A', 'TOV_A', 'PF_A', 'PTS_A', 'TS%_A', 'eFG%_A', '3pAr_A', 'FTr_A', 'ORB%_A', 'DRB%_A', 'TRB%_A', 'AST%_A', 'STL%_A', 'BLK%_A', 'TOV%_A', 'USG%_A', 'ORtg_A', 'Drtg_A', 'poss_A', 'pace_A', 'poss_per_poss_A', 'ass_per_poss_A']
+    df['gameId'] = gameIdList
+    df.set_index('gameId', inplace = True)
+    
+     
