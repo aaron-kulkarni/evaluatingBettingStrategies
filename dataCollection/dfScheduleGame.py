@@ -170,31 +170,31 @@ def getGameData(gameId):
     homeResults = homeResults.loc[homeResults.index[0]:gameId] 
     homeRecord = homeResults.value_counts(ascending = True)
     try:
-        homeWins = homeRecord[0]
+        homeWins = homeRecord['Win']
     except:
-        homeWins = 0 #sets value to 0 if no 'Win' are found in array
+        homeWins = 0 
     try:
-        homeLosses = homeRecord[1]
+        homeLosses = homeRecord['Loss']
     except:
-        homeLosses = 0 #sets value to 0 if no 'Loss' are found in array
+        homeLosses = 0 
 
-    # Calculating Away Record (Same as Home Record)
+
     awayResults = teamAwaySchedule.result.shift()
     awayResults = awayResults.loc[awayResults.index[0]:gameId]
     awayRecord = awayResults.value_counts(ascending = True)
     try:
-        awayWins = awayRecord[0]
+        awayWins = awayRecord['Win']
     except:
         awayWins = 0
     try:
-        awayLosses = awayRecord[1]
+        awayLosses = awayRecord['Loss']
     except:
         awayLosses = 0
 
     homeRecord = [homeWins, homeLosses]
     awayRecord = [awayWins, awayLosses] 
 
-    tempDf = teamHomeSchedule.loc[teamHomeSchedule['opponent_abbr'] == teamHome]
+    tempDf = teamHomeSchedule.loc[teamHomeSchedule['opponent_abbr'] == teamAway]
     tempDf = tempDf.loc[teamHomeSchedule['datetime'] < currentdate]
     
     matchupWinsHome = tempDf.loc[teamHomeSchedule['result'] == 'Win'].shape[0]
