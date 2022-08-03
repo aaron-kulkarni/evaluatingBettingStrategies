@@ -340,15 +340,19 @@ def getTeamGameStatDataFrame(year):
     startDate = str(extract_lines(fileLocation)[0])[0:10]
     endDate = str(extract_lines(fileLocation)[1])[0:10]
     gameIdList = []
-    allGames = Boxscores(dt.datetime.strptime(startDate, '%m-%d-%Y'), dt.datetime.strptime(endDate, '%m-%d-%Y')).games
+    allGames = Boxscores(dt.datetime.strptime(startDate, '%Y-%m-%d'), dt.datetime.strptime(endDate, '%Y-%m-%d')).games
     for key in allGames.keys():
         for i in range(len(allGames[key])):
              gameIdList.append(allGames[key][i]['boxscore'])
     gameDataList = []
     for id in gameIdList:
         gameDataList.append(getTeamGameStat(id))
-    df = pd.DataFrame(gameDataList, columns = ['homeTeamAbbr', 'PlaceholderH', 'MP_H', 'FG_H', 'FGA_H', 'FG%_H', '3P_H', '3PA_H', 'EP%_H', 'FT_H', 'FTA_H', 'FT%_H', 'ORB_H', 'DRB_H', 'TRB_H', 'AST_H', 'STL_H', 'BLK_H', 'TOV_H', 'PF_H', 'PTS_H', 'TS%_H', 'eFG%_H', '3pAr_H', 'FTr_H', 'ORB%_H', 'DRB%_H', 'TRB%_H', 'AST%_H', 'STL%_H', 'BLK%_H', 'TOV%_H', 'USG%_H', 'ORtg_H', 'Drtg_H', 'poss_H', 'pace_H', 'poss_per_poss_H', 'ass_per_poss_H','awayTeamAbbr', 'PlaceholderA', 'MP_A', 'FG_A', 'FGA_A', 'FG%_A', '3P_A', '3PA_A', 'EP%_A', 'FT_A', 'FTA_A', 'FT%_A', 'ORB_A', 'DRB_A', 'TRB_A', 'AST_A', 'STL_A', 'BLK_A', 'TOV_A', 'PF_A', 'PTS_A', 'TS%_A', 'eFG%_A', '3pAr_A', 'FTr_A', 'ORB%_A', 'DRB%_A', 'TRB%_A', 'AST%_A', 'STL%_A', 'BLK%_A', 'TOV%_A', 'USG%_A', 'ORtg_A', 'Drtg_A', 'poss_A', 'pace_A', 'poss_per_poss_A', 'ass_per_poss_A']
+    df = pd.DataFrame(gameDataList, columns = ['homeTeamAbbr', 'PlaceholderH', 'MP_H', 'FG_H', 'FGA_H', 'FG%_H', '3P_H', '3PA_H', 'EP%_H', 'FT_H', 'FTA_H', 'FT%_H', 'ORB_H', 'DRB_H', 'TRB_H', 'AST_H', 'STL_H', 'BLK_H', 'TOV_H', 'PF_H', 'PTS_H', 'TS%_H', 'eFG%_H', '3pAr_H', 'FTr_H', 'ORB%_H', 'DRB%_H', 'TRB%_H', 'AST%_H', 'STL%_H', 'BLK%_H', 'TOV%_H', 'USG%_H', 'ORtg_H', 'Drtg_H', 'poss_H', 'pace_H', 'poss_per_poss_H', 'ass_per_poss_H','awayTeamAbbr', 'PlaceholderA', 'MP_A', 'FG_A', 'FGA_A', 'FG%_A', '3P_A', '3PA_A', 'EP%_A', 'FT_A', 'FTA_A', 'FT%_A', 'ORB_A', 'DRB_A', 'TRB_A', 'AST_A', 'STL_A', 'BLK_A', 'TOV_A', 'PF_A', 'PTS_A', 'TS%_A', 'eFG%_A', '3pAr_A', 'FTr_A', 'ORB%_A', 'DRB%_A', 'TRB%_A', 'AST%_A', 'STL%_A', 'BLK%_A', 'TOV%_A', 'USG%_A', 'ORtg_A', 'Drtg_A', 'poss_A', 'pace_A', 'poss_per_poss_A', 'ass_per_poss_A'])
     df['gameId'] = gameIdList
     df.set_index('gameId', inplace = True)
-    
+    df.drop(['PlaceholderH', 'PlaceholderA'], axis = 1, inplace = True)
+    return df
+
+
+     
      
