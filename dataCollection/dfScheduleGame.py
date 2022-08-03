@@ -193,12 +193,6 @@ def getGameData(gameId):
         awayLosses = awayRecord[0]
     except:
         awayLosses = 0
-
-
-    #switches variables for away team. this looks wrong but for some reason makes code work :)
-    tempVar = awayWins
-    awayWins = awayLosses
-    awayLosses = tempVar
     
 
     if pointsHome > pointsAway:
