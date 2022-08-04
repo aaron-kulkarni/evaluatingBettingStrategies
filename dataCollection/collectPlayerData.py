@@ -334,6 +334,8 @@ def extract_lines(filename):
     
     return startDate, endDate
 
+# Check format of the output with the following regex:
+# [\d]{8}0[A-Z]{3},([A-Z]{3},([\d]+,){3}((1\.000)|(\.[\d]{3})),([\d]+,){2}((1\.000)|(\.[\d]{3})),([\d]+,){2}((1\.000)|(\.[\d]{3})),([\d]+,){9}(((1\.000)|(\.[\d]{3})),){4}([\d\.]*,){13}([\d\.]*,?)){2}\n
 def getTeamGameStatDataFrame(year):
     fileLocation = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/gameStats/game_data_player_stats_{}_clean.csv'.format(year)
 
