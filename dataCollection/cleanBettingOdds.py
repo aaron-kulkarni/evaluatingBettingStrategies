@@ -62,11 +62,12 @@ def convertBettingOdds(filename):
     return df 
 
 def cleanBettingOdds(filename):
+    print('Not Implemented')
 
 
 years = np.arrange(2015, 2022)
 for year in years:
     convertBettingOdds('--')
-    clearnBettingOdds('--')
+    cleanBettingOdds('--')
     
 
