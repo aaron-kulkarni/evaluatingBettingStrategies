@@ -6,14 +6,21 @@ it directly from the source will not work due to [this problem](https://stackove
 If installing using pip, use the command `pip install git+<link>` to install from a GitHub repository.
 
 ## Project Dependencies
-- urllib3
-- beautifulsoup4
-- datetime
-- pandas
-- numpy
-- requests
-- lxml
-- dateutil
-- re
-- sportsipy
-- pdb
+
+<details>
+<summary>Project Dependency List</summary><br/>
+
+-   [beautifulsoup4 4.11.1](https://pypi.org/project/beautifulsoup4/)
+-   [datetime](https://docs.python.org/3/library/datetime.html)
+-   [lxml 4.9.1](https://pypi.org/project/lxml/)
+-   [numpy 1.23.1](https://pypi.org/project/numpy/)
+-   [pandas 1.4.3](https://pypi.org/project/pandas/)
+-   [pdb](https://docs.python.org/3/library/pdb.html)
+-   [python-dateutil 2.8.2](https://pypi.org/project/python-dateutil/)
+-   [re](https://docs.python.org/3/library/re.html)
+-   [requests 2.28.1](https://pypi.org/project/requests/)
+-   [sportsipy 0.6.0](https://pypi.org/project/sportsipy/), [fork](https://github.com/jli21/sportsipy)
+-   [sportsreference 0.5.2](https://pypi.org/project/sportsreference/)
+-   [urllib3 1.26.11](https://pypi.org/project/urllib3/)
+
+</details>
