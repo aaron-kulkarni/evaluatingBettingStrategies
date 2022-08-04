@@ -41,7 +41,7 @@ def convertBettingOdds(filename):
     df.sort_values(by = 'Date', ascending = True, inplace = True)
 
     # IMPORTANT: MUST CHANGE FOR SPECIFIC FILE WHERE CLEAN DATA FOR CORRESPONDING YEAR IS LOCATED 
-    fileLocation = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/gameStats/game_data_player_stats_{}_clean.csv'.format(year)
+    fileLocation = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/gameStats/game_data_player_stats_{}.csv'.format(year)
 
     startDate = str(extract_lines(fileLocation)[0])[0:10]
     endDate = str(extract_lines(fileLocation)[1])[0:10]
