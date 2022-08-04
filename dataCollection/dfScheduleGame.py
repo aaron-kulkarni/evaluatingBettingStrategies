@@ -213,11 +213,11 @@ def getGameData(gameId):
 
 def getGameDataframe(startTime, endTime):
     '''
-    startTime and endTime must be in format '%Y, %m, %d'
+    startTime and endTime must be in format '%m-%d-%Y'
     
     '''
 
-    allGames = Boxscores(dt.datetime.strptime(startTime, '%Y, %m, %d'), dt.datetime.strptime(endTime, '%Y, %m, %d')).games
+    allGames = Boxscores(dt.datetime.strptime(startTime, '%m-%d-%Y'), dt.datetime.strptime(endTime, '%m-%d-%Y')).games
     gameIdList = [] 
     for key in allGames.keys():
         for i in range(len(allGames[key])):
@@ -233,3 +233,13 @@ def getGameDataframe(startTime, endTime):
     df.set_index('gameId', inplace = True)
     
     return df 
+
+def getGameStatYear(year):
+    fileLocation = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/gameStats/game_data_player_stats_{}_clean.csv'.format(year)
+
+    startDate = str(extract_lines(fileLocation)[0])[0:10]
+    endDate = str(extract_lines(fileLocation)[1])[0:10]
+
+    df = getGameDataframe(startDate, endDate)
+    return df
+    
