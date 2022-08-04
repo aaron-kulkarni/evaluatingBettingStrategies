@@ -1,5 +1,6 @@
 import re
 import numpy as np
+import os
 
 # Samples to use for testing (#2 should not pass, does not have 0 or 1 for starter/home)
 '''
@@ -47,10 +48,12 @@ def cleanGamePlayerDataFile(filename, delete_all=False):
     print('Line {0} is clean'.format('header'))
 
     # Goes through each line
+    diff = False
     for line in data_lines:
 
         # If line does not match, do what user inputs
         if not re.match(line_regex, line.strip()):
+            diff = True
             print(u'Line {0} is not clean:\n\t{1}'.format(line.split(',')[0], line.strip()))
             if delete_all:
                 continue
@@ -71,6 +74,10 @@ def cleanGamePlayerDataFile(filename, delete_all=False):
             clean_data.write(line.strip() + '\n')
 
     clean_data.close()
+
+    if not diff:
+        print(filename + " is clean")
+        os.remove(fn_split[0] + '_clean.' + fn_split[1])
 
 years = np.arange(2015, 2023)
 for year in years:
