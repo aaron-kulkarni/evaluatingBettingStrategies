@@ -18,6 +18,9 @@ from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 import re
 
+# Check using the following regex:
+# 20[12][\d][01][\d][0-3][\d]0[A-Z]{3},([A-Z]{3},){3}[0-1]?[\d]:[0-5][\d](a|p),".+",(([\d]+,){4}"?\[([\d]+,? ?)*\]"?,[\d]+,-?[\d]+.[\d.]*,"?\[('[a-z\d]+',? ?)*\]"?,"\[[\d]+, [\d]+\]",[\d]+,){2}(none|conference|division)\n
+
 teamsDict = {
     "TOR": ["Eastern", "Atlantic"],
     "BOS": ["Eastern", "Atlantic"],
