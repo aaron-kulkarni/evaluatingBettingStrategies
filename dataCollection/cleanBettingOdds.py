@@ -93,14 +93,15 @@ def cleanBettingOdds(filename):
     2. Returns dataframe that displays betting odd accruacy of each betting bookmaker
     '''
     year = re.findall('[0-9]+', filename)[0]
-    oddsDF = pd.read_csv('../data/bettingOddsData/closing_betting_odds_{0}_clean.csv'.format(year), header = [0,1], skipinitialspace = True)
-
-    return df 
-
+    oddsDF = pd.read_csv('../data/bettingOddsData/closing_betting_odds_{0}_clean.csv'.format(year), header = [0,1], index_col = 0)
+    gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    gameDF.set_index('gameId', inplace = True)
+    for col in oddsDF['OddHome'].columns:
+        if (np.sign(oddsDF['OddHome'][col]) + np.sign(oddsDF['OddAway'][col]) == 0).all():
+            print('Issue with GameID')
+            print(np.nonzero(list(np.sign(oddsDF['OddHome']['BetFinal']) + np.sign(oddsDF['OddAway']['BetFinal']))))
+            
+    df = pd.concat([oddsDF, gameDF], axis = 1)
 
     
-years = np.arange(2015, 2023)
-for y in years:
-    convertBettingOdds('../data/bettingOddsData/closing_betting_odds_{0}_FIXED.csv'.format(y)) \
-        .to_csv('../data/bettingOddsData/closing_betting_odds_{0}_clean.csv'.format(y))
-    print('Created betting odds CSV for year {0}'.format(y))
+    return df 
