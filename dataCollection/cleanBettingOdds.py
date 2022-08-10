@@ -121,9 +121,8 @@ def returnFavoredWinner(x, y):
     1 if home team favored win, 0 if equally favored, -1 if away team win
 
     '''
-    if x == 'NaN' or y == 'NaN':
+    if type(x) != float or type(y)!= float:
         return 'NaN'
-    
     if x > y:
         return 1
     elif x < y:
@@ -160,8 +159,7 @@ def bettingOddSuccess(filename):
     gameDF.set_index('gameId', inplace = True)
 
     for col in probDF['OddHome'].columns():
-        #probDF['predWin - {}'.format(col.replace(' (%)', ''))]
-        probDF['x{}'.format(col)]= probDF.apply(lambda d: returnFavoredWinner(d['homeProb'][col], d['awayProb'][col]), axis=1)
+        probDF['predWin - {}'.format(col.replace(' (%)', ''))] = probDF.apply(lambda d: returnFavoredWinner(d['homeProb'][col], d['awayProb'][col]), axis=1)
     gameDF['win'] = gameDF.apply(lambda d: returnWinner(d['teamHome'], d['winner']), axis = 1)
 
     predWinDF = 
