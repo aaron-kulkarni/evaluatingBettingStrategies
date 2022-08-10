@@ -86,22 +86,38 @@ def convertBettingOdds(filename):
     
     return df
 
-
-def cleanBettingOdds(filename):
+def computeImpliedProb(x):
+    if x > 0:
+        return 100/(x+100) * 100
+    elif x < 0:
+        return (-x)/((-x)+100) * 100
+    else:
+        return 'NaN'
+        
+def addImpliedProb(filename):
     '''
-    1. Verifies that OddHome and OddAway are different signs
-    2. Returns dataframe that displays betting odd accruacy of each betting bookmaker
+    Returns dataframe of implied probability 
     '''
     year = re.findall('[0-9]+', filename)[0]
     oddsDF = pd.read_csv('../data/bettingOddsData/closing_betting_odds_{0}_clean.csv'.format(year), header = [0,1], index_col = 0)
     gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
     gameDF.set_index('gameId', inplace = True)
-    for col in oddsDF['OddHome'].columns:
-        if (np.sign(oddsDF['OddHome'][col]) + np.sign(oddsDF['OddAway'][col]) == 0).all():
-            print('Issue with GameID')
-            print(np.nonzero(list(np.sign(oddsDF['OddHome']['BetFinal']) + np.sign(oddsDF['OddAway']['BetFinal']))))
-            
-    df = pd.concat([oddsDF, gameDF], axis = 1)
-
+    oddsHome = oddsDF['OddHome'] 
+    for col in oddsHome.columns:
+        oddsHome['impliedProb{}'.format(col)] = oddsHome[col].apply(computeImpliedProb)
+        oddsHome.drop(col, inplace = True, axis = 1)
+        
+    oddsAway = oddsDF['OddAway']    
+    for col in oddsAway.columns:
+        oddsAway['impliedProb{}'.format(col)] = oddsAway[col].apply(computeImpliedProb)
+        oddsAway.drop(col, inplace = True, axis = 1)
+    
+    df = pd.concat([oddsHome, oddsAway], axis = 1, keys = ['OddHome','OddAway'], join = 'inner')
     
     return df 
+
+def 
+
+years = np.arange(2017, 2022)
+for year in years:
+    addImpliedProb('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year)).to_csv('implied_Prob_{}.csv'.format(year))
