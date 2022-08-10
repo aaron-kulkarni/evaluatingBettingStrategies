@@ -187,6 +187,5 @@ def bettingOddSuccess(filename):
 
 years = np.arange(2015, 2023)
 for year in years:
-    addImpliedProb('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year)).to_csv('implied_prob_{}.csv'.format(year))
-    #betttingOddSuccess('../data/bettingOddsData/implied_prob_{}.csv'.format(year))
+    bettingOddSuccess('../data/bettingOddsData/implied_prob_{}.csv'.format(year)).to_csv('summary_betting_odds_{}.csv'.format(year))
 
