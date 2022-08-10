@@ -100,8 +100,8 @@ def addImpliedProb(filename):
     '''
     year = re.findall('[0-9]+', filename)[0]
     oddsDF = pd.read_csv('../data/bettingOddsData/closing_betting_odds_{0}_clean.csv'.format(year), header = [0,1], index_col = 0)
-    gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
-    gameDF.set_index('gameId', inplace = True)
+    #gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    #gameDF.set_index('gameId', inplace = True)
     oddsHome = oddsDF['OddHome'] 
     for col in oddsHome.columns:
         oddsHome['impliedProb{}'.format(col)] = oddsHome[col].apply(computeImpliedProb)
@@ -116,8 +116,38 @@ def addImpliedProb(filename):
     
     return df 
 
-def 
+def returnFavoredWinner(x, y):
+    '''
+    1 if home team favored win, 0 if equally favored, -1 if away team win
 
-years = np.arange(2017, 2022)
+    '''
+    if x > y:
+        return 1
+    elif x < y:
+        return -1
+    else:
+        return 0
+
+def bettingOddSuccess(filename):
+    '''
+    Returns percentage of betting odd success given the impliedProb files
+    Note: if both teams are equaly likely to win, program will count as a failed prediction  
+    
+    '''
+    year = re.findall('[0-9]+', filename)[0]
+    probDF = pd.read_csv('../data/bettingOddsData/implied_Prob_{0}.csv'.format(year), header = [0,1], index_col = 0)
+    gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    gameDF.set_index('gameId', inplace = True)
+    oddHome = probDF['OddHome']
+    oddAway = probDF['OddAway']
+    for col in oddHome.columns():
+        
+    df = pd.concat([gameDF[['teamHome', 'winner']], ], axis = 1   
+    return 
+    
+
+years = np.arange(2015, 2023)
 for year in years:
-    addImpliedProb('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year)).to_csv('implied_Prob_{}.csv'.format(year))
+    #addImpliedProb('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year)).to_csv('implied_Prob_{}.csv'.format(year))
+    betttingOddSuccess('../data/bettingOddsData/implied_Prob_{}.csv'.format(year))
+
