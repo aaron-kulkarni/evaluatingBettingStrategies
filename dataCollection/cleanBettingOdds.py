@@ -104,15 +104,15 @@ def addImpliedProb(filename):
     #gameDF.set_index('gameId', inplace = True)
     oddsHome = oddsDF['OddHome'] 
     for col in oddsHome.columns:
-        oddsHome['impliedProb{}'.format(col)] = oddsHome[col].apply(computeImpliedProb)
+        oddsHome['{} (%)'.format(col)] = oddsHome[col].apply(computeImpliedProb)
         oddsHome.drop(col, inplace = True, axis = 1)
         
     oddsAway = oddsDF['OddAway']    
     for col in oddsAway.columns:
-        oddsAway['impliedProb{}'.format(col)] = oddsAway[col].apply(computeImpliedProb)
+        oddsAway['{} (%)'.format(col)] = oddsAway[col].apply(computeImpliedProb)
         oddsAway.drop(col, inplace = True, axis = 1)
     
-    df = pd.concat([oddsHome, oddsAway], axis = 1, keys = ['OddHome','OddAway'], join = 'inner')
+    df = pd.concat([oddsHome, oddsAway], axis = 1, keys = ['homeProb','awayProb'], join = 'inner')
     
     return df 
 
@@ -121,10 +121,30 @@ def returnFavoredWinner(x, y):
     1 if home team favored win, 0 if equally favored, -1 if away team win
 
     '''
+    if x == 'NaN' or y == 'NaN':
+        return 'NaN'
+    
     if x > y:
         return 1
     elif x < y:
         return -1
+    else:     
+        return 0
+
+
+def returnWinner(x, y):
+    '''
+    1 if home team wins, -1 if away team wins
+    
+    '''
+    if x == y:
+        return 1
+    else:
+        return -1
+
+def findP(x, y):
+    if x == y:
+        return 1
     else:
         return 0
 
@@ -135,19 +155,23 @@ def bettingOddSuccess(filename):
     
     '''
     year = re.findall('[0-9]+', filename)[0]
-    probDF = pd.read_csv('../data/bettingOddsData/implied_Prob_{0}.csv'.format(year), header = [0,1], index_col = 0)
+    probDF = pd.read_csv('../data/bettingOddsData/implied_prob_{0}.csv'.format(year), header = [0,1], index_col = 0)
     gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
     gameDF.set_index('gameId', inplace = True)
-    oddHome = probDF['OddHome']
-    oddAway = probDF['OddAway']
-    for col in oddHome.columns():
-        
-    df = pd.concat([gameDF[['teamHome', 'winner']], ], axis = 1   
-    return 
+
+    for col in probDF['OddHome'].columns():
+        #probDF['predWin - {}'.format(col.replace(' (%)', ''))]
+        probDF['x{}'.format(col)]= probDF.apply(lambda d: returnFavoredWinner(d['homeProb'][col], d['awayProb'][col]), axis=1)
+    gameDF['win'] = gameDF.apply(lambda d: returnWinner(d['teamHome'], d['winner']), axis = 1)
+
+    predWinDF = 
+    df = pd.concat([gameDF[['win']], probDF['predWin']], axis = 1)
+    
+    return df
     
 
 years = np.arange(2015, 2023)
 for year in years:
-    #addImpliedProb('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year)).to_csv('implied_Prob_{}.csv'.format(year))
-    betttingOddSuccess('../data/bettingOddsData/implied_Prob_{}.csv'.format(year))
+    addImpliedProb('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year)).to_csv('implied_prob_{}.csv'.format(year))
+    #betttingOddSuccess('../data/bettingOddsData/implied_prob_{}.csv'.format(year))
 
