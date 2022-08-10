@@ -121,8 +121,12 @@ def returnFavoredWinner(x, y):
     1 if home team favored win, 0 if equally favored, -1 if away team win
 
     '''
-    if type(x) != float or type(y)!= float:
-        return 'NaN'
+
+    if pd.isna(x) == True:
+        return x
+    elif pd.isna(y) == True:
+        return y
+    
     if x > y:
         return 1
     elif x < y:
@@ -142,6 +146,13 @@ def returnWinner(x, y):
         return -1
 
 def findP(x, y):
+
+    '''
+    compares win with predicted win
+    
+    '''
+    if pd.isna(x) == True or pd.isna(y) == True:
+        return 'NaN'
     if x == y:
         return 1
     else:
@@ -157,14 +168,20 @@ def bettingOddSuccess(filename):
     probDF = pd.read_csv('../data/bettingOddsData/implied_prob_{0}.csv'.format(year), header = [0,1], index_col = 0)
     gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
     gameDF.set_index('gameId', inplace = True)
-
-    for col in probDF['OddHome'].columns():
-        probDF['predWin - {}'.format(col.replace(' (%)', ''))] = probDF.apply(lambda d: returnFavoredWinner(d['homeProb'][col], d['awayProb'][col]), axis=1)
+    for col in probDF['homeProb'].columns:
+        probDF['PredWin', '{}'.format(col.replace(' (%)', ''))] = probDF.apply(lambda d: returnFavoredWinner(d['homeProb'][col], d['awayProb'][col]), axis=1)
     gameDF['win'] = gameDF.apply(lambda d: returnWinner(d['teamHome'], d['winner']), axis = 1)
-
-    predWinDF = 
-    df = pd.concat([gameDF[['win']], probDF['predWin']], axis = 1)
+    probDF['colWin', 'win'] = gameDF['win']
     
+    for col in probDF['PredWin'].columns:
+        probDF['betWin', '{}'.format(col)] = probDF.apply(lambda d:  findP(d['PredWin'][col], d['colWin']['win']), axis = 1)
+        
+    df = pd.DataFrame()
+    
+    for col in probDF['betWin'].columns:
+       df['{}'.format(col)] = probDF['betWin'][col].value_counts()
+    df = df.T
+    df['Prob'] = df.apply(lambda d: d[1]/(d[1] + d[0]), axis = 1)
     return df
     
 
