@@ -210,18 +210,28 @@ def getAdjProb(filename):
 
     return probDF
 
-def getBkt(filename):
+def getProbCut(filename):
     '''
+    uses adjusted probability files as input 
     sorts probability files by increments of 10 and evaluates success of each increment
     
     '''
+    year = re.findall('[0-9]+', filename)[0]
+    probDF = pd.read_csv('../data/bettingOddsData/adj_prob_{0}.csv'.format(year), header = [0,1], index_col = 0)
+    gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    gameDF.set_index('gameId', inplace = True)
+    gameDF['win'] = gameDF.apply(lambda d: returnWinner(d['teamHome'], d['winner']), axis = 1)
+    probDF['colWin', 'win'] = gameDF['win']
+    df = pd.DataFrame()
+    for col in probDF['homeProbAdj'].columns:
+        probDF['probCut', col] = pd.cut(probDF['homeProb'][col],[0,10,20,30,40,50,60,70,80,90,100])
+        df[col] = probDF.groupby([('probCut', col), ('colWin','win')]).size() * 100/probDF.groupby([('probCut', col)]).size()
 
-
- probDF['bkt']=pd.cut(probDF['homeProb']['Marathonbet (%)'],[0,20,40,60,80,101])
- probDF.groupby([ (     'bkt',      'Marathonbet'), (  'colWin',              'win')]).size()/probDF.groupby([ (     'bkt',      'Marathonbet')]).size()
+    return df
     
 
 years = np.arange(2015, 2023)
 for year in years:
-    #bettingOddSuccess('../data/bettingOddsData/implied_prob_{}.csv'.format(year)).to_csv('summary_betting_odds_{}.csv'.format(year))
+    getProbCut('../data/bettingOddsData/adj_prob_{}.csv'.format(year)).to_csv('summary_of_betting_success_by_cut_{}.csv'.format(year))
+
 
