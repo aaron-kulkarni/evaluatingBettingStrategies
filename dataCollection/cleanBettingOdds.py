@@ -183,9 +183,45 @@ def bettingOddSuccess(filename):
     df = df.T
     df['Prob'] = df.apply(lambda d: d[1]/(d[1] + d[0]), axis = 1)
     return df
+
+def adjProb(x, y):
+    '''
+    x = home implied probability
+    y = away implied probability
+    
+    '''
+    if pd.isna(x) == True:
+        return x
+    if pd.isna(y) == True:
+        return y
+    return x/(x+y)
+
+def getAdjProb(filename):
+    '''
+    takes implied probability files as input
+
+    '''
+    year = re.findall('[0-9]+', filename)[0]
+    probDF = pd.read_csv('../data/bettingOddsData/implied_prob_{0}.csv'.format(year), header = [0,1], index_col = 0)
+    for col in probDF['homeProb'].columns:
+        probDF['homeProbAdj', '{}'.format(col)] = probDF.apply(lambda d: adjProb(d['homeProb'][col], d['awayProb'][col]), axis = 1)
+    for col in probDF['awayProb'].columns:
+        probDF['awayProbAdj', '{}'.format(col)] = probDF.apply(lambda d: adjProb(d['awayProb'][col], d['homeProb'][col]), axis = 1)
+
+    return probDF
+
+def getBkt(filename):
+    '''
+    sorts probability files by increments of 10 and evaluates success of each increment
+    
+    '''
+
+
+ probDF['bkt']=pd.cut(probDF['homeProb']['Marathonbet (%)'],[0,20,40,60,80,101])
+ probDF.groupby([ (     'bkt',      'Marathonbet'), (  'colWin',              'win')]).size()/probDF.groupby([ (     'bkt',      'Marathonbet')]).size()
     
 
 years = np.arange(2015, 2023)
 for year in years:
-    bettingOddSuccess('../data/bettingOddsData/implied_prob_{}.csv'.format(year)).to_csv('summary_betting_odds_{}.csv'.format(year))
+    #bettingOddSuccess('../data/bettingOddsData/implied_prob_{}.csv'.format(year)).to_csv('summary_betting_odds_{}.csv'.format(year))
 
