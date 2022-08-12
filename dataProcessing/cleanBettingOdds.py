@@ -2,6 +2,7 @@ import re
 import numpy as np
 import pandas as pd
 import datetime as dt
+import matplotlib.pyplot as plt 
 from sportsipy.nba.teams import Teams
 from sportsipy.nba.boxscore import Boxscores
 
@@ -228,8 +229,67 @@ def getProbCut(filename):
         df[col] = probDF.groupby([('probCut', col), ('colWin','win')]).size() * 100/probDF.groupby([('probCut', col)]).size()
 
     return df
-    
 
+def evaluateBettingOdds(filename, n):
+    '''
+    evaluates betting odd performance, uses implied probability files as inputs in increments of n
+    '''
+    year = re.findall('[0-9]+', filename)[0]
+    probDF = pd.read_csv('../data/bettingOddsData/implied_prob_{0}.csv'.format(year), header = [0,1], index_col = 0)
+    gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    gameDF.set_index('gameId', inplace = True)
+    for col in probDF['homeProb'].columns:
+        probDF['PredWin', '{}'.format(col.replace(' (%)', ''))] = probDF.apply(lambda d: returnFavoredWinner(d['homeProb'][col], d['awayProb'][col]), axis=1)
+    gameDF['win'] = gameDF.apply(lambda d: returnWinner(d['teamHome'], d['winner']), axis = 1)
+    probDF['colWin', 'win'] = gameDF['win']
+    
+    for col in probDF['PredWin'].columns:
+        probDF['betWin', '{}'.format(col)] = probDF.apply(lambda d:  findP(d['PredWin'][col], d['colWin']['win']), axis = 1)
+    probDF['betWin', 'col'] = range(0, len(probDF))
+    probDF['betWin', 'col'] =  probDF['betWin', 'col']//n
+    listX = []
+    listY = []
+    listZ = []
+    for i in range(0, probDF['betWin'].loc[probDF['betWin']['col'].idxmax()]['col']):     
+        temp = probDF['betWin'].groupby(probDF['betWin']['col']).get_group(i)
+        temp.drop('col', inplace = True, axis = 1)
+        df = pd.DataFrame()
+        for col in temp.columns:
+            df = pd.concat([df, temp[col].value_counts()], axis = 1)
+        try:
+            success = df.T[1].sum()
+        except:
+            success = 0
+        try:
+            failure = df.T[0].sum()
+        except:
+            failure = 0
+        try:
+            non = df.T['NaN'].sum()
+        except:
+            non = 0
+        listX.append(success)
+        listY.append(failure)
+        listZ.append(non)
+    final = pd.DataFrame([listX, listY, listZ]).T
+    final.columns = ['Success','Failure','NaN']
+    return final
+
+def plotSuccess(filename, n, cumSum = True):
+    df = evaluateBettingOdds(filename, n)
+    if cumSum == True:
+        df['Success'] = df['Success'].cumsum(skipna = False)
+        df['Failure'] = df['Failure'].cumsum(skipna = False)
+    df['Rate'] = df.apply(lambda d: d['Success']/(d['Success'] + d['Failure']), axis = 1)
+    rate = df['Rate'].array
+    return rate
+
+rate = plotSuccess('/Users/jasonli/Projects/evaluatingBettingStrategies/data/bettingOddsData/implied_prob_2018.csv', 30, False)
+x = list(range(0, len(rate)))
+
+plt.plot(x, rate)  
+plt.show()
+        
 years = np.arange(2015, 2023)
 for year in years:
     getProbCut('../data/bettingOddsData/adj_prob_{}.csv'.format(year)).to_csv('summary_of_betting_success_by_cut_{}.csv'.format(year))
