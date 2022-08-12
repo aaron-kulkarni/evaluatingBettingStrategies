@@ -337,7 +337,8 @@ def extract_lines(filename):
 # Check format of the output with the following regex:
 # [\d]{8}0[A-Z]{3},([A-Z]{3},([\d]+,){3}((1\.000)|(\.[\d]{3})),([\d]+,){2}((1\.000)|(\.[\d]{3})),([\d]+,){2}((1\.000)|(\.[\d]{3})),([\d]+,){9}(((1\.000)|(\.[\d]{3})),){4}([\d\.]*,){13}([\d\.]*,?)){2}\n
 def getTeamGameStatDataFrame(year):
-    fileLocation = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/gameStats/game_data_player_stats_{}_clean.csv'.format(year)
+    
+    fileLocation = 'data\gameStats\game_data_player_stats_{}.csv'.format(year)
 
     startDate = str(extract_lines(fileLocation)[0])[0:10]
     endDate = str(extract_lines(fileLocation)[1])[0:10]
@@ -348,8 +349,10 @@ def getTeamGameStatDataFrame(year):
              gameIdList.append(allGames[key][i]['boxscore'])
     gameDataList = []
     for id in gameIdList:
+        if id == '201501010CHI':
+            print('halfway done')
         gameDataList.append(getTeamGameStat(id))
-    df = pd.DataFrame(gameDataList, columns = ['homeTeamAbbr', 'PlaceholderH', 'MP_H', 'FG_H', 'FGA_H', 'FG%_H', '3P_H', '3PA_H', 'EP%_H', 'FT_H', 'FTA_H', 'FT%_H', 'ORB_H', 'DRB_H', 'TRB_H', 'AST_H', 'STL_H', 'BLK_H', 'TOV_H', 'PF_H', 'PTS_H', 'TS%_H', 'eFG%_H', '3pAr_H', 'FTr_H', 'ORB%_H', 'DRB%_H', 'TRB%_H', 'AST%_H', 'STL%_H', 'BLK%_H', 'TOV%_H', 'USG%_H', 'ORtg_H', 'Drtg_H', 'poss_H', 'pace_H', 'poss_per_poss_H', 'ass_per_poss_H','awayTeamAbbr', 'PlaceholderA', 'MP_A', 'FG_A', 'FGA_A', 'FG%_A', '3P_A', '3PA_A', 'EP%_A', 'FT_A', 'FTA_A', 'FT%_A', 'ORB_A', 'DRB_A', 'TRB_A', 'AST_A', 'STL_A', 'BLK_A', 'TOV_A', 'PF_A', 'PTS_A', 'TS%_A', 'eFG%_A', '3pAr_A', 'FTr_A', 'ORB%_A', 'DRB%_A', 'TRB%_A', 'AST%_A', 'STL%_A', 'BLK%_A', 'TOV%_A', 'USG%_A', 'ORtg_A', 'Drtg_A', 'poss_A', 'pace_A', 'poss_per_poss_A', 'ass_per_poss_A'])
+    df = pd.DataFrame(gameDataList, columns = ['homeTeamAbbr', 'PlaceholderH', 'MP_H', 'FG_H', 'FGA_H', 'FG%_H', '3P_H', '3PA_H', '3P%_H', 'FT_H', 'FTA_H', 'FT%_H', 'ORB_H', 'DRB_H', 'TRB_H', 'AST_H', 'STL_H', 'BLK_H', 'TOV_H', 'PF_H', 'PTS_H', 'TS%_H', 'eFG%_H', '3pAr_H', 'FTr_H', 'ORB%_H', 'DRB%_H', 'TRB%_H', 'AST%_H', 'STL%_H', 'BLK%_H', 'TOV%_H', 'USG%_H', 'ORtg_H', 'Drtg_H', 'poss_H', 'pace_H', 'poss_per_poss_H', 'ass_per_poss_H','awayTeamAbbr', 'PlaceholderA', 'MP_A', 'FG_A', 'FGA_A', 'FG%_A', '3P_A', '3PA_A', 'EP%_A', 'FT_A', 'FTA_A', 'FT%_A', 'ORB_A', 'DRB_A', 'TRB_A', 'AST_A', 'STL_A', 'BLK_A', 'TOV_A', 'PF_A', 'PTS_A', 'TS%_A', 'eFG%_A', '3pAr_A', 'FTr_A', 'ORB%_A', 'DRB%_A', 'TRB%_A', 'AST%_A', 'STL%_A', 'BLK%_A', 'TOV%_A', 'USG%_A', 'ORtg_A', 'Drtg_A', 'poss_A', 'pace_A', 'poss_per_poss_A', 'ass_per_poss_A'])
     df['gameId'] = gameIdList
     df.set_index('gameId', inplace = True)
     df.drop(['PlaceholderH', 'PlaceholderA'], axis = 1, inplace = True)
