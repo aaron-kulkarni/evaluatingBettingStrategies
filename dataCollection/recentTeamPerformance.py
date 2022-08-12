@@ -68,24 +68,39 @@ def getTeamAveragePerformance(gameId, n, team):
     '''
     #trying to only return the team stats of the team that we are asking for, rather than the team plus their opponents
 
+    if int(gameId[0:4]) == 2020: 
+        if int(gameId[4:6].lstrip("0")) < 11: 
+            year = int(gameId[0:4])
+        else:
+            year = int(gameId[0:4]) + 1
+    else:
+        if int(gameId[4:6].lstrip("0")) > 7: 
+            year = int(gameId[0:4]) + 1
+        else:
+            year = int(gameId[0:4])
+
     gameIdList = getRecentNGames(gameId, n, team)
     tempList = []
 
-    #have final list be 38 entries long, first entry should be team id
+    fileLocation = 'data/teamStats/team_total_stats_{}.csv'.format(year)
+    df = pd.read_csv(fileLocation, index_col = 0)
+
+
+    #have final list be 38 entries long, first entry should be team abbreviation
     teamPerformanceList = [0] * 38
     teamPerformanceList[0] = team
 
     for id in gameIdList:
-        tempList = getTeamGameStat(id)
+        tempList = df.loc[id]
         if tempList[0] == team: #if team is home team, then that means that their data is at beginning of tempList
-            for x in range(2, 39):
-                teamPerformanceList[x-1] += float(tempList[x])
+            for x in range(1, 38):
+                teamPerformanceList[x] += float(tempList[x])
         else:
-            for y in range(41, 78): #if team is away team, then that means that their data is at end of tempList
-                teamPerformanceList[y-40] += float(tempList[y])
+            for y in range(39, 75): #if team is away team, then that means that their data is at end of tempList
+                teamPerformanceList[y-38] += float(tempList[y])
         
     
-    for z in range(1, 39): #previous for loop summed all data up, this loop divides to get average
+    for z in range(1, 38): #previous for loop summed all data up, this loop divides to get average
         teamPerformanceList[z] = round(float(teamPerformanceList[z] / n), 3)
 
 
@@ -98,6 +113,23 @@ def getPlayerAveragePerformance(gameId, n, playerId, team):
     '''
 
     # WORK IN PROGRESS!!!!!!!!!!!!!!!!!!
+
+    if int(gameId[0:4]) == 2020: 
+        if int(gameId[4:6].lstrip("0")) < 11: 
+            year = int(gameId[0:4])
+        else:
+            year = int(gameId[0:4]) + 1
+    else:
+        if int(gameId[4:6].lstrip("0")) > 7: 
+            year = int(gameId[0:4]) + 1
+        else:
+            year = int(gameId[0:4])
+
+    gameIdList = getRecentNGames(gameId, n, team)
+    tempList = []
+
+    fileLocation = 'data/gameStats/game_data_player_stats_{}.csv'.format(year)
+    df = pd.read_csv(fileLocation, index_col = 0)
 
 
     gameIdList = getRecentNGames(gameId, n, team)
@@ -116,4 +148,4 @@ def getPlayerAveragePerformance(gameId, n, playerId, team):
 
     return playersAverageStats
 
-#getPlayerAveragePerformance('202003030DEN', 4, "harriga01", "DEN")
+#getTeamAveragePerformance('202003030DEN', 4, "DEN")
