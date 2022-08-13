@@ -38,6 +38,14 @@ def getTeamSchedule(team, year):
     dfAway = df[df['gameState']['teamAway'] == team]
     return dfHome, dfAway
 
+def helperAaron(team, year):
+    #df = pd.read_csv('C:\Users\Aaron Kulkarni\Downloads\evaluatingBettingStrategies\data\teamStats\team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1])
+    df = pd.read_csv('data/teamStats/team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1])
+    
+    dfHome = df[df['home']['teamAbbr'] == team]
+    dfAway = df[df['away']['teamAbbr'] == team]
+    return dfHome, dfAway
+
 def returnX(pointsHome, pointsAway, prob, home = True):
     if home == True:
         return (pointsHome/pointsAway)/prob
