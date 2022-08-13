@@ -31,17 +31,48 @@ def fixGameStateData(filename):
     #fixGameStateData('../data/gameStats/game_state_data_{}.csv'.format(year)).to_csv('game_state_data_new_{}.csv'.format(year))
         
 def getTeamSchedule(team, year):
-    gameState = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])
-    dfHome = gameState[gameState['gameState']['teamHome'] == team]
-    dfAway = gameState[gameState['gameState']['teamAway'] == team]
+
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])
+
+    dfHome = df[df['gameState']['teamHome'] == team]
+    dfAway = df[df['gameState']['teamAway'] == team]
     return dfHome, dfAway
-    
+
+def returnX(pointsHome, pointsAway, prob, home = True):
+    if home == True:
+        return (pointsHome/pointsAway)/prob
+    if home == False:
+        return (pointsAway/pointsHome)/prob
 
 def getTeamPerformance(team, year):
     dfHome = getTeamSchedule(team, year)[0]
     dfAway = getTeamSchedule(team, year)[1]
     
     adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
+
+    adjProbHome = adjProb.loc[adjProb.index.isin(dfHome.index)]
+    adjProbAway = adjProb.loc[adjProb.index.isin(dfAway.index)]
+    dfHome = pd.concat([dfHome, adjProbHome], join = 'inner', axis = 1)
+    dfAway = pd.concat([dfAway, adjProbAway], join = 'inner', axis = 1)
+    dfHome['homeProbAdj', 'mean'] = dfHome['homeProbAdj'].mean(axis = 1)
+    dfAway['awayProbAdj', 'mean'] = dfHome['awayProbAdj'].mean(axis = 1)
+    
+    dfHome['per', 'val'] = returnX(dfHome['home']['points'], dfHome['away']['points'], dfHome['homeProbAdj']['mean'], True)
+    dfAway['per', 'val'] = returnX(dfAway['home']['points'], dfAway['away']['points'], dfAway['awayProbAdj']['mean'], False)
+
+    df = pd.concat([dfHome, dfAway], join = 'outer', axis = 0)
+    df.sort_index(ascending = True)
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
 
     
     
