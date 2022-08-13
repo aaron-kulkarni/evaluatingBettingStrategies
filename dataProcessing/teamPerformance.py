@@ -32,10 +32,16 @@ def fixGameStateData(filename):
         
 def getTeamSchedule(team, year):
     gameState = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])
-    adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
+    dfHome = gameState[gameState['gameState']['teamHome'] == team]
+    dfAway = gameState[gameState['gameState']['teamAway'] == team]
+    return dfHome, dfAway
     
 
 def getTeamPerformance(team, year):
-    gameState = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, hedaer = [0,1])
+    dfHome = getTeamSchedule(team, year)[0]
+    dfAway = getTeamSchedule(team, year)[1]
+    
     adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
+
+    
     
