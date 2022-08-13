@@ -84,27 +84,44 @@ def getTeamAveragePerformance(gameId, n, team):
 
     fileLocation = 'data/teamStats/team_total_stats_{}.csv'.format(year)
     df = pd.read_csv(fileLocation, index_col = 0)
+    
+    #df = df[df['gameId'] in gameIdList]
+    df = df[df.index.isin(gameIdList)]
+    #df = df.iloc[gameIdList]
 
 
     #have final list be 38 entries long, first entry should be team abbreviation
     teamPerformanceList = [0] * 38
     teamPerformanceList[0] = team
 
-    for id in gameIdList:
-        tempList = df.loc[id]
-        if tempList[0] == team: #if team is home team, then that means that their data is at beginning of tempList
-            for x in range(1, 38):
-                teamPerformanceList[x] += float(tempList[x])
-        else:
-            for y in range(39, 75): #if team is away team, then that means that their data is at end of tempList
-                teamPerformanceList[y-38] += float(tempList[y])
+    # for id in gameIdList:
+    #     tempList = df.loc[id]
+    #     if tempList[0] == team: #if team is home team, then that means that their data is at beginning of tempList
+    #         # for x in range(1, 38):
+    #         #     teamPerformanceList[x] += float(tempList[x])
+    #         np.cumsum(tempList, )
+    #     else:
+    #         # for y in range(39, 75): #if team is away team, then that means that their data is at end of tempList
+    #         #     teamPerformanceList[y-38] += float(tempList[y])
         
     
-    for z in range(1, 38): #previous for loop summed all data up, this loop divides to get average
-        teamPerformanceList[z] = round(float(teamPerformanceList[z] / n), 3)
+    # for z in range(1, 38): #previous for loop summed all data up, this loop divides to get average
+    #     teamPerformanceList[z] = round(float(teamPerformanceList[z] / n), 3)
+
+    for index, col in enumerate(df.columns):
+        if index == 0 or index == 38:
+            continue
+        df[col] = df[col].apply(lambda x: float(x))
+    df1 = df[0:38][df['homeTeamAbbr'] == team][1:38]
+    
+    df2 = df[38:75][df['awayTeamAbbr'] == team][1:38]
+    
+    means = (df1.mean()*len(df1)+df2.mean()*len(df2))/(len(df1)+len(df2))
+
+    means[0] = team
 
 
-    return teamPerformanceList
+    return means
 
 def getPlayerAveragePerformance(gameId, n, playerId, team):
     '''
@@ -148,4 +165,5 @@ def getPlayerAveragePerformance(gameId, n, playerId, team):
 
     return playersAverageStats
 
-#getTeamAveragePerformance('202003030DEN', 4, "DEN")
+
+getTeamAveragePerformance('202003030DEN', 4, "DEN")
