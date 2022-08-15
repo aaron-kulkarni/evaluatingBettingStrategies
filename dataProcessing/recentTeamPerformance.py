@@ -3,10 +3,7 @@ import numpy as np
 import pandas as pd
 import datetime as dt
 from datetime import date
-import re
 import sys
-
-from teamPerformance import getTeamPerformance, getTeamSchedule, helperAaron
 
 sys.path.insert(1, '')
 
@@ -16,6 +13,8 @@ from sportsreference.nba.roster import Player
 from sportsreference.nba.schedule import Schedule
 from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
+
+from teamPerformance import teamAverageHelper, playerAverageHelper
 
 
 # filename = '../data/bettingOddsData/closing_betting_odds_2022_FIXED.csv'
@@ -35,6 +34,9 @@ def getRecentNGames(gameId, n, team):
     Obtains ids of the past n games (non inclusive) given the gameId of current game and team abbreviation
     
     '''
+    if n <= 0:
+        raise Exception('N parameter must be greater than 0')
+    
     if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)) == False:
         
         raise Exception('Issue with Game ID')
@@ -67,8 +69,11 @@ def getTeamAveragePerformance(gameId, n, team):
     Returns a dataframe of average team performances in last n games
    
     '''
-    #trying to only return the team stats of the team that we are asking for, rather than the team plus their opponents
 
+    if n <= 0:
+        raise Exception('N parameter must be greater than 0')
+
+    #trying to only return the team stats of the team that we are asking for, rather than the team plus their opponents
     if int(gameId[0:4]) == 2020: 
         if int(gameId[4:6].lstrip("0")) < 11: 
             year = int(gameId[0:4])
@@ -81,9 +86,8 @@ def getTeamAveragePerformance(gameId, n, team):
             year = int(gameId[0:4])
 
     gameIdList = getRecentNGames(gameId, n, team)
-    tempList = []
 
-    df1, df2 = helperAaron(team, year)
+    df1, df2 = teamAverageHelper(team, year)
     
     df1 = df1[df1.index.isin(gameIdList)]
     df2 = df2[df2.index.isin(gameIdList)]
@@ -96,12 +100,15 @@ def getTeamAveragePerformance(gameId, n, team):
     
     return df.loc['mean']
 
-def getPlayerAveragePerformance(gameId, n, playerId, team):
+def getPlayerAveragePerformance(gameId, n, team, playerId):
     '''
     Returns a dataframe of average player performances in last n games
    
     '''
 
+    if n <= 0:
+        raise Exception('N parameter must be greater than 0')
+    
     # WORK IN PROGRESS!!!!!!!!!!!!!!!!!!
 
     if int(gameId[0:4]) == 2020: 
@@ -116,27 +123,23 @@ def getPlayerAveragePerformance(gameId, n, playerId, team):
             year = int(gameId[0:4])
 
     gameIdList = getRecentNGames(gameId, n, team)
-    tempList = []
 
-    fileLocation = 'data/gameStats/game_data_player_stats_{}.csv'.format(year)
-    df = pd.read_csv(fileLocation, index_col = 0)
+    dfPlayer = playerAverageHelper(playerId, year)
 
+    dfPlayer = dfPlayer[dfPlayer['gameid'].isin(gameIdList)]
 
-    gameIdList = getRecentNGames(gameId, n, team)
-    playersAverageStats = [0] * 5
-    playersAverageStats.append(playerId)
+    dfPlayer['MP'] = dfPlayer.apply(lambda d: round(float(d['MP'][0:2]) + (float(d['MP'][3:5])/60), 2), axis = 1)
 
-    for id in gameIdList:
-        stats = getPlayerGameStatDataFrame(gameId)
-        for x in range(0, 5):
-            playersAverageStats[x] += float(stats.loc(playerId)[x])
-
+    storedName = dfPlayer.iloc[1]['Name']
     
-    for y in range (1, 5):
-        playersAverageStats[y] = round(float(playersAverageStats[y]/n), 3)
+    dfPlayer.loc['mean'] = dfPlayer.mean()
+    dfPlayer['playerid'] = playerId
+    dfPlayer['Name'] = storedName
 
 
-    return playersAverageStats
+
+    return dfPlayer.loc['mean']
 
 
-getTeamAveragePerformance('202003030DEN', 4, "DEN")
+
+#getPlayerAveragePerformance('202003030DEN', 4, "DEN", 'harriga01')
