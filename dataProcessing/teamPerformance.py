@@ -39,6 +39,19 @@ def getTeamSchedule(team, year):
     dfAway = df[df['gameState']['teamAway'] == team]
     return dfHome, dfAway
 
+def teamAverageHelper(team, year):
+    df = pd.read_csv('data/teamStats/team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1])
+    
+    dfHome = df[df['home']['teamAbbr'] == team]
+    dfAway = df[df['away']['teamAbbr'] == team]
+    return dfHome, dfAway
+
+def playerAverageHelper(playerId, year):
+    df = pd.read_csv('data/gameStats/game_data_player_stats_{}.csv'.format(year), index_col = 0, header = [0])
+    dfPlayer = df[df['playerid'] == playerId]
+    #dfPlayer = df['playerid'] == playerId
+    return dfPlayer
+
 def returnX(pointsHome, pointsAway, prob, home = True):
     if home == True:
         return (pointsHome/pointsAway)/prob
