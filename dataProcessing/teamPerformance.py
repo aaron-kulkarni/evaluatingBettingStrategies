@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import datetime as dt
 from datetime import date
+import matplotlib.pyplot as plt 
 import re
 import sys
 
@@ -54,14 +55,32 @@ def getTeamPerformance(team, year):
     adjProbAway = adjProb.loc[adjProb.index.isin(dfAway.index)]
     dfHome = pd.concat([dfHome, adjProbHome], join = 'inner', axis = 1)
     dfAway = pd.concat([dfAway, adjProbAway], join = 'inner', axis = 1)
-    dfHome['homeProbAdj', 'mean'] = dfHome['homeProbAdj'].mean(axis = 1)
-    dfAway['awayProbAdj', 'mean'] = dfHome['awayProbAdj'].mean(axis = 1)
+    dfHome['homeProbAdj', 'mean'] = dfHome['homeProbAdj'].mean(skipna = True, axis = 1)
+    dfAway['awayProbAdj', 'mean'] = dfAway['awayProbAdj'].mean(skipna = True, axis = 1)
     
     dfHome['per', 'val'] = returnX(dfHome['home']['points'], dfHome['away']['points'], dfHome['homeProbAdj']['mean'], True)
     dfAway['per', 'val'] = returnX(dfAway['home']['points'], dfAway['away']['points'], dfAway['awayProbAdj']['mean'], False)
 
-    df = pd.concat([dfHome, dfAway], join = 'outer', axis = 0)
+    df = pd.concat([dfHome, dfAway], axis = 0)
     df.sort_index(ascending = True)
+    
+    
+    return df['per']['val']
+
+def plotValues(team, year, cumulative = True):
+    df = getTeamPerformance(team, year)
+    if cumulative == True:
+        df = df.expanding().mean()
+    return df.array
+
+rate = plotValues('LAL', 2018, False)
+x = list(range(0, len(rate)))
+
+plt.plot(x, rate)
+plt.show()
+        
+        
+        
 
     
 
