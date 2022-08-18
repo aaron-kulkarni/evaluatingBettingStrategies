@@ -31,9 +31,11 @@ def fixGameStateData(filename):
 #for year in years:
     #fixGameStateData('../data/gameStats/game_state_data_{}.csv'.format(year)).to_csv('game_state_data_new_{}.csv'.format(year))
         
+#data\gameStats\game_state_data_2021.csv
+
 def getTeamSchedule(team, year):
 
-    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])
+    df = pd.read_csv('data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])
 
     dfHome = df[df['gameState']['teamHome'] == team]
     dfAway = df[df['gameState']['teamAway'] == team]
@@ -45,6 +47,14 @@ def teamAverageHelper(team, year):
     dfHome = df[df['home']['teamAbbr'] == team]
     dfAway = df[df['away']['teamAbbr'] == team]
     return dfHome, dfAway
+
+def opponentAverageHelper(team, year):
+    df = pd.read_csv('data/teamStats/team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1])
+    
+    dfHome = df[df['home']['teamAbbr'] != team]
+    dfAway = df[df['away']['teamAbbr'] != team]
+    return dfHome, dfAway
+     
 
 def playerAverageHelper(playerId, year):
     df = pd.read_csv('data/gameStats/game_data_player_stats_{}.csv'.format(year), index_col = 0, header = [0])
@@ -62,7 +72,7 @@ def getTeamPerformance(team, year):
     dfHome = getTeamSchedule(team, year)[0]
     dfAway = getTeamSchedule(team, year)[1]
     
-    adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
+    adjProb = pd.read_csv('data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
 
     adjProbHome = adjProb.loc[adjProb.index.isin(dfHome.index)]
     adjProbAway = adjProb.loc[adjProb.index.isin(dfAway.index)]
@@ -86,11 +96,11 @@ def plotValues(team, year, cumulative = True):
         df = df.expanding().mean()
     return df.array
 
-rate = plotValues('LAL', 2018, False)
-x = list(range(0, len(rate)))
+# rate = plotValues('LAL', 2018, False)
+# x = list(range(0, len(rate)))
 
-plt.plot(x, rate)
-plt.show()
+# plt.plot(x, rate)
+# plt.show()
         
         
         
