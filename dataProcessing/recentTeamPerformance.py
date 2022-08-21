@@ -176,3 +176,25 @@ def getOpponentAveragePerformance(gameId, n, team):
     df['teamAbbr'][n] = team
     
     return df.loc[gameId]
+
+def getTeamPerformanceDF(year, n):
+    teamDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
+    homeTeam = teamDF['gameState']['teamHome']
+    df = pd.DataFrame()
+    gameIdList = homeTeam.index
+    for gameId in gameIdList:
+        team = homeTeam.loc[gameId]
+        teamTotalStats = pd.concat([getTeamAveragePerformance(gameId, n, team), getOpponentAveragePerformance(gameId, n, team)], axis = 0, keys = ['home', 'opp'], join = 'inner')
+        teamTotalStats = teamTotalStats.to_frame().T
+        df = pd.concat([df, teamTotalStats], axis = 0)
+        
+        
+        
+    
+        
+        
+        
+        
+    
+
+    
