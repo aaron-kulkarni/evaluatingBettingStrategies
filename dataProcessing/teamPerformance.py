@@ -3,9 +3,11 @@ import numpy as np
 import pandas as pd
 import datetime as dt
 from datetime import date
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+from sportsipy.nba.teams import Teams
 import re
 import sys
+import math
 
 def fixGameStateData(filename):
     year = re.findall('[0-9]+', filename)[0]
@@ -31,11 +33,9 @@ def fixGameStateData(filename):
 #for year in years:
     #fixGameStateData('../data/gameStats/game_state_data_{}.csv'.format(year)).to_csv('game_state_data_new_{}.csv'.format(year))
         
-#data\gameStats\game_state_data_2021.csv
-
 def getTeamSchedule(team, year):
 
-    df = pd.read_csv('data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])
 
     dfHome = df[df['gameState']['teamHome'] == team]
     dfAway = df[df['gameState']['teamAway'] == team]
@@ -54,7 +54,6 @@ def opponentAverageHelper(team, year):
     dfHome = df[df['home']['teamAbbr'] != team]
     dfAway = df[df['away']['teamAbbr'] != team]
     return dfHome, dfAway
-     
 
 def playerAverageHelper(playerId, year):
     df = pd.read_csv('data/gameStats/game_data_player_stats_{}.csv'.format(year), index_col = 0, header = [0])
@@ -72,7 +71,7 @@ def getTeamPerformance(team, year):
     dfHome = getTeamSchedule(team, year)[0]
     dfAway = getTeamSchedule(team, year)[1]
     
-    adjProb = pd.read_csv('data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
+    adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
 
     adjProbHome = adjProb.loc[adjProb.index.isin(dfHome.index)]
     adjProbAway = adjProb.loc[adjProb.index.isin(dfAway.index)]
@@ -87,8 +86,13 @@ def getTeamPerformance(team, year):
     df = pd.concat([dfHome, dfAway], axis = 0)
     df.sort_index(ascending = True)
     
-    
     return df['per']['val']
+
+def expectedPercentageWin(team, year, cumulative = True):
+    adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
+    #df = pd.read_csv('')
+    return print('Not implemented yet')
+    
 
 def plotValues(team, year, cumulative = True):
     df = getTeamPerformance(team, year)
@@ -96,25 +100,16 @@ def plotValues(team, year, cumulative = True):
         df = df.expanding().mean()
     return df.array
 
-# rate = plotValues('LAL', 2018, False)
-# x = list(range(0, len(rate)))
+rate = []
+for team in Teams():
+    teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+    rate.extend(list(plotValues(teamAbbr, 2018, False)))
 
-# plt.plot(x, rate)
-# plt.show()
-        
-        
-        
+plt.hist(np.log10(rate), density=True, bins=30) 
 
-    
+#x = list(range(0, len(rate)))
 
-    
-    
-    
-
-    
-    
-
-    
-
-    
+#plt.plot(x, rate)
+plt.show()
+   
     
