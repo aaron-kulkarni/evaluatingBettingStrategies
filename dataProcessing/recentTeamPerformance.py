@@ -66,14 +66,12 @@ def getTeamAveragePerformance(gameId, n, team):
     Returns a row of data of average team performances in last n games
    
     '''
-
-    if n <= 0:
-        raise Exception('N parameter must be greater than 0')
-
     try:
          gameIdList = getRecentNGames(gameId, n, team)
-    except: 
-        return ['NaN'] * 38
+    except:
+        s = pd.Series('NaN', index=['gameId','teamAbbr','MP','FG','FGA','FG%','3P','3PA','3P%','FT','FTA','FT%','ORB','DRB','TRB','AST','STL','BLK','TOV','PF','PTS','TS%','eFG%','3pAr','FTr','ORB%','DRB%','TRB%','AST%','STL%','BLK%','TOV%','USG%','Ortg','Drtg','poss','pace','poss_per_poss','ass_per_poss'])
+        s['gameId'] = gameId
+        return s
 
     #trying to only return the team stats of the team that we are asking for, rather than the team plus their opponents
     if int(gameId[0:4]) == 2020: 
@@ -96,25 +94,23 @@ def getTeamAveragePerformance(gameId, n, team):
 
     df = df1['home'].append(df2['away'])
 
-    df.loc['mean'] = df.mean()
+    df.loc[gameId] = df.mean()
 
     df['teamAbbr'] = team
     
-    return df.loc['mean']
+    return df.loc[gameId]
 
 def getPlayerAveragePerformance(gameId, n, team, playerId):
     '''
     Returns a row of data of average player performances in last n games
     
     '''
-
-    if n <= 0:
-        raise Exception('N parameter must be greater than 0')
-
     try:
          gameIdList = getRecentNGames(gameId, n, team)
-    except: 
-        return ['NaN'] * 38
+    except:
+        s = pd.Series('NaN', index=['gameId','teamAbbr','MP','FG','FGA','FG%','3P','3PA','3P%','FT','FTA','FT%','ORB','DRB','TRB','AST','STL','BLK','TOV','PF','PTS','TS%','eFG%','3pAr','FTr','ORB%','DRB%','TRB%','AST%','STL%','BLK%','TOV%','USG%','Ortg','Drtg','poss','pace','poss_per_poss','ass_per_poss'])
+        s['gameId'] = gameId
+        return s
 
     if int(gameId[0:4]) == 2020: 
         if int(gameId[4:6].lstrip("0")) < 11: 
@@ -140,8 +136,7 @@ def getPlayerAveragePerformance(gameId, n, team, playerId):
     dfPlayer.loc['mean'] = dfPlayer.mean()
     dfPlayer['playerid'] = playerId
     dfPlayer['Name'] = storedName
-
-
+    dfPlayer.at['mean','gameid'] = gameId
 
     return dfPlayer.loc['mean']
 
@@ -151,11 +146,12 @@ def getOpponentAveragePerformance(gameId, n, team):
     Returns a row of data of average opposing team performances in last n games
    
     '''
-
     try:
          gameIdList = getRecentNGames(gameId, n, team)
-    except: 
-        return ['NaN'] * 38
+    except:
+        s = pd.Series('NaN', index=['gameId','teamAbbr','MP','FG','FGA','FG%','3P','3PA','3P%','FT','FTA','FT%','ORB','DRB','TRB','AST','STL','BLK','TOV','PF','PTS','TS%','eFG%','3pAr','FTr','ORB%','DRB%','TRB%','AST%','STL%','BLK%','TOV%','USG%','Ortg','Drtg','poss','pace','poss_per_poss','ass_per_poss'])
+        s['gameId'] = gameId
+        return s
 
     if int(gameId[0:4]) == 2020: 
         if int(gameId[4:6].lstrip("0")) < 11: 
@@ -175,11 +171,8 @@ def getOpponentAveragePerformance(gameId, n, team):
 
     df = df1['home'].append(df2['away'])
 
-    df.loc['mean'] = df.mean()
+    df.loc[gameId] = df.mean()
 
     df['teamAbbr'][n] = team
     
-    return df.loc['mean']
-
-def recentTeam
-    
+    return df.loc[gameId]
