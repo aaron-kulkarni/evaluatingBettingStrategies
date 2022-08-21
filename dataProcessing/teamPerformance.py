@@ -3,7 +3,8 @@ import numpy as np
 import pandas as pd
 import datetime as dt
 from datetime import date
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+from sportsipy.nba.teams import Teams
 import re
 import sys
 
@@ -77,8 +78,13 @@ def getTeamPerformance(team, year):
     df = pd.concat([dfHome, dfAway], axis = 0)
     df.sort_index(ascending = True)
     
-    
     return df['per']['val']
+
+def expectedPercentageWin(team, year, cumulative = True):
+    adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
+    #df = pd.read_csv('')
+    return print('Not implemented yet')
+    
 
 def plotValues(team, year, cumulative = True):
     df = getTeamPerformance(team, year)
@@ -86,25 +92,14 @@ def plotValues(team, year, cumulative = True):
         df = df.expanding().mean()
     return df.array
 
-rate = plotValues('LAL', 2018, False)
-x = list(range(0, len(rate)))
+rate = []
+for team in Teams():
+    teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+    rate.extend(list(plotValues(teamAbbr, 2018, False)))
 
-plt.plot(x, rate)
-plt.show()
+#x = list(range(0, len(rate)))
+
+#plt.plot(x, rate)
+#plt.show()
         
-        
-        
-
-    
-
-    
-    
-    
-
-    
-    
-
-    
-
-    
     
