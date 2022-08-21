@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from sportsipy.nba.teams import Teams
 import re
 import sys
+import math
 
 def fixGameStateData(filename):
     year = re.findall('[0-9]+', filename)[0]
@@ -41,14 +42,21 @@ def getTeamSchedule(team, year):
     return dfHome, dfAway
 
 def teamAverageHelper(team, year):
-    df = pd.read_csv('data/teamStats/team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1])
+    df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1])
     
     dfHome = df[df['home']['teamAbbr'] == team]
     dfAway = df[df['away']['teamAbbr'] == team]
     return dfHome, dfAway
 
+def opponentAverageHelper(team, year):
+    df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1])
+    
+    dfHome = df[df['home']['teamAbbr'] != team]
+    dfAway = df[df['away']['teamAbbr'] != team]
+    return dfHome, dfAway
+
 def playerAverageHelper(playerId, year):
-    df = pd.read_csv('data/gameStats/game_data_player_stats_{}.csv'.format(year), index_col = 0, header = [0])
+    df = pd.read_csv('../data/gameStats/game_data_player_stats_{}.csv'.format(year), index_col = 0, header = [0])
     dfPlayer = df[df['playerid'] == playerId]
     #dfPlayer = df['playerid'] == playerId
     return dfPlayer
@@ -96,6 +104,8 @@ rate = []
 for team in Teams():
     teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
     rate.extend(list(plotValues(teamAbbr, 2018, False)))
+
+#plt.hist(np.log10(rate), density=True, bins=30) 
 
 #x = list(range(0, len(rate)))
 

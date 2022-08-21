@@ -284,14 +284,14 @@ def plotSuccess(filename, n, cumSum = True):
     rate = df['Rate'].array
     return rate
 
-rate = plotSuccess('/Users/jasonli/Projects/evaluatingBettingStrategies/data/bettingOddsData/implied_prob_2018.csv', 30, False)
+rate = plotSuccess('../data/bettingOddsData/implied_prob_2020.csv', 30, False)
 x = list(range(0, len(rate)))
 
 plt.plot(x, rate)  
 plt.show()
         
-years = np.arange(2015, 2023)
-for year in years:
-    getProbCut('../data/bettingOddsData/adj_prob_{}.csv'.format(year)).to_csv('summary_of_betting_success_by_cut_{}.csv'.format(year))
+#years = np.arange(2015, 2023)
+#for year in years:
+    #getProbCut('../data/bettingOddsData/adj_prob_{}.csv'.format(year)).to_csv('summary_of_betting_success_by_cut_{}.csv'.format(year))
 
 

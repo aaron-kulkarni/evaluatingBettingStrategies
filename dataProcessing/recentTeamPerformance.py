@@ -5,7 +5,7 @@ import datetime as dt
 from datetime import date
 import sys
 
-sys.path.insert(1, '')
+#sys.path.insert(1, '')
 
 from sportsipy.nba.teams import Teams
 from sportsreference.nba.roster import Roster
@@ -14,10 +14,7 @@ from sportsreference.nba.schedule import Schedule
 from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 
-from teamPerformance import teamAverageHelper, playerAverageHelper
-
-
-# filename = '../data/bettingOddsData/closing_betting_odds_2022_FIXED.csv'
+from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper
 
 def extract_lines(filename):
     startGameId = pd.read_csv(filename).head(1)['gameid'].iloc[0]
@@ -66,7 +63,7 @@ def getRecentNGames(gameId, n, team):
 
 def getTeamAveragePerformance(gameId, n, team):
     '''
-    Returns a dataframe of average team performances in last n games
+    Returns a row of data of average team performances in last n games
    
     '''
 
@@ -102,14 +99,12 @@ def getTeamAveragePerformance(gameId, n, team):
 
 def getPlayerAveragePerformance(gameId, n, team, playerId):
     '''
-    Returns a dataframe of average player performances in last n games
-   
+    Returns a row of data of average player performances in last n games
+    
     '''
 
     if n <= 0:
         raise Exception('N parameter must be greater than 0')
-    
-    # WORK IN PROGRESS!!!!!!!!!!!!!!!!!!
 
     if int(gameId[0:4]) == 2020: 
         if int(gameId[4:6].lstrip("0")) < 11: 
@@ -140,6 +135,39 @@ def getPlayerAveragePerformance(gameId, n, team, playerId):
 
     return dfPlayer.loc['mean']
 
+def getOpponentAveragePerformance(gameId, n, team):
 
+    '''
+    Returns a row of data of average opposing team performances in last n games
+   
+    '''
 
-#getPlayerAveragePerformance('202003030DEN', 4, "DEN", 'harriga01')
+    try:
+         gameIdList = getRecentNGames(gameId, n, team)
+    except: 
+        return ['NaN'] * 38
+
+    if int(gameId[0:4]) == 2020: 
+        if int(gameId[4:6].lstrip("0")) < 11: 
+            year = int(gameId[0:4])
+        else:
+            year = int(gameId[0:4]) + 1
+    else:
+        if int(gameId[4:6].lstrip("0")) > 7: 
+            year = int(gameId[0:4]) + 1
+        else:
+            year = int(gameId[0:4])
+
+    df1, df2 = opponentAverageHelper(team, year)
+
+    df1 = df1[df1.index.isin(gameIdList)]
+    df2 = df2[df2.index.isin(gameIdList)]
+
+    df = df1['home'].append(df2['away'])
+
+    df.loc['mean'] = df.mean()
+
+    df['teamAbbr'][n] = team
+    
+    return df.loc['mean']
+    
