@@ -70,6 +70,11 @@ def getTeamAveragePerformance(gameId, n, team):
     if n <= 0:
         raise Exception('N parameter must be greater than 0')
 
+    try:
+         gameIdList = getRecentNGames(gameId, n, team)
+    except: 
+        return ['NaN'] * 38
+
     #trying to only return the team stats of the team that we are asking for, rather than the team plus their opponents
     if int(gameId[0:4]) == 2020: 
         if int(gameId[4:6].lstrip("0")) < 11: 
@@ -105,6 +110,11 @@ def getPlayerAveragePerformance(gameId, n, team, playerId):
 
     if n <= 0:
         raise Exception('N parameter must be greater than 0')
+
+    try:
+         gameIdList = getRecentNGames(gameId, n, team)
+    except: 
+        return ['NaN'] * 38
 
     if int(gameId[0:4]) == 2020: 
         if int(gameId[4:6].lstrip("0")) < 11: 
@@ -170,4 +180,6 @@ def getOpponentAveragePerformance(gameId, n, team):
     df['teamAbbr'][n] = team
     
     return df.loc['mean']
+
+def recentTeam
     
