@@ -66,8 +66,13 @@ def getElo(year):
         eloDict = {
             'ATL' : 1490,
             'BOS' : 1379,
+<<<<<<< HEAD
             'BRK' : 1518,
             'CHO' : 1511,
+=======
+            'BKN' : 1518,
+            'CHA' : 1511,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'CHI' : 1547,
             'CLE' : 1464,
             'DAL' : 1592,
@@ -87,12 +92,17 @@ def getElo(year):
             'OKC' : 1620,
             'ORL' : 1359,
             'PHI' : 1316,
+<<<<<<< HEAD
             'PHO' : 1560,
+=======
+            'PHX' : 1560,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'POR' : 1568,
             'SAC' : 1431,
             'SAS' : 1700,
             'TOR' : 1551,
             'UTA' : 1373,
+<<<<<<< HEAD
             'WAS' : 1541
         }
 
@@ -102,6 +112,17 @@ def getElo(year):
             'BOS' : 1520,
             'BRK' : 1470,
             'CHO' : 1427,
+=======
+            'WSH' : 1541
+        }
+
+    elif year == 2016:
+        eloDict = {
+            'ATL' : 1562,
+            'BOS' : 1520,
+            'BKN' : 1470,
+            'CHA' : 1427,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'CHI' : 1570,
             'CLE' : 1645,
             'DAL' : 1544,
@@ -121,12 +142,17 @@ def getElo(year):
             'OKC' : 1564,
             'ORL' : 1360,
             'PHI' : 1333,
+<<<<<<< HEAD
             'PHO' : 1476,
+=======
+            'PHX' : 1476,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'POR' : 1544,
             'SAC' : 1440,
             'SAS' : 1667,
             'TOR' : 1502,
             'UTA' : 1543,
+<<<<<<< HEAD
             'WAS' : 1536
         }
     if year == 2017:
@@ -135,6 +161,16 @@ def getElo(year):
             'BOS' : 1540,
             'BRK' : 1343,
             'CHO' : 1546,
+=======
+            'WSH' : 1536
+        }
+    elif year == 2017:
+        eloDict = {
+            'ATL' : 1571,
+            'BOS' : 1540,
+            'BKN' : 1343,
+            'CHA' : 1546,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'CHI' : 1467,
             'CLE' : 1696,
             'DAL' : 1503,
@@ -154,12 +190,17 @@ def getElo(year):
             'OKC' : 1685,
             'ORL' : 1454,
             'PHI' : 1278,
+<<<<<<< HEAD
             'PHO' : 1393,
+=======
+            'PHX' : 1393,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'POR' : 1585,
             'SAC' : 1445,
             'SAS' : 1695,
             'TOR' : 1569,
             'UTA' : 1530,
+<<<<<<< HEAD
             'WAS' : 1524
         }
     if year == 2018:
@@ -168,6 +209,16 @@ def getElo(year):
             'BOS' : 1532,
             'BRK' : 1405,
             'CHO' : 1473,
+=======
+            'WSH' : 1524
+        }
+    elif year == 2018:
+        eloDict = {
+            'ATL' : 1486,
+            'BOS' : 1532,
+            'BKN' : 1405,
+            'CHA' : 1473,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'CHI' : 1497,
             'CLE' : 1648,
             'DAL' : 1441,
@@ -187,12 +238,17 @@ def getElo(year):
             'OKC' : 1518,
             'ORL' : 1390,
             'PHI' : 1380,
+<<<<<<< HEAD
             'PHO' : 1381,
+=======
+            'PHX' : 1381,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'POR' : 1531,
             'SAC' : 1421,
             'SAS' : 1617,
             'TOR' : 1532,
             'UTA' : 1580,
+<<<<<<< HEAD
             'WAS' : 1566
         }
     if year == 2019:
@@ -201,6 +257,16 @@ def getElo(year):
             'BOS' : 1562,
             'BRK' : 1432,
             'CHO' : 1502,
+=======
+            'WSH' : 1566
+        }
+    elif year == 2019:
+        eloDict = {
+            'ATL' : 1388,
+            'BOS' : 1562,
+            'BKN' : 1432,
+            'CHA' : 1502,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'CHI' : 1364,
             'CLE' : 1559,
             'DAL' : 1394,
@@ -220,12 +286,17 @@ def getElo(year):
             'OKC' : 1584,
             'ORL' : 1378,
             'PHI' : 1607,
+<<<<<<< HEAD
             'PHO' : 1334,
+=======
+            'PHX' : 1334,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'POR' : 1560,
             'SAC' : 1396,
             'SAS' : 1540,
             'TOR' : 1577,
             'UTA' : 1623,
+<<<<<<< HEAD
             'WAS' : 1500
         }
     if year == 2020:
@@ -234,6 +305,16 @@ def getElo(year):
             'BOS' : 1578,
             'BRK' : 1495,
             'CHO' : 1497,
+=======
+            'WSH' : 1500
+        }
+    elif year == 2020:
+        eloDict = {
+            'ATL' : 1423,
+            'BOS' : 1578,
+            'BKN' : 1495,
+            'CHA' : 1497,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'CHI' : 1350,
             'CLE' : 1350,
             'DAL' : 1462,
@@ -253,12 +334,17 @@ def getElo(year):
             'OKC' : 1552,
             'ORL' : 1543,
             'PHI' : 1582,
+<<<<<<< HEAD
             'PHO' : 1338,
+=======
+            'PHX' : 1338,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'POR' : 1602,
             'SAC' : 1468,
             'SAS' : 1554,
             'TOR' : 1673,
             'UTA' : 1596,
+<<<<<<< HEAD
             'WAS' : 1435
         }
     if year == 2021:
@@ -267,6 +353,16 @@ def getElo(year):
             'BOS' : 1646,
             'BRK' : 1489,
             'CHO' : 1424,
+=======
+            'WSH' : 1435
+        }
+    elif year == 2021:
+        eloDict = {
+            'ATL' : 1385,
+            'BOS' : 1646,
+            'BKN' : 1489,
+            'CHA' : 1424,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'CHI' : 1383,
             'CLE' : 1363,
             'DAL' : 1528,
@@ -286,12 +382,17 @@ def getElo(year):
             'OKC' : 1534,
             'ORL' : 1495,
             'PHI' : 1535,
+<<<<<<< HEAD
             'PHO' : 1555,
+=======
+            'PHX' : 1555,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'POR' : 1511,
             'SAC' : 1504,
             'SAS' : 1529,
             'TOR' : 1648,
             'UTA' : 1542,
+<<<<<<< HEAD
             'WAS' : 1407
         }
     if year == 2022:
@@ -300,6 +401,16 @@ def getElo(year):
             'BOS' : 1500,
             'BRK' : 1605,
             'CHO' : 1438,
+=======
+            'WSH' : 1407
+        }
+    elif year == 2022:
+        eloDict = {
+            'ATL' : 1570,
+            'BOS' : 1500,
+            'BKN' : 1605,
+            'CHA' : 1438,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'CHI' : 1495,
             'CLE' : 1353,
             'DAL' : 1541,
@@ -319,13 +430,21 @@ def getElo(year):
             'OKC' : 1309,
             'ORL' : 1330,
             'PHI' : 1609,
+<<<<<<< HEAD
             'PHO' : 1650,
+=======
+            'PHX' : 1650,
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
             'POR' : 1581,
             'SAC' : 1454,
             'SAS' : 1478,
             'TOR' : 1449,
             'UTA' : 1615,
+<<<<<<< HEAD
             'WAS' : 1495
+=======
+            'WSH' : 1495
+>>>>>>> 263338ded8d9ce0a50b0e386979fe3d7c15fcfae
         }
 
     gameIdList =  pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0).index
