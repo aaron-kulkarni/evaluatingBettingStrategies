@@ -130,5 +130,6 @@ def fixRecentStats(year):
 # years = np.arange(2015, 2022)
 # for year in years:
 #     fixRecentStats(year).to_csv('average_team_per_5_{}.csv'.format(year))
-   
+
+fixRecentStats(2015)
     
