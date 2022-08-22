@@ -4,10 +4,12 @@ import pandas as pd
 import datetime as dt
 from datetime import date
 import matplotlib.pyplot as plt
-from sportsipy.nba.teams import Teams
 import re
 import sys
 import math
+
+from sportsipy.nba.teams import Teams
+from recentTeamPerformance import getFirstGame 
 
 def win_probs(home_elo, away_elo, home_court_advantage) :
 
@@ -57,3 +59,91 @@ def update_elo(home_score, away_score, home_elo, away_elo, home_court_advantage)
     updated_away_elo = away_elo + k * (away_win - away_prob)
 
     return updated_home_elo, updated_away_elo
+
+def getElo(year):
+
+    if year == 2015:
+        eloDict = {
+            'ATL' : 
+            'BOS' :
+            'BKN' :
+            'CHA' :
+            'CHI' :
+            'CLE' :
+            'DAL' :
+            'DEN' :
+            'DET' :
+            'GSW' :
+            'HOU' :
+            'IND' :
+            'LAC' :
+            'LAL' :
+            'MEM' :
+            'MIA' :
+            'MIL' :
+            'MIN' :
+            'NOP' :
+            'NYK' :
+            'OKC' :
+            'ORL' :
+            'PHI' :
+            'PHX' :
+            'POR' :
+            'SAC' :
+            'SAS' :
+            'TOR' :
+            'UTA' :
+            'WSH' :
+}
+
+    if year == 2016:
+        eloDict = {}
+    if year = 2017:
+        eloDict = {}
+    if year = 2018:
+        eloDict = {}
+    if year = 2019:
+        eloDict = {}    
+    if year = 2020:
+        eloDict = {}
+    if year = 2021:
+        eloDict = {}
+    if year = 2022:
+        eloDict = {}
+
+    gameIdList =  pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0).index
+    df = pd.DataFrame()
+    for gameId in gameIdList:
+        eloDict = getEloDict(eloDict, gameId)
+        
+        
+
+def getEloDict(eloDict, gameId):
+    teamHome, teamAway, pointsAway, pointsHome = getEloInputs(gameId)
+    eloHome = eloDict[teamHome]
+    eloAway = eloDict[teamAway]
+
+    eloHome, eloAway = update_elo(pointsHome, pointsAway, eloHome, eloAway, 100)
+    upDict = {teamHome: eloHome, teamAway: eloAway
+        }
+    eloDict = eloDict.update(upDict)
+    return eloDict
+    
+    
+def getEloInputs(gameId):
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
+    df =  df.loc[:, [('home', 'points'), ('away','points'), ('gameState', 'teamHome'), ('gameState', 'teamAway')]]
+    pointsHome = df.loc[gameId]['home']['points']
+    pointsAway = df.loc[gameId]['away']['points']
+
+    teamHome = df.loc[gameId]['gameState']['teamHome']
+    teamAway = df.loc[gameId]['gameState']['teamAway']
+
+    return teamHome, teamAway, pointsAway, pointsHome
+
+    
+
+    
+    
+    
+    
