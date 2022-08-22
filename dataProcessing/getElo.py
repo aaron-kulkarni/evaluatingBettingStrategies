@@ -61,13 +61,13 @@ def update_elo(home_score, away_score, home_elo, away_elo, home_court_advantage)
     return updated_home_elo, updated_away_elo
 
 def getElo(year):
-
+    
     if year == 2015:
         eloDict = {
             'ATL' : 1490,
             'BOS' : 1379,
-            'BKN' : 1518,
-            'CHA' : 1511,
+            'BRK' : 1518,
+            'CHO' : 1511,
             'CHI' : 1547,
             'CLE' : 1464,
             'DAL' : 1592,
@@ -87,21 +87,21 @@ def getElo(year):
             'OKC' : 1620,
             'ORL' : 1359,
             'PHI' : 1316,
-            'PHX' : 1560,
+            'PHO' : 1560,
             'POR' : 1568,
             'SAC' : 1431,
             'SAS' : 1700,
             'TOR' : 1551,
             'UTA' : 1373,
-            'WSH' : 1541
+            'WAS' : 1541
         }
 
-    elif year == 2016:
+    if year == 2016:
         eloDict = {
             'ATL' : 1562,
             'BOS' : 1520,
-            'BKN' : 1470,
-            'CHA' : 1427,
+            'BRK' : 1470,
+            'CHO' : 1427,
             'CHI' : 1570,
             'CLE' : 1645,
             'DAL' : 1544,
@@ -121,20 +121,20 @@ def getElo(year):
             'OKC' : 1564,
             'ORL' : 1360,
             'PHI' : 1333,
-            'PHX' : 1476,
+            'PHO' : 1476,
             'POR' : 1544,
             'SAC' : 1440,
             'SAS' : 1667,
             'TOR' : 1502,
             'UTA' : 1543,
-            'WSH' : 1536
+            'WAS' : 1536
         }
-    elif year == 2017:
+    if year == 2017:
         eloDict = {
             'ATL' : 1571,
             'BOS' : 1540,
-            'BKN' : 1343,
-            'CHA' : 1546,
+            'BRK' : 1343,
+            'CHO' : 1546,
             'CHI' : 1467,
             'CLE' : 1696,
             'DAL' : 1503,
@@ -154,20 +154,20 @@ def getElo(year):
             'OKC' : 1685,
             'ORL' : 1454,
             'PHI' : 1278,
-            'PHX' : 1393,
+            'PHO' : 1393,
             'POR' : 1585,
             'SAC' : 1445,
             'SAS' : 1695,
             'TOR' : 1569,
             'UTA' : 1530,
-            'WSH' : 1524
+            'WAS' : 1524
         }
-    elif year == 2018:
+    if year == 2018:
         eloDict = {
             'ATL' : 1486,
             'BOS' : 1532,
-            'BKN' : 1405,
-            'CHA' : 1473,
+            'BRK' : 1405,
+            'CHO' : 1473,
             'CHI' : 1497,
             'CLE' : 1648,
             'DAL' : 1441,
@@ -187,20 +187,20 @@ def getElo(year):
             'OKC' : 1518,
             'ORL' : 1390,
             'PHI' : 1380,
-            'PHX' : 1381,
+            'PHO' : 1381,
             'POR' : 1531,
             'SAC' : 1421,
             'SAS' : 1617,
             'TOR' : 1532,
             'UTA' : 1580,
-            'WSH' : 1566
+            'WAS' : 1566
         }
-    elif year == 2019:
+    if year == 2019:
         eloDict = {
             'ATL' : 1388,
             'BOS' : 1562,
-            'BKN' : 1432,
-            'CHA' : 1502,
+            'BRK' : 1432,
+            'CHO' : 1502,
             'CHI' : 1364,
             'CLE' : 1559,
             'DAL' : 1394,
@@ -220,20 +220,20 @@ def getElo(year):
             'OKC' : 1584,
             'ORL' : 1378,
             'PHI' : 1607,
-            'PHX' : 1334,
+            'PHO' : 1334,
             'POR' : 1560,
             'SAC' : 1396,
             'SAS' : 1540,
             'TOR' : 1577,
             'UTA' : 1623,
-            'WSH' : 1500
+            'WAS' : 1500
         }
-    elif year == 2020:
+    if year == 2020:
         eloDict = {
             'ATL' : 1423,
             'BOS' : 1578,
-            'BKN' : 1495,
-            'CHA' : 1497,
+            'BRK' : 1495,
+            'CHO' : 1497,
             'CHI' : 1350,
             'CLE' : 1350,
             'DAL' : 1462,
@@ -253,20 +253,20 @@ def getElo(year):
             'OKC' : 1552,
             'ORL' : 1543,
             'PHI' : 1582,
-            'PHX' : 1338,
+            'PHO' : 1338,
             'POR' : 1602,
             'SAC' : 1468,
             'SAS' : 1554,
             'TOR' : 1673,
             'UTA' : 1596,
-            'WSH' : 1435
+            'WAS' : 1435
         }
-    elif year == 2021:
+    if year == 2021:
         eloDict = {
             'ATL' : 1385,
             'BOS' : 1646,
-            'BKN' : 1489,
-            'CHA' : 1424,
+            'BRK' : 1489,
+            'CHO' : 1424,
             'CHI' : 1383,
             'CLE' : 1363,
             'DAL' : 1528,
@@ -286,20 +286,20 @@ def getElo(year):
             'OKC' : 1534,
             'ORL' : 1495,
             'PHI' : 1535,
-            'PHX' : 1555,
+            'PHO' : 1555,
             'POR' : 1511,
             'SAC' : 1504,
             'SAS' : 1529,
             'TOR' : 1648,
             'UTA' : 1542,
-            'WSH' : 1407
+            'WAS' : 1407
         }
-    elif year == 2022:
+    if year == 2022:
         eloDict = {
             'ATL' : 1570,
             'BOS' : 1500,
-            'BKN' : 1605,
-            'CHA' : 1438,
+            'BRK' : 1605,
+            'CHO' : 1438,
             'CHI' : 1495,
             'CLE' : 1353,
             'DAL' : 1541,
@@ -319,21 +319,28 @@ def getElo(year):
             'OKC' : 1309,
             'ORL' : 1330,
             'PHI' : 1609,
-            'PHX' : 1650,
+            'PHO' : 1650,
             'POR' : 1581,
             'SAC' : 1454,
             'SAS' : 1478,
             'TOR' : 1449,
             'UTA' : 1615,
-            'WSH' : 1495
+            'WAS' : 1495
         }
 
     gameIdList =  pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0).index
-    df = pd.DataFrame()
-    for gameId in gameIdList:
+    df = pd.DataFrame(columns = ['gameId', 'homeTeamElo', 'awayTeamElo', 'homeTeamEloAfter', 'awayTeamEloAfter'])
+    for gameId in list(gameIdList):
+        teamHome, teamAway, pointsAway, pointsHome = getEloInputs(gameId)
+        eloHome  = eloDict[teamHome]
+        eloAway = eloDict[teamAway]
         eloDict = getEloDict(eloDict, gameId)
-        
-        
+
+        newRow = {'gameId': gameId, 'homeTeamElo': eloHome, 'awayTeamElo': eloAway, 'homeTeamEloAfter': eloDict[teamHome], 'awayTeamEloAfter': eloDict[teamAway]}
+        df = df.append(newRow, ignore_index = True)
+    df.set_index('gameId', inplace = True)
+    return df
+
 
 def getEloDict(eloDict, gameId):
     teamHome, teamAway, pointsAway, pointsHome = getEloInputs(gameId)
@@ -343,7 +350,7 @@ def getEloDict(eloDict, gameId):
     eloHome, eloAway = update_elo(pointsHome, pointsAway, eloHome, eloAway, 100)
     upDict = {teamHome: eloHome, teamAway: eloAway
         }
-    eloDict = eloDict.update(upDict)
+    eloDict.update(upDict)
     return eloDict
     
     
@@ -358,9 +365,3 @@ def getEloInputs(gameId):
 
     return teamHome, teamAway, pointsAway, pointsHome
 
-    
-
-    
-    
-    
-    
