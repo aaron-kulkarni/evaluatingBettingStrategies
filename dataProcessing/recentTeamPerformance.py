@@ -199,13 +199,7 @@ year = np.arrange(2015, 2023)
 for year in years:
     cleanTeamPerformanceDF(year).to_csv('average_team_per_5_clean_{}'.format(year))
         
-getTeamPerformanceDF('2020', 5).to_csv('average_team_per_5_2020.csv')
-getTeamPerformanceDF('2019', 5).to_csv('average_team_per_5_2019.csv')
-getTeamPerformanceDF('2018', 5).to_csv('average_team_per_5_2018.csv')
-getTeamPerformanceDF('2017', 5).to_csv('average_team_per_5_2017.csv')
-getTeamPerformanceDF('2016', 5).to_csv('average_team_per_5_2016.csv')
-getTeamPerformanceDF('2015', 5).to_csv('average_team_per_5_2015.csv')
-    
+
         
         
         
