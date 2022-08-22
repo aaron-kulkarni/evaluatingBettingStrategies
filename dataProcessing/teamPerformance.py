@@ -96,24 +96,24 @@ def plotValues(team, year, cumulative = True):
         df = df.expanding().mean()
     return df.array
 
-def fixRecentStats(year):
-    df = pd.read_csv('data/averageTeamData/average_team_per_5_{}.csv'.format(year), header = [1])
-    #dfPlayer['MP'] = dfPlayer.apply(lambda d: round(float(d['MP'][0:2]) + (float(d['MP'][3:5])/60), 2), axis = 1)
-    #df['NanN'] = df.apply(lambda d: )
-    #df['<= 53'] = df['mynumbers'].apply(lambda x: 'True' if x <= 53 else 'False')
-    #df['Unnamed: 0'] = df['Unnamed: 0'].apply(lambda d: '' if d == 0 else d)
-    #df['gameId'] = df['gameId'].apply(lambda x: '' if x == 'NaN' else x)
-    df['firstCol'] = df['Unnamed: 0'].apply(lambda d: '' if d == '0' else d)
-    df['secondCol'] = df['gameId'].apply(lambda x: '' if type(x) == float else x)
-    df['fixed'] = df['firstCol'] + df['secondCol']
-    del df['Unnamed: 0']
-    del df['gameId']
-    del df['firstCol']
-    del df['secondCol']
-    df.set_index('fixed', inplace = True)
-    df.index.names = ['gameId']
+# def fixRecentStats(year):
+#     df = pd.read_csv('data/averageTeamData/average_team_per_5_{}.csv'.format(year), header = [1])
+#     #dfPlayer['MP'] = dfPlayer.apply(lambda d: round(float(d['MP'][0:2]) + (float(d['MP'][3:5])/60), 2), axis = 1)
+#     #df['NanN'] = df.apply(lambda d: )
+#     #df['<= 53'] = df['mynumbers'].apply(lambda x: 'True' if x <= 53 else 'False')
+#     #df['Unnamed: 0'] = df['Unnamed: 0'].apply(lambda d: '' if d == 0 else d)
+#     #df['gameId'] = df['gameId'].apply(lambda x: '' if x == 'NaN' else x)
+#     df['firstCol'] = df['Unnamed: 0'].apply(lambda d: '' if d == '0' else d)
+#     df['secondCol'] = df['gameId'].apply(lambda x: '' if type(x) == float else x)
+#     df['fixed'] = df['firstCol'] + df['secondCol']
+#     del df['Unnamed: 0']
+#     del df['gameId']
+#     del df['firstCol']
+#     del df['secondCol']
+#     df.set_index('fixed', inplace = True)
+#     df.index.names = ['gameId']
 
-    return df
+#     return df
 
 # rate = []
 # for team in Teams():
@@ -127,9 +127,10 @@ def fixRecentStats(year):
 # #plt.plot(x, rate)
 # plt.show()
 
+#fixRecentStats(2022).to_csv('data/averageTeamData/average_team_per_5_2022.csv')
 # years = np.arange(2015, 2022)
 # for year in years:
+#     df = pd.read_csv('data/averageTeamData/average_team_per_5_{}.csv'.format(year), index_col = 0, header = [0,1])
+#     print(df)
 #     fixRecentStats(year).to_csv('average_team_per_5_{}.csv'.format(year))
 
-fixRecentStats(2015)
-    
