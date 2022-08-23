@@ -74,8 +74,8 @@ def getTeamAveragePerformance(gameId, n, team):
     try:
          gameIdList = getRecentNGames(gameId, n, team)
     except:
-        s = pd.Series('NaN', index=['gameId','teamAbbr','MP','FG','FGA','FG%','3P','3PA','3P%','FT','FTA','FT%','ORB','DRB','TRB','AST','STL','BLK','TOV','PF','PTS','TS%','eFG%','3pAr','FTr','ORB%','DRB%','TRB%','AST%','STL%','BLK%','TOV%','USG%','Ortg','Drtg','poss','pace','poss_per_poss','ass_per_poss'])
-        s['gameId'] = gameId
+        s = pd.Series('NaN', index=['teamAbbr','MP','FG','FGA','FG%','3P','3PA','3P%','FT','FTA','FT%','ORB','DRB','TRB','AST','STL','BLK','TOV','PF','PTS','TS%','eFG%','3pAr','FTr','ORB%','DRB%','TRB%','AST%','STL%','BLK%','TOV%','USG%','Ortg','Drtg','poss','pace','poss_per_poss','ass_per_poss'])
+        s.name = gameId
         return s
 
     #trying to only return the team stats of the team that we are asking for, rather than the team plus their opponents
@@ -113,8 +113,8 @@ def getPlayerAveragePerformance(gameId, n, team, playerId):
     try:
          gameIdList = getRecentNGames(gameId, n, team)
     except:
-        s = pd.Series('NaN', index=['gameId','teamAbbr','MP','FG','FGA','FG%','3P','3PA','3P%','FT','FTA','FT%','ORB','DRB','TRB','AST','STL','BLK','TOV','PF','PTS','TS%','eFG%','3pAr','FTr','ORB%','DRB%','TRB%','AST%','STL%','BLK%','TOV%','USG%','Ortg','Drtg','poss','pace','poss_per_poss','ass_per_poss'])
-        s['gameId'] = gameId
+        s = pd.Series('NaN', index=['teamAbbr','MP','FG','FGA','FG%','3P','3PA','3P%','FT','FTA','FT%','ORB','DRB','TRB','AST','STL','BLK','TOV','PF','PTS','TS%','eFG%','3pAr','FTr','ORB%','DRB%','TRB%','AST%','STL%','BLK%','TOV%','USG%','Ortg','Drtg','poss','pace','poss_per_poss','ass_per_poss'])
+        s.name = gameId
         return s
 
     if int(gameId[0:4]) == 2020: 
@@ -154,8 +154,8 @@ def getOpponentAveragePerformance(gameId, n, team):
     try:
          gameIdList = getRecentNGames(gameId, n, team)
     except:
-        s = pd.Series('NaN', index=['gameId','teamAbbr','MP','FG','FGA','FG%','3P','3PA','3P%','FT','FTA','FT%','ORB','DRB','TRB','AST','STL','BLK','TOV','PF','PTS','TS%','eFG%','3pAr','FTr','ORB%','DRB%','TRB%','AST%','STL%','BLK%','TOV%','USG%','Ortg','Drtg','poss','pace','poss_per_poss','ass_per_poss'])
-        s['gameId'] = gameId
+        s = pd.Series('NaN', index=['teamAbbr','MP','FG','FGA','FG%','3P','3PA','3P%','FT','FTA','FT%','ORB','DRB','TRB','AST','STL','BLK','TOV','PF','PTS','TS%','eFG%','3pAr','FTr','ORB%','DRB%','TRB%','AST%','STL%','BLK%','TOV%','USG%','Ortg','Drtg','poss','pace','poss_per_poss','ass_per_poss'])
+        s.name = gameId
         return s
 
     if int(gameId[0:4]) == 2020: 
@@ -203,6 +203,7 @@ def cleanTeamPerformanceDF(year):
 #year = np.arrange(2015, 2023)
 #for year in years:
 #    cleanTeamPerformanceDF(year).to_csv('average_team_per_5_clean_{}'.format(year))
+
         
 
         
