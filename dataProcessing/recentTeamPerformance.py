@@ -16,15 +16,6 @@ from sportsipy.nba.boxscore import Boxscores
 
 from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper
 
-def extract_lines(filename):
-    startGameId = pd.read_csv(filename).head(1)['gameid'].iloc[0]
-    endGameId = pd.read_csv(filename).tail(1)['gameid'].iloc[0]
-
-    startDate = dt.datetime.strptime(startGameId[0:4] + ', ' + startGameId[4:6] + ', ' + startGameId[6:8], '%Y, %m, %d')
-    endDate = dt.datetime.strptime(endGameId[0:4] + ', ' + endGameId[4:6] + ', ' + endGameId[6:8], '%Y, %m, %d')
-
-    return startDate, endDate
-
 def getFirstGame(team, year):
     teamSchedule = Schedule(team, year).dataframe
     teamSchedule.sort_values(by = 'datetime')
@@ -204,7 +195,6 @@ def cleanTeamPerformanceDF(year):
 #for year in years:
 #    cleanTeamPerformanceDF(year).to_csv('average_team_per_5_clean_{}'.format(year))
 
-        
 
         
         
