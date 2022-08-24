@@ -8,9 +8,6 @@ import re
 import sys
 import math
 
-from sportsipy.nba.teams import Teams
-from recentTeamPerformance import getFirstGame 
-
 def win_probs(home_elo, away_elo, home_court_advantage) :
 
     h = math.pow(10, home_elo/400)
@@ -365,5 +362,20 @@ def getEloInputs(gameId):
 
     return teamHome, teamAway, pointsAway, pointsHome
 
+def getEloProbability(year):
+    df = pd.read_csv('../data/eloData/elo_{}.csv'.format(year), index_col = 0)
+    df['homeTeamProb'] = df.apply(lambda d: win_probs(d['homeTeamElo'], d['awayTeamElo'], 100)[0], axis = 1)
+    df['awayTeamProb'] = df.apply(lambda d: win_probs(d['homeTeamElo'], d['awayTeamElo'], 100)[1], axis = 1)
 
+    return df
+
+years = np.arange(2015, 2023)
+for year in years:
+    getEloProbability(year).to_csv('team_elo_{}.csv'.format(year))
+
+'''
+
+IMPORTANT: TO GET NEW SEASON DATA, RUN getElo FUNCTION AND THEN CONVERT THE FILES USING getEloProbability. WRAP THE FUNCTION INSIDE LATER. 
+
+'''
 
