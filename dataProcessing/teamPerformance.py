@@ -31,7 +31,7 @@ def fixGameStateData(filename):
         
 def getTeamSchedule(team, year):
 
-    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])
+    df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1]))
 
     dfHome = df[df['gameState']['teamHome'] == team]
     dfAway = df[df['gameState']['teamAway'] == team]

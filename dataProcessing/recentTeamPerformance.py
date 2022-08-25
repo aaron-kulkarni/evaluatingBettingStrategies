@@ -14,7 +14,7 @@ from sportsreference.nba.schedule import Schedule
 from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 
-from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper
+from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper, getTeamSchedule
 
 def getFirstGame(team, year):
     teamSchedule = Schedule(team, year).dataframe
@@ -33,29 +33,24 @@ def getRecentNGames(gameId, n, team):
     if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)) == False:
         
         raise Exception('Issue with Game ID')
-
     
     if int(gameId[0:4]) == 2020: 
         if int(gameId[4:6].lstrip("0")) < 11: 
-            teamSchedule = Schedule(team, int(gameId[0:4])).dataframe
+            year = 2020
         else:
-            teamSchedule = Schedule(team, int(gameId[0:4]) + 1).dataframe
+            year = 2021
     else:
         if int(gameId[4:6].lstrip("0")) > 7: 
-            teamSchedule = Schedule(team, int(gameId[0:4]) + 1).dataframe
+            year = int(gameId[0:4]) + 1
         else:
-            teamSchedule = Schedule(team, int(gameId[0:4])).dataframe
+            year = int(gameId[0:4])
 
-    teamSchedule.sort_values(by = 'datetime')
-    currentDate = teamSchedule['datetime'].loc[gameId]
-    temp = teamSchedule[(teamSchedule['datetime'] < currentDate)]
-
-    if n > len(temp['datetime']):
-        raise Exception('{} is too large'.format(n))
-
-    gameIdList = list(temp['datetime'].tail(n).index)
-
-    return gameIdList
+    teamScheduleHome, teamScheduleAway = getTeamSchedule(team, year)
+    teamScheduleHome = teamScheduleHome.loc[:gameId]
+    teamScheduleAway = teamScheduleAway.loc[:gameId]
+    teamScheduleTotal = teamScheduleHome.append(teamScheduleAway)
+    teamScheduleTotal.sort_index(inplace=True)
+    return list(teamScheduleTotal.tail(n).index)
 
 def getTeamAveragePerformance(gameId, n, team):
     '''
