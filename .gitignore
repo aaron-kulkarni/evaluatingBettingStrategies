@@ -19,3 +19,5 @@ teamSchedule.csv
 .\#getElo.py
 .\#recentTeamPerformance.py
 .\#addStaticFeatures.py
+.\#cleanBettingOdds.py
+.\#teamPerformance,py
