@@ -8,13 +8,7 @@ from sportsipy.nba.teams import Teams
 import sys
 import math
 
-from teamPerformance import getTeamSchedule
-
-def getTeamGameIds(team, year):
-    homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, year)
-    teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis = 0)
-    teamSchedule = teamSchedule.sort_index(ascending = True)
-    return list(teamSchedule.index)
+from teamPerformance import getTeamSchedule, getTeamGameIds
 
 def getTeamPerformance(team, year):
     dfHome = getTeamSchedule(team, year)[0]
@@ -30,7 +24,7 @@ def getTeamPerformance(team, year):
     dfAway['awayProbAdj', 'mean'] = dfAway['awayProbAdj'].mean(skipna = True, axis = 1)
     
     dfHome['per', 'val'] = returnX(dfHome['home']['points'], dfHome['away']['points'], dfHome['homeProbAdj']['mean'], True)
-    dfAway['per', 'val'] = returnX(dfAway['home']['points'], dfAway['away']['points'], dfAway['awayProbAdj']['mean'], False)
+    Dfaway['per', 'val'] = returnX(dfAway['home']['points'], dfAway['away']['points'], dfAway['awayProbAdj']['mean'], False)
 
     df = pd.concat([dfHome, dfAway], axis = 0)
     df.sort_index(ascending = True)

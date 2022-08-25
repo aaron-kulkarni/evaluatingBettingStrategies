@@ -37,6 +37,13 @@ def getTeamSchedule(team, year):
     dfAway = df[df['gameState']['teamAway'] == team]
     return dfHome, dfAway
 
+def getTeamGameIds(team, year):
+    homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, year)
+    teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis = 0)
+    teamSchedule = teamSchedule.sort_index(ascending = True)
+    return list(teamSchedule.index)
+
+
 def teamAverageHelper(team, year):
     df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1])
     
@@ -133,4 +140,3 @@ def plotValues(team, year, cumulative = True):
 #     df = pd.read_csv('data/averageTeamData/average_team_per_5_{}.csv'.format(year), index_col = 0, header = [0,1])
 #     print(df)
 #     fixRecentStats(year).to_csv('average_team_per_5_{}.csv'.format(year))
-
