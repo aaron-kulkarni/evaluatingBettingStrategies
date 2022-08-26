@@ -8,7 +8,7 @@ from sportsipy.nba.teams import Teams
 import sys
 import math
 
-from teamPerformance import getTeamSchedule, getTeamGameIds
+from teamPerformance import getTeamSchedule, getTeamGameIds, getNumberGamesPlayed, getYearFromId, getTeams
 
 
 def returnBettingOddsAverage(team, year):
@@ -35,14 +35,19 @@ def getSignal(team, year):
     return df['signal']
 
 
-def getPerformanceMetric(team, year):
+def getPerformanceMetric(team, year, cumSum = True):
     '''
     Assumption - Probability of win in each game is independent(this is obviously not a true statement), each variable is a Bernoulli random variable and thus the expectation of the number of wins they have is the sum of the expected values of each individual game)
 
 ***CUMULATIVE***
     '''
-    actWins = getSignal(team, year).cumsum()
-    expWins = returnBettingOddsAverage(team, year).cumsum()
+
+    if cumSum == True:
+        actWins = getSignal(team, year).cumsum()
+        expWins = returnBettingOddsAverage(team, year).cumsum()
+    else:
+        actWins = getSignal(team, year)
+        expWins = returnBettingOddsAverage(team, year)
     perMetric = actWins - expWins
     
     return perMetric
@@ -52,10 +57,36 @@ def getPerformanceMetricN(team, year, n):
     
     actWins = getSignal(team, year)
     expWins = returnBettingOddsAverage(team, year)
-    perMetric = (actWins - expWins).rolling(window = n).mean().iloc[n-1:].values
+    perMetric = (actWins - expWins).rolling(window = n).mean() * n
 
     return perMetric
 
+def getPerformanceMetricDataFrame(year):
+    df = pd.DataFrame()
+    for team in Teams():
+        teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+        perMetric = getPerformanceMetric(teamAbbr, year, cumSum = True).shift()
+        perMetric = perMetric.to_frame(name = 'perMetric')
+        perMetricN = getPerformanceMetricN(teamAbbr, year, 6).shift()
+        perMetricN = perMetricN.to_frame(name = 'perMetricN')
+        perTotal = pd.concat([perMetric, perMetricN], axis = 1)
+        perTotal['team'] = teamAbbr
+        df = pd.concat([df, perTotal], axis = 0)
+    return df
+
+def convertDataFrame(year):
+    df = getPerformanceMetricDataFrame(year)
+    finalDF = pd.DataFrame()
+    for gameId in df.index.unique():
+        homeTeam, awayTeam = getTeams(gameId)
+
+            
+
+            
+        
+    
+
+        
 
 year = 2018
 n = 10
@@ -73,7 +104,7 @@ plt.show()
 year = 2015
 for team in Teams():
     teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
-    x = np.arange(1, len(list(getPerformanceMetric(teamAbbr, year))) + 1)
+    x = np.arange(1, len(list(getPerformanceMetric(teamAbbr, year, True))) + 1)
     y = list(getPerformanceMetric(teamAbbr, year))
     plt.plot(x, y, label = teamAbbr)
 plt.xlabel('Games')

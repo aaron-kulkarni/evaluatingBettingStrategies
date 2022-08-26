@@ -12,6 +12,13 @@ import math
 def getNumberGamesPlayed(team, year, gameId):
     index = getTeamGameIds(team, year).index(gameId)
     return gameId
+
+def getTeams(gameId):
+    year = getYearFromId(gameId)
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])
+    teamHome = df.loc[gameId]['gameState']['teamHome']
+    teamAway = df.loc[gameId]['gameState']['teamAway']
+    return teamHome, teamAway
     
 def getTeamSchedule(team, year):
 
