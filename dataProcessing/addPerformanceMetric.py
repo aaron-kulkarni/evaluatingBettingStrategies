@@ -10,26 +10,6 @@ import math
 
 from teamPerformance import getTeamSchedule, getTeamGameIds
 
-def getTeamPerformance(team, year):
-    dfHome = getTeamSchedule(team, year)[0]
-    dfAway = getTeamSchedule(team, year)[1]
-    
-    adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
-
-    adjProbHome = adjProb.loc[adjProb.index.isin(dfHome.index)]
-    adjProbAway = adjProb.loc[adjProb.index.isin(dfAway.index)]
-    dfHome = pd.concat([dfHome, adjProbHome], join = 'inner', axis = 1)
-    dfAway = pd.concat([dfAway, adjProbAway], join = 'inner', axis = 1)
-    dfHome['homeProbAdj', 'mean'] = dfHome['homeProbAdj'].mean(skipna = True, axis = 1)
-    dfAway['awayProbAdj', 'mean'] = dfAway['awayProbAdj'].mean(skipna = True, axis = 1)
-    
-    dfHome['per', 'val'] = returnX(dfHome['home']['points'], dfHome['away']['points'], dfHome['homeProbAdj']['mean'], True)
-    Dfaway['per', 'val'] = returnX(dfAway['home']['points'], dfAway['away']['points'], dfAway['awayProbAdj']['mean'], False)
-
-    df = pd.concat([dfHome, dfAway], axis = 0)
-    df.sort_index(ascending = True)
-    
-    return df['per']['val']
 
 def returnBettingOddsAverage(team, year):
     adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
@@ -58,6 +38,8 @@ def getSignal(team, year):
 def getPerformanceMetric(team, year):
     '''
     Assumption - Probability of win in each game is independent(this is obviously not a true statement), each variable is a Bernoulli random variable and thus the expectation of the number of wins they have is the sum of the expected values of each individual game)
+
+***CUMULATIVE***
     '''
     actWins = getSignal(team, year).cumsum()
     expWins = returnBettingOddsAverage(team, year).cumsum()
@@ -65,13 +47,27 @@ def getPerformanceMetric(team, year):
     
     return perMetric
 
-    
 
-def plotValues(team, year, cumulative = True):
-    df = getTeamPerformance(team, year)
-    if cumulative == True:
-        df = df.expanding().mean()
-    return df.array
+def getPerformanceMetricN(team, year, n):
+    
+    actWins = getSignal(team, year)
+    expWins = returnBettingOddsAverage(team, year)
+    perMetric = (actWins - expWins).rolling(window = n).mean().iloc[n-1:].values
+
+    return perMetric
+
+
+year = 2018
+n = 10
+for team in Teams():
+    teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+    x = np.arange(1, len(list(getPerformanceMetricN(teamAbbr, year, n))) + 1)
+    y = list(getPerformanceMetricN(teamAbbr, year, n))
+    plt.plot(x, y, label = teamAbbr)
+plt.xlabel('Games')
+plt.ylabel('Performance Metric')
+plt.legend()
+plt.show() 
 
 
 year = 2015
@@ -84,16 +80,3 @@ plt.xlabel('Games')
 plt.ylabel('Performance Metric')
 plt.legend()
 plt.show()
-
-# rate = []
-# for team in Teams():
-#     teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
-#     rate.extend(list(plotValues(teamAbbr, 2018, False)))
-
-# plt.hist(np.log10(rate), density=True, bins=30) 
-
-# #x = list(range(0, len(rate)))
-
-# #plt.plot(x, rate)
-# plt.show()
-

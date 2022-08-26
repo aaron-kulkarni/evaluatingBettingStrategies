@@ -9,26 +9,10 @@ import re
 import sys
 import math
 
-def fixGameStateData(filename):
-    year = re.findall('[0-9]+', filename)[0]
-    gameState = pd.read_csv(filename, index_col = 0)
-    df = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
-    for col in gameState.columns[0:5]:
-        df['gameState', '{}'.format(col)] = gameState[col]
-    for col in gameState.columns[5:16]:
-        colN = col.replace('Home', '')
-        colN = colN.replace('home', '')
-        colN = colN[0].lower() + colN[1:]
-        df['home',  '{}'.format(colN)] = gameState[col]
-    for col in gameState.columns[16:27]:
-        colN = col.replace('away', '')
-        colN = colN.replace('Away', '')
-        colN = colN[0].lower() + colN[1:]
-        df['away',  '{}'.format(colN)] = gameState[col]
-    df['gameState', 'rivalry'] = gameState['rivalry']
-    df.drop(['homeProb', 'awayProb', 'homeProbAdj', 'awayProbAdj'], inplace = True, axis = 1)
-    return df
-        
+def getNumberGamesPlayed(team, year, gameId):
+    index = getTeamGameIds(team, year).index(gameId)
+    return gameId
+    
 def getTeamSchedule(team, year):
 
     df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1]))
@@ -77,7 +61,6 @@ def getYearFromId(gameId):
             year = int(gameId[0:4])
     
     return year
-
 def returnX(pointsHome, pointsAway, prob, home = True):
     if home == True:
         return (pointsHome/pointsAway)/prob
@@ -105,17 +88,6 @@ def getTeamPerformance(team, year):
     
     return df['per']['val']
 
-def expectedPercentageWin(team, year, cumulative = True):
-    adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
-    #df = pd.read_csv('')
-    return print('Not implemented yet')
-    
-
-def plotValues(team, year, cumulative = True):
-    df = getTeamPerformance(team, year)
-    if cumulative == True:
-        df = df.expanding().mean()
-    return df.array
 
 # def fixRecentStats(year):
 #     df = pd.read_csv('data/averageTeamData/average_team_per_5_{}.csv'.format(year), header = [1])
