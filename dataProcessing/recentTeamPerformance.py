@@ -14,7 +14,7 @@ from sportsreference.nba.schedule import Schedule
 from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 
-from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper, getTeamSchedule
+from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper, getTeamSchedule, getYearFromId
 
 def getFirstGame(team, year):
     teamSchedule = Schedule(team, year).dataframe
@@ -34,16 +34,7 @@ def getRecentNGames(gameId, n, team):
         
         raise Exception('Issue with Game ID')
     
-    if int(gameId[0:4]) == 2020: 
-        if int(gameId[4:6].lstrip("0")) < 11: 
-            year = 2020
-        else:
-            year = 2021
-    else:
-        if int(gameId[4:6].lstrip("0")) > 7: 
-            year = int(gameId[0:4]) + 1
-        else:
-            year = int(gameId[0:4])
+    year = getYearFromId(gameId)
 
     teamScheduleHome, teamScheduleAway = getTeamSchedule(team, year)
     teamScheduleHome = teamScheduleHome.loc[:gameId]
@@ -65,16 +56,7 @@ def getTeamAveragePerformance(gameId, n, team):
         return s
 
     #trying to only return the team stats of the team that we are asking for, rather than the team plus their opponents
-    if int(gameId[0:4]) == 2020: 
-        if int(gameId[4:6].lstrip("0")) < 11: 
-            year = int(gameId[0:4])
-        else:
-            year = int(gameId[0:4]) + 1
-    else:
-        if int(gameId[4:6].lstrip("0")) > 7: 
-            year = int(gameId[0:4]) + 1
-        else:
-            year = int(gameId[0:4])
+    year = getYearFromId(gameId)
 
     gameIdList = getRecentNGames(gameId, n, team)
 
@@ -103,16 +85,7 @@ def getPlayerAveragePerformance(gameId, n, team, playerId):
         s.name = gameId
         return s
 
-    if int(gameId[0:4]) == 2020: 
-        if int(gameId[4:6].lstrip("0")) < 11: 
-            year = int(gameId[0:4])
-        else:
-            year = int(gameId[0:4]) + 1
-    else:
-        if int(gameId[4:6].lstrip("0")) > 7: 
-            year = int(gameId[0:4]) + 1
-        else:
-            year = int(gameId[0:4])
+    year = getYearFromId(gameId)
 
     gameIdList = getRecentNGames(gameId, n, team)
 
@@ -144,16 +117,7 @@ def getOpponentAveragePerformance(gameId, n, team):
         s.name = gameId
         return s
 
-    if int(gameId[0:4]) == 2020: 
-        if int(gameId[4:6].lstrip("0")) < 11: 
-            year = int(gameId[0:4])
-        else:
-            year = int(gameId[0:4]) + 1
-    else:
-        if int(gameId[4:6].lstrip("0")) > 7: 
-            year = int(gameId[0:4]) + 1
-        else:
-            year = int(gameId[0:4])
+    year = getYearFromId(gameId)
 
     df1, df2 = opponentAverageHelper(team, year)
 

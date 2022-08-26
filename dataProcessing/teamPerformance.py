@@ -64,6 +64,20 @@ def playerAverageHelper(playerId, year):
     #dfPlayer = df['playerid'] == playerId
     return dfPlayer
 
+def getYearFromId(gameId):
+    if int(gameId[0:4]) == 2020: 
+        if int(gameId[4:6].lstrip("0")) < 11: 
+            year = int(gameId[0:4])
+        else:
+            year = int(gameId[0:4]) + 1
+    else:
+        if int(gameId[4:6].lstrip("0")) > 7: 
+            year = int(gameId[0:4]) + 1
+        else:
+            year = int(gameId[0:4])
+    
+    return year
+
 def returnX(pointsHome, pointsAway, prob, home = True):
     if home == True:
         return (pointsHome/pointsAway)/prob
