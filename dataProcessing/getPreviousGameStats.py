@@ -1,4 +1,4 @@
-
+import pandas
 
 def getPreviousGamePlayerStats(game_id):
     """
@@ -22,8 +22,8 @@ def getPreviousGamePlayerStats(game_id):
 
 def getPreviousGameTeamStats(game_id):
     """
-    Gets all numerical stats in game_data_player_stats for games
-    that took place before (and not including) the given game, for each
+    Gets all numerical stats in team_total_stats for games that
+    took place before (and not including) the given game, for each
     team playing in the given game.
 
     Parameters
@@ -37,4 +37,3 @@ def getPreviousGameTeamStats(game_id):
     """
 
     print('Not Implemented:', game_id)
-
