@@ -15,13 +15,7 @@ from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 
 from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper, getTeamSchedule, getYearFromId
-
-def getFirstGame(team, year):
-    teamSchedule = Schedule(team, year).dataframe
-    teamSchedule.sort_values(by = 'datetime')
-    return teamSchedule.index[0] 
-    
-    
+ 
 def getRecentNGames(gameId, n, team):
     '''
     Obtains ids of the past n games (non inclusive) given the gameId of current game and team abbreviation
@@ -128,11 +122,11 @@ def getOpponentAveragePerformance(gameId, n, team):
 
     df.loc[gameId] = df.mean()
 
-    df['teamAbbr'][n] = team
+    df['teamAbbr'][n - 1] = team
     
     return df.loc[gameId]
 
-def getTeamPerformanceDF(year, n):
+def getTeamPerformanceDF(year, n, home = True):
     teamDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
     homeTeam = teamDF['gameState']['teamHome']
     df = pd.DataFrame()
@@ -149,6 +143,8 @@ def cleanTeamPerformanceDF(year):
     df.set_index[('', 'gameId')]
     df.drop('gameId', axis = 1, level = 1)
     return df
+
+getTeamPerformanceDF(2015, 5).to_csv('average_team_per_5_clean_{}'.format(year))
 
 #year = np.arrange(2015, 2023)
 #for year in years:
