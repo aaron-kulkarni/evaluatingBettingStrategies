@@ -14,7 +14,7 @@ from sportsreference.nba.schedule import Schedule
 from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 
-from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper, getTeamSchedule, getYearFromId
+from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper, getTeamSchedule, getYearFromId, getTeamGameIds
  
 def getRecentNGames(gameId, n, team):
     '''
@@ -29,12 +29,14 @@ def getRecentNGames(gameId, n, team):
         raise Exception('Issue with Game ID')
     
     year = getYearFromId(gameId)
+    gameIdList = getTeamGameIds(team, year)
+    index = gameIdList.index(gameId)
+    gameIdList = gameIdList[-n:index]
 
-    teamScheduleHome, teamScheduleAway = getTeamSchedule(team, year)
-    teamScheduleHome = teamScheduleHome.loc[:gameId]
-    teamScheduleAway = teamScheduleAway.loc[:gameId]
-    teamScheduleTotal = teamScheduleHome.append(teamScheduleAway)
-    teamScheduleTotal.sort_index(inplace=True)
+    return gameIdList 
+
+
+    teamScheduleTotal.sort_index(inplace = True)
     return list(teamScheduleTotal.tail(n).index)
 
 def getTeamAveragePerformance(gameId, n, team):
@@ -122,17 +124,22 @@ def getOpponentAveragePerformance(gameId, n, team):
 
     df.loc[gameId] = df.mean()
 
-    df['teamAbbr'][n - 1] = team
+    df['teamAbbr'] = team
     
     return df.loc[gameId]
 
 def getTeamPerformanceDF(year, n, home = True):
     teamDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
     homeTeam = teamDF['gameState']['teamHome']
+    awayTeam = teamDF['gameState']['teamAway']
+    if home == True:
+        team = homeTeam
+    else:
+        team = awayTeam
     df = pd.DataFrame()
     gameIdList = homeTeam.index
     for gameId in gameIdList:
-        team = homeTeam.loc[gameId]
+            team = team.loc[gameId]
         teamTotalStats = pd.concat([getTeamAveragePerformance(gameId, n, team), getOpponentAveragePerformance(gameId, n, team)], axis = 0, keys = ['home', 'opp'], join = 'inner')
         teamTotalStats = teamTotalStats.to_frame().T
         df = pd.concat([df, teamTotalStats], axis = 0)
@@ -144,11 +151,13 @@ def cleanTeamPerformanceDF(year):
     df.drop('gameId', axis = 1, level = 1)
     return df
 
-getTeamPerformanceDF(2015, 5).to_csv('average_team_per_5_clean_{}'.format(year))
+year = 2015
+getTeamPerformanceDF(2015, 3, False).to_csv('average_away_per_3_{}.csv'.format(year))
 
-#year = np.arrange(2015, 2023)
-#for year in years:
-#    cleanTeamPerformanceDF(year).to_csv('average_team_per_5_clean_{}'.format(year))
+year = np.arrange(2016, 2023)
+for year in years:
+    getTeamPerformanceDF(2015, 3, True).to_csv('average_team_per_3_{}.csv'.format(year))
+    getTeamPerformanceDF(2015, 3, False).to_csv('average_away_per_3_{}.csv'.format(year))
 
 
         
