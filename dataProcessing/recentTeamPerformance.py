@@ -35,10 +35,6 @@ def getRecentNGames(gameId, n, team):
 
     return gameIdList 
 
-
-    teamScheduleTotal.sort_index(inplace = True)
-    return list(teamScheduleTotal.tail(n).index)
-
 def getTeamAveragePerformance(gameId, n, team):
     '''
     Returns a row of data of average team performances in last n games
