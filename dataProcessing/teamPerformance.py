@@ -1,111 +1,72 @@
-import re
 import numpy as np
 import pandas as pd
-import datetime as dt
-from datetime import date
-import matplotlib.pyplot as plt
-from sportsipy.nba.teams import Teams
-import re
-import sys
-import math
-
-def getNumberGamesPlayed(team, year, gameId):
-    index = getTeamGameIds(team, year).index(gameId)
-    return gameId
-
-def getTeams(gameId):
-    year = getYearFromId(gameId)
-    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])
-    teamHome = df.loc[gameId]['gameState']['teamHome']
-    teamAway = df.loc[gameId]['gameState']['teamAway']
-    return teamHome, teamAway
-    
-def getTeamSchedule(team, year):
-
-    df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1]))
-
-    dfHome = df[df['gameState']['teamHome'] == team]
-    dfAway = df[df['gameState']['teamAway'] == team]
-    return dfHome, dfAway
-
-def getTeamGameIds(team, year):
-    homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, year)
-    teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis = 0)
-    teamSchedule = teamSchedule.sort_index(ascending = True)
-    return list(teamSchedule.index)
+from evaluatingBettingStrategies.utils.utils import getTeamSchedule
 
 
 def teamAverageHelper(team, year):
-    df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1])
-    
+    df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(year), index_col=0, header=[0, 1])
+
     dfHome = df[df['home']['teamAbbr'] == team]
     dfAway = df[df['away']['teamAbbr'] == team]
     return dfHome, dfAway
 
+
 def opponentAverageHelper(team, year):
-    df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1])
-    
+    df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(year), index_col=0, header=[0, 1])
+
     dfHome = df[df['home']['teamAbbr'] != team]
     dfAway = df[df['away']['teamAbbr'] != team]
     return dfHome, dfAway
 
-def playerAverageHelper(playerId, year):
-    df = pd.read_csv('../data/gameStats/game_data_player_stats_{}.csv'.format(year), index_col = 0, header = [0])
-    dfPlayer = df[df['playerid'] == playerId]
-    #dfPlayer = df['playerid'] == playerId
+
+def playerAverageHelper(player_id, year):
+    df = pd.read_csv('../data/gameStats/game_data_player_stats_{}.csv'.format(year), index_col=0, header=[0])
+    dfPlayer = df[df['playerid'] == player_id]
+    # dfPlayer = df['playerid'] == playerId
     return dfPlayer
 
-def getYearFromId(gameId):
-    if int(gameId[0:4]) == 2020: 
-        if int(gameId[4:6].lstrip("0")) < 11: 
-            year = int(gameId[0:4])
-        else:
-            year = int(gameId[0:4]) + 1
-    else:
-        if int(gameId[4:6].lstrip("0")) > 7: 
-            year = int(gameId[0:4]) + 1
-        else:
-            year = int(gameId[0:4])
-    return year
 
 def getSignal():
     df = pd.DataFrame()
     years = np.arange(2015, 2023)
     for year in years:
-        dfCurrent = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1]))
-        df = pd.concat([df, dfCurrent], axis = 0)
+        dfCurrent = pd.DataFrame(
+            pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
+        df = pd.concat([df, dfCurrent], axis=0)
     df = df['gameState']
-    df['signal'] = df.apply(lambda d: 1 if d['winner'] == d['teamHome']  else 0, axis = 1)
+    df['signal'] = df.apply(lambda d: 1 if d['winner'] == d['teamHome'] else 0, axis=1)
     return df['signal']
-    
-            
-def returnX(pointsHome, pointsAway, prob, home = True):
+
+
+def returnX(pointsHome, pointsAway, prob, home=True):
     if home == True:
-        return (pointsHome/pointsAway)/prob
+        return (pointsHome / pointsAway) / prob
     if home == False:
-        return (pointsAway/pointsHome)/prob
+        return (pointsAway / pointsHome) / prob
+
 
 def getTeamPerformance(team, year):
     dfHome = getTeamSchedule(team, year)[0]
     dfAway = getTeamSchedule(team, year)[1]
-    
-    adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col = 0, header = [0,1])
+
+    adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), index_col=0, header=[0, 1])
 
     adjProbHome = adjProb.loc[adjProb.index.isin(dfHome.index)]
     adjProbAway = adjProb.loc[adjProb.index.isin(dfAway.index)]
-    dfHome = pd.concat([dfHome, adjProbHome], join = 'inner', axis = 1)
-    dfAway = pd.concat([dfAway, adjProbAway], join = 'inner', axis = 1)
-    dfHome['homeProbAdj', 'mean'] = dfHome['homeProbAdj'].mean(skipna = True, axis = 1)
-    dfAway['awayProbAdj', 'mean'] = dfAway['awayProbAdj'].mean(skipna = True, axis = 1)
-    
-    dfHome['per', 'val'] = returnX(dfHome['home']['points'], dfHome['away']['points'], dfHome['homeProbAdj']['mean'], True)
-    dfAway['per', 'val'] = returnX(dfAway['home']['points'], dfAway['away']['points'], dfAway['awayProbAdj']['mean'], False)
+    dfHome = pd.concat([dfHome, adjProbHome], join='inner', axis=1)
+    dfAway = pd.concat([dfAway, adjProbAway], join='inner', axis=1)
+    dfHome['homeProbAdj', 'mean'] = dfHome['homeProbAdj'].mean(skipna=True, axis=1)
+    dfAway['awayProbAdj', 'mean'] = dfAway['awayProbAdj'].mean(skipna=True, axis=1)
 
-    df = pd.concat([dfHome, dfAway], axis = 0)
-    df.sort_index(ascending = True)
-    
+    dfHome['per', 'val'] = returnX(dfHome['home']['points'], dfHome['away']['points'], dfHome['homeProbAdj']['mean'],
+                                   True)
+    dfAway['per', 'val'] = returnX(dfAway['home']['points'], dfAway['away']['points'], dfAway['awayProbAdj']['mean'],
+                                   False)
+
+    df = pd.concat([dfHome, dfAway], axis=0)
+    df.sort_index(ascending=True)
+
     return df['per']['val']
-
 
 # def fixRecentStats(year):
 #     df = pd.read_csv('data/averageTeamData/average_team_per_5_{}.csv'.format(year), header = [1])
@@ -138,7 +99,7 @@ def getTeamPerformance(team, year):
 # #plt.plot(x, rate)
 # plt.show()
 
-#fixRecentStats(2022).to_csv('data/averageTeamData/average_team_per_5_2022.csv')
+# fixRecentStats(2022).to_csv('data/averageTeamData/average_team_per_5_2022.csv')
 # years = np.arange(2015, 2022)
 # for year in years:
 #     df = pd.read_csv('data/averageTeamData/average_team_per_5_{}.csv'.format(year), index_col = 0, header = [0,1])

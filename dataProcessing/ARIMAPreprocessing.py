@@ -1,6 +1,18 @@
 import pandas as pd
-from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper, getTeamSchedule, getYearFromId, getTeamGameIds
+
+from evaluatingBettingStrategies.utils.utils import gameIdToDateTime
+from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper, getTeamSchedule, \
+    getYearFromId, getTeamGameIds
 import datetime as dt
+
+class ARIMAPreprocessing:
+
+    def __init__(self, year):
+        self.year = year
+        self.player_df = pd.read_csv('../data/gameStats/game_data_player_stats_{}.csv'.format(self.year),
+                                     index_col=0, header=0)
+        self.team_df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(self.year),
+                                   index_col=0, header=[0, 1])
 
 def getPreviousGamePlayerStats(gameId):
     """
@@ -18,22 +30,24 @@ def getPreviousGamePlayerStats(gameId):
     a pandas dataframe with all the players' statistics for each
     previous game.
     """
-    
+
     year = getYearFromId(gameId);
-    df = pd.DataFrame(pd.read_csv('data/gameStats/game_data_player_stats_{}.csv'.format(year), index_col = 0, header = 0))
+    df = pd.DataFrame(pd.read_csv('data/gameStats/game_data_player_stats_{}.csv'.format(year), index_col=0, header=0))
 
     playerIdList = getPlayerIdsFromGame(gameId)
 
     df = df[df['playerid'].isin(playerIdList)]
-    df = df[pd.to_datetime(df['gameid'].str.slice(0,8), format="%Y%m%d") < gameIdToDateTime(gameId)]
+    df = df[pd.to_datetime(df['gameid'].str.slice(0, 8), format="%Y%m%d") < gameIdToDateTime(gameId)]
     mask = pd.isna(df['MP'])
     df = df[~mask]
     df = df.drop(columns=['MP', 'Name'])
     return df
 
+
 def getPreviousGameSinglePlayerStats(gameId, playerId):
     df = getPreviousGamePlayerStats(gameId)
     return df[df['playerid'] == playerId]
+
 
 def getPreviousGameTeamStats(gameId):
     """
@@ -52,7 +66,7 @@ def getPreviousGameTeamStats(gameId):
     """
 
     year = getYearFromId(gameId);
-    df = pd.DataFrame(pd.read_csv('data/teamStats/team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1]))
+    df = pd.DataFrame(pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(year), index_col=0, header=[0, 1]))
     dfTemp = df.loc[gameId]
     teamNameHome = dfTemp['home']['teamAbbr']
     teamNameAway = dfTemp['away']['teamAbbr']
@@ -60,18 +74,19 @@ def getPreviousGameTeamStats(gameId):
     dfHome = getPreviousGameSingleTeamStats(gameId, teamNameHome, year)
     dfAway = getPreviousGameSingleTeamStats(gameId, teamNameAway, year)
 
-    df = pd.concat([dfHome, dfAway], axis = 0)
+    df = pd.concat([dfHome, dfAway], axis=0)
     df = df.drop(index=gameId)
 
     return df
 
-def getPreviousGameSingleTeamStats(gameId, team, year): 
-    df = pd.DataFrame(pd.read_csv('data/teamStats/team_total_stats_{}.csv'.format(year), index_col = 0, header = [0,1]))
+
+def getPreviousGameSingleTeamStats(gameId, team, year):
+    df = pd.DataFrame(pd.read_csv('data/teamStats/team_total_stats_{}.csv'.format(year), index_col=0, header=[0, 1]))
 
     dfHome = df[df['home']['teamAbbr'] == team]
     dfAway = df[df['away']['teamAbbr'] == team]
 
-    df = pd.concat([dfHome['home'], dfAway['away']], axis = 0)
+    df = pd.concat([dfHome['home'], dfAway['away']], axis=0)
 
     df.sort_index(inplace=True)
 
@@ -79,9 +94,10 @@ def getPreviousGameSingleTeamStats(gameId, team, year):
 
     return df
 
+
 def getPlayerIdsFromGame(gameId):
     year = getYearFromId(gameId)
-    df = pd.read_csv('data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0, 1])
+    df = pd.read_csv('data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
     df = df.loc[gameId]
 
     homeList = df['home']['playerRoster']
@@ -91,8 +107,5 @@ def getPlayerIdsFromGame(gameId):
     homeList.extend(awayList)
     return homeList
 
-
-def gameIdToDateTime(gameId):
-    return dt.datetime.strptime(gameId[0:8], '%Y%m%d')
 
 print(getPreviousGameSinglePlayerStats('201601090LAC', 'linje01'))
