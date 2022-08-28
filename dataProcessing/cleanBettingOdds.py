@@ -289,9 +289,36 @@ x = list(range(0, len(rate)))
 
 plt.plot(x, rate)  
 plt.show()
+
+
+
         
 #years = np.arange(2015, 2023)
 #for year in years:
     #getProbCut('../data/bettingOddsData/adj_prob_{}.csv'.format(year)).to_csv('summary_of_betting_success_by_cut_{}.csv'.format(year))
 
 
+
+def fillBettingOdds():
+    adjProb2015 = pd.read_csv('../data/bettingOddsData/adj_prob_2015.csv', header = [0,1], index_col = 0)['homeProbAdj']
+    adjProb2015['year'] = 2015
+    adjProb2016 = pd.read_csv('../data/bettingOddsData/adj_prob_2016.csv', header = [0,1], index_col = 0)['homeProbAdj']
+    adjProb2016['year'] = 2016
+    adjProb2017 = pd.read_csv('../data/bettingOddsData/adj_prob_2017.csv', header = [0,1], index_col = 0)['homeProbAdj']
+    adjProb2017['year'] = 2017
+    adjProb2018 = pd.read_csv('../data/bettingOddsData/adj_prob_2018.csv', header = [0,1], index_col = 0)['homeProbAdj']
+    adjProb2018['year'] = 2018
+    adjProb2019 = pd.read_csv('../data/bettingOddsData/adj_prob_2019.csv', header = [0,1], index_col = 0)['homeProbAdj']
+    adjProb2019['year'] = 2019
+    adjProb2020 = pd.read_csv('../data/bettingOddsData/adj_prob_2020.csv', header = [0,1], index_col = 0)['homeProbAdj']
+    adjProb2020['year'] = 2020 
+    adjProb2021 = pd.read_csv('../data/bettingOddsData/adj_prob_2021.csv', header = [0,1], index_col = 0)['homeProbAdj']
+    adjProb2021['year'] = 2021
+    adjProb2022 = pd.read_csv('../data/bettingOddsData/adj_prob_2022.csv', header = [0,1], index_col = 0)['homeProbAdj']
+    adjProb2022['year'] = 2022
+
+    adjProb = pd.concat([adjProb2015, adjProb2016, adjProb2017, adjProb2018, adjProb2019, adjProb2020, adjProb2021, adjProb2022], axis = 0)
+
+    adjProb = adjProb.apply(lambda row: row.fillna(row.mean()), axis = 1)
+
+    return adjProb
