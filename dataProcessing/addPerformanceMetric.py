@@ -76,17 +76,18 @@ def getPerformanceMetricDataFrame(year):
 
 def convertDataFrame(year):
     df = getPerformanceMetricDataFrame(year)
-    finalDF = pd.DataFrame()
-    for gameId in df.index.unique():
-        homeTeam, awayTeam = getTeams(gameId)
+    df.reset_index(inplace = True)
+    df['homeTeam'] = df.apply(lambda d: 'home' if d['game_id'][-3:] == d['team'] else 'away', axis = 1)
+    dfPivot = df.pivot_table(index = 'game_id', columns = 'homeTeam', values = ['perMetric', 'perMetricN'])
+    dfPivot['game', 'year'] = year 
 
-            
+    return dfPivot
 
-            
-        
-    
+years = np.arange(2015, 2023)
+for year in years:
+    convertDataFrame(year).to_csv('performance_metric_{}.csv'.format(year))
 
-        
+                 
 
 year = 2018
 n = 10
