@@ -299,21 +299,26 @@ plt.show()
 
 
 def fillBettingOdds():
+'''
+INITIALIZES DATAFRAME FOR PCA => CONCATS ALL SEPERATE ADJPROB CSVS AND REPLACES ALL NAN VALUES WITH THE ROW AVERAGE
+
+'''
+    
     df = pd.DataFrame()
     years = np.arange(2015, 2023)
     for year in years:
         adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), header = [0,1], index_col = 0)['homeProbAdj']
-        adjProb['year'] = 2015
         df = pd.concat([df, adjProb], axis = 0)
     df = df.apply(lambda row: row.fillna(row.mean()), axis = 1)
 
     return df
 
+fillBettingOdds().to_csv('adj_prob_home_win_ALL.csv')
 
 from teamPerformance import getSignal
 
 df = pd.read_csv('../data/bettingOddsData/adj_prob_home_win_ALL.csv', index_col = 0)
-df.drop('year', inplace = True, axis = 1)
+
 df['signal'] = getSignal()
 
 'STANDARIZE DATA FEATURES TO UNIT SCALE (mean = 0 and variance = 1)'
@@ -331,11 +336,14 @@ x = StandardScaler().fit_transform(x)
 from sklearn.compose import ColumnTransformer
 from sklearn.decomposition import PCA
 
-#pca = ColumnTransformer(['pca', PCA(n_components = 1), features, 
-principalComponents = pca.fit_transform(x)
-principalDF = pd.DataFrame(data = principalComponents, columns = ['PC1', 'PC2'])
+def performPCA(n):
+    pca = PCA(n_components = n)
+    principalComponents = pca.fit_transform(x)
+    principalDF = pd.DataFrame(data = principalComponents, columns = ['PCA{}'.format(i) for i in range(1, n + 1)])
+    print(pca.explained_variance_ratio_)
+    return principalDF
 
-dfFinal = principalDF.set_index(df.index)
-dfFinal.to_csv('PCA_betting_odds_all.csv')
+dfFinal = performPCA(2).set_index(df.index)
+dfFinal.to_csv('PCA_2_betting_odds_all.csv')
 
-    
+
