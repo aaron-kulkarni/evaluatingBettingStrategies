@@ -31,7 +31,7 @@ def getRecentNGames(gameId, n, team):
     year = getYearFromId(gameId)
     gameIdList = getTeamGameIds(team, year)
     index = gameIdList.index(gameId)
-    gameIdList = gameIdList[-n:index]
+    gameIdList = gameIdList[index-n:index]
 
     return gameIdList 
 
@@ -61,6 +61,8 @@ def getTeamAveragePerformance(gameId, n, team):
     df1 = df1[df1.index.isin(gameIdList)]
     df2 = df2[df2.index.isin(gameIdList)]
 
+    #df = pd.concat([df1['home'], df2['home']], axis = 0)
+    
     df = df1['home'].append(df2['away'])
 
     df.loc[gameId] = df.mean()
@@ -133,37 +135,22 @@ def getTeamPerformanceDF(year, n, home = True):
     homeTeam = teamDF['gameState']['teamHome']
     awayTeam = teamDF['gameState']['teamAway']
     if home == True:
-        team = homeTeam
+        teamDF = homeTeam
     else:
-        team = awayTeam
+        teamDF = awayTeam
     df = pd.DataFrame()
     gameIdList = homeTeam.index
     for gameId in gameIdList:
-            team = team.loc[gameId]
+        team = teamDF.loc[gameId]
         teamTotalStats = pd.concat([getTeamAveragePerformance(gameId, n, team), getOpponentAveragePerformance(gameId, n, team)], axis = 0, keys = ['home', 'opp'], join = 'inner')
         teamTotalStats = teamTotalStats.to_frame().T
         df = pd.concat([df, teamTotalStats], axis = 0)
     return df
 
-def cleanTeamPerformanceDF(year):
-    df = pd.read_csv('../data/averageTeamData/average_team_per_5_{}'.format(year), header = [0,1], index_col = 0)
-    df.set_index[('', 'gameId')]
-    df.drop('gameId', axis = 1, level = 1)
-    return df
 
-year = 2015
-getTeamPerformanceDF(2015, 3, False).to_csv('average_away_per_3_{}.csv'.format(year))
 
-year = np.arrange(2016, 2023)
+years = np.arange(2019, 2023)
 for year in years:
-    getTeamPerformanceDF(2015, 3, True).to_csv('average_team_per_3_{}.csv'.format(year))
-    getTeamPerformanceDF(2015, 3, False).to_csv('average_away_per_3_{}.csv'.format(year))
+    getTeamPerformanceDF(year, 10, True).to_csv('average_team_per_10_{}.csv'.format(year))
+    getTeamPerformanceDF(year, 10, False).to_csv('average_away_per_10_{}.csv'.format(year))
 
-
-        
-        
-        
-        
-    
-
-    
