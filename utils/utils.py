@@ -14,6 +14,13 @@ def readCSV(filepath, **kwargs):
         filepath = filepath.split(r"/data/")[-1]
     return pd.read_csv("../data/" + filepath, **kwargs)
 
+def writeCSV(df, filepath, **kwargs):
+    if filepath.startswith(r"data/"):
+        filepath = filepath[5:]
+    else:
+        filepath = filepath.split(r"/data/")[-1]
+    return df.to_csv("../data/" + filepath, **kwargs)
+
 
 def getYearFromId(game_id):
     if int(game_id[0:4]) == 2020:

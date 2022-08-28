@@ -75,6 +75,7 @@ class TeamPerformance:
 
         return df['per']['val']
 
+
 # def fixRecentStats(year):
 #     df = pd.read_csv('data/averageTeamData/average_team_per_5_{}.csv'.format(year), header = [1])
 #     #dfPlayer['MP'] = dfPlayer.apply(lambda d: round(float(d['MP'][0:2]) + (float(d['MP'][3:5])/60), 2), axis = 1)

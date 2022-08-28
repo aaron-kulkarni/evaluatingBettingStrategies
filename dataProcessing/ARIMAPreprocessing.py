@@ -1,8 +1,7 @@
 import pandas as pd
 
-from evaluatingBettingStrategies.utils.utils import gameIdToDateTime
-from teamPerformance import teamAverageHelper, playerAverageHelper, opponentAverageHelper, getTeamSchedule, \
-    getYearFromId, getTeamGameIds
+from evaluatingBettingStrategies.utils.utils import gameIdToDateTime, getYearFromId
+from TeamPerformance import TeamPerformance
 import datetime as dt
 
 class ARIMAPreprocessing:
@@ -33,7 +32,6 @@ class ARIMAPreprocessing:
         previous game.
         """
 
-        year = getYearFromId(game_id)
         df = self.player_df
 
         playerIdList = self.getPlayerIdsFromGame(game_id)
@@ -44,9 +42,9 @@ class ARIMAPreprocessing:
         df = df.drop(columns=['MP', 'Name'])
         return df
 
-    def getPreviousGameSinglePlayerStats(self, game_id, playerId):
+    def getPreviousGameSinglePlayerStats(self, game_id, player_id):
         df = self.getPreviousGamePlayerStats(game_id)
-        return df[df['playerid'] == playerId]
+        return df[df['playerid'] == player_id]
 
     def getPreviousGameTeamStats(self, game_id):
         """
@@ -64,36 +62,32 @@ class ARIMAPreprocessing:
         previous game.
         """
 
-        year = getYearFromId(game_id);
         df = self.team_df
         dfTemp = df.loc[game_id]
         teamNameHome = dfTemp['home']['teamAbbr']
         teamNameAway = dfTemp['away']['teamAbbr']
 
-        dfHome = self.getPreviousGameSingleTeamStats(game_id, teamNameHome, year)
-        dfAway = self.getPreviousGameSingleTeamStats(game_id, teamNameAway, year)
+        dfHome = self.getPreviousGameSingleTeamStats(game_id, teamNameHome)
+        dfAway = self.getPreviousGameSingleTeamStats(game_id, teamNameAway)
 
         df = pd.concat([dfHome, dfAway], axis=0)
         df = df.drop(index=game_id)
 
         return df
 
-    def getPreviousGameSingleTeamStats(self, game_id, team, year):
+    def getPreviousGameSingleTeamStats(self, game_id, team):
         df = self.team_df
 
         dfHome = df[df['home']['teamAbbr'] == team]
         dfAway = df[df['away']['teamAbbr'] == team]
 
         df = pd.concat([dfHome['home'], dfAway['away']], axis=0)
-
         df.sort_index(inplace=True)
-
         df = df[:game_id]
 
         return df
 
     def getPlayerIdsFromGame(self, game_id):
-        year = getYearFromId(game_id)
         df = self.game_df
         df = df.loc[game_id]
 

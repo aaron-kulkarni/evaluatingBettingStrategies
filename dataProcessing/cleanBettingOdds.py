@@ -315,7 +315,7 @@ INITIALIZES DATAFRAME FOR PCA => CONCATS ALL SEPERATE ADJPROB CSVS AND REPLACES 
 
 fillBettingOdds().to_csv('adj_prob_home_win_ALL.csv')
 
-from teamPerformance import getSignal
+from TeamPerformance import getSignal
 
 df = pd.read_csv('../data/bettingOddsData/adj_prob_home_win_ALL.csv', index_col = 0)
 
