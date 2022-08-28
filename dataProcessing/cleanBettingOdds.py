@@ -291,7 +291,6 @@ plt.plot(x, rate)
 plt.show()
 
 
-
         
 #years = np.arange(2015, 2023)
 #for year in years:
@@ -300,25 +299,43 @@ plt.show()
 
 
 def fillBettingOdds():
-    adjProb2015 = pd.read_csv('../data/bettingOddsData/adj_prob_2015.csv', header = [0,1], index_col = 0)['homeProbAdj']
-    adjProb2015['year'] = 2015
-    adjProb2016 = pd.read_csv('../data/bettingOddsData/adj_prob_2016.csv', header = [0,1], index_col = 0)['homeProbAdj']
-    adjProb2016['year'] = 2016
-    adjProb2017 = pd.read_csv('../data/bettingOddsData/adj_prob_2017.csv', header = [0,1], index_col = 0)['homeProbAdj']
-    adjProb2017['year'] = 2017
-    adjProb2018 = pd.read_csv('../data/bettingOddsData/adj_prob_2018.csv', header = [0,1], index_col = 0)['homeProbAdj']
-    adjProb2018['year'] = 2018
-    adjProb2019 = pd.read_csv('../data/bettingOddsData/adj_prob_2019.csv', header = [0,1], index_col = 0)['homeProbAdj']
-    adjProb2019['year'] = 2019
-    adjProb2020 = pd.read_csv('../data/bettingOddsData/adj_prob_2020.csv', header = [0,1], index_col = 0)['homeProbAdj']
-    adjProb2020['year'] = 2020 
-    adjProb2021 = pd.read_csv('../data/bettingOddsData/adj_prob_2021.csv', header = [0,1], index_col = 0)['homeProbAdj']
-    adjProb2021['year'] = 2021
-    adjProb2022 = pd.read_csv('../data/bettingOddsData/adj_prob_2022.csv', header = [0,1], index_col = 0)['homeProbAdj']
-    adjProb2022['year'] = 2022
+    df = pd.DataFrame()
+    years = np.arange(2015, 2023)
+    for year in years:
+        adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), header = [0,1], index_col = 0)['homeProbAdj']
+        adjProb['year'] = 2015
+        df = pd.concat([df, adjProb], axis = 0)
+    df = df.apply(lambda row: row.fillna(row.mean()), axis = 1)
 
-    adjProb = pd.concat([adjProb2015, adjProb2016, adjProb2017, adjProb2018, adjProb2019, adjProb2020, adjProb2021, adjProb2022], axis = 0)
+    return df
 
-    adjProb = adjProb.apply(lambda row: row.fillna(row.mean()), axis = 1)
 
-    return adjProb
+from teamPerformance import getSignal
+
+df = pd.read_csv('../data/bettingOddsData/adj_prob_home_win_ALL.csv', index_col = 0)
+df.drop('year', inplace = True, axis = 1)
+df['signal'] = getSignal()
+
+'STANDARIZE DATA FEATURES TO UNIT SCALE (mean = 0 and variance = 1)'
+
+from sklearn.preprocessing import StandardScaler
+
+features = list(df.columns[:-1])
+x = df.loc[:, features].values
+y = df.loc[:, ['signal']].values
+
+x = StandardScaler().fit_transform(x)
+
+'BEGIN PERFORMING PCA'
+
+from sklearn.compose import ColumnTransformer
+from sklearn.decomposition import PCA
+
+#pca = ColumnTransformer(['pca', PCA(n_components = 1), features, 
+principalComponents = pca.fit_transform(x)
+principalDF = pd.DataFrame(data = principalComponents, columns = ['PC1', 'PC2'])
+
+dfFinal = principalDF.set_index(df.index)
+dfFinal.to_csv('PCA_betting_odds_all.csv')
+
+    
