@@ -7,6 +7,14 @@ def gameIdToDateTime(game_id):
     return dt.datetime.strptime(game_id[0:8], '%Y%m%d')
 
 
+def readCSV(filepath, **kwargs):
+    if filepath.startswith(r"data/"):
+        filepath = filepath[5:]
+    else:
+        filepath = filepath.split(r"/data/")[-1]
+    return pd.read_csv("../data/" + filepath, **kwargs)
+
+
 def getYearFromId(game_id):
     if int(game_id[0:4]) == 2020:
         if int(game_id[4:6].lstrip("0")) < 11:
