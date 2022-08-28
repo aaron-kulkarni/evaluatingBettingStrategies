@@ -49,6 +49,11 @@ def opponentAverageHelper(team, year):
     dfAway = df[df['away']['teamAbbr'] != team]
     return dfHome, dfAway
 
+def concatHomeAway(dfHome, dfAway):
+    df = pd.concat([dfHome['home'], dfAway['away']], axis = 0)
+
+    return print('Not implemented yet')
+
 def playerAverageHelper(playerId, year):
     df = pd.read_csv('../data/gameStats/game_data_player_stats_{}.csv'.format(year), index_col = 0, header = [0])
     dfPlayer = df[df['playerid'] == playerId]

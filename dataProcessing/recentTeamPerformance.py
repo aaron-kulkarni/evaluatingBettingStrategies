@@ -61,6 +61,8 @@ def getTeamAveragePerformance(gameId, n, team):
     df1 = df1[df1.index.isin(gameIdList)]
     df2 = df2[df2.index.isin(gameIdList)]
 
+    #df = pd.concat([df1['home'], df2['home']], axis = 0)
+    
     df = df1['home'].append(df2['away'])
 
     df.loc[gameId] = df.mean()
@@ -145,8 +147,10 @@ def getTeamPerformanceDF(year, n, home = True):
         df = pd.concat([df, teamTotalStats], axis = 0)
     return df
 
+
+
 years = np.arange(2019, 2023)
 for year in years:
-    getTeamPerformanceDF(year, 3, True).to_csv('average_team_per_3_{}.csv'.format(year))
-    getTeamPerformanceDF(year, 3, False).to_csv('average_away_per_3_{}.csv'.format(year))
+    getTeamPerformanceDF(year, 10, True).to_csv('average_team_per_10_{}.csv'.format(year))
+    getTeamPerformanceDF(year, 10, False).to_csv('average_away_per_10_{}.csv'.format(year))
 
