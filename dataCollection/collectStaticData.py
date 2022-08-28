@@ -150,7 +150,73 @@ def _getStaticPlayerData(player_id):
             raise Exception('Unable to parse line \'{0}\' for player {1}'.format(stat, player_id))
     return stats_dict
 
+def getPlayerSalaryData(year):
+    """
+    Gets the players' salaries for the given year.
 
-years = np.arange(2015, 2023)
-for year in years:
-    getAllStaticPlayerData(year).to_csv('static_player_stats_{0}.csv'.format(year))
+    Parameters
+    ----------
+    year : the year to scrape
+
+    Returns
+    -------
+    a dataframe containing the player salaries and player ids
+    """
+
+    inputDF = pd.read_csv('../data/staticPlayerData/static_player_stats_{0}.csv'.format(year), index_col=0)
+    playerids = inputDF['Id'].to_list()
+
+    salaries = []
+    for playerid in playerids:
+        try:
+            salaries.append(scrapePlayerSalaryData(year, playerid))
+        except Exception as e:
+            print(e)
+            salaries.append(np.nan)
+
+    df = pd.DataFrame()
+    df['Id'] = inputDF['Id']
+    df['salary'] = salaries
+    print('Done')
+    return df
+
+def scrapePlayerSalaryData(year, playerid):
+    """
+    Scrapes a given player's salary for the given year.
+
+    Parameters
+    ----------
+    year : the year to scrape
+    playerid : the player id to scrape
+
+    Returns
+    -------
+    a numerical salary value
+    """
+
+    regex = r"<tr ><th [^<>]* data-stat=\"season\" >" + str(year-1) + "-" + str(year)[2:4] \
+            + r"<\/th>[^\n]*<td [^<>]* data-stat=\"salary\" [^<>]*>\$([\d,]+)</td></tr>\n"
+
+    url = f"https://www.basketball-reference.com/players/{playerid[0:1].lower()}/{playerid}.html"
+    try:
+        soup = bs.BeautifulSoup(urlopen(url), features='lxml')
+        matches = re.findall(regex, str(soup.find('div', {'id': 'all_all_salaries'})))
+        if len(matches) > 1:
+            print('len > 1 for {0}'.format(playerid))
+            max_sal = -1
+            for m in matches:
+                new_sal = int(m.replace(',', ''))
+                max_sal = new_sal if new_sal > max_sal else max_sal
+            return max_sal
+        elif len(matches) == 0:
+            print('len == 0 for {0}'.format(playerid))
+            raise Exception()
+        else:
+            return int(matches[0].replace(',', ''))
+
+    except Exception:
+        raise Exception('Player {0} salary not found on basketball-reference.com for year {1}'.format(playerid, year))
+
+# years = np.arange(2015, 2023)
+# for year in years:
+#     getAllStaticPlayerData(year).to_csv('static_player_stats_{0}.csv'.format(year))
