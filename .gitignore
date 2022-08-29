@@ -21,3 +21,4 @@ teamSchedule.csv
 .\#addStaticFeatures.py
 .\#cleanBettingOdds.py
 .\#teamPerformance,py
+dataProcessing/__pycache__/teamPerformance.cpython-39.pyc
