@@ -16,13 +16,6 @@ def concatTeamStats(years):
 years = np.arange(2015, 2023)
 concatTeamStats(years).to_csv('team_total_stats_all.csv')
 
-
-from TeamPerformance import TeamPerformance
-
-tp = TeamPerformance(2015)
-tp.getSignal()
-
-
 def getSignal():
     df = pd.DataFrame()
     years = np.arange(2015, 2023)
@@ -35,20 +28,30 @@ def getSignal():
     return df['signal']
 
 
-def performPCA(n, include = True): 
+def getDataFrame(): 
     df = pd.read_csv('../data/teamStats/team_total_stats_all.csv', index_col = 0, header = [0,1])
     df.drop('teamAbbr', axis = 1, level = 1, inplace = True)
+ 
+    colHome = ['home_{}'.format(col) for col in df['home'].columns]
+    colAway = ['away_{}'.format(col) for col in df['away'].columns]
+    df.columns = colHome + colAway
+    df['signal'] = getSignal()
 
-    if include == True: 
-        colHome = ['home_{}'.format(col) for col in df['home'].columns]
-        colAway = ['away_{}'.format(col) for col in df['away'].columns]
-        df.columns = colHome + colAway
-    else:
-        df = df['home']
-        
+    return df
+
+def getDataFrameBySignal():
+    df = getDataFrame()
+    
+    dfWin = df[df['signal'] == 1]
+    dfLoss = df[df['signal'] == 0]
+ 
+    return dfWin, dfLoss
+
+
+def performPCA(df, n): 
     from sklearn.preprocessing import StandardScaler
     
-    features = list(df.columns)
+    features = list(df.columns[:-1])
     x_select = df.loc[:, features].values
     y_select = getSignal().values
     x_select = StandardScaler().fit_transform(x_select)
@@ -60,13 +63,34 @@ def performPCA(n, include = True):
     principalDF = pd.DataFrame(data = principalComponents, columns = ['PCA{}'.format(i) for i in range(1, n + 1)])
     print(pca.explained_variance_ratio_)
     print('Total variance explained by PCA is {}'.format(sum(pca.explained_variance_ratio_)))
-    
+
+    weight = pd.DataFrame(data = pca.components_**2, index = principalDF.columns, columns = df.columns[:-1])
+
     principalDF = principalDF.set_index(df.index)
     
-    return principalDF
+    return principalDF, weight
 
-performPCA(25, True).to_csv('pca_team_stats_all.csv')
+'''
+EXECUTION 
+----------------------------------------
+'''
+principalDF, weight = performPCA(getDataFrame(), 25)
+print(weight)
 
+dfWin, dfLoss = getDataFrameBySignal()
+principalDF_win, weight_win = performPCA(dfWin, 25)
+principalDF_loss, weight_loss = performPCA(dfLoss, 25)
+print(weight_win)
+print(weight_loss)
+weight_win.to_csv('weight_win.csv')
+weight_loss.to_csv('weight_loss.csv')
+weight.to_csv('weight.csv')
+
+'''
+----------------------------------------
+Filler functions since import * does not work
+
+'''
 
 def getYearFromId(game_id):
     if int(game_id[0:4]) == 2020:
@@ -114,6 +138,20 @@ def getRecentNGames(gameId, n, team):
 
     return gameIdList
 
+def getTeams(years):
+    df = pd.DataFrame()
+    for year in years:
+        teamDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
+        teams = pd.concat([teamDF['gameState']['teamHome'],teamDF['gameState']['teamAway']], axis = 1)
+        df = pd.concat([df, teams], axis = 0)
+
+    return df
+
+'''
+END OF FILLER FUNCTIONS
+----------------------------------------
+'''
+
 def getRollingAverage(gameId, n, home = True):
     if home == True:
         games = getRecentNGames(gameId, n, getTeams(np.arange(2015, 2023)).loc[gameId]['teamHome'])
@@ -123,17 +161,9 @@ def getRollingAverage(gameId, n, home = True):
     df = df[df.index.isin(games)]
 
     return df.mean()
-    
-    
-def getTeams(years):
-    df = pd.DataFrame()
-    for year in years:
-        teamDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
-        teams = pd.concat([teamDF['gameState']['teamHome'],teamDF['gameState']['teamAway']], axis = 1)
-        df = pd.concat([df, teams], axis = 0)
 
-    return df
-    
+
+
 def getRollingAverageDF(n, home = True):
     df = pd.read_csv('../data/teamStats/pca_team_stats_all.csv', index_col = 0)
     avgDF = pd.DataFrame(index = df.index, columns = df.columns)
@@ -141,6 +171,13 @@ def getRollingAverageDF(n, home = True):
         avgDF.loc[gameId] = getRollingAverage(gameId, n, home)
         
     return avgDF
-    
 
-getRollingAverageDF(5, False).to_csv('avg_5_PCA_away.csv')
+
+
+'''
+EXECUTION 
+----------------------------------------
+'''
+
+
+
