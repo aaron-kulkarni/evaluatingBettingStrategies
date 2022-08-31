@@ -82,6 +82,9 @@ principalDF_win, weight_win = performPCA(dfWin, 25)
 principalDF_loss, weight_loss = performPCA(dfLoss, 25)
 print(weight_win)
 print(weight_loss)
+principalDF_win.to_csv('PCA_team_stats_all_win.csv')
+principalDF_loss.to_csv('PCA_team_stats_all_loss.csv')
+
 weight_win.to_csv('weight_win.csv')
 weight_loss.to_csv('weight_loss.csv')
 weight.to_csv('weight.csv')
@@ -152,6 +155,7 @@ END OF FILLER FUNCTIONS
 ----------------------------------------
 '''
 
+    
 def getRollingAverage(gameId, n, home = True):
     if home == True:
         games = getRecentNGames(gameId, n, getTeams(np.arange(2015, 2023)).loc[gameId]['teamHome'])
@@ -163,7 +167,6 @@ def getRollingAverage(gameId, n, home = True):
     return df.mean()
 
 
-
 def getRollingAverageDF(n, home = True):
     df = pd.read_csv('../data/teamStats/pca_team_stats_all.csv', index_col = 0)
     avgDF = pd.DataFrame(index = df.index, columns = df.columns)
@@ -172,12 +175,33 @@ def getRollingAverageDF(n, home = True):
         
     return avgDF
 
+def getStandardDF(df):
+    from sklearn.preprocessing import StandardScaler
+    
+    features = list(df.columns)
+    x_select = df.loc[:, features].values
+    x_select = StandardScaler().fit_transform(x_select)
+    dfSTD = pd.DataFrame(x_select, index = df.index, columns = df.columns)
+    return dfSTD
+    
 
+def convertLossDF():
+    df = getStandardDF(getDataFrame().drop('signal', axis = 1))
+
+    weight = pd.read_csv('../data/teamStats/PCA_breakdown/weight_win.csv', index_col = 0)
+    
+    for i in range(0, len(weight.index)):
+        arr = weight.loc[weight.index[i]].values
+        df['{}*'.format(weight.index[i])] = df.apply(lambda d: d.dot(arr), axis = 1)
+    
+
+
+def concatWinLoss(df1, df2):
+    pd.concat([df1, df2], axis = 0)
 
 '''
 EXECUTION 
 ----------------------------------------
 '''
 
-
-
+getStandardDF(getDataFrame().drop('signal', axis = 1)).to_csv('standard_team_stats_all.csv')
