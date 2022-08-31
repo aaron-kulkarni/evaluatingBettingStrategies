@@ -134,13 +134,13 @@ def getTeams(years):
 
     return df
     
-def getRollingAverageDF(n):
+def getRollingAverageDF(n, home = True):
     df = pd.read_csv('../data/teamStats/pca_team_stats_all.csv', index_col = 0)
     avgDF = pd.DataFrame(index = df.index, columns = df.columns)
     for gameId in df.index:
-        avgDF.loc[gameId] = getRollingAverage(gameId, n, True)
+        avgDF.loc[gameId] = getRollingAverage(gameId, n, home)
         
     return avgDF
     
 
-getRollingAverageDF(8).to_csv('avg_8_PCA.csv')
+getRollingAverageDF(5, False).to_csv('avg_5_PCA_away.csv')
