@@ -39,22 +39,39 @@ def getDataFrame():
 
     return df
 
-def getDataFrameBySignal():
+def getGameIdBySignal():
     df = getDataFrame()
     
-    dfWin = df[df['signal'] == 1]
-    dfLoss = df[df['signal'] == 0]
+    gameIdWin = df[df['signal'] == 1].index
+    gameIdLoss = df[df['signal'] == 0].index
  
-    return dfWin, dfLoss
+    return gameIdWin, gameIdLoss
 
-
-def performPCA(df, n): 
+def getStandardDF(df):
     from sklearn.preprocessing import StandardScaler
     
     features = list(df.columns[:-1])
     x_select = df.loc[:, features].values
     y_select = getSignal().values
     x_select = StandardScaler().fit_transform(x_select)
+    dfSTD = pd.DataFrame(x_select, index = df.index, columns = df.columns[:-1])
+    return dfSTD
+
+def getStandardDFBySignal(df):
+    df = getStandardDF(df)
+    gameIdWin, gameIdLoss = getGameIdBySignal()
+    dfWin = df[df.index.isin(gameIdWin)]
+    dfLoss = df[df.index.isin(gameIdLoss)]
+
+    return dfWin, dfLoss
+    
+def performPCA(df, n):
+    '''
+    input requires a standardized dataframe 
+    
+    '''
+    
+    x_select = df.to_numpy()
 
     from sklearn.decomposition import PCA
     
@@ -64,7 +81,7 @@ def performPCA(df, n):
     print(pca.explained_variance_ratio_)
     print('Total variance explained by PCA is {}'.format(sum(pca.explained_variance_ratio_)))
 
-    weight = pd.DataFrame(data = pca.components_**2, index = principalDF.columns, columns = df.columns[:-1])
+    weight = pd.DataFrame(data = pca.components_, index = principalDF.columns, columns = df.columns)
 
     principalDF = principalDF.set_index(df.index)
     
@@ -74,20 +91,22 @@ def performPCA(df, n):
 EXECUTION 
 ----------------------------------------
 '''
-principalDF, weight = performPCA(getDataFrame(), 25)
+
+stdDF = getStandardDF(getDataFrame())
+principalDF, weight = performPCA(stdDF, 25)
 print(weight)
 
-dfWin, dfLoss = getDataFrameBySignal()
+dfWin, dfLoss = getStandardDFBySignal(getDataFrame())
 principalDF_win, weight_win = performPCA(dfWin, 25)
 principalDF_loss, weight_loss = performPCA(dfLoss, 25)
 print(weight_win)
 print(weight_loss)
-principalDF_win.to_csv('PCA_team_stats_all_win.csv')
-principalDF_loss.to_csv('PCA_team_stats_all_loss.csv')
+principalDF_win.to_csv('pca_team_stats_all_win.csv')
+principalDF_loss.to_csv('pca_team_stats_all_loss.csv')
 
-weight_win.to_csv('weight_win.csv')
-weight_loss.to_csv('weight_loss.csv')
-weight.to_csv('weight.csv')
+weight_win.to_csv('coefficient_matrix_win.csv')
+weight_loss.to_csv('coefficient_matrix_loss.csv')
+weight.to_csv('coefficient_matrix.csv')
 
 '''
 ----------------------------------------
@@ -156,48 +175,42 @@ END OF FILLER FUNCTIONS
 '''
 
     
-def getRollingAverage(gameId, n, home = True):
+def getRollingAverage(filename, gameId, n, home = True):
     if home == True:
         games = getRecentNGames(gameId, n, getTeams(np.arange(2015, 2023)).loc[gameId]['teamHome'])
     else:
         games = getRecentNGames(gameId, n, getTeams(np.arange(2015, 2023)).loc[gameId]['teamAway'])
-    df = pd.read_csv('../data/teamStats/pca_team_stats_all.csv', index_col = 0)
+    df = pd.read_csv(filename, index_col = 0)
     df = df[df.index.isin(games)]
 
     return df.mean()
 
 
-def getRollingAverageDF(n, home = True):
-    df = pd.read_csv('../data/teamStats/pca_team_stats_all.csv', index_col = 0)
+def getRollingAverageDF(filename, n, home = True):
+    df = pd.read_csv(filename, index_col = 0)
     avgDF = pd.DataFrame(index = df.index, columns = df.columns)
     for gameId in df.index:
-        avgDF.loc[gameId] = getRollingAverage(gameId, n, home)
-        
+        avgDF.loc[gameId] = getRollingAverage(filename, gameId, n, home)
     return avgDF
 
-def getStandardDF(df):
-    from sklearn.preprocessing import StandardScaler
-    
-    features = list(df.columns)
-    x_select = df.loc[:, features].values
-    x_select = StandardScaler().fit_transform(x_select)
-    dfSTD = pd.DataFrame(x_select, index = df.index, columns = df.columns)
-    return dfSTD
-    
 
-def convertLossDF():
-    df = getStandardDF(getDataFrame().drop('signal', axis = 1))
+def convertLossDF(win = True):
+    df = getStandardDF(getDataFrame())
+    if win == True:
+        coeff = pd.read_csv('../data/teamStats/PCA_breakdown/coefficient_matrix_win.csv', index_col = 0)
+    else:
+        coeff = pd.read_csv('../data/teamStats/PCA_breakdown/coefficient_matrix_loss.csv', index_col = 0)
 
-    weight = pd.read_csv('../data/teamStats/PCA_breakdown/weight_win.csv', index_col = 0)
+    conv = pd.DataFrame(index = df.index)
     
-    for i in range(0, len(weight.index)):
-        arr = weight.loc[weight.index[i]].values
-        df['{}*'.format(weight.index[i])] = df.apply(lambda d: d.dot(arr), axis = 1)
-    
+    for i in range(0, len(coeff.index)):
+        arr = coeff.loc[coeff.index[i]].values
+        df['{}*'.format(coeff.index[i])] = df.apply(lambda d: d.dot(arr), axis = 1)
+        conv['{}*'.format(coeff.index[i])] = df['{}*'.format(coeff.index[i])]
+        df.drop('{}*'.format(coeff.index[i]), inplace = True, axis =1)
 
+    return conv
 
-def concatWinLoss(df1, df2):
-    pd.concat([df1, df2], axis = 0)
 
 '''
 EXECUTION 
@@ -205,3 +218,12 @@ EXECUTION
 '''
 
 getStandardDF(getDataFrame().drop('signal', axis = 1)).to_csv('standard_team_stats_all.csv')
+
+convertLossDF(True).to_csv('pca_by_win_all.csv')
+convertLossDF(False).to_csv('pca_by_loss_all.csv')
+
+getRollingAverageDF('../data/teamStats/pca_by_win_all.csv', 5, True).to_csv('avg_5_PCA_home_win_all.csv')
+
+getRollingAverage('../data/teamStats/pca_by_win_all.csv', 5, False).to_csv('avg_5_PCA_away_win_all.csv') 
+getRollingAverage('../data/teamStats/pca_by_loss_all.csv', 5, True).to_csv('avg_5_PCA_home_loss_all.csv') 
+getRollingAverage('../data/teamStats/pca_by_loss_all.csv', 5, False).to_csv('avg_5_PCA_away_loss_all.csv') 
