@@ -3,6 +3,8 @@ from urllib.request import urlopen
 import re
 from sportsipy.nba.boxscore import Boxscores
 import bs4
+import numpy as np
+import datetime as dt
 
 teamAbbreviations = {
     "Raptors": "TOR",
@@ -20,7 +22,7 @@ teamAbbreviations = {
     "Heat": "MIA",
     "Hornets": "CHO",
     "Magic": "ORL",
-    "Trailblazers": "POR",
+    "Blazers": "POR",
     "Thunder": "OKC",
     "Jazz": "UTA",
     "Nuggets": "DEN",
@@ -47,11 +49,9 @@ def scrapeGameShots(gameId):
     gameid : the basketball-reference.com boxscore id of the game to be scraped
     Returns
     -------
-    A dictionary as such: {
-        'gameid' : 123456789ABC,
-        'team abbr' : ABC,
-        'distances' : [0, 0, 0, 0...]
-        'result': [0, 0, 0, 0, 0...] (0 for miss, 1 for make)
+    A list as such: {
+        [homeTeamAbbr, [arrayOfDistanceValuesHome], [arrayOfResultValuesHome], awayTeamAbbr, [arrayOfDistanceValuesAway], [arrayOfResultValuesAway]]
+        arrayOfResultValues -> 0 for miss, 1 for make
     }
     """
 
@@ -64,6 +64,8 @@ def scrapeGameShots(gameId):
         soup = bs4.BeautifulSoup(urlopen(url), features='lxml')
         teams = soup.title
         teamsList = teams.next.split(' ')
+        if 'Trail' in teamsList:
+            teamsList.remove('Trail')
         #teamsList originally formats as ["HTeam", "vs", "ATeam,"]
         homeTeam = teamAbbreviations[teamsList[0]]
         #gets away team without comma at the end
@@ -81,7 +83,7 @@ def scrapeGameShots(gameId):
                 else:
                     results.append(0)
                 
-        homeDict = {'gameId': gameId, 'team': homeTeam, 'distances': distances, 'result': results}
+        homeList = [homeTeam, distances, results]
         
         distances = []
         results = []
@@ -97,11 +99,31 @@ def scrapeGameShots(gameId):
                 else:
                     results.append(0)
 
-        awayDict = {'gameId': gameId, 'team': awayTeam, 'distances': distances, 'result': results}
+        awayList = [awayTeam, distances, results]
 
-        return homeDict, awayDict
+        return homeList + awayList
 
         #print(soup)
     except Exception as e:
         print("Failed to add game: {0}".format(gameId))
         return
+
+#scrapeGameShots('202012230CHI')
+def getTeamGameShotsDataFrame(year):
+
+    #get gameId list from preexisting csv
+
+    gameIdList = pd.read_csv('data/eloData/team_elo_{}.csv'.format(year), index_col = 0).index
+
+    df = pd.DataFrame(index = gameIdList, columns = ['homeAbbr', 'homeDistances', 'homeResults', 'awayAbbr', 'awayDistances', 'awayResults'])
+    
+    for id in gameIdList:
+        df.loc[id] = np.asarray(scrapeGameShots(id), dtype=object)
+
+    print("Year finished: " + str(year))
+    return df
+
+years = np.arange(2020, 2023)
+for year in years:
+    getTeamGameShotsDataFrame(year).to_csv('data/shotData/team_shot_data_{}.csv'.format(year))
+
