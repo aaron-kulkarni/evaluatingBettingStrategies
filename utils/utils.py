@@ -38,7 +38,7 @@ def getYearFromId(game_id):
 
 def getNumberGamesPlayed(team, year, game_id):
     index = getTeamGameIds(team, year).index(game_id)
-    return game_id
+    return index
 
 
 def getTeams(game_id):
