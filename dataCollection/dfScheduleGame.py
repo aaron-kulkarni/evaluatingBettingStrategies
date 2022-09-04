@@ -246,3 +246,52 @@ def getGameStatYear(year):
     df = getGameDataframe(startDate, endDate)
     return df
     
+def getNumberGamesPlayed(team, year, game_id):
+    index = getTeamGameIds(team, year).index(game_id)
+    return index
+
+def getTeamGameIds(team, year):
+    homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, year)
+    teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
+    teamSchedule = teamSchedule.sort_index(ascending=True)
+    return list(teamSchedule.index)
+def getTeamSchedule(team, year):
+    df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
+
+    dfHome = df[df['gameState']['teamHome'] == team]
+    dfAway = df[df['gameState']['teamAway'] == team]
+    return dfHome, dfAway
+
+
+def addNumberOfGamesPlayed(year):
+    df = pd.read_csvdef getGameStatYear(year):
+    fileLocation = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/gameStats/game_data_player_stats_{}_clean.csv'.format(year)
+
+    startDate = str(extract_lines(fileLocation)[0])[0:10]
+    endDate = str(extract_lines(fileLocation)[1])[0:10]
+
+    df = getGameDataframe(startDate, endDate)
+    return df
+    
+def getNumberGamesPlayed(team, year, game_id):
+    index = getTeamGameIds(team, year).index(game_id)
+    return index
+
+def getTeamGameIds(team, year):
+    homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, year)
+    teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
+    teamSchedule = teamSchedule.sort_index(ascending=True)
+    return list(teamSchedule.index)
+
+def getNumberGamesPlayedDF(year):
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
+    df['gameState', 'index'] = df.index.to_series()
+    df['home', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamHome'], year, d['gameState', 'index']), axis = 1)
+    df['away', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamAway'], year, d['gameState', 'index']), axis = 1)
+    df.drop('index', level = 1, inplace = True, axis = 1)
+
+    return df
+
+years = np.arange(2015, 2023)
+for year in years:
+    getNumberGamesPlayedDF(year).to_csv('../data/gameStats/1game_state_data_{}.csv'.format(year))
