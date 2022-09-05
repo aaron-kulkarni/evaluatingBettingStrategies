@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-#from evaluatingBettingStrategies.utils.utils import getTeamSchedule
 import sys
 sys.path.insert(0, "..")
 from utils.utils import *
