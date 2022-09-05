@@ -22,3 +22,5 @@ teamSchedule.csv
 .\#cleanBettingOdds.py
 .\#teamPerformance,py
 dataProcessing/__pycache__/teamPerformance.cpython-39.pyc
+#utils.py#
+#addPerformanceMetric.py#

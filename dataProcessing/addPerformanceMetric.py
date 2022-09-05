@@ -5,12 +5,15 @@ import datetime as dt
 from datetime import date
 import matplotlib.pyplot as plt
 from sportsipy.nba.teams import Teams
-import sys
 import math
 
-from TeamPerformance import TeamPerformance
-from evaluatingBettingStrategies.utils.utils import getTeamSchedule
+from TeamPerformance import *
 
+import sys
+sys.path.insert(0, "..")
+from utils.utils import *
+
+#from evaluatingBettingStrategies.utils.utils import * 
 
 class PerformanceMetric:
 
