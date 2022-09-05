@@ -294,4 +294,4 @@ def getNumberGamesPlayedDF(year):
 
 years = np.arange(2015, 2023)
 for year in years:
-    getNumberGamesPlayedDF(year).to_csv('../data/gameStats/1game_state_data_{}.csv'.format(year))
+    getNumberGamesPlayedDF(year).to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
