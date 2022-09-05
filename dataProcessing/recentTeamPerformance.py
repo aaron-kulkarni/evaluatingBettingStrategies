@@ -3,9 +3,6 @@ import numpy as np
 import pandas as pd
 import datetime as dt
 from datetime import date
-import sys
-
-#sys.path.insert(1, '')
 
 from sportsipy.nba.teams import Teams
 from sportsreference.nba.roster import Roster
@@ -15,6 +12,9 @@ from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 
 from TeamPerformance import *
+import sys
+sys.path.insert(0, "..")
+from utils.utils import *
  
 def getRecentNGames(gameId, n, team):
     '''
