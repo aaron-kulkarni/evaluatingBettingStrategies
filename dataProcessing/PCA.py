@@ -223,7 +223,7 @@ convertLossDF(True).to_csv('pca_by_win_all.csv')
 convertLossDF(False).to_csv('pca_by_loss_all.csv')
 
 getRollingAverageDF('../data/teamStats/pca_by_win_all.csv', 5, True).to_csv('avg_5_PCA_home_win_all.csv')
+getRollingAverageDF('../data/teamStats/pca_by_win_all.csv', 5, False).to_csv('avg_5_PCA_away_win_all.csv') 
+getRollingAverageDF('../data/teamStats/pca_by_loss_all.csv', 5, True).to_csv('avg_5_PCA_home_loss_all.csv') 
+getRollingAverageDF('../data/teamStats/pca_by_loss_all.csv', 5, False).to_csv('avg_5_PCA_away_loss_all.csv') 
 
-getRollingAverage('../data/teamStats/pca_by_win_all.csv', 5, False).to_csv('avg_5_PCA_away_win_all.csv') 
-getRollingAverage('../data/teamStats/pca_by_loss_all.csv', 5, True).to_csv('avg_5_PCA_home_loss_all.csv') 
-getRollingAverage('../data/teamStats/pca_by_loss_all.csv', 5, False).to_csv('avg_5_PCA_away_loss_all.csv') 
