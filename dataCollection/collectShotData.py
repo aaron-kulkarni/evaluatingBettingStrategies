@@ -40,6 +40,9 @@ teamAbbreviations = {
     "Pelicans": "NOP"
 }
 
+angleWeight = 0.1
+distanceWeight = 0.9
+
 
 def scrapeGameShots(gameId):
     """
@@ -77,60 +80,65 @@ def scrapeGameShots(gameId):
         distances = []
         results = []
         angles = []
+        threes = []
         playerids = []
         homeShots = soup.find(id = 'shots-{}'.format(homeTeam))
         for shot in homeShots:
             if (shot != "\n" and shot.name != 'img'):
-                info = shot.attrs['tip'].split("<br>")[1].split(" ")
-                while (len(info) > 7): #if player has middle name or suffix(ex. marvin bagley III)
-                    info = info[1:]
-                while (len(info) < 7): #if player has no last name(ex. Nene)
-                    info.insert(0, 'a')
-                distances.append(info[5])
-                if (info[2] == 'made'):
-                    results.append(1)
+                info = shot.attrs['tip'].split("<br>")[1]
+                numbers = [int(s) for s in re.findall(r'-?\d+\.?\d*', info)]
+                if (numbers[0] == 2):
+                    threes.append(0)
                 else:
+                    threes.append(1)
+                distances.append(numbers[1])
+                if ' missed ' in info:
                     results.append(0)
+                else:
+                    results.append(1)
                 data = shot.attrs['style']
                 res = [int(s) for s in re.findall(r'-?\d+\.?\d*', data)] #finds all ints in positions list
                 angles.append(getAngle(res[0], res[1]))
                 data = shot.attrs['class']
                 playerids.append(data[2][2:])
                 
-        homeList = [homeTeam, distances, results, angles, playerids]
+        homeList = [homeTeam, distances, results, angles, threes, playerids]
         
         distances = []
         results = []
         angles = []
+        threes = []
         playerids = []
         awayShots = soup.find(id = 'shots-{}'.format(awayTeam))
         for shot in awayShots:
             if (shot != "\n" and shot.name != 'img'):
-                info = shot.attrs['tip'].split("<br>")[1].split(" ")
-                while (len(info) > 7): #if player has middle name or suffix(ex. marvin bagley III)
-                    info = info[1:]
-                while (len(info) < 7): #if player has no last name(ex. Nene)
-                    info.insert(0, 'a')
-                distances.append(info[5])
-                if (info[2] == 'made'):
-                    results.append(1)
+                info = shot.attrs['tip'].split("<br>")[1]
+                numbers = [int(s) for s in re.findall(r'-?\d+\.?\d*', info)]
+                if (numbers[0] == 2):
+                    threes.append(0)
                 else:
+                    threes.append(1)
+                distances.append(numbers[1])
+                if ' missed ' in info:
                     results.append(0)
+                else:
+                    results.append(1)
                 data = shot.attrs['style']
-                res = [int(s) for s in re.findall(r'-?\d+\.?\d*', data)]
+                res = [int(s) for s in re.findall(r'-?\d+\.?\d*', data)] #finds all ints in positions list
                 angles.append(getAngle(res[0], res[1]))
                 data = shot.attrs['class']
                 playerids.append(data[2][2:])
 
-        awayList = [awayTeam, distances, results, angles, playerids]
+        awayList = [awayTeam, distances, results, angles, threes, playerids]
 
         return homeList + awayList
 
-        #print(soup)
     except Exception as e:
         print("Failed to add game: {0}".format(gameId))
         print(e)
         return
+
+#print(scrapeGameShots('201411010WAS'))
 
 def getAngle(top, left):
 
@@ -143,23 +151,44 @@ def getAngle(top, left):
     else:
         return np.round(math.degrees(math.atan((30-top)/(abs(250-left)))), 1) + 90
 
-#scrapeGameShots('201411010WAS')
+def getShotQuality(distance, angle, three):
 
-def getTeamGameShotsDataFrame(year):
+    distanceQuality = 0
+    angleQuality = 0
 
-    #get gameId list from preexisting csv
+    if not three:
+        if distance <= 2:
+            distanceQuality = 1
+        else:
+            distanceQuality = 1 - ((distance - 2) * 0.05)
+    else:
+        distanceQuality = 1 - ((distance - 23) * 0.05)
 
-    gameIdList = pd.read_csv('data/eloData/team_elo_{}.csv'.format(year), index_col = 0).index
-
-    df = pd.DataFrame(index = gameIdList, columns = ['homeAbbr', 'homeDistances', 'homeResults', 'homeAngles', 'homePlayers', 'awayAbbr', 'awayDistances', 'awayResults', 'awayAngles', 'awayPlayers'])
     
-    for id in gameIdList:
-        df.loc[id] = np.asarray(scrapeGameShots(id), dtype=object)
+    if angle >= 90:
+        angleQuality = (-0.0455 * angle) + 4.4279
+        #y = -0.0455x + 4.4279. well thought out and highly scientific formula
+    else:
+        angleQuality = (-1/135 * angle) + 1 
+        #y = -1/135x + 1. anotha one
 
-    print("Year finished: " + str(year))
-    return df
+    return ((distanceQuality * distanceWeight) + (angleQuality * angleWeight))
 
-years = np.arange(2015, 2023)
-for year in years:
-    getTeamGameShotsDataFrame(year).to_csv('data/shotData/team_shot_data_{}.csv'.format(year))
+# def getTeamGameShotsDataFrame(year):
+
+#     #get gameId list from preexisting csv
+
+#     gameIdList = pd.read_csv('data/eloData/team_elo_{}.csv'.format(year), index_col = 0).index
+
+#     df = pd.DataFrame(index = gameIdList, columns = ['homeAbbr', 'homeDistances', 'homeResults', 'homeAngles', 'homeThrees', 'homePlayers', 'awayAbbr', 'awayDistances', 'awayResults', 'awayAngles', 'awayThrees', 'awayPlayers'])
+    
+#     for id in gameIdList:
+#         df.loc[id] = np.asarray(scrapeGameShots(id), dtype=object)
+
+#     print("Year finished: " + str(year))
+#     return df
+
+# years = np.arange(2016, 2023)
+# for year in years:
+#     getTeamGameShotsDataFrame(year).to_csv('data/shotData/team_shot_data_{}.csv'.format(year))
 
