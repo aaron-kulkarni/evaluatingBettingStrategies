@@ -13,6 +13,7 @@ def convertMultiIndexing(years):
     df_all = pd.DataFrame()
     for year in years:
         df = pd.read_csv('../data/gameStats/game_data_player_stats_{}.csv'.format(year), index_col = 0)
+        df['year'] = year
         df.set_index(['gameid', 'playerid'], inplace = True)
         df_all = pd.concat([df_all, df], axis = 0)
     return df_all
@@ -54,24 +55,19 @@ def scrapeRoster(team, year):
         print('Issue with length of playerids and positions')
     return playerids, pos
 
-def rosterDict(year):
+def rosterDictPos(year):
     '''
-    Initializes dictionary of player rosters for each team every year
+    Initializes dictionary for every team given a year of each playerid and their corresponding posiiton
     
     '''
-
-    
-    
     rosterDict = {}
-    rosterDict.keys() = teams
+    for team in getAllTeams():
+        playerids, pos = scrapeRoster(team, year)
+        rosterDict[team] = dict(zip(playerids, pos))
 
+    return rosterDict
 
-
-
-            
-            
-
-
-
-        
-        
+def getStatsBeforeGame(gameId, team):
+    '''
+    Outputs DataFrame of averaged statistics ...
+    
