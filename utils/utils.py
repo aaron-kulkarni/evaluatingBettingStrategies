@@ -1,6 +1,8 @@
 import datetime as dt
 import pandas as pd
 import numpy as np
+import re
+from sportsipy.nba.teams import Teams
 
 
 def gameIdToDateTime(game_id):
@@ -62,3 +64,13 @@ def getTeamGameIds(team, year):
     teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
     teamSchedule = teamSchedule.sort_index(ascending=True)
     return list(teamSchedule.index)
+
+
+def getAllTeams():
+    teamList = []
+    for team in Teams():
+        teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+        teamList.append(teamAbbr)
+
+    return teamList
+        
