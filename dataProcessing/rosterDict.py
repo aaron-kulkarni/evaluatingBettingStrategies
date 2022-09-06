@@ -69,5 +69,29 @@ def rosterDictPos(year):
 
 def getStatsBeforeGame(gameId, team):
     '''
-    Outputs DataFrame of averaged statistics ...
+    Outputs DataFrame of average player statistics that were announced in the roster
+
+    1 if home is true, 0 if away is true
+    
+    '''
+    year = getYearFromId(gameId)
+    df = pd.read_csv('../data/gameStats/game_data_player_stats_all.csv', index_col = 0)
+    gameIdList = getSeasonGames(gameId, team)
+    playerIdList = getPlayerRoster(gameId, team)
+    df = df[df.index.isin(gameIdList)]
+    df = df[df['playerid'].isin(playerIdList)]
+    
+    
+
+
+def getPlayerRoster(gameId, team): 
+    df = pd.read_csv('../data/gameStats/game_data_player_stats_all.csv', index_col = [0,1])
+    df = df.loc[gameId]
+    homeTeam, awayTeam = getTeams(gameId)
+    if team == homeTeam:
+        df = df[df['home'] == 1]
+    elif team == awayTeam:
+        df = df[df['home'] == 0]
+    return list(df.index)
+    
     

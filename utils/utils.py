@@ -73,4 +73,21 @@ def getAllTeams():
         teamList.append(teamAbbr)
 
     return teamList
+
+def getTeamsDF(year):
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])['gameState']
+    df = df[['teamHome', 'teamAway']]
+    return df 
+    
+def getSeasonGames(gameId, team):
+
+    if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)) == False:
         
+        raise Exception('Issue with Game ID')
+    
+    year = getYearFromId(gameId)
+    gameIdList = getTeamGameIds(team, year)
+    index = gameIdList.index(gameId)
+    gameIdList = gameIdList[:index]
+
+    return gameIdList 
