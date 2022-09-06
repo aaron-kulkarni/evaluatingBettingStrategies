@@ -1,5 +1,6 @@
 .env
 .idea
+*.pyc
 .DS_Store
 \#*\#
 .\#\#
@@ -23,4 +24,4 @@ teamSchedule.csv
 .\#teamPerformance,py
 dataProcessing/__pycache__/teamPerformance.cpython-39.pyc
 #utils.py#
-#addPerformanceMetric.py#
+#PerformanceMetric.py#

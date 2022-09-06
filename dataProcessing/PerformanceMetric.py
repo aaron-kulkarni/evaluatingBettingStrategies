@@ -12,8 +12,7 @@ from TeamPerformance import *
 import sys
 sys.path.insert(0, "..")
 from utils.utils import *
-
-#from evaluatingBettingStrategies.utils.utils import * 
+#from evaluatingBettingStrategies.utils.utils import *
 
 class PerformanceMetric:
 
@@ -92,36 +91,36 @@ class PerformanceMetric:
         df.reset_index(inplace=True)
         df['homeTeam'] = df.apply(lambda d: 'home' if d['game_id'][-3:] == d['team'] else 'away', axis=1)
         dfPivot = df.pivot_table(index='game_id', columns='homeTeam', values=['perMetric', 'perMetricN'])
-        dfPivot['game', 'year'] = year
+        dfPivot['game', 'year'] = self.year
 
         return dfPivot
 
 
-years = np.arange(2015, 2023)
-for year in years:
-    PerformanceMetric(year).convertDataFrame().to_csv('performance_metric_{}.csv'.format(year))
-
-year = 2018
-n = 10
-pm = PerformanceMetric(year)
-for team in Teams():
-    teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
-    x = np.arange(1, len(list(pm.getPerformanceMetricN(teamAbbr, n))) + 1)
-    y = list(pm.getPerformanceMetricN(teamAbbr, n))
-    plt.plot(x, y, label=teamAbbr)
-plt.xlabel('Games')
-plt.ylabel('Performance Metric')
-plt.legend()
-plt.show()
-
-year = 2015
-pm = PerformanceMetric(year)
-for team in Teams():
-    teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
-    x = np.arange(1, len(list(pm.getPerformanceMetric(teamAbbr, True))) + 1)
-    y = list(pm.getPerformanceMetric(teamAbbr))
-    plt.plot(x, y, label=teamAbbr)
-plt.xlabel('Games')
-plt.ylabel('Performance Metric')
-plt.legend()
-plt.show()
+# years = np.arange(2015, 2023)
+# for year in years:
+#     PerformanceMetric(year).convertDataFrame().to_csv('performance_metric_{}.csv'.format(year))
+#
+# year = 2018
+# n = 10
+# pm = PerformanceMetric(year)
+# for team in Teams():
+#     teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+#     x = np.arange(1, len(list(pm.getPerformanceMetricN(teamAbbr, n))) + 1)
+#     y = list(pm.getPerformanceMetricN(teamAbbr, n))
+#     plt.plot(x, y, label=teamAbbr)
+# plt.xlabel('Games')
+# plt.ylabel('Performance Metric')
+# plt.legend()
+# plt.show()
+#
+# year = 2015
+# pm = PerformanceMetric(year)
+# for team in Teams():
+#     teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+#     x = np.arange(1, len(list(pm.getPerformanceMetric(teamAbbr, True))) + 1)
+#     y = list(pm.getPerformanceMetric(teamAbbr))
+#     plt.plot(x, y, label=teamAbbr)
+# plt.xlabel('Games')
+# plt.ylabel('Performance Metric')
+# plt.legend()
+# plt.show()
