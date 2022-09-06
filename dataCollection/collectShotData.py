@@ -181,28 +181,28 @@ years = np.arange(2022, 2023)
 for year in years:
     getTeamGameShotsDataFrame(year).to_csv('data/shotData/team_shot_data_{}.csv'.format(year))
 
-# def getShotQuality(distance, angle, three):
+def getShotQuality(distance, angle, three):
 
-#     distanceQuality = 0
-#     angleQuality = 0
+    distanceQuality = 0
+    angleQuality = 0
 
-#     if not three:
-#         if distance <= 2:
-#             distanceQuality = 1
-#         else:
-#             distanceQuality = 1 - ((distance - 2) * 0.05)
-#     else:
-#         distanceQuality = 1 - ((distance - 23) * 0.05)
+    if not three:
+        if distance <= 2:
+            distanceQuality = 1
+        else:
+            distanceQuality = 1 - ((distance - 24) * 0.05)
+    else:
+        distanceQuality = 1 - ((distance - 276) * 0.05)
 
     
-#     if angle >= 90:
-#         angleQuality = (-0.0455 * angle) + 4.4279
-#         #y = -0.0455x + 4.4279. well thought out and highly scientific formula
-#     else:
-#         angleQuality = (-1/135 * angle) + 1 
-#         #y = -1/135x + 1. anotha one
+    if angle >= 90:
+        angleQuality = (-0.0455 * angle) + 4.4279
+        #y = -0.0455x + 4.4279. well thought out and highly scientific formula
+    else:
+        angleQuality = (-1/135 * angle) + 1 
+        #y = -1/135x + 1. anotha one
 
-#     return ((distanceQuality * distanceWeight) + (angleQuality * angleWeight))
+    return ((distanceQuality * distanceWeight) + (angleQuality * angleWeight))
 
 # def getShotQualityList(distanceList, angleList, threeList):
 #     allLists = [distanceList, angleList, threeList]

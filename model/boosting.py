@@ -287,7 +287,7 @@ plt.show()
 booster = xgb.train({"tree_method": "hist", "max_cat_to_onehot": 5}, dmat_train)
 # Must use JSON for serialization, otherwise the information is lost
 #booster.save_model("categorical-model.json")
-SHAP value computation:
+#SHAP value computation:
 SHAP = booster.predict(dmat_train, pred_interactions=True)
 
 # categorical features are listed as "c"
