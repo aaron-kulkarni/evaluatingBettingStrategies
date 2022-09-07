@@ -96,31 +96,31 @@ class PerformanceMetric:
         return dfPivot
 
 
-# years = np.arange(2015, 2023)
-# for year in years:
-#     PerformanceMetric(year).convertDataFrame().to_csv('performance_metric_{}.csv'.format(year))
-#
-# year = 2018
-# n = 10
-# pm = PerformanceMetric(year)
-# for team in Teams():
-#     teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
-#     x = np.arange(1, len(list(pm.getPerformanceMetricN(teamAbbr, n))) + 1)
-#     y = list(pm.getPerformanceMetricN(teamAbbr, n))
-#     plt.plot(x, y, label=teamAbbr)
-# plt.xlabel('Games')
-# plt.ylabel('Performance Metric')
-# plt.legend()
-# plt.show()
-#
-# year = 2015
-# pm = PerformanceMetric(year)
-# for team in Teams():
-#     teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
-#     x = np.arange(1, len(list(pm.getPerformanceMetric(teamAbbr, True))) + 1)
-#     y = list(pm.getPerformanceMetric(teamAbbr))
-#     plt.plot(x, y, label=teamAbbr)
-# plt.xlabel('Games')
-# plt.ylabel('Performance Metric')
-# plt.legend()
-# plt.show()
+years = np.arange(2015, 2023)
+for year in years:
+    PerformanceMetric(year).convertDataFrame().to_csv('performance_metric_{}.csv'.format(year))
+
+year = 2018
+n = 10
+pm = PerformanceMetric(year)
+for team in Teams():
+    teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+    x = np.arange(1, len(list(pm.getPerformanceMetricN(teamAbbr, n))) + 1)
+    y = list(pm.getPerformanceMetricN(teamAbbr, n))
+    plt.plot(x, y, label=teamAbbr)
+plt.xlabel('Games')
+plt.ylabel('Performance Metric')
+plt.legend()
+plt.show()
+
+year = 2015
+pm = PerformanceMetric(year)
+for team in Teams():
+    teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+    x = np.arange(1, len(list(pm.getPerformanceMetric(teamAbbr, True))) + 1)
+    y = list(pm.getPerformanceMetric(teamAbbr))
+    plt.plot(x, y, label=teamAbbr)
+plt.xlabel('Games')
+plt.ylabel('Performance Metric')
+plt.legend()
+plt.show()

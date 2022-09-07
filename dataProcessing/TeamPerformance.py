@@ -36,15 +36,17 @@ class TeamPerformance:
         dfPlayer = df[df['playerid'] == player_id]
         # dfPlayer = df['playerid'] == playerId
         return dfPlayer
+    
+    
 
-    def getSignal(self):
-        df = pd.DataFrame()
-        years = np.arange(2015, 2023)
-        for year in years:
-            dfCurrent = pd.DataFrame(
-                pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
-            df = pd.concat([df, dfCurrent], axis=0)
-        df = df['gameState']
-        df['signal'] = df.apply(lambda d: 1 if d['winner'] == d['teamHome'] else 0, axis=1)
-        return df['signal']
+def getSignal():
+    df = pd.DataFrame()
+    years = np.arange(2015, 2023)
+    for year in years:
+        dfCurrent = pd.DataFrame(
+            pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
+        df = pd.concat([df, dfCurrent], axis=0)
+    df = df['gameState']
+    df['signal'] = df.apply(lambda d: 1 if d['winner'] == d['teamHome'] else 0, axis=1)
+    return df['signal']
 

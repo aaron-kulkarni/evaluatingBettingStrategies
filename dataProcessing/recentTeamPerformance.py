@@ -11,11 +11,11 @@ from sportsreference.nba.schedule import Schedule
 from sportsipy.nba.boxscore import Boxscore
 from sportsipy.nba.boxscore import Boxscores
 
-from TeamPerformance import *
 import sys
 sys.path.insert(0, "..")
 from utils.utils import *
- 
+from TeamPerformance import *
+
 def getRecentNGames(gameId, n, team):
     '''
     Obtains ids of the past n games (non inclusive) given the gameId of current game and team abbreviation
