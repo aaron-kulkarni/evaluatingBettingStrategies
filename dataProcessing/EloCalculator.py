@@ -14,7 +14,8 @@ class EloCalculator:
     def __init__(self):
         self._ = None
 
-    def win_probs(self, home_elo, away_elo, home_court_advantage):
+    @staticmethod
+    def win_probs(home_elo, away_elo, home_court_advantage):
         h = math.pow(10, home_elo / 400)
         r = math.pow(10, away_elo / 400)
         a = math.pow(10, home_court_advantage / 400)
@@ -25,13 +26,15 @@ class EloCalculator:
 
         return home_prob, away_prob
 
-    def home_odds_on(self, home_elo, away_elo, home_court_advantage):
+    @staticmethod
+    def home_odds_on(home_elo, away_elo, home_court_advantage):
         h = math.pow(10, home_elo / 400)
         r = math.pow(10, away_elo / 400)
         a = math.pow(10, home_court_advantage / 400)
         return a * h / r
 
-    def elo_k(self, mov, elo_diff):
+    @staticmethod
+    def elo_k(mov, elo_diff):
         k = 20
         if mov > 0:
             multiplier = (mov + 3) ** (0.8) / (7.5 + 0.006 * (elo_diff))
@@ -40,8 +43,9 @@ class EloCalculator:
 
         return k * multiplier
 
-    def update_elo(self, home_score, away_score, home_elo, away_elo, home_court_advantage):
-        home_prob, away_prob = self.win_probs(home_elo, away_elo, home_court_advantage)
+    @staticmethod
+    def update_elo(home_score, away_score, home_elo, away_elo, home_court_advantage):
+        home_prob, away_prob = EloCalculator.win_probs(home_elo, away_elo, home_court_advantage)
 
         if home_score - away_score > 0:
             home_win = 1
@@ -50,14 +54,15 @@ class EloCalculator:
             home_win = 0
             away_win = 1
 
-        k = self.elo_k(home_score - away_score, home_elo - away_elo)
+        k = EloCalculator.elo_k(home_score - away_score, home_elo - away_elo)
 
         updated_home_elo = home_elo + k * (home_win - home_prob)
         updated_away_elo = away_elo + k * (away_win - away_prob)
 
         return updated_home_elo, updated_away_elo
 
-    def getElo(self, year):
+    @staticmethod
+    def getElo(year):
         eloDict = {}
         if year == 2015:
             eloDict = {
@@ -342,7 +347,9 @@ class EloCalculator:
         df.set_index('gameId', inplace=True)
         return df
 
-    def getEloDict(self, eloDict, gameId):
+
+    @staticmethod
+    def getEloDict(eloDict, gameId):
         teamHome, teamAway, pointsAway, pointsHome = self.getEloInputs(gameId)
         eloHome = eloDict[teamHome]
         eloAway = eloDict[teamAway]
@@ -353,7 +360,9 @@ class EloCalculator:
         eloDict.update(upDict)
         return eloDict
 
-    def getEloInputs(self, gameId):
+
+    @staticmethod
+    def getEloInputs(gameId, year):
         df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header=[0, 1], index_col=0)
         df = df.loc[:, [('home', 'points'), ('away', 'points'), ('gameState', 'teamHome'), ('gameState', 'teamAway')]]
         pointsHome = df.loc[gameId]['home']['points']
@@ -364,6 +373,7 @@ class EloCalculator:
 
         return teamHome, teamAway, pointsAway, pointsHome
 
+    @staticmethod
     def getEloProbability(self, year):
         df = pd.read_csv('../data/eloData/elo_{}.csv'.format(year), index_col=0)
         df['homeTeamProb'] = df.apply(lambda d: self.win_probs(d['homeTeamElo'], d['awayTeamElo'], 100)[0], axis=1)
@@ -373,9 +383,8 @@ class EloCalculator:
 
 
 years = np.arange(2015, 2023)
-ec = EloCalculator()
 for year in years:
-    ec.getEloProbability(year).to_csv('team_elo_{}.csv'.format(year))
+    EloCalculator.getEloProbability(year).to_csv('team_elo_{}.csv'.format(year))
 
 '''
 

@@ -4,6 +4,7 @@ from evaluatingBettingStrategies.utils.utils import gameIdToDateTime, getYearFro
 from TeamPerformance import TeamPerformance
 import datetime as dt
 
+
 class ARIMAPreprocessing:
 
     def __init__(self, year):
@@ -98,5 +99,30 @@ class ARIMAPreprocessing:
         homeList.extend(awayList)
         return homeList
 
+    def getARIMAPlayerDataSchema(self):
+        df = self.player_df
+        df = df.drop(columns=['MP', 'Name'])
+        return df.columns
 
-print(ARIMAPreprocessing(2015).getPreviousGameSinglePlayerStats('201601090LAC', 'linje01'))
+    def getTrainingExample(self, game_id, player_id, value):
+        """
+        Returns a data point used for training/validation of the
+        ARIMA model with the numerical data from game_data_player_stats
+
+        Parameters
+        ----------
+        game_id : the id of the game
+        player_id : the id of the player
+        value : the column to be predicted
+
+        Returns
+        -------
+        a pandas series of the data
+        """
+
+        return self.getPreviousGameSinglePlayerStats(game_id, player_id)[value]
+
+    def getTestingExample(self):
+        return
+
+# print(ARIMAPreprocessing(2015).getPreviousGameSinglePlayerStats('201601090LAC', 'linje01'))

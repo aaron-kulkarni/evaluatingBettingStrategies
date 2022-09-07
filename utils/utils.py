@@ -1,6 +1,8 @@
 import datetime as dt
 import pandas as pd
 import numpy as np
+import re
+from sportsipy.nba.teams import Teams
 
 
 def gameIdToDateTime(game_id):
@@ -62,3 +64,30 @@ def getTeamGameIds(team, year):
     teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
     teamSchedule = teamSchedule.sort_index(ascending=True)
     return list(teamSchedule.index)
+
+
+def getAllTeams():
+    teamList = []
+    for team in Teams():
+        teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+        teamList.append(teamAbbr)
+
+    return teamList
+
+def getTeamsDF(year):
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col = 0, header = [0,1])['gameState']
+    df = df[['teamHome', 'teamAway']]
+    return df 
+    
+def getSeasonGames(gameId, team):
+
+    if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)) == False:
+        
+        raise Exception('Issue with Game ID')
+    
+    year = getYearFromId(gameId)
+    gameIdList = getTeamGameIds(team, year)
+    index = gameIdList.index(gameId)
+    gameIdList = gameIdList[:index]
+
+    return gameIdList 
