@@ -53,10 +53,27 @@ bettingOdds = selectColOdds(['1xBet (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Un
 
 bettingOddsPCA, coeff = performPCA(bettingOdds, 2)
 
-#df['odds'] = bettingOdds
-#df['signal', 'status'] = getSignal()
+def selectColElo(select_x):
+    eloData = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
+    return eloData[select_x]
+# columns: season, neutral, team1, team2, elo1_pre, elo2_pre, elo_prob1, elo_prob2, elo1_post, elo2_post, carm-elo1_pre, carm-elo2_pre, carm-elo_prob1, carm-elo_prob2, carm-elo1_post, carm-elo2_post, raptor1_pre, raptor2_pre, raptor_prob1, raptor_prob2
+elo = selectColElo(['elo_prob1', 'raptor_prob1'])
 
-X = bettingOddsPCA
+def getDFAll(dfList, years, dropNA = True):
+    df_all = pd.concat(dfList, axis = 1, join = 'inner')
+    df_all.reset_index(inplace = True)
+    df_all['year'] = df_all.apply(lambda d: getYearFromId(d['index']), axis = 1)
+    df_all.set_index('index', inplace = True)
+    df_all = df_all[df_all['year'].isin(years)]
+    df_all.drop('year', axis = 1, inplace = True)
+    if dropNA == True:
+        df_all.dropna(axis = 0, inplace = True)
+    return df_all
+
+years = list(np.arange(2015, 2023))
+df_all = getDFAll([elo, bettingOdds], years, True)
+
+X = df_all
 Y = getSignal().reindex(X.index)
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.8, test_size = 0.2, random_state = 15)
@@ -75,7 +92,7 @@ grid.fit(X_train, Y_train)
 print(grid.best_params_)
 print(grid.best_estimator_)
 
-clf = XGBClassifier(learning_rate = 0.1,max_depth = 1, n_estimators = 50, min_child_weight = 4)
+clf = XGBClassifier(learning_rate = 0.1,max_depth = 1, n_estimators = 100, min_child_weight = 5)
 
 # MODEL
 
