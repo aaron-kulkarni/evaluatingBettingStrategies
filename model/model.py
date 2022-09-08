@@ -59,6 +59,12 @@ def selectColElo(select_x):
 # columns: season, neutral, team1, team2, elo1_pre, elo2_pre, elo_prob1, elo_prob2, elo1_post, elo2_post, carm-elo1_pre, carm-elo2_pre, carm-elo_prob1, carm-elo_prob2, carm-elo1_post, carm-elo2_post, raptor1_pre, raptor2_pre, raptor_prob1, raptor_prob2
 elo = selectColElo(['elo_prob1', 'raptor_prob1'])
 
+def selectColPerMetric(select_x):
+    perMetric = pd.read_csv('../data/perMetric/performance_metric_all.csv', index_col = 0, header = [0,1])
+    
+    perMetric.columns = perMetric.columns.droplevel(1)
+    return perMetric[select_x]
+
 def getDFAll(dfList, years, dropNA = True):
     df_all = pd.concat(dfList, axis = 1, join = 'inner')
     df_all.reset_index(inplace = True)
@@ -128,14 +134,15 @@ print(pd.DataFrame(data = list(model.feature_importances_), index = list(X_train
 #cm = confusion_matrix(Y_test, Y_pred)/len(Y_pred) 
 #X_test0=pd.concat([X_test,df_game_sub[['Pinnacle (%)']]],axis=1,join='inner')
 
-testOdds = bettingOdds[bettingOdds.index.isin(X_test.index)]
-testOdds = testOdds.reindex(X_test.index)
-odd_preds = [1 if odd > 0.5 else 0 for odd in list(testOdds['Pinnacle (%)'])]
-
-#print("Confusion Matrix of %s is %s"%(name, cm))
 print("Test  Accuracy : %.3f" %accuracy_score(Y_test, Y_pred))
 print("Train Accuracy : %.3f" %accuracy_score(Y_train, Y_train_pred))
-print("Odd Accuracy : %.3f" %accuracy_score(Y_test, odd_preds))
+
+testOdds = bettingOdds[bettingOdds.index.isin(X_test.index)]
+testOdds = testOdds.reindex(X_test.index)
+for col in testOdds.columns:
+    odd_preds = [1 if odd > 0.5 else 0 for odd in list(testOdds[col])]
+    print("Odd Accuracy of {}".format(col) + " : %.3f"%accuracy_score(Y_test, odd_preds))
+#print("Confusion Matrix of %s is %s"%(name, cm))
 
 Y_pred_prob = pd.Series(Y_pred_prob, name = 'predProb', index = Y_test.index)
 df = pd.concat([Y_test, Y_pred_prob, testOdds['Pinnacle (%)']], join = 'inner', axis = 1)
