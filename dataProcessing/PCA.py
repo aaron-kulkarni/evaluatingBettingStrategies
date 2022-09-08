@@ -13,8 +13,8 @@ def concatTeamStats(years):
 
     return df
 
-years = np.arange(2015, 2023)
-concatTeamStats(years).to_csv('team_total_stats_all.csv')
+#years = np.arange(2015, 2023)
+#concatTeamStats(years).to_csv('team_total_stats_all.csv')
 
 def getSignal():
     df = pd.DataFrame()
@@ -92,21 +92,21 @@ EXECUTION
 ----------------------------------------
 '''
 
-stdDF = getStandardDF(getDataFrame())
-principalDF, weight = performPCA(stdDF, 25)
-print(weight)
+#stdDF = getStandardDF(getDataFrame())
+#principalDF, weight = performPCA(stdDF, 25)
+#print(weight)
 
-dfWin, dfLoss = getStandardDFBySignal(getDataFrame())
-principalDF_win, weight_win = performPCA(dfWin, 25)
-principalDF_loss, weight_loss = performPCA(dfLoss, 25)
-print(weight_win)
-print(weight_loss)
-principalDF_win.to_csv('pca_team_stats_all_win.csv')
-principalDF_loss.to_csv('pca_team_stats_all_loss.csv')
+#dfWin, dfLoss = getStandardDFBySignal(getDataFrame())
+#principalDF_win, weight_win = performPCA(dfWin, 25)
+#principalDF_loss, weight_loss = performPCA(dfLoss, 25)
+#print(weight_win)
+#print(weight_loss)
+#principalDF_win.to_csv('pca_team_stats_all_win.csv')
+#principalDF_loss.to_csv('pca_team_stats_all_loss.csv')
 
-weight_win.to_csv('coefficient_matrix_win.csv')
-weight_loss.to_csv('coefficient_matrix_loss.csv')
-weight.to_csv('coefficient_matrix.csv')
+#weight_win.to_csv('coefficient_matrix_win.csv')
+#weight_loss.to_csv('coefficient_matrix_loss.csv')
+#weight.to_csv('coefficient_matrix.csv')
 
 '''
 ----------------------------------------
@@ -217,13 +217,13 @@ EXECUTION
 ----------------------------------------
 '''
 
-getStandardDF(getDataFrame().drop('signal', axis = 1)).to_csv('standard_team_stats_all.csv')
+#getStandardDF(getDataFrame().drop('signal', axis = 1)).to_csv('standard_team_stats_all.csv')
 
-convertLossDF(True).to_csv('pca_by_win_all.csv')
-convertLossDF(False).to_csv('pca_by_loss_all.csv')
+#convertLossDF(True).to_csv('pca_by_win_all.csv')
+#convertLossDF(False).to_csv('pca_by_loss_all.csv')
 
-getRollingAverageDF('../data/teamStats/pca_by_win_all.csv', 5, True).to_csv('avg_5_PCA_home_win_all.csv')
-getRollingAverageDF('../data/teamStats/pca_by_win_all.csv', 5, False).to_csv('avg_5_PCA_away_win_all.csv') 
-getRollingAverageDF('../data/teamStats/pca_by_loss_all.csv', 5, True).to_csv('avg_5_PCA_home_loss_all.csv') 
-getRollingAverageDF('../data/teamStats/pca_by_loss_all.csv', 5, False).to_csv('avg_5_PCA_away_loss_all.csv') 
+#getRollingAverageDF('../data/teamStats/pca_by_win_all.csv', 5, True).to_csv('avg_5_PCA_home_win_all.csv')
+#getRollingAverageDF('../data/teamStats/pca_by_win_all.csv', 5, False).to_csv('avg_5_PCA_away_win_all.csv') 
+#getRollingAverageDF('../data/teamStats/pca_by_loss_all.csv', 5, True).to_csv('avg_5_PCA_home_loss_all.csv') 
+#getRollingAverageDF('../data/teamStats/pca_by_loss_all.csv', 5, False).to_csv('avg_5_PCA_away_loss_all.csv') 
 
