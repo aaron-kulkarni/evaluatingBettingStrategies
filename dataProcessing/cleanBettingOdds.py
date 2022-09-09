@@ -347,3 +347,12 @@ dfFinal = performPCA(2).set_index(df.index)
 dfFinal.to_csv('PCA_2_betting_odds_all.csv')
 
 
+def concatBettingOdds(years):
+    df_all = pd.DataFrame()
+    for year in years:
+        df = pd.read_csv('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year), header = [0,1], index_col = 0)
+        df_all = pd.concat([df, df_all], axis = 0)
+
+    return df_all
+
+concatBettingOdds(np.arange(2015, 2023)).to_csv('../data/bettingOddsData/closing_betting_odds_all.csv')

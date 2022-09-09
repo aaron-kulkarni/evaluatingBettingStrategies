@@ -60,10 +60,10 @@ def selectColElo(select_x):
 elo = selectColElo(['elo_prob1', 'raptor_prob1'])
 
 def selectColPerMetric(select_x):
-    perMetric = pd.read_csv('../data/perMetric/performance_metric_all.csv', index_col = 0, header = [0,1])
-    
-    perMetric.columns = perMetric.columns.droplevel(1)
+    perMetric = pd.read_csv('../data/perMetric/performance_metric_all.csv', index_col = 0)
     return perMetric[select_x]
+
+perMetric = selectColPerMetric(['perMetricAway', 'perMetricHome', 'perMetricNAway', 'perMetricNHome'])
 
 def getDFAll(dfList, years, dropNA = True):
     df_all = pd.concat(dfList, axis = 1, join = 'inner')
@@ -77,18 +77,18 @@ def getDFAll(dfList, years, dropNA = True):
     return df_all
 
 years = list(np.arange(2015, 2023))
-df_all = getDFAll([elo, bettingOdds], years, True)
+df_all = getDFAll([elo, bettingOdds, perMetric], years, True)
 
 X = df_all
 Y = getSignal().reindex(X.index)
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.8, test_size = 0.2, random_state = 15)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.8, test_size = 0.2, random_state = 10)
 
 # PARAMATER TUNING
 
 param_grid = {
     "n_estimators" : [50, 100],
-    "max_depth" : [1, 3, 5],
+    "max_depth" : [1, 3, 5, 7],
     "learning_rate" : [0.01, 0.1],
     "min_child_weight" : [4, 5, 6]
 }
@@ -98,7 +98,7 @@ grid.fit(X_train, Y_train)
 print(grid.best_params_)
 print(grid.best_estimator_)
 
-clf = XGBClassifier(learning_rate = 0.1,max_depth = 1, n_estimators = 100, min_child_weight = 5)
+clf = XGBClassifier(learning_rate = 0.05,max_depth = 5, n_estimators = 50, min_child_weight = 6)
 
 # MODEL
 
