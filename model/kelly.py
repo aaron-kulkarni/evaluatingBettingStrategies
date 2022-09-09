@@ -52,8 +52,6 @@ def convAmericanOdds():
         df.drop(col, axis = 1, inplace = True, level = 1)
     return df
 
-#convAmericanOdds().to_csv('../data/bettingOddsData/closing_betting_odds_returns.csv')
-    
 def findProportionGained(select_x):
     df = pd.read_csv('../data/bettingOddsData/closing_betting_odds_returns.csv', index_col = 0, header = [0,1])
     
@@ -64,6 +62,15 @@ def findProportionGained(select_x):
     
     return oddHome.max(axis = 1), oddAway.max(axis = 1)
 
-    
+def returnBet(per_bet, signal, retHome, retAway, home):
+
+    if signal == 1 and home == True:
+        return per_bet * retHome
+    if signal == 0 and home == True:
+        return -per_bet
+    if signal == 1 and home == False:
+        return -per_bet
+    if signal == 0 and home == False:
+        return per_bet * retAway
 
     

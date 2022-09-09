@@ -5,6 +5,7 @@ import sys
 import time
 import datetime
 import math
+import random
 
 sys.path.insert(0, "..")
 from utils.utils import *
@@ -79,28 +80,31 @@ def getDFAll(dfList, years, dropNA = True):
     return df_all
 
 years = list(np.arange(2015, 2023))
-df_all = getDFAll([elo, bettingOdds, perMetric], years, True)
+df_all = getDFAll([elo, perMetric], years, True)
 
 X = df_all
 Y = getSignal().reindex(X.index)
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.8, test_size = 0.2, random_state = 10, shuffle = True)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.8, test_size = 0.2, random_state = 126, shuffle = True)
 
 # PARAMATER TUNING
+def findParamsXGB(X_train, Y_train):
+    param_grid = {
+        "n_estimators" : [50, 100],
+        "max_depth" : [1, 3, 5, 7],
+        "learning_rate" : [0.01, 0.1],
+        "min_child_weight" : [4, 5, 6]
+    }
 
-param_grid = {
-    "n_estimators" : [50, 100],
-    "max_depth" : [1, 3, 5, 7],
-    "learning_rate" : [0.01, 0.1],
-    "min_child_weight" : [4, 5, 6]
-}
+    grid = GridSearchCV(XGBClassifier(), param_grid, refit = True, verbose = 3)
+    grid.fit(X_train, Y_train)
+    print(grid.best_params_)
+    print(grid.best_estimator_)
+    return grid.best_estimator_
 
-grid = GridSearchCV(XGBClassifier(), param_grid, refit = True, verbose = 3)
-grid.fit(X_train, Y_train)
-print(grid.best_params_)
-print(grid.best_estimator_)
+#params = findParamsXGB(X_train, Y_train)
 
-clf = XGBClassifier(learning_rate = 0.01, max_depth = 3, n_estimators = 100, min_child_weight = 6)
+clf = XGBClassifier(learning_rate = 0.1, max_depth = 1, n_estimators = 50, min_child_weight = 4)
 
 # MODEL
 
@@ -113,62 +117,59 @@ from sklearn.model_selection import RandomizedSearchCV
 import graphviz
 from sklearn.metrics import accuracy_score
 
-model = clf.fit(X_train, Y_train)
-name = 'XGBOOST'
-calibrated_clf = CalibratedClassifierCV(clf, cv = 5)
-calibrated_clf.fit(X_train, Y_train)
+def xgboost(clf):
+    model = clf.fit(X_train, Y_train)
+    name = 'XGBOOST'
+    calibrated_clf = CalibratedClassifierCV(clf, cv = 5)
+    calibrated_clf.fit(X_train, Y_train)
 
-#calibrated_clf.predict_proba(X_test)
-#Y_pred = clf.predict(X_test)
-#Y_train_pred = clf.predict(X_train)
+    #calibrated_clf.predict_proba(X_test)
+    #Y_pred = clf.predict(X_test)
+    #Y_train_pred = clf.predict(X_train)
 
-Y_pred_prob = calibrated_clf.predict_proba(X_test)[:, 1]
-Y_train_pred = calibrated_clf.predict_proba(X_train)[:, 1]
+    Y_pred_prob = calibrated_clf.predict_proba(X_test)[:, 1]
+    Y_train_pred = calibrated_clf.predict_proba(X_train)[:, 1]
 
-Y_pred = [1 if p > 0.5 else 0 for p in Y_pred_prob]
-Y_train_pred = [1 if p > 0.5 else 0 for p in Y_train_pred]
+    Y_pred = [1 if p > 0.5 else 0 for p in Y_pred_prob]
+    Y_train_pred = [1 if p > 0.5 else 0 for p in Y_train_pred]
 
-acc = accuracy_score(Y_test, Y_pred)
-print("\nAccuracy of %s is %s"%(name, acc))
-#print(clf.feature_importances_)
-print(pd.DataFrame(data = list(model.feature_importances_), index = list(X_train.columns), columns = ["score"]).sort_values(by = "score", ascending = False).head(30))
+    acc = accuracy_score(Y_test, Y_pred)
+    print("\nAccuracy of %s is %s"%(name, acc))
+    #print(clf.feature_importances_)
+    print(pd.DataFrame(data = list(model.feature_importances_), index = list(X_train.columns), columns = ["score"]).sort_values(by = "score", ascending = False).head(30))
+    
+    #cm = confusion_matrix(Y_test, Y_pred)/len(Y_pred) 
+    #X_test0=pd.concat([X_test,df_game_sub[['Pinnacle (%)']]],axis=1,join='inner')
 
-#cm = confusion_matrix(Y_test, Y_pred)/len(Y_pred) 
-#X_test0=pd.concat([X_test,df_game_sub[['Pinnacle (%)']]],axis=1,join='inner')
+    print("Test  Accuracy : %.3f" %accuracy_score(Y_test, Y_pred))
+    print("Train Accuracy : %.3f" %accuracy_score(Y_train, Y_train_pred))
+    return Y_pred_prob
 
-print("Test  Accuracy : %.3f" %accuracy_score(Y_test, Y_pred))
-print("Train Accuracy : %.3f" %accuracy_score(Y_train, Y_train_pred))
+Y_pred_prob = xgboost(clf)
 
-testOdds = bettingOdds[bettingOdds.index.isin(X_test.index)]
-testOdds = testOdds.reindex(X_test.index)
-for col in testOdds.columns:
-    odd_preds = [1 if odd > 0.5 else 0 for odd in list(testOdds[col])]
-    print("Odd Accuracy of {}".format(col) + " : %.3f"%accuracy_score(Y_test, odd_preds))
-#print("Confusion Matrix of %s is %s"%(name, cm))
+def getOddBreakdown(Y_pred_prob):
+    testOdds = bettingOdds[bettingOdds.index.isin(X_test.index)]
+    testOdds = testOdds.reindex(X_test.index)
+    for col in testOdds.columns:
+        odd_preds = [1 if odd > 0.5 else 0 for odd in list(testOdds[col])]
+        print("Odd Accuracy of {}".format(col) + " : %.3f"%accuracy_score(Y_test, odd_preds))
+    #print("Confusion Matrix of %s is %s"%(name, cm))
 
-Y_pred_prob = pd.Series(Y_pred_prob, name = 'predProb', index = Y_test.index)
-df = pd.concat([Y_test, Y_pred_prob, testOdds['Pinnacle (%)']], join = 'inner', axis = 1)
+    Y_pred_prob = pd.Series(Y_pred_prob, name = 'predProb', index = Y_test.index)
+    df = pd.concat([Y_test, Y_pred_prob, testOdds['Pinnacle (%)']], join = 'inner', axis = 1)
 
-df['pred_bkt'] = pd.qcut(df['predProb'], 10 , duplicates = 'drop')
-df['odd_bkt'] = pd.qcut(df['Pinnacle (%)'], 10)
-df['stat_pred'] = df.apply(lambda d: 1 if d['predProb'] > 0.5 else 0, axis = 1)
-df['stat_odd'] = df.apply(lambda d: 1 if d['Pinnacle (%)'] > 0.5 else 0 ,axis = 1)
+    df['pred_bkt'] = pd.qcut(df['predProb'], 10 , duplicates = 'drop')
+    df['odd_bkt'] = pd.qcut(df['Pinnacle (%)'], 10)
+    df['stat_pred'] = df.apply(lambda d: 1 if d['predProb'] > 0.5 else 0, axis = 1)
+    df['stat_odd'] = df.apply(lambda d: 1 if d['Pinnacle (%)'] > 0.5 else 0 ,axis = 1)
 
-print(df.groupby('pred_bkt').signal.sum()/df.groupby('pred_bkt').size(),df.groupby('pred_bkt').size())
-print(df.groupby('odd_bkt').signal.sum()/df.groupby('odd_bkt').size(),df.groupby('pred_bkt').size())
+    print(df.groupby('pred_bkt').signal.sum()/df.groupby('pred_bkt').size(),df.groupby('pred_bkt').size())
+    print(df.groupby('odd_bkt').signal.sum()/df.groupby('odd_bkt').size(),df.groupby('pred_bkt').size())
+    return df
 
-def returnBet(per_bet, signal, retHome, retAway, home):
+df = getOddBreakdown(Y_pred_prob)
 
-    if signal == 1 and home == True:
-        return per_bet * retHome
-    if signal == 0 and home == True:
-        return -per_bet
-    if signal == 1 and home == False:
-        return -per_bet
-    if signal == 0 and home == False:
-        return per_bet * retAway
-
-def Kelly(alpha, predProb, x_columns):
+def Kelly(df, alpha, predProb, x_columns):
     retHome, retAway = findProportionGained(x_columns)
     retHome = retHome[retHome.index.isin(df.index)].rename('retHome', inplace = True)
     retAway = retAway[retAway.index.isin(df.index)].rename('retAway', inplace = True)
@@ -178,18 +179,41 @@ def Kelly(alpha, predProb, x_columns):
     df_['home'] = df_.apply(lambda d: kellyBet(d['prob_Y'], alpha, d['retHome'], d['retAway'])[1], axis = 1)
     df_['return'] = df_.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
     df_['cum_return'] = df_['return'].cumprod()
+    #df_['reg_return'] = df_.apply(lambda d: 1 - d['return'], axis = 1).cumsum()
 
-    return df, df_['cum_return']
+    return df_, df_['cum_return']
 
-# ['10x10bet_return', '1xBet_return', 'BetFinal_return', 'Coolbet_return', 'Curebet_return', 'Ditobet_return', 'GGBET_return', 'Lasbet_return', 'Marathonbet_return', 'N1 Bet_return', 'Parimatch_return', 'Pinnacle_return', 'Unibet_return', 'William Hill_return', 'bet-at-home_return', 'bet365_return', 'bwin_return', 'bet265_return']
 
-x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return']
-df, returns = Kelly(0.4, df['predProb'], x_columns)
+x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
+
+df, returns = Kelly(df, 0.3, df['predProb'], x_columns)
 print(returns)
+#print(cum_returns)
+
 
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')
 plt.show()
+
+maxReturns = []
+returnAll = []
+
+for i in range (1, 1000):
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.8, test_size = 0.2, random_state = i, shuffle = True)
+    clf = XGBClassifier(learning_rate = 0.1, max_depth = 1, n_estimators = 50, min_child_weight = 4)
+    Y_pred_prob = xgboost(clf)
+    df = getOddBreakdown(Y_pred_prob)
+    x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
+
+    df_, returns = Kelly(df, 0.3, df['predProb'], x_columns)
+    x = np.arange(1, len(returns) + 1)
+    y = list(returns.array)
+    maxReturns.append(max(y))
+    returnAll.append(y[-1])
+
+results = [maxReturns, returnAll]
+result_df = pd.DataFrame(data = np.array(results).T, columns = ['max', 'end'])
+results_df['max'].groupby([0, 5])
 
 xray.shutdown()
