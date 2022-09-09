@@ -54,12 +54,14 @@ def convAmericanOdds():
 
 #convAmericanOdds().to_csv('../data/bettingOddsData/closing_betting_odds_returns.csv')
     
-def findProportionGained():
+def findProportionGained(select_x):
     df = pd.read_csv('../data/bettingOddsData/closing_betting_odds_returns.csv', index_col = 0, header = [0,1])
-
+    
     oddHome = df['OddHome']
     oddAway = df['OddAway']
-
+    oddHome = oddHome[select_x]
+    oddAway = oddAway[select_x]
+    
     return oddHome.max(axis = 1), oddAway.max(axis = 1)
 
     

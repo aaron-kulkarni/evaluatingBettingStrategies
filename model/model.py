@@ -4,11 +4,13 @@ import os
 import sys
 import time
 import datetime
+import math
 
 sys.path.insert(0, "..")
 from utils.utils import *
 from dataProcessing.TeamPerformance import *
 from dataProcessing.PCA import *
+from kelly import *
 
 import matplotlib.pyplot as plt
 import ray
@@ -154,5 +156,40 @@ df['stat_odd'] = df.apply(lambda d: 1 if d['Pinnacle (%)'] > 0.5 else 0 ,axis = 
 
 print(df.groupby('pred_bkt').signal.sum()/df.groupby('pred_bkt').size(),df.groupby('pred_bkt').size())
 print(df.groupby('odd_bkt').signal.sum()/df.groupby('odd_bkt').size(),df.groupby('pred_bkt').size())
+
+def returnBet(per_bet, signal, retHome, retAway, home):
+
+    if signal == 1 and home == True:
+        return per_bet * retHome
+    if signal == 0 and home == True:
+        return -per_bet
+    if signal == 1 and home == False:
+        return -per_bet
+    if signal == 0 and home == False:
+        return per_bet * retAway
+
+def Kelly(alpha, predProb, x_columns):
+    retHome, retAway = findProportionGained(x_columns)
+    retHome = retHome[retHome.index.isin(df.index)].rename('retHome', inplace = True)
+    retAway = retAway[retAway.index.isin(df.index)].rename('retAway', inplace = True)
+    predProb.rename('prob_Y', inplace = True)
+    df_ = pd.concat([df, retHome, retAway, predProb], axis = 1)
+    df_['per_bet'] = df_.apply(lambda d: kellyBet(d['prob_Y'], alpha, d['retHome'], d['retAway'])[0], axis = 1)
+    df_['home'] = df_.apply(lambda d: kellyBet(d['prob_Y'], alpha, d['retHome'], d['retAway'])[1], axis = 1)
+    df_['return'] = df_.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
+    df_['cum_return'] = df_['return'].cumprod()
+
+    return df, df_['cum_return']
+
+# ['10x10bet_return', '1xBet_return', 'BetFinal_return', 'Coolbet_return', 'Curebet_return', 'Ditobet_return', 'GGBET_return', 'Lasbet_return', 'Marathonbet_return', 'N1 Bet_return', 'Parimatch_return', 'Pinnacle_return', 'Unibet_return', 'William Hill_return', 'bet-at-home_return', 'bet365_return', 'bwin_return', 'bet265_return']
+
+x_columns = ['Unibet_return', 'William Hill_return', 'bet-at-home_return', 'Pinnacle_return'] 
+df, returns = Kelly(0.5, df['predProb'], x_columns)
+print(returns)
+
+x = np.arange(1, len(returns) + 1)
+y = list(returns.array)
+plt.plot(x, y, label = 'PERCENTAGE RETURN')
+plt.show()
 
 ray.shutdown()
