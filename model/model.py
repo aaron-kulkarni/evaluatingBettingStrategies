@@ -84,7 +84,7 @@ df_all = getDFAll([elo, bettingOdds, perMetric], years, True)
 X = df_all
 Y = getSignal().reindex(X.index)
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.8, test_size = 0.2, random_state = 10)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.8, test_size = 0.2, random_state = 10, shuffle = True)
 
 # PARAMATER TUNING
 
@@ -100,7 +100,7 @@ grid.fit(X_train, Y_train)
 print(grid.best_params_)
 print(grid.best_estimator_)
 
-clf = XGBClassifier(learning_rate = 0.05,max_depth = 5, n_estimators = 50, min_child_weight = 6)
+clf = XGBClassifier(learning_rate = 0.01, max_depth = 3, n_estimators = 100, min_child_weight = 6)
 
 # MODEL
 
@@ -183,8 +183,8 @@ def Kelly(alpha, predProb, x_columns):
 
 # ['10x10bet_return', '1xBet_return', 'BetFinal_return', 'Coolbet_return', 'Curebet_return', 'Ditobet_return', 'GGBET_return', 'Lasbet_return', 'Marathonbet_return', 'N1 Bet_return', 'Parimatch_return', 'Pinnacle_return', 'Unibet_return', 'William Hill_return', 'bet-at-home_return', 'bet365_return', 'bwin_return', 'bet265_return']
 
-x_columns = ['Unibet_return', 'William Hill_return', 'bet-at-home_return', 'Pinnacle_return'] 
-df, returns = Kelly(0.5, df['predProb'], x_columns)
+x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return']
+df, returns = Kelly(0.4, df['predProb'], x_columns)
 print(returns)
 
 x = np.arange(1, len(returns) + 1)
@@ -192,4 +192,4 @@ y = list(returns.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')
 plt.show()
 
-ray.shutdown()
+xray.shutdown()
