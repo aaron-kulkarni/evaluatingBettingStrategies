@@ -61,6 +61,12 @@ class EloCalculator:
 
         return updated_home_elo, updated_away_elo
 
+    def returnHomeCourtAdvantage(neutral):
+        if neutral == 0:
+            return 100
+        if neutral == 1:
+            return 0
+
     @staticmethod
     def getElo(year):
         eloDict = {}
@@ -381,7 +387,15 @@ class EloCalculator:
 
         return df
 
+    def getEloProb(filename):
+        df = pd.read_csv('../data/eloData/nba_elo_all_filled.csv', index_col = 0)
+        df['homeProb'] = df.apply(lambda d: self.win_probs(d['homeElo'], d['awayElo'], self.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
+        df['awayProb'] = df.apply(lambda d: self.win_probs(d['homeElo'], d['awayElo'], d['neutral'])[1], axis=1)
+        df['homeProbRAPTOR'] = df.apply(lambda d: self.win_probs(d['homeEloRAPTOR'], d['awayEloRAPTOR'], self.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
+        df['awayProbRAPTOR'] = df.apply(lambda d: self.win_probs(d['homeTeamElo'], d['awayTeamElo'], d['neutral'])[1], axis=1)
 
+        return df
+        
 years = np.arange(2015, 2023)
 for year in years:
     EloCalculator.getEloProbability(year).to_csv('team_elo_{}.csv'.format(year))
