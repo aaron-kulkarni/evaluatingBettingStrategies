@@ -1,13 +1,8 @@
 import pandas as pd
 import numpy as np
-import os
 import sys
-import time
-import datetime
-import math
-import random
-
 sys.path.insert(0, "..")
+
 from utils.utils import *
 from dataProcessing.TeamPerformance import *
 from dataProcessing.PCA import *
@@ -15,37 +10,24 @@ from kelly import *
 
 import matplotlib.pyplot as plt
 import ray
+import multiprocessing
 
 from sklearn.decomposition import PCA
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.metrics import mean_squared_error
-import xgboost as xgb
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import RandomizedSearchCV
-import graphviz
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score
-
 from sklearn.svm import SVC
 from sklearn.calibration import CalibratedClassifierCV
-from sklearn.tree import DecisionTreeClassifier
 from xgboost import XGBClassifier
-from xgboost import XGBRegressor
 
-#from lightgbm import LGBMClassifier
-from sklearn.ensemble import AdaBoostClassifier
-from sklearn.ensemble import BaggingClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import HistGradientBoostingClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-#from sklearn.ensemble import LGBMClassifier
 
-from sklearn.svm import SVC
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import RepeatedStratifiedKFold
-from sklearn.calibration import CalibratedClassifierCV
-
-# My computer has 10 cpu cores, 8 for performance and 2 for efficiency
-ray.init(num_cpus = 6)
+# Assign # of cpus to work on process based on each computers total cpu count
+cpuCount = multiprocessing.cpu_count()
+if (cpuCount == 4):
+    ray.init(num_cpus=2)
+elif (cpuCount > 4 and cpuCount < 8):
+    ray.init(num_cpus=4)
+else:
+    ray.init(num_cpus=6)
 
 def selectColOdds(select_x):
     bettingOdds = pd.read_csv('../data/bettingOddsData/adj_prob_home_win_ALL.csv', index_col = 0)
@@ -105,17 +87,6 @@ def findParamsXGB(X_train, Y_train):
 #params = findParamsXGB(X_train, Y_train)
 
 clf = XGBClassifier(learning_rate = 0.1, max_depth = 1, n_estimators = 50, min_child_weight = 4)
-
-# MODEL
-
-from sklearn.decomposition import PCA
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.metrics import mean_squared_error
-import xgboost as xgb
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import RandomizedSearchCV
-import graphviz
-from sklearn.metrics import accuracy_score
 
 def xgboost(clf):
     model = clf.fit(X_train, Y_train)
@@ -213,7 +184,7 @@ for i in range (1, 1000):
     returnAll.append(y[-1])
 
 results = [maxReturns, returnAll]
-result_df = pd.DataFrame(data = np.array(results).T, columns = ['max', 'end'])
+results_df = pd.DataFrame(data = np.array(results).T, columns = ['max', 'end'])
 results_df['max'].groupby([0, 5])
 
-xray.shutdown()
+ray.shutdown()

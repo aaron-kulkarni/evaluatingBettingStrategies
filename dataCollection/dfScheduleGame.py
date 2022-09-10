@@ -12,6 +12,7 @@ import pdb
 from sportsipy.nba.teams import Teams
 from sportsreference.nba.roster import Roster
 from sportsreference.nba.roster import Player
+from utils.utils import *
 
 from sportsreference.nba.schedule import Schedule
 from sportsipy.nba.boxscore import Boxscore
@@ -21,7 +22,7 @@ import re
 # Check using the following regex:
 # 20[12][\d][01][\d][0-3][\d]0[A-Z]{3},([A-Z]{3},){3}[0-1]?[\d]:[0-5][\d](a|p),".+",(([\d]+,){4}"?\[([\d]+,? ?)*\]"?,[\d]+,-?[\d]+.[\d.]*,"?\[('[a-z\d]+',? ?)*\]"?,"\[[\d]+, [\d]+\]",[\d]+,){2}(none|conference|division)\n
 
-teamsDict = {
+teamRivalryDict = {
     "TOR": ["Eastern", "Atlantic"],
     "BOS": ["Eastern", "Atlantic"],
     "BRK": ["Eastern", "Atlantic"],
@@ -102,8 +103,8 @@ def getGameData(gameId):
         winner = teamAway 
 
 
-    teamHomeSchedule = getSchedule(gameYear, gameMonth, teamHome)
-    teamAwaySchedule = getSchedule(gameYear, gameMonth, teamAway)
+    teamHomeSchedule = getTeamScheduleAPI(gameYear, gameMonth, teamHome)
+    teamAwaySchedule = getTeamScheduleAPI(gameYear, gameMonth, teamAway)
 
     
     timeOfDay = teamHomeSchedule.loc[gameId][13]
@@ -182,53 +183,6 @@ def getGameDataframe(startTime, endTime):
     
     return df 
 
-def getGameStatYear(year):
-    fileLocation = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/gameStats/game_data_player_stats_{}_clean.csv'.format(year)
-
-    startDate = str(extract_lines(fileLocation)[0])[0:10]
-    endDate = str(extract_lines(fileLocation)[1])[0:10]
-
-    df = getGameDataframe(startDate, endDate)
-    return df
-    
-def getNumberGamesPlayed(team, year, game_id):
-    index = getTeamGameIds(team, year).index(game_id)
-    return index
-
-def getTeamGameIds(team, year):
-    homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, year)
-    teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
-    teamSchedule = teamSchedule.sort_index(ascending=True)
-    return list(teamSchedule.index)
-
-def getTeamSchedule(team, year):
-    df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
-
-    dfHome = df[df['gameState']['teamHome'] == team]
-    dfAway = df[df['gameState']['teamAway'] == team]
-    return dfHome, dfAway
-
-
-def addNumberOfGamesPlayed(year):
-    df = pd.read_csvdef getGameStatYear(year):
-    fileLocation = '/Users/jasonli/Projects/evaluatingBettingStrategies/data/gameStats/game_data_player_stats_{}_clean.csv'.format(year)
-
-    startDate = str(extract_lines(fileLocation)[0])[0:10]
-    endDate = str(extract_lines(fileLocation)[1])[0:10]
-
-    df = getGameDataframe(startDate, endDate)
-    return df
-    
-def getNumberGamesPlayed(team, year, game_id):
-    index = getTeamGameIds(team, year).index(game_id)
-    return index
-
-def getTeamGameIds(team, year):
-    homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, year)
-    teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
-    teamSchedule = teamSchedule.sort_index(ascending=True)
-    return list(teamSchedule.index)
-
 def getNumberGamesPlayedDF(year):
     df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
     df['gameState', 'index'] = df.index.to_series()
@@ -239,13 +193,37 @@ def getNumberGamesPlayedDF(year):
     return df
 
 def getRivalry(team_home, team_away):
-    if teamsDict[team_home] == teamsDict[team_away]:
+    if teamRivalryDict[team_home] == teamRivalryDict[team_away]:
         rivalry = 'division'
-    elif teamsDict[team_home][0] == teamsDict[team_away][0]:
+    elif teamRivalryDict[team_home][0] == teamRivalryDict[team_away][0]:
         rivalry = 'conference'
     else:
         rivalry = 'none'
     return rivalry
+
+def getDaysSinceLastGame(teamSchedule, gameId):
+    teamSchedule.sort_values(by='datetime')
+
+    prevHomeDate = teamSchedule['datetime'].shift().loc[gameId]
+    currentdate = teamSchedule.loc[gameId]['datetime']
+
+    return (currentdate - prevHomeDate).total_seconds() / 86400
+
+
+def getTeamRecord(teamSchedule, gameId):
+    results = teamSchedule.result.shift()
+    results = results.loc[results.index[0]:gameId]
+    homeRecord = results.value_counts(ascending=True)
+    try:
+        wins = homeRecord['Win']
+    except:
+        wins = 0
+    try:
+        losses = homeRecord['Loss']
+    except:
+        losses = 0
+
+    return [wins, losses]
 
 def getCoaches(teamHome, teamAway, gameDate):
     '''
@@ -270,43 +248,16 @@ def getCoaches(teamHome, teamAway, gameDate):
 
     return homeCoach, awayCoach
 
-def getTeamRecord(teamSchedule, gameId):
-    results = teamSchedule.result.shift()
-    results = results.loc[results.index[0]:gameId]
-    homeRecord = results.value_counts(ascending=True)
-    try:
-        wins = homeRecord['Win']
-    except:
-        wins = 0
-    try:
-        losses = homeRecord['Loss']
-    except:
-        losses = 0
 
-    return [wins, losses]
+    # def getGameStatYear(year):
+    # fileLocation = '../data/gameStats/game_data_player_stats_{}_clean.csv'.format(year)
 
-def getDaysSinceLastGame(teamSchedule, gameId):
-    teamSchedule.sort_values(by='datetime')
+    # startDate = str(extract_lines(fileLocation)[0])[0:10]
+    # endDate = str(extract_lines(fileLocation)[1])[0:10]
 
-    prevHomeDate = teamSchedule['datetime'].shift().loc[gameId]
-    currentdate = teamSchedule.loc[gameId]['datetime']
+    # df = getGameDataframe(startDate, endDate)
+    # return df
 
-    return (currentdate - prevHomeDate).total_seconds() / 86400
-
-def getSchedule(gameYear, gameMonth, team):
-    if int(gameYear) == 2020: #2020 was exception because covid messed up schedule
-        if int(gameMonth.lstrip("0")) < 11: #converted gameMonth to int without leading 0. check month to find correct season
-            teamSchedule = Schedule(team, int(gameYear)).dataframe
-        else:
-            teamSchedule = Schedule(team, int(gameYear) + 1).dataframe
-    else:
-        if int(gameMonth.lstrip("0")) > 7: #games played after july are part of next season
-            teamSchedule = Schedule(team, int(gameYear) + 1).dataframe
-        else:
-            teamSchedule = Schedule(team, int(gameYear)).dataframe
-
-    return teamSchedule
-
-years = np.arange(2015, 2023)
-for year in years:
-    getNumberGamesPlayedDF(year).to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+# years = np.arange(2015, 2023)
+# for year in years:
+#     getNumberGamesPlayedDF(year).to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))

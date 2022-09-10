@@ -2,6 +2,7 @@ import datetime as dt
 import pandas as pd
 import re
 from sportsipy.nba.teams import Teams
+from sportsipy.nba.schedule import Schedule
 
 
 def gameIdToDateTime(game_id):
@@ -50,16 +51,30 @@ def getTeams(game_id):
     return teamHome, teamAway
 
 
-def getTeamSchedule(team, year):
+def getTeamScheduleCSV(team, year):
     df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
 
     dfHome = df[df['gameState']['teamHome'] == team]
     dfAway = df[df['gameState']['teamAway'] == team]
     return dfHome, dfAway
 
+def getTeamScheduleAPI(gameYear, gameMonth, team):
+    if int(gameYear) == 2020: #2020 was exception because covid messed up schedule
+        if int(gameMonth.lstrip("0")) < 11: #converted gameMonth to int without leading 0. check month to find correct season
+            teamSchedule = Schedule(team, int(gameYear)).dataframe
+        else:
+            teamSchedule = Schedule(team, int(gameYear) + 1).dataframe
+    else:
+        if int(gameMonth.lstrip("0")) > 7: #games played after july are part of next season
+            teamSchedule = Schedule(team, int(gameYear) + 1).dataframe
+        else:
+            teamSchedule = Schedule(team, int(gameYear)).dataframe
+
+    return teamSchedule
+
 
 def getTeamGameIds(team, year):
-    homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, year)
+    homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, year)
     teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
     teamSchedule = teamSchedule.sort_index(ascending=True)
     return list(teamSchedule.index)
@@ -107,3 +122,4 @@ def getRecentNGames(gameId, n, team):
     gameIdList = gameIdList[index-n:index]
 
     return gameIdList
+

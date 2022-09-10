@@ -1,8 +1,6 @@
 import re
 import numpy as np
 import pandas as pd
-import datetime as dt
-import sys
 
 def concatTeamStats(years):
 

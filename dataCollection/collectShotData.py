@@ -1,15 +1,11 @@
 import pandas as pd
 from urllib.request import urlopen
 import re
-from sportsipy.nba.boxscore import Boxscores
 import bs4
 import numpy as np
-import datetime as dt
 import math
-
 import sys
 sys.path.insert(0, "..")
-#from dataProcessing.recentTeamPerformance import *
 
 
 teamAbbreviations = {
@@ -45,8 +41,7 @@ teamAbbreviations = {
     "Pelicans": "NOP"
 }
 
-angleWeight = 0.1
-distanceWeight = 0.9
+
 scale = 1.2
 
 
@@ -163,7 +158,6 @@ def scrapeGameShots(gameId):
 
 #print(scrapeGameShots('201411010WAS'))
 
-
 def getTeamGameShotsDataFrame(year):
 
      #get gameId list from preexisting csv
@@ -176,146 +170,3 @@ def getTeamGameShotsDataFrame(year):
 
      print("Year finished: " + str(year))
      return df
-
-years = np.arange(2022, 2023)
-for year in years:
-    getTeamGameShotsDataFrame(year).to_csv('data/shotData/team_shot_data_{}.csv'.format(year))
-
-def getShotQuality(distance, angle, three):
-
-    distanceQuality = 0
-    angleQuality = 0
-
-    if not three:
-        if distance <= 2:
-            distanceQuality = 1
-        else:
-            distanceQuality = 1 - ((distance - 24) * 0.05)
-    else:
-        distanceQuality = 1 - ((distance - 276) * 0.05)
-
-    
-    if angle >= 90:
-        angleQuality = (-0.0455 * angle) + 4.4279
-        #y = -0.0455x + 4.4279. well thought out and highly scientific formula
-    else:
-        angleQuality = (-1/135 * angle) + 1 
-        #y = -1/135x + 1. anotha one
-
-    return ((distanceQuality * distanceWeight) + (angleQuality * angleWeight))
-
-# def getShotQualityList(distanceList, angleList, threeList):
-#     allLists = [distanceList, angleList, threeList]
-#     if len(set(map(len, allLists))) != 1:
-#         raise Exception("Issue with length of lists")
-    
-#     res = list(map(getShotQuality, distanceList, angleList, threeList))
-#     return res
-    
-# def getAverageShotQuality(distanceList, angleList, threeList):
-#     res = getShotQualityList(distanceList, angleList, threeList)
-#     return sum(res)
-
-# def getShotQualityDF(year):
-#     df = pd.read_csv('../data/shotData/team_shot_data_{}.csv'.format(year), index_col = 0)
-#     df['home_avg_shot_quality'] = df.apply(lambda d: getAverageShotQuality(eval(d['homeDistances']), eval(d['homeAngles']), eval(d['homeThrees'])), axis = 1)
-#     df['away_avg_shot_quality'] = df.apply(lambda d: getAverageShotQuality(eval(d['awayDistances']), eval(d['awayAngles']), eval(d['awayThrees'])), axis = 1)
-#     return df
-
-# years = np.arange(2015, 2023)
-# for year in years:
-#     getShotQualityDF(year).to_csv('../data/shotData/shot_data_{}.csv'.format(year))
-
-# '''
-# ----------------------------
-# ADDING FUNCTIONS TEMPORARILY
-# ----------------------------
-# '''
-
-# def getYearFromId(game_id):
-#     if int(game_id[0:4]) == 2020:
-#         if int(game_id[4:6].lstrip("0")) < 11:
-#             year = int(game_id[0:4])
-#         else:
-#             year = int(game_id[0:4]) + 1
-#     else:
-#         if int(game_id[4:6].lstrip("0")) > 7:
-#             year = int(game_id[0:4]) + 1
-#         else:
-#             year = int(game_id[0:4])
-#     return year
-
-# def getTeamGameIds(team, year):
-#     homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, year)
-#     teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
-#     teamSchedule = teamSchedule.sort_index(ascending=True)
-#     return list(teamSchedule.index)
-
-# def getTeamSchedule(team, year):
-#     df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
-
-#     dfHome = df[df['gameState']['teamHome'] == team]
-#     dfAway = df[df['gameState']['teamAway'] == team]
-#     return dfHome, dfAway
-
-
-# def getRecentNGames(gameId, n, team):
-#     '''
-#     Obtains ids of the past n games (non inclusive) given the gameId of current game and team abbreviation
-    
-#     '''
-#     if n <= 0:
-#         raise Exception('N parameter must be greater than 0')
-    
-#     if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)) == False:
-        
-#         raise Exception('Issue with Game ID')
-    
-#     year = getYearFromId(gameId)
-#     gameIdList = getTeamGameIds(team, year)
-#     index = gameIdList.index(gameId)
-#     gameIdList = gameIdList[index-n:index]
-
-#     return gameIdList
-
-# def getTeams(years):
-#     df = pd.DataFrame()
-#     for year in years:
-#         teamDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
-#         teams = pd.concat([teamDF['gameState']['teamHome'],teamDF['gameState']['teamAway']], axis = 1)
-#         df = pd.concat([df, teams], axis = 0)
-
-#     return df
-
-
-
-# '''
-# ----------------------------
-# END OF FILLER FUNCTIONS
-# ----------------------------
-
-# '''
-
-# def getRollingAverage(df, gameId, n, home = True):
-#     if home == True:
-#         games = getRecentNGames(gameId, n, getTeams(np.arange(2015, 2023)).loc[gameId]['teamHome'])
-#     else:
-#         games = getRecentNGames(gameId, n, getTeams(np.arange(2015, 2023)).loc[gameId]['teamAway'])
-#     df = df[df.index.isin(games)]
-
-#     return df.mean()
-
-# years = np.arange(2015, 2023)
-# for year in years:
-#     df = pd.read_csv('../data/shotData/shot_data_{}.csv'.format(year), index_col = 0)
-#     df = df[['home_avg_shot_quality', 'away_avg_shot_quality']]
-#     getRollingAverageDF(df, 5, True).to_csv('../data/shotData/avg_5_shot_quality_home_{}.csv'.format(year))
-#     getRollingAverageDF(df, 5, False).to_csv('../data/shotData/avg_5_shot_quality_away_{}.csv'.format(year))
-
-
-# def getRollingAverageDF(df, n, home = True):
-#     avgDF = pd.DataFrame(index = df.index, columns = df.columns)
-#     for gameId in df.index:
-#         avgDF.loc[gameId] = getRollingAverage(df, gameId, n, home)
-#     return avgDF
-

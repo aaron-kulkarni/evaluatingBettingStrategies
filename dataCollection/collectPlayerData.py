@@ -1,5 +1,3 @@
-import os
-from unittest import result 
 import pandas as pd
 import datetime as dt
 import bs4 as bs

@@ -1,18 +1,10 @@
 import pandas as pd
-import numpy as np
-import os
 import sys
-import time
-import datetime
-import math
 
 sys.path.insert(0, "..")
 from utils.utils import *
 from dataProcessing.TeamPerformance import *
 from dataProcessing.PCA import *
-
-import matplotlib.pyplot as plt
-import ray
 
 def kellyBet(Y_prob, alpha, prop_gained_home, prop_gained_away):
     '''

@@ -6,7 +6,6 @@ import bs4 as bs
 
 sys.path.insert(0, "..")
 from utils.utils import *
-import re
 
 
 def convertMultiIndexing(years):

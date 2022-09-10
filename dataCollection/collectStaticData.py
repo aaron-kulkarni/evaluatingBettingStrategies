@@ -3,8 +3,7 @@ import numpy as np
 import bs4 as bs
 from urllib.request import urlopen
 from sportsipy.nba.teams import Teams
-from sportsreference.nba.roster import Roster
-from sportsreference.nba.roster import Player
+from sportsreference.nba.roster import Roster, Player
 import re
 
 
