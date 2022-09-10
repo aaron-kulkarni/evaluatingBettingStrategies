@@ -1,6 +1,5 @@
 import datetime as dt
 import pandas as pd
-import numpy as np
 import re
 from sportsipy.nba.teams import Teams
 
@@ -80,7 +79,24 @@ def getTeamsDF(year):
     return df 
     
 def getSeasonGames(gameId, team):
+    if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)) == False:
+        raise Exception('Issue with Game ID')
 
+    year = getYearFromId(gameId)
+    gameIdList = getTeamGameIds(team, year)
+    index = gameIdList.index(gameId)
+    gameIdList = gameIdList[:index]
+
+    return gameIdList 
+
+def getRecentNGames(gameId, n, team):
+    '''
+    Obtains ids of the past n games (non inclusive) given the gameId of current game and team abbreviation
+    
+    '''
+    if n <= 0:
+        raise Exception('N parameter must be greater than 0')
+    
     if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)) == False:
         
         raise Exception('Issue with Game ID')
@@ -88,6 +104,6 @@ def getSeasonGames(gameId, team):
     year = getYearFromId(gameId)
     gameIdList = getTeamGameIds(team, year)
     index = gameIdList.index(gameId)
-    gameIdList = gameIdList[:index]
+    gameIdList = gameIdList[index-n:index]
 
-    return gameIdList 
+    return gameIdList
