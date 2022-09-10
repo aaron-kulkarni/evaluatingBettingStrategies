@@ -160,7 +160,7 @@ def scrapeGameShots(gameId):
 
 def getTeamGameShotsDataFrame(year):
 
-     #get gameId list from preexisting csv
+     #get game_id list from preexisting csv
 
      gameIdList = pd.read_csv('data/eloData/team_elo_{}.csv'.format(year), index_col = 0).index
      df = pd.DataFrame(index = gameIdList, columns = ['homeAbbr', 'homeDistances', 'homeResults', 'homeAngles', 'homeThrees', 'homePlayers', 'awayAbbr', 'awayDistances', 'awayResults', 'awayAngles', 'awayThrees', 'awayPlayers'])

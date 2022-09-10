@@ -102,7 +102,7 @@ def addImpliedProb(filename):
     year = re.findall('[0-9]+', filename)[0]
     oddsDF = pd.read_csv('../data/bettingOddsData/closing_betting_odds_{0}_clean.csv'.format(year), header = [0,1], index_col = 0)
     #gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
-    #gameDF.set_index('gameId', inplace = True)
+    #gameDF.set_index('game_id', inplace = True)
     oddsHome = oddsDF['OddHome'] 
     for col in oddsHome.columns:
         oddsHome['{} (%)'.format(col)] = oddsHome[col].apply(computeImpliedProb)
@@ -168,7 +168,7 @@ def bettingOddSuccess(filename):
     year = re.findall('[0-9]+', filename)[0]
     probDF = pd.read_csv('../data/bettingOddsData/implied_prob_{0}.csv'.format(year), header = [0,1], index_col = 0)
     gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
-    gameDF.set_index('gameId', inplace = True)
+    gameDF.set_index('game_id', inplace = True)
     for col in probDF['homeProb'].columns:
         probDF['PredWin', '{}'.format(col.replace(' (%)', ''))] = probDF.apply(lambda d: returnFavoredWinner(d['homeProb'][col], d['awayProb'][col]), axis=1)
     gameDF['win'] = gameDF.apply(lambda d: returnWinner(d['teamHome'], d['winner']), axis = 1)
@@ -220,7 +220,7 @@ def getProbCut(filename):
     year = re.findall('[0-9]+', filename)[0]
     probDF = pd.read_csv('../data/bettingOddsData/adj_prob_{0}.csv'.format(year), header = [0,1], index_col = 0)
     gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
-    gameDF.set_index('gameId', inplace = True)
+    gameDF.set_index('game_id', inplace = True)
     gameDF['win'] = gameDF.apply(lambda d: returnWinner(d['teamHome'], d['winner']), axis = 1)
     probDF['colWin', 'win'] = gameDF['win']
     df = pd.DataFrame()
@@ -237,7 +237,7 @@ def evaluateBettingOdds(filename, n):
     year = re.findall('[0-9]+', filename)[0]
     probDF = pd.read_csv('../data/bettingOddsData/implied_prob_{0}.csv'.format(year), header = [0,1], index_col = 0)
     gameDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
-    gameDF.set_index('gameId', inplace = True)
+    gameDF.set_index('game_id', inplace = True)
     for col in probDF['homeProb'].columns:
         probDF['PredWin', '{}'.format(col.replace(' (%)', ''))] = probDF.apply(lambda d: returnFavoredWinner(d['homeProb'][col], d['awayProb'][col]), axis=1)
     gameDF['win'] = gameDF.apply(lambda d: returnWinner(d['teamHome'], d['winner']), axis = 1)

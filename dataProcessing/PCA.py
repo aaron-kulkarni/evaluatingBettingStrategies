@@ -141,7 +141,7 @@ def getTeamSchedule(team, year):
 
 def getRecentNGames(gameId, n, team):
     '''
-    Obtains ids of the past n games (non inclusive) given the gameId of current game and team abbreviation
+    Obtains ids of the past n games (non inclusive) given the game_id of current game and team abbreviation
     
     '''
     if n <= 0:

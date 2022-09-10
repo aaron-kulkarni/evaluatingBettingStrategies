@@ -335,17 +335,17 @@ class EloCalculator:
 
         gameIdList = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header=[0, 1],
                                  index_col=0).index
-        df = pd.DataFrame(columns=['gameId', 'homeTeamElo', 'awayTeamElo', 'homeTeamEloAfter', 'awayTeamEloAfter'])
+        df = pd.DataFrame(columns=['game_id', 'homeTeamElo', 'awayTeamElo', 'homeTeamEloAfter', 'awayTeamEloAfter'])
         for gameId in list(gameIdList):
             teamHome, teamAway, pointsAway, pointsHome = self.getEloInputs(gameId)
             eloHome = eloDict[teamHome]
             eloAway = eloDict[teamAway]
             eloDict = self.getEloDict(eloDict, gameId)
 
-            newRow = {'gameId': gameId, 'homeTeamElo': eloHome, 'awayTeamElo': eloAway,
+            newRow = {'game_id': gameId, 'homeTeamElo': eloHome, 'awayTeamElo': eloAway,
                       'homeTeamEloAfter': eloDict[teamHome], 'awayTeamEloAfter': eloDict[teamAway]}
             df = df.append(newRow, ignore_index=True)
-        df.set_index('gameId', inplace=True)
+        df.set_index('game_id', inplace=True)
         return df
 
 

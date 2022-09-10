@@ -67,9 +67,9 @@ class TeamPerformance:
 
     def getRollingAverage(self, df, gameId, n, home = True):
         if home == True:
-            games = getRecentNGames(gameId, n, getTeams(np.arange(2015, 2023)).loc[gameId]['teamHome'])
+            games = getRecentNGames(gameId, n, getTeamsCSV(np.arange(2015, 2023)).loc[gameId]['teamHome'])
         else:
-            games = getRecentNGames(gameId, n, getTeams(np.arange(2015, 2023)).loc[gameId]['teamAway'])
+            games = getRecentNGames(gameId, n, getTeamsCSV(np.arange(2015, 2023)).loc[gameId]['teamAway'])
         df = df[df.index.isin(games)]
 
         return df.mean()
