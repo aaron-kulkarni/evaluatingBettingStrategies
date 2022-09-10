@@ -1,6 +1,9 @@
-import re
+import sys
+sys.path.insert(0, "..")
+
 import numpy as np
 import pandas as pd
+from utils.utils import *
 
 def concatTeamStats(years):
 
@@ -105,72 +108,6 @@ EXECUTION
 #weight_win.to_csv('coefficient_matrix_win.csv')
 #weight_loss.to_csv('coefficient_matrix_loss.csv')
 #weight.to_csv('coefficient_matrix.csv')
-
-'''
-----------------------------------------
-Filler functions since import * does not work
-
-'''
-
-def getYearFromId(game_id):
-    if int(game_id[0:4]) == 2020:
-        if int(game_id[4:6].lstrip("0")) < 11:
-            year = int(game_id[0:4])
-        else:
-            year = int(game_id[0:4]) + 1
-    else:
-        if int(game_id[4:6].lstrip("0")) > 7:
-            year = int(game_id[0:4]) + 1
-        else:
-            year = int(game_id[0:4])
-    return year
-
-def getTeamGameIds(team, year):
-    homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, year)
-    teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
-    teamSchedule = teamSchedule.sort_index(ascending=True)
-    return list(teamSchedule.index)
-
-def getTeamSchedule(team, year):
-    df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
-
-    dfHome = df[df['gameState']['teamHome'] == team]
-    dfAway = df[df['gameState']['teamAway'] == team]
-    return dfHome, dfAway
-
-
-def getRecentNGames(gameId, n, team):
-    '''
-    Obtains ids of the past n games (non inclusive) given the gameId of current game and team abbreviation
-    
-    '''
-    if n <= 0:
-        raise Exception('N parameter must be greater than 0')
-    
-    if bool(re.match("^[\d]{9}[A-Z]{3}$", gameId)) == False:
-        
-        raise Exception('Issue with Game ID')
-    
-    year = getYearFromId(gameId)
-    gameIdList = getTeamGameIds(team, year)
-    index = gameIdList.index(gameId)
-    gameIdList = gameIdList[index-n:index]
-
-    return gameIdList
-
-def getTeams(years):
-    df = pd.DataFrame()
-    for year in years:
-        teamDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
-        teams = pd.concat([teamDF['gameState']['teamHome'],teamDF['gameState']['teamAway']], axis = 1)
-        df = pd.concat([df, teams], axis = 0)
-
-    return df
-
-'''
-END OF FILLER FUNCTIONS
-----------------------------------------
-'''
 
     
 def getRollingAverage(filename, gameId, n, home = True):
