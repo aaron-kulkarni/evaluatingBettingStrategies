@@ -9,6 +9,8 @@ from sportsipy.nba.schedule import Schedule
 """
 The following functions collect data from the Sportsipy API
 """
+
+
 def getGamesOnDate(date):
     return list(Boxscores(dateToDateTime(date)).games.values())[0]
 
@@ -42,6 +44,8 @@ def getTeamScheduleAPI(team, game_date):
 """
 The following functions convert and validate items
 """
+
+
 def gameIdToDateTime(game_id):
     return dt.datetime.strptime(game_id[0:8], '%Y%m%d')
 
@@ -71,6 +75,8 @@ def gameIdIsValid(game_id):
 """
 The following functions manage reading from and writing to files
 """
+
+
 def readCSV(filepath, **kwargs):
     if filepath.startswith(r"data/"):
         filepath = filepath[5:]
@@ -103,6 +109,16 @@ def getTeamsCSV(game_id):
     return teamHome, teamAway
 
 
+def getTeamsAllYearsCSV(years):
+    df = pd.DataFrame()
+    for year in years:
+        teamDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header=[0, 1], index_col=0)
+        teams = pd.concat([teamDF['gameState']['teamHome'], teamDF['gameState']['teamAway']], axis=1)
+        df = pd.concat([df, teams], axis=0)
+
+    return df
+
+
 def getTeamsDF(year):
     df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])['gameState']
     df = df[['teamHome', 'teamAway']]
@@ -112,6 +128,8 @@ def getTeamsDF(year):
 """
 Other functions
 """
+
+
 def getNumberGamesPlayed(team, year, game_id):
     index = getTeamGameIds(team, year).index(game_id)
     return index
