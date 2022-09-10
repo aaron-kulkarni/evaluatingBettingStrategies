@@ -100,21 +100,10 @@ def getGameData(gameId):
         winner = teamHome
     else:
         winner = teamAway 
-        
-    if int(gameYear) == 2020: #2020 was exception because covid messed up schedule
-        if int(gameMonth.lstrip("0")) < 11: #converted gameMonth to int without leading 0. check month to find correct season
-            teamHomeSchedule = Schedule(teamHome, int(gameYear)).dataframe
-            teamAwaySchedule = Schedule(teamAway, int(gameYear)).dataframe
-        else:
-            teamHomeSchedule = Schedule(teamHome, int(gameYear) + 1).dataframe
-            teamAwaySchedule = Schedule(teamAway, int(gameYear) + 1).dataframe
-    else:
-        if int(gameMonth.lstrip("0")) > 7: #games played after july are part of next season
-            teamHomeSchedule = Schedule(teamHome, int(gameYear) + 1).dataframe
-            teamAwaySchedule = Schedule(teamAway, int(gameYear) + 1).dataframe
-        else:
-            teamHomeSchedule = Schedule(teamHome, int(gameYear)).dataframe
-            teamAwaySchedule = Schedule(teamAway, int(gameYear)).dataframe
+
+
+    teamHomeSchedule = getSchedule(gameYear, gameMonth, teamHome)
+    teamAwaySchedule = getSchedule(gameYear, gameMonth, teamAway)
 
     
     timeOfDay = teamHomeSchedule.loc[gameId][13]
@@ -131,36 +120,15 @@ def getGameData(gameId):
     teamHomeSchedule.sort_values(by='datetime')
     teamAwaySchedule.sort_values(by='datetime')
 
-    prevHomeDate = teamHomeSchedule['datetime'].shift().loc[gameId]
-    prevAwayDate = teamAwaySchedule['datetime'].shift().loc[gameId]
-    currentdate = teamHomeSchedule.loc[gameId]['datetime']
-    
-    daysSinceLastGameHome = (currentdate - prevHomeDate).total_seconds() / 86400
-    daysSinceLastGameAway = (currentdate - prevAwayDate).total_seconds() / 86400
+    daysSinceLastGameHome = getDaysSinceLastGame(teamHomeSchedule, gameId)
+    daysSinceLastGameAway = getDaysSinceLastGame(teamAwaySchedule, gameId)
+
+    # Gets team rosters
     homePlayerRoster = [player.player_id for player in gameData.home_players]
     awayPlayerRoster = [player.player_id for player in gameData.away_players]
 
-    '''
-    Gets the name of coaches based on year of game day from https://www.basketball-reference.com/teams/.
-    '''
-    urlHome = f"https://www.basketball-reference.com/teams/{teamHome}/{gameDate[:4].lower()}.html"
-    try:
-        page = requests.get(urlHome)
-        doc = html.fromstring(page.content)
-        homeCoach = doc.xpath('//*[@id="meta"]/div[2]/p[2]/a/text()')
-    except:
-        raise Exception('Coach not found on basketball-reference.com for ' + Teams()(teamHome).name)
-
-    urlAway = f"https://www.basketball-reference.com/teams/{teamAway}/{gameDate[:4].lower()}.html"
-
-    try:
-        page = requests.get(urlAway)
-        doc2 = html.fromstring(page.content)
-        awayCoach = doc2.xpath('//*[@id="meta"]/div[2]/p[2]/a/text()')
-    except:
-        raise Exception('Coach not found on basketball-reference.com for ' + Teams()(teamAway).name)
-
-
+    # Gets coaches and location
+    homeCoach, awayCoach = getCoaches(teamHome, teamAway, gameDate)
     location = gameData.location
 
     '''
@@ -168,49 +136,26 @@ def getGameData(gameId):
     away team respectively
     '''
     
-    # Calculating Home Record
-    homeResults = teamHomeSchedule.result.shift()
-    homeResults = homeResults.loc[homeResults.index[0]:gameId] 
-    homeRecord = homeResults.value_counts(ascending = True)
-    try:
-        homeWins = homeRecord['Win']
-    except:
-        homeWins = 0 
-    try:
-        homeLosses = homeRecord['Loss']
-    except:
-        homeLosses = 0 
+    # Calculating Home Record, Away Record
+    homeRecord = getTeamRecord(teamHomeSchedule, gameId)
+    awayRecord = getTeamRecord(teamAwaySchedule, gameId)
 
-
-    awayResults = teamAwaySchedule.result.shift()
-    awayResults = awayResults.loc[awayResults.index[0]:gameId]
-    awayRecord = awayResults.value_counts(ascending = True)
-    try:
-        awayWins = awayRecord['Win']
-    except:
-        awayWins = 0
-    try:
-        awayLosses = awayRecord['Loss']
-    except:
-        awayLosses = 0
-
-    homeRecord = [homeWins, homeLosses]
-    awayRecord = [awayWins, awayLosses] 
-
+    currentdate = teamHomeSchedule.loc[gameId]['datetime']
     tempDf = teamHomeSchedule.loc[teamHomeSchedule['opponent_abbr'] == teamAway]
     tempDf = tempDf.loc[teamHomeSchedule['datetime'] < currentdate]
     
     matchupWinsHome = tempDf.loc[teamHomeSchedule['result'] == 'Win'].shape[0]
     matchupWinsAway = tempDf.loc[teamHomeSchedule['result'] == 'Loss'].shape[0]
 
-    if teamsDict[teamHome] == teamsDict[teamAway]:
-        rivalry = 'division'
-    elif teamsDict[teamHome][0] == teamsDict[teamAway][0]:
-        rivalry = 'conference'
-    else:
-        rivalry = 'none'
+    # Gets conference, division, or no rivalry
+    rivalry = getRivalry(teamHome, teamAway)
             
-    gameData = [gameId, winner, teamHome, teamAway, timeOfDay, location, q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, overtimeScoresHome, pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupWinsHome, q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, overtimeScoresAway, pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster, awayRecord, matchupWinsAway, rivalry] 
+    gameData = [gameId, winner, teamHome, teamAway, timeOfDay, location,
+                q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, overtimeScoresHome,
+                pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupWinsHome,
+                q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, overtimeScoresAway,
+                pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster, awayRecord, matchupWinsAway,
+                rivalry]
     
     return gameData
 
@@ -255,6 +200,7 @@ def getTeamGameIds(team, year):
     teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
     teamSchedule = teamSchedule.sort_index(ascending=True)
     return list(teamSchedule.index)
+
 def getTeamSchedule(team, year):
     df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
 
@@ -291,6 +237,75 @@ def getNumberGamesPlayedDF(year):
     df.drop('index', level = 1, inplace = True, axis = 1)
 
     return df
+
+def getRivalry(team_home, team_away):
+    if teamsDict[team_home] == teamsDict[team_away]:
+        rivalry = 'division'
+    elif teamsDict[team_home][0] == teamsDict[team_away][0]:
+        rivalry = 'conference'
+    else:
+        rivalry = 'none'
+    return rivalry
+
+def getCoaches(teamHome, teamAway, gameDate):
+    '''
+    Gets the name of coaches based on year of game day from https://www.basketball-reference.com/teams/.
+    '''
+    urlHome = f"https://www.basketball-reference.com/teams/{teamHome}/{gameDate[:4].lower()}.html"
+    try:
+        page = requests.get(urlHome)
+        doc = html.fromstring(page.content)
+        homeCoach = doc.xpath('//*[@id="meta"]/div[2]/p[2]/a/text()')
+    except:
+        raise Exception('Coach not found on basketball-reference.com for ' + Teams()(teamHome).name)
+
+    urlAway = f"https://www.basketball-reference.com/teams/{teamAway}/{gameDate[:4].lower()}.html"
+
+    try:
+        page = requests.get(urlAway)
+        doc2 = html.fromstring(page.content)
+        awayCoach = doc2.xpath('//*[@id="meta"]/div[2]/p[2]/a/text()')
+    except:
+        raise Exception('Coach not found on basketball-reference.com for ' + Teams()(teamAway).name)
+
+    return homeCoach, awayCoach
+
+def getTeamRecord(teamSchedule, gameId):
+    results = teamSchedule.result.shift()
+    results = results.loc[results.index[0]:gameId]
+    homeRecord = results.value_counts(ascending=True)
+    try:
+        wins = homeRecord['Win']
+    except:
+        wins = 0
+    try:
+        losses = homeRecord['Loss']
+    except:
+        losses = 0
+
+    return [wins, losses]
+
+def getDaysSinceLastGame(teamSchedule, gameId):
+    teamSchedule.sort_values(by='datetime')
+
+    prevHomeDate = teamSchedule['datetime'].shift().loc[gameId]
+    currentdate = teamSchedule.loc[gameId]['datetime']
+
+    return (currentdate - prevHomeDate).total_seconds() / 86400
+
+def getSchedule(gameYear, gameMonth, team):
+    if int(gameYear) == 2020: #2020 was exception because covid messed up schedule
+        if int(gameMonth.lstrip("0")) < 11: #converted gameMonth to int without leading 0. check month to find correct season
+            teamSchedule = Schedule(team, int(gameYear)).dataframe
+        else:
+            teamSchedule = Schedule(team, int(gameYear) + 1).dataframe
+    else:
+        if int(gameMonth.lstrip("0")) > 7: #games played after july are part of next season
+            teamSchedule = Schedule(team, int(gameYear) + 1).dataframe
+        else:
+            teamSchedule = Schedule(team, int(gameYear)).dataframe
+
+    return teamSchedule
 
 years = np.arange(2015, 2023)
 for year in years:
