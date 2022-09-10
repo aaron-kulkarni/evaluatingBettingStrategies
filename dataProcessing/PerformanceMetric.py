@@ -95,11 +95,20 @@ class PerformanceMetric:
 
         return dfPivot
 
-
+def concatPerMetric(years):
+    df_all = pd.DataFrame()
+    for year in years:
+        df = pd.read_csv('../data/perMetric/performance_metric_{}.csv'.format(year), index_col = 0, header = [0,1])
+        df_all = pd.concat([df_all, df], axis = 0)
+    df_all.drop('year', inplace = True, level = 1, axis = 1)
+    return df_all
+    
 years = np.arange(2015, 2023)
 for year in years:
     PerformanceMetric(year).convertDataFrame().to_csv('performance_metric_{}.csv'.format(year))
 
+concatPerMetric(years).to_csv('../data/perMetric/performance_metric_all.csv')
+    
 year = 2018
 n = 10
 pm = PerformanceMetric(year)
