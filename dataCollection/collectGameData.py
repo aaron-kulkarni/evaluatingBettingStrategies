@@ -1,6 +1,9 @@
 import numpy as np
 import requests
 from lxml import html
+
+import sys
+sys.path.insert(0, "..")
 from utils.utils import *
 
 """
@@ -403,6 +406,34 @@ def getNumberGamesPlayedDF(year):
 
     return df
 
+def convDateTime(gameId, timeOfDay):
+    if timeOfDay[-1:] == 'p':
+        timeOfDay = timeOfDay[:-1] + 'PM'
+        return dt.datetime.strptime(gameId[0:8] + timeOfDay, '%Y%m%d%I:%M%p')
+    if timeOfDay[-1:] == 'a':
+        timeOfDat = timeOfDay[:-1] + 'AM'
+        return dt.datetime.strptime(gameId[0:8] + timeOfDay, '%Y%m%d%I:%M%p')
+
+    else:
+        return print('Error')
+    
+    dt.datetime.strptime(gameId[0:8], '%Y%m%d')
+
+def convDateTimeDF(year):
+
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
+    df['gameState', 'index'] = df.index
+    df['gameState', 'datetime'] = df.apply(lambda d: convDateTime(d['gameState', 'index'], d['gameState', 'timeOfDay']), axis = 1)
+    df.drop(['index' , 'timeOfDay'], level = 1, inplace = True, axis = 1)
+    return df
+
+years = np.arange(2015, 2023)
+
+for year in years:
+    convDateTimeDF(year).to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+
+
+
 # TODO might be deleted
 # def getGameStatYear(year):
 #     """
@@ -426,6 +457,6 @@ def getNumberGamesPlayedDF(year):
 #     df = getGameDataframe(startDate, endDate)
 #     return df
 
-years = np.arange(2015, 2023)
-for y in years:
-    getNumberGamesPlayedDF(y).to_csv('../data/gameStats/game_state_data_{}.csv'.format(y))
+#years = np.arange(2015, 2023)
+#for y in years:
+#    getNumberGamesPlayedDF(y).to_csv('../data/gameStats/game_state_data_{}.csv'.format(y))
