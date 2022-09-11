@@ -6,7 +6,6 @@ import bs4 as bs
 
 sys.path.insert(0, "..")
 from utils.utils import *
-import re
 
 
 def convertMultiIndexing(years):
@@ -87,7 +86,7 @@ def getStatsBeforeGame(gameId, team):
 def getPlayerRoster(gameId, team): 
     df = pd.read_csv('../data/gameStats/game_data_player_stats_all.csv', index_col = [0,1])
     df = df.loc[gameId]
-    homeTeam, awayTeam = getTeams(gameId)
+    homeTeam, awayTeam = getTeamsCSV(gameId)
     if team == homeTeam:
         df = df[df['home'] == 1]
     elif team == awayTeam:

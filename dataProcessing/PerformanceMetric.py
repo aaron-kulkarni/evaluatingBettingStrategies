@@ -1,18 +1,14 @@
 import re
 import numpy as np
 import pandas as pd
-import datetime as dt
-from datetime import date
 import matplotlib.pyplot as plt
 from sportsipy.nba.teams import Teams
-import math
 
 from TeamPerformance import *
 
 import sys
 sys.path.insert(0, "..")
 from utils.utils import *
-#from evaluatingBettingStrategies.utils.utils import *
 
 class PerformanceMetric:
 

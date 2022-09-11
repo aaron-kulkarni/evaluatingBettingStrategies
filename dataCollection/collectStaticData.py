@@ -3,8 +3,7 @@ import numpy as np
 import bs4 as bs
 from urllib.request import urlopen
 from sportsipy.nba.teams import Teams
-from sportsreference.nba.roster import Roster
-from sportsreference.nba.roster import Player
+from sportsreference.nba.roster import Roster, Player
 import re
 
 
@@ -163,21 +162,27 @@ def getPlayerSalaryData(year):
     a dataframe containing the player salaries and player ids
     """
 
+    print('Scraping year {0}'.format(year))
+
     inputDF = pd.read_csv('../data/staticPlayerData/static_player_stats_{0}.csv'.format(year), index_col=0)
     playerids = inputDF['Id'].to_list()
 
     salaries = []
     for playerid in playerids:
         try:
-            salaries.append(scrapePlayerSalaryData(year, playerid))
+            sal = scrapePlayerSalaryData(year, playerid)
+            print('Successful: {0}, {1}'.format(playerid, sal))
+            salaries.append(sal)
         except Exception as e:
+            print('Failed: {0}, {1}'.format(playerid, np.nan))
             print(e)
             salaries.append(np.nan)
 
-    df = pd.DataFrame()
-    df['Id'] = inputDF['Id']
+    df = inputDF
+    # df['Id'] = inputDF['Id']
     df['salary'] = salaries
     print('Done')
+    df.to_csv('../data/staticPlayerData/static_player_stats_{0}.csv'.format(year))
     return df
 
 def scrapePlayerSalaryData(year, playerid):
