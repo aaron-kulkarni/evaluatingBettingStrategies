@@ -406,19 +406,6 @@ def getNumberGamesPlayedDF(year):
 
     return df
 
-def convDateTime(gameId, timeOfDay):
-    if timeOfDay[-1:] == 'p':
-        timeOfDay = timeOfDay[:-1] + 'PM'
-        return dt.datetime.strptime(gameId[0:8] + timeOfDay, '%Y%m%d%I:%M%p')
-    if timeOfDay[-1:] == 'a':
-        timeOfDat = timeOfDay[:-1] + 'AM'
-        return dt.datetime.strptime(gameId[0:8] + timeOfDay, '%Y%m%d%I:%M%p')
-
-    else:
-        return print('Error')
-    
-    dt.datetime.strptime(gameId[0:8], '%Y%m%d')
-
 def convDateTimeDF(year):
 
     df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
@@ -427,10 +414,19 @@ def convDateTimeDF(year):
     df.drop(['index' , 'timeOfDay'], level = 1, inplace = True, axis = 1)
     return df
 
-years = np.arange(2015, 2023)
+def concatDF(years):
+    df = pd.DataFrame()
+    for year in years:
+        dfCurrent = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
+        df = pd.concat([df, dfCurrent], axis = 0)
 
-for year in years:
-    convDateTimeDF(year).to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    return df 
+        
+
+#years = np.arange(2015, 2023)
+#concatDF(years).to_csv('../data/gameStats/game_state_data_ALL.csv')
+#for year in years:
+#    convDateTimeDF(year).to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
 
 
 

@@ -53,6 +53,9 @@ def gameIdToDateTime(game_id):
 def dateToDateTime(date, format='%Y%m%d'):
     return dt.datetime.strptime(date[0:8], format)
 
+def dateDateTime(date, format = '%Y-%m-%d %H:%M:%S'):
+    return dt.datetime.strptime(date, format)
+
 
 def getYearFromId(game_id):
     if int(game_id[0:4]) == 2020:
@@ -180,3 +183,30 @@ def getRecentNGames(gameId, n, team):
     gameIdList = gameIdList[index - n:index]
 
     return gameIdList
+
+def convDateTime(gameId, timeOfDay):
+    if timeOfDay[-1:] == 'p':
+        timeOfDay = timeOfDay[:-1] + 'PM'
+        return dt.datetime.strptime(gameId[0:8] + timeOfDay, '%Y%m%d%I:%M%p')
+    if timeOfDay[-1:] == 'a':
+        timeOfDat = timeOfDay[:-1] + 'AM'
+        return dt.datetime.strptime(gameId[0:8] + timeOfDay, '%Y%m%d%I:%M%p')
+
+    else:
+        return print('Error')
+    
+def sortDate(gameIdList):
+    '''
+    Sorts a gameIdList by time order and outputs sorted gameId list
+    
+    '''
+
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col = 0, header = [0, 1])
+    dateCol = pd.DataFrame()
+    dateCol['datetime'] = pd.to_datetime(df['gameState']['datetime'])
+    dateCol = dateCol[dateCol.index.isin(gameIdList)]
+    dateCol.sort_values(by = 'datetime', ascending = True, inplace = True)
+    return list(dateCol.index)
+    
+    
+    

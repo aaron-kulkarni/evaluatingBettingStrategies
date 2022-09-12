@@ -9,7 +9,7 @@ from dataProcessing.PCA import *
 from kelly import *
 
 import matplotlib.pyplot as plt
-import ray
+import ray 
 import multiprocessing
 
 from sklearn.decomposition import PCA
