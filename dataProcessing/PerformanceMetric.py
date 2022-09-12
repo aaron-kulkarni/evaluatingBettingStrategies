@@ -47,7 +47,6 @@ class PerformanceMetric:
         raptor_elo_df = raptor_elo_df.sort_index(ascending = True)
         return elo_df, raptor_elo_df
 
-
     def getSignal(self, team):
         homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, self.year)
 
@@ -75,6 +74,23 @@ class PerformanceMetric:
             expWins = self.returnBettingOddsAverage(team)
         perMetric = actWins - expWins
 
+        return perMetric
+
+    def getPerformanceMetricElo(self, team, cum_sum=True, elo=True):
+        elo, raptor = self.returnEloData(team)
+        if cum_sum:
+            actWins = self.getSignal(team).cumsum()
+            if elo:
+                expWins = elo.cumsum()
+            else:
+                expWins = raptor.cumsum()
+        else:
+            actWins = self.getSignal(team)
+            if elo:
+                expWins = elo
+            else:
+                expWins = raptor
+        perMetric = actWins - expWins
         return perMetric
 
     def getPerformanceMetricN(self, team, n):
@@ -118,22 +134,6 @@ class PerformanceMetric:
         dfPivot['game', 'year'] = self.year
 
         return dfPivot
-
-
-def returnEloData(year, team):
-    elo = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
-    elo_df = elo[elo['season'] == year]
-    homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, year) 
-
-    elo_dfHome = elo_df[elo_df.index.isin(homeTeamSchedule.index)]['elo_prob1']
-    elo_dfAway = elo_df[elo_df.index.isin(awayTeamSchedule.index)]['elo_prob2']
-    raptor_elo_dfHome = elo_df[elo_df.index.isin(homeTeamSchedule.index)]['raptor_prob1']
-    raptor_elo_dfAway = elo_df[elo_df.index.isin(awayTeamSchedule.index)]['raptor_prob2']
-    elo_df = pd.concat([elo_dfHome, elo_dfAway], axis = 0)
-    raptor_elo_df = pd.concat([raptor_elo_dfHome, raptor_elo_dfAway], axis = 0)
-    elo_df = elo_df.sort_index(ascending = True)
-    raptor_elo_df = raptor_elo_df.sort_index(ascending = True)
-    return elo_df, raptor_elo_df
     
 def concatPerMetric(years):
     df_all = pd.DataFrame()
