@@ -15,8 +15,8 @@ class PerformanceMetric:
     def __init__(self, year):
         self.year = year
         self.adj_prob_df = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(self.year), index_col=0, header=[0, 1])
-        elo = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
-        self.elo_df = elo[elo['season'] == self.year]
+        self.elo = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
+        self.elo_df = self.elo[self.elo['season'] == self.year]
         
         
     def returnBettingOddsAverage(self, team):
