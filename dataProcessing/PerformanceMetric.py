@@ -14,12 +14,14 @@ class PerformanceMetric:
 
     def __init__(self, year):
         self.year = year
-        self.adj_prob_df = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(self.year),
-                                       index_col=0, header=[0, 1])
-
+        self.adj_prob_df = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(self.year), index_col=0, header=[0, 1])
+        elo = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
+        self.elo_df = elo[elo['season'] == self.year]
+        
+        
     def returnBettingOddsAverage(self, team):
         adjProb = self.adj_prob_df
-        homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, self.year)
+        homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, self.year)
 
         adjProbHome = adjProb[adjProb.index.isin(homeTeamSchedule.index)]
         adjProbAway = adjProb[adjProb.index.isin(awayTeamSchedule.index)]
@@ -31,11 +33,25 @@ class PerformanceMetric:
 
         return mean
 
-    def getSignal(self, team):
-        homeTeamSchedule, awayTeamSchedule = getTeamSchedule(team, self.year)
+    def returnEloData(self, team):
+        elo_df = self.elo_df
+        homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, self.year) 
 
-        df = pd.concat([homeTeamSchedule['gameState', 'winner'], awayTeamSchedule['gameState', 'winner']],
-                       axis=0).to_frame()['gameState']
+        elo_dfHome = elo_df[elo_df.index.isin(homeTeamSchedule.index)]['elo_prob1']
+        elo_dfAway = elo_df[elo_df.index.isin(awayTeamSchedule.index)]['elo_prob2']
+        raptor_elo_dfHome = elo_df[elo_df.index.isin(homeTeamSchedule.index)]['raptor_prob1']
+        raptor_elo_dfAway = elo_df[elo_df.index.isin(awayTeamSchedule.index)]['raptor_prob2']
+        elo_df = pd.concat([elo_dfHome, elo_dfAway], axis = 0)
+        raptor_elo_df = pd.concat([raptor_elo_dfHome, raptor_elo_dfAway], axis = 0)
+        elo_df = elo_df.sort_index(ascending = True)
+        raptor_elo_df = raptor_elo_df.sort_index(ascending = True)
+        return elo_df, raptor_elo_df
+
+
+    def getSignal(self, team):
+        homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, self.year)
+
+        df = pd.concat([homeTeamSchedule['gameState', 'winner'], awayTeamSchedule['gameState', 'winner']], axis=0).to_frame()['gameState']
         df = df.sort_index(ascending=True)
         df['signal'] = df.apply(lambda d: 1 if d['winner'] == team else 0, axis=1)
 
@@ -69,6 +85,17 @@ class PerformanceMetric:
 
         return perMetric
 
+    def getPerformanceElo(self, team, cum_sum=True, elo=True):
+        '''
+        Elo == True will operate function for regular elo values
+        Elo == False will operate function for RAPTOR elo values
+        
+        '''
+        if cum_sum:
+            actWins = self.getSignal(team).cumsum()
+            if elo:
+                expWins = self.returnEloData(team)['']
+
     def getPerformanceMetricDataFrame(self):
         df = pd.DataFrame()
         for team in Teams():
@@ -82,6 +109,7 @@ class PerformanceMetric:
             df = pd.concat([df, perTotal], axis=0)
         return df
 
+
     def convertDataFrame(self):
         df = self.getPerformanceMetricDataFrame()
         df.reset_index(inplace=True)
@@ -91,6 +119,22 @@ class PerformanceMetric:
 
         return dfPivot
 
+
+def returnEloData(year, team):
+    elo = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
+    elo_df = elo[elo['season'] == year]
+    homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, year) 
+
+    elo_dfHome = elo_df[elo_df.index.isin(homeTeamSchedule.index)]['elo_prob1']
+    elo_dfAway = elo_df[elo_df.index.isin(awayTeamSchedule.index)]['elo_prob2']
+    raptor_elo_dfHome = elo_df[elo_df.index.isin(homeTeamSchedule.index)]['raptor_prob1']
+    raptor_elo_dfAway = elo_df[elo_df.index.isin(awayTeamSchedule.index)]['raptor_prob2']
+    elo_df = pd.concat([elo_dfHome, elo_dfAway], axis = 0)
+    raptor_elo_df = pd.concat([raptor_elo_dfHome, raptor_elo_dfAway], axis = 0)
+    elo_df = elo_df.sort_index(ascending = True)
+    raptor_elo_df = raptor_elo_df.sort_index(ascending = True)
+    return elo_df, raptor_elo_df
+    
 def concatPerMetric(years):
     df_all = pd.DataFrame()
     for year in years:

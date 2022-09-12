@@ -67,7 +67,7 @@ df_all = getDFAll([elo, perMetric], years, True)
 X = df_all
 Y = getSignal().reindex(X.index)
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.8, test_size = 0.2, random_state = 126, shuffle = True)
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.6, test_size = 0.4, random_state = 20, shuffle = False)
 
 # PARAMATER TUNING
 def findParamsXGB(X_train, Y_train):
@@ -117,6 +117,8 @@ def xgboost(clf):
     return Y_pred_prob
 
 Y_pred_prob = xgboost(clf)
+gameStateData = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
+gameStateData = gameStateData[gameStateData.index.isin(Y_test.index)]['home']
 
 def getOddBreakdown(Y_pred_prob):
     testOdds = bettingOdds[bettingOdds.index.isin(X_test.index)]
@@ -127,13 +129,16 @@ def getOddBreakdown(Y_pred_prob):
     #print("Confusion Matrix of %s is %s"%(name, cm))
 
     Y_pred_prob = pd.Series(Y_pred_prob, name = 'predProb', index = Y_test.index)
-    df = pd.concat([Y_test, Y_pred_prob, testOdds['Pinnacle (%)']], join = 'inner', axis = 1)
-
+   
+    df = pd.concat([Y_test, Y_pred_prob, testOdds['Pinnacle (%)'], gameStateData['numberOfGamesPlayed']],join = 'inner', axis = 1)
+    df['num_game_bkt'] = pd.qcut(df['numberOfGamesPlayed'], 10, duplicates = 'drop')
     df['pred_bkt'] = pd.qcut(df['predProb'], 10 , duplicates = 'drop')
     df['odd_bkt'] = pd.qcut(df['Pinnacle (%)'], 10)
     df['stat_pred'] = df.apply(lambda d: 1 if d['predProb'] > 0.5 else 0, axis = 1)
     df['stat_odd'] = df.apply(lambda d: 1 if d['Pinnacle (%)'] > 0.5 else 0 ,axis = 1)
-
+    
+    print(df.groupby('num_game_bkt').signal.sum()/df.groupby('num_game_bkt').size(),df.groupby('num_game_bkt').size())
+    print(df.groupby('num_game_bkt').stat_pred.sum()/df.groupby('num_game_bkt').size(),df.groupby('num_game_bkt').size())
     print(df.groupby('pred_bkt').signal.sum()/df.groupby('pred_bkt').size(),df.groupby('pred_bkt').size())
     print(df.groupby('odd_bkt').signal.sum()/df.groupby('odd_bkt').size(),df.groupby('pred_bkt').size())
     return df
@@ -146,6 +151,7 @@ def Kelly(df, alpha, predProb, x_columns):
     retAway = retAway[retAway.index.isin(df.index)].rename('retAway', inplace = True)
     predProb.rename('prob_Y', inplace = True)
     df_ = pd.concat([df, retHome, retAway, predProb], axis = 1)
+    df_ = df_.reindex(sortDate(df_.index))
     df_['per_bet'] = df_.apply(lambda d: kellyBet(d['prob_Y'], alpha, d['retHome'], d['retAway'])[0], axis = 1)
     df_['home'] = df_.apply(lambda d: kellyBet(d['prob_Y'], alpha, d['retHome'], d['retAway'])[1], axis = 1)
     df_['return'] = df_.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
