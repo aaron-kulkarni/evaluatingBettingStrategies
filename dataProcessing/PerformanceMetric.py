@@ -76,17 +76,17 @@ class PerformanceMetric:
 
         return perMetric
 
-    def getPerformanceMetricElo(self, team, cum_sum=True, elo=True):
+    def getPerformanceMetricElo(self, team, cum_sum=True, eloProb=True):
         elo, raptor = self.returnEloData(team)
         if cum_sum:
             actWins = self.getSignal(team).cumsum()
-            if elo:
+            if eloProb:
                 expWins = elo.cumsum()
             else:
                 expWins = raptor.cumsum()
         else:
             actWins = self.getSignal(team)
-            if elo:
+            if eloProb:
                 expWins = elo
             else:
                 expWins = raptor
@@ -95,42 +95,49 @@ class PerformanceMetric:
 
     def getPerformanceMetricN(self, team, n):
 
-        actWins = self.getSignal(team)
-        expWins = self.returnBettingOddsAverage(team)
-        perMetric = (actWins - expWins).rolling(window=n).mean() * n
-
+        perMetric = self.getPerformanceMetric(team, True).rolling(window=n).mean()
         return perMetric
 
-    def getPerformanceElo(self, team, cum_sum=True, elo=True):
-        '''
-        Elo == True will operate function for regular elo values
-        Elo == False will operate function for RAPTOR elo values
-        
-        '''
-        if cum_sum:
-            actWins = self.getSignal(team).cumsum()
-            if elo:
-                expWins = self.returnEloData(team)['']
+    def getPerformanceMetricEloN(self, team, n, eloProb=True):
+        perMetric = self.getPerformanceMetricElo(team, True, eloProb).rolling(window=n).mean() 
+        return perMetric
 
-    def getPerformanceMetricDataFrame(self):
+
+    def getPerformanceMetricDataFrame(self, n):
         df = pd.DataFrame()
         for team in Teams():
             teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
-            perMetric = self.getPerformanceMetric(teamAbbr, cum_sum=True).shift()
+            perMetric = self.getPerformanceMetric(teamAbbr, True).shift()
             perMetric = perMetric.to_frame(name='perMetric')
-            perMetricN = self.getPerformanceMetricN(teamAbbr, 6).shift()
+            perMetricN = self.getPerformanceMetricEloN(teamAbbr, n).shift()
             perMetricN = perMetricN.to_frame(name='perMetricN')
             perTotal = pd.concat([perMetric, perMetricN], axis=1)
             perTotal['team'] = teamAbbr
             df = pd.concat([df, perTotal], axis=0)
         return df
 
+    def getPerformanceMetricEloDataFrame(self, n):
+        df = pd.DataFrame()
+        for team in Teams():
+            teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+            perMetricElo = self.getPerformanceMetricElo(teamAbbr, True, True).shift().rename('perMetricElo')
 
-    def convertDataFrame(self):
-        df = self.getPerformanceMetricDataFrame()
+            perMetricRaptor = self.getPerformanceMetricElo(teamAbbr, True, False).shift().rename('perMetricRaptor')
+            
+            perMetricEloN = self.getPerformanceMetricEloN(teamAbbr, n, True).shift().rename('perMetricEloN')
+
+            perMetricRaptorN = self.getPerformanceMetricEloN(teamAbbr, n, False).shift().rename('perMetricRaptorN')
+            
+            perTotal = pd.concat([perMetricElo, perMetricRaptor, perMetricEloN, perMetricRaptorN], axis=1)
+            perTotal['team'] = teamAbbr
+            df = pd.concat([df, perTotal], axis=0)
+        return df
+
+
+    def convertDataFrame(self, df):
         df.reset_index(inplace=True)
         df['homeTeam'] = df.apply(lambda d: 'home' if d['game_id'][-3:] == d['team'] else 'away', axis=1)
-        dfPivot = df.pivot_table(index='game_id', columns='homeTeam', values=['perMetric', 'perMetricN'])
+        dfPivot = df.pivot_table(index='game_id', columns='homeTeam', values=['perMetric', 'perMetricN', 'perMetricElo', 'perMetricEloN', 'perMetricRaptor', 'perMetricRaptorN'])
         dfPivot['game', 'year'] = self.year
 
         return dfPivot
@@ -142,10 +149,14 @@ def concatPerMetric(years):
         df_all = pd.concat([df_all, df], axis = 0)
     df_all.drop('year', inplace = True, level = 1, axis = 1)
     return df_all
-    
+
 years = np.arange(2015, 2023)
 for year in years:
-    PerformanceMetric(year).convertDataFrame().to_csv('performance_metric_{}.csv'.format(year))
+    pm = PerformanceMetric(year)
+    perMetric = pm.getPerformanceMetricDataFrame(6)
+    eloMetric = pm.getPerformanceMetricEloDataFrame(6).drop('team', axis =1)
+    df = pd.concat([eloMetric, perMetric], axis = 1)
+    pm.convertDataFrame(df).to_csv('../data/perMetric/performance_metric_{}.csv'.format(year))
 
 concatPerMetric(years).to_csv('../data/perMetric/performance_metric_all.csv')
     

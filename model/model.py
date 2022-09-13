@@ -43,12 +43,17 @@ def selectColElo(select_x):
     return eloData[select_x]
 # columns: season, neutral, team1, team2, elo1_pre, elo2_pre, elo_prob1, elo_prob2, elo1_post, elo2_post, carm-elo1_pre, carm-elo2_pre, carm-elo_prob1, carm-elo_prob2, carm-elo1_post, carm-elo2_post, raptor1_pre, raptor2_pre, raptor_prob1, raptor_prob2
 elo = selectColElo(['elo_prob1', 'raptor_prob1'])
+#elo = selectColElo(['elo_prob1'])
 
 def selectColPerMetric(select_x):
     perMetric = pd.read_csv('../data/perMetric/performance_metric_all.csv', index_col = 0)
     return perMetric[select_x]
 
-perMetric = selectColPerMetric(['perMetricAway', 'perMetricHome', 'perMetricNAway', 'perMetricNHome'])
+#perMetric = selectColPerMetric(['perMetricAway', 'perMetricHome', 'perMetricEloAway','perMetricEloHome', 'perMetricEloNAway', 'perMetricEloNHome','perMetricNAway', 'perMetricNHome', 'perMetricRaptorAway','perMetricRaptorHome', 'perMetricRaptorNAway', 'perMetricRaptorNHome'])
+
+perMetric = selectColPerMetric(['perMetricEloAway','perMetricEloHome', 'perMetricEloNAway', 'perMetricEloNHome', 'perMetricRaptorAway','perMetricRaptorHome', 'perMetricRaptorNAway', 'perMetricRaptorNHome'])
+
+#perMetric = selectColPerMetric(['perMetricHome', 'perMetricAway'])
 
 def getDFAll(dfList, years, dropNA = True):
     df_all = pd.concat(dfList, axis = 1, join = 'inner')
@@ -61,13 +66,43 @@ def getDFAll(dfList, years, dropNA = True):
         df_all.dropna(axis = 0, inplace = True)
     return df_all
 
+def splitTrainTestYear(X, Y, year):
+    '''
+    splits data into training data and testing data (data that is tested is last year of input data
+    
+    '''
+
+    X.reset_index(inplace = True)
+    X['year'] = X.apply(lambda d: getYearFromId(d['index']), axis = 1)
+    X.set_index('index', inplace = True)
+    X_train = X[X['year'] != year]
+    X_test = X[X['year'] == year]
+    X_train.drop('year', axis = 1, inplace = True)
+    X_test.drop('year', axis = 1, inplace = True)
+    
+
+    Y_train = Y[Y.index.isin(X_train.index)].reindex(X_train.index)
+    Y_test = Y[Y.index.isin(X_test.index)].reindex(X_test.index)
+    return X_train, X_test, Y_train, Y_test
+
+def splitTrainTest(X, Y, p, state, shuffle = True):
+    '''
+    splits data into training data and testing data (data that is tested is the last p (where p is expressed as a decimal) of input data
+    
+    '''
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 1-p, test_size = p, random_state = state, shuffle = shuffle)
+    
+    return X_train, X_test, Y_train, Y_test 
+
+    
 years = list(np.arange(2015, 2023))
 df_all = getDFAll([elo, perMetric], years, True)
 
 X = df_all
 Y = getSignal().reindex(X.index)
 
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.6, test_size = 0.4, random_state = 20, shuffle = False)
+X_train, X_test, Y_train, Y_test = splitTrainTestYear(X, Y, 2022)
+#X_train, X_test, Y_train, Y_test = splitTrainTest(X, Y, 0.2, 14, False)
 
 # PARAMATER TUNING
 def findParamsXGB(X_train, Y_train):
@@ -84,9 +119,9 @@ def findParamsXGB(X_train, Y_train):
     print(grid.best_estimator_)
     return grid.best_estimator_
 
-#params = findParamsXGB(X_train, Y_train)
+params = findParamsXGB(X_train, Y_train)
 
-clf = XGBClassifier(learning_rate = 0.1, max_depth = 1, n_estimators = 50, min_child_weight = 4)
+clf = XGBClassifier(learning_rate = 0.1, max_depth = 3, n_estimators = 50, min_child_weight = 5)
 
 def xgboost(clf):
     model = clf.fit(X_train, Y_train)
@@ -163,7 +198,7 @@ def Kelly(df, alpha, predProb, x_columns):
 
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
-df, returns = Kelly(df, 0.3, df['predProb'], x_columns)
+dfAll, returns = Kelly(df, 0.2, df['predProb'], x_columns)
 print(returns)
 #print(cum_returns)
 
@@ -172,25 +207,5 @@ x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')
 plt.show()
-
-maxReturns = []
-returnAll = []
-
-for i in range (1, 1000):
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 0.8, test_size = 0.2, random_state = i, shuffle = True)
-    clf = XGBClassifier(learning_rate = 0.1, max_depth = 1, n_estimators = 50, min_child_weight = 4)
-    Y_pred_prob = xgboost(clf)
-    df = getOddBreakdown(Y_pred_prob)
-    x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
-
-    df_, returns = Kelly(df, 0.3, df['predProb'], x_columns)
-    x = np.arange(1, len(returns) + 1)
-    y = list(returns.array)
-    maxReturns.append(max(y))
-    returnAll.append(y[-1])
-
-results = [maxReturns, returnAll]
-results_df = pd.DataFrame(data = np.array(results).T, columns = ['max', 'end'])
-results_df['max'].groupby([0, 5])
 
 ray.shutdown()
