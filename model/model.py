@@ -145,7 +145,6 @@ def xgboost(clf):
     print(pd.DataFrame(data = list(model.feature_importances_), index = list(X_train.columns), columns = ["score"]).sort_values(by = "score", ascending = False).head(30))
     
     #cm = confusion_matrix(Y_test, Y_pred)/len(Y_pred) 
-    #X_test0=pd.concat([X_test,df_game_sub[['Pinnacle (%)']]],axis=1,join='inner')
 
     print("Test  Accuracy : %.3f" %accuracy_score(Y_test, Y_pred))
     print("Train Accuracy : %.3f" %accuracy_score(Y_train, Y_train_pred))
@@ -180,29 +179,35 @@ def getOddBreakdown(Y_pred_prob):
 
 df = getOddBreakdown(Y_pred_prob)
 
-def Kelly(df, alpha, predProb, x_columns):
+
+def findReturns(df, predProb, x_columns):
     retHome, retAway = findProportionGained(x_columns)
     retHome = retHome[retHome.index.isin(df.index)].rename('retHome', inplace = True)
-    retAway = retAway[retAway.index.isin(df.index)].rename('retAway', inplace = True)
+    retAway = retAway[retAway.index.isin(df.index)].rename('retAway', inplace = True) 
     predProb.rename('prob_Y', inplace = True)
-    df_ = pd.concat([df, retHome, retAway, predProb], axis = 1)
-    df_ = df_.reindex(sortDate(df_.index))
-    df_['per_bet'] = df_.apply(lambda d: kellyBet(d['prob_Y'], alpha, d['retHome'], d['retAway'])[0], axis = 1)
-    df_['home'] = df_.apply(lambda d: kellyBet(d['prob_Y'], alpha, d['retHome'], d['retAway'])[1], axis = 1)
-    df_['return'] = df_.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
-    df_['cum_return'] = df_['return'].cumprod()
-    #df_['reg_return'] = df_.apply(lambda d: 1 - d['return'], axis = 1).cumsum()
+    df = pd.concat([df, retHome, retAway], axis =1)
+    df = df.reindex(sortDate(df.index))
+    return df
 
-    return df_, df_['cum_return']
+
+def Kelly(df, alpha, predProb, x_columns, max_bet):
+    df = findReturns(df, predProb, x_columns)
+    df['per_bet'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'])[0], axis = 1)
+    df['home'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'])[1], axis = 1)
+    df['per_bet'] = df['per_bet'].where(df['per_bet'] <= max_bet, max_bet)    
+    df['return'] = df.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
+    df['cum_return'] = df['return'].cumprod()
+
+    return df, df['cum_return']
 
 
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
-dfAll, returns = Kelly(df, 0.2, df['predProb'], x_columns)
+dfAll, returns = Kelly(df, 0.15, df['predProb'], x_columns, 1)
 print(returns)
 #print(cum_returns)
 
-
+dfAll.to_csv('0.25_2022.csv')
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')
