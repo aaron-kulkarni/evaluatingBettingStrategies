@@ -159,9 +159,9 @@ Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
 gameStateData = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
 gameStateData = gameStateData[gameStateData.index.isin(Y_test.index)]['home']
 
-def getOddBreakdown(Y_pred_prob, index):
-    testOdds = bettingOddsAll[bettingOddsAll.index.isin(index)]
-    testOdds = testOdds.reindex(index)
+def getOddBreakdown(Y_pred_prob, Y_test):
+    testOdds = bettingOddsAll[bettingOddsAll.index.isin(Y_test.index)]
+    testOdds = testOdds.reindex(Y_test.index)
     for col in testOdds.columns:
         odd_preds = [1 if odd > 0.5 else 0 for odd in list(testOdds[col])]
         print("Odd Accuracy of {}".format(col) + " : %.3f"%accuracy_score(Y_test, odd_preds))
@@ -182,8 +182,7 @@ def getOddBreakdown(Y_pred_prob, index):
     print(df.groupby('odd_bkt').signal.sum()/df.groupby('odd_bkt').size(),df.groupby('pred_bkt').size())
     return df
 
-df = getOddBreakdown(Y_pred_prob, Y_test.index)
-
+df = getOddBreakdown(Y_pred_prob, Y_test)
 
 def findReturns(df, predProb, x_columns):
     retHome, retAway = findProportionGained(x_columns)
@@ -217,30 +216,32 @@ y = list(returns.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')
 plt.show()
 
+clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, n_estimators = 150, min_child_weight = 6)
+
 def testSeeds(clf, n):
     returnList = []
     maxReturns = []
     rand = random.sample(range(2**32), n)
-    for seed in rand:
-        X_train, X_test, Y_train, Y_test = splitTrainTest(X, Y, 0.2, seed, True)
+    for i in range(len(rand)):
+        X_train, X_test, Y_train, Y_test = splitTrainTest(X, Y, 0.2, rand[i], True)
         with HiddenPrints():
             Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
-            df = getOddBreakdown(Y_pred_prob, Y_test.index)
-            dfAll, returnsAll = Kelly(df, 0.15, df['predProb'], x_columns, 0.05, 0)
+
+            df = getOddBreakdown(Y_pred_prob, Y_test)
+            dfAll, returnsAll = Kelly(df, 0.15, df['predProb'], x_columns, 0.05, 0.5)
         returnList.append(returnsAll[-1])
         maxReturns.append(max(list(returnsAll)))
 
     return returnList, maxReturns
     
-clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, n_estimators = 150, min_child_weight = 6)
-returnList, maxReturns = testSeeds(clf, 1000)
+returnList, maxReturns = testSeeds(clf, 10)
 
 print('median returns: {}'.format(statistics.median(returnList)))
 print('median max returns: {}'.format(statistics.median(maxReturns)))
 print('average returns: {}'.format(statistics.mean(returnList)))
 print('average max returns: {}'.format(statistics.mean(maxReturns)))
 
-print('successful returns: {}'.format((len([1 for i in returnList if i > 1]))/n))
+print('successful returns: {}'.format((len([1 for i in returnList if i > 1]))/len(returnList)))
 wonReturns = [item for item in returnList if item > 1]
 lostReturns = [item for item in returnList if item < 1]
 print('successful return average: {}'.format(statistics.mean(wonReturns)))
@@ -258,6 +259,7 @@ def findParamsXGBPost():
     permutations_grid = [dict(zip(keys, v)) for v in itertools.product(*values)]
     return permutations_grid
 
+X_train, X_test, Y_train, Y_test = splitTrainTestYear(X, Y, 2022)
 
 def findOptimalParams(): 
     returnParams = []
@@ -265,9 +267,9 @@ def findOptimalParams():
     for i in range (0, len(permutations_grid) - 1):
         clf = XGBClassifier(n_estimators = permutations_grid[i]['n_estimators'], max_depth = permutations_grid[i]['max_depth'], learning_rate = permutations_grid[i]['learning_rate'], min_child_weight = permutations_grid[i]['min_child_weight'])
         with HiddenPrints():
-            Y_pred_prob = xgboost(clf)
-            df = getOddBreakdown(Y_pred_prob)
-            dfAll, returns = Kelly(df, 0.15, df['predProb'], x_columns, 0.05)
+            Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
+            df = getOddBreakdown(Y_pred_prob, Y_test)
+            dfAll, returns = Kelly(df, 0.15, df['predProb'], x_columns, 0.05, 0)
             returnParams.append(returns[-1])
     return permutations_grid, returnParams
 permutations_grid, returnParams = findOptimalParams()
