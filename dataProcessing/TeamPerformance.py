@@ -9,14 +9,10 @@ class TeamPerformance:
 
     def __init__(self, year):
         self.year = year
-        self.team_df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(self.year),
-                                   index_col=0, header=[0, 1])
-        self.player_df = pd.read_csv('../data/gameStats/game_data_player_stats_{}.csv'.format(self.year),
-                                     index_col=0, header=[0])
-        self.adj_prob_df = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(self.year),
-                                       index_col=0, header=[0, 1])
-        self.game_state_df = pd.read_csv('../data/gameStats/game_state_data{}.csv'.format(self.year),
-                                       index_col=0, header=[0, 1])
+        self.team_df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(self.year), index_col=0, header=[0, 1])
+        self.player_df = pd.read_csv('../data/gameStats/game_data_player_stats_{}.csv'.format(self.year), index_col=0, header=[0])
+        self.adj_prob_df = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(self.year), index_col=0, header=[0, 1])
+        self.game_state_df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(self.year),index_col=0, header=[0, 1])
 
     def teamAverageHelper(self, team):
         df = self.team_df

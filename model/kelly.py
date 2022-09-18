@@ -6,7 +6,7 @@ from utils.utils import *
 from dataProcessing.TeamPerformance import *
 from dataProcessing.PCA import *
 
-def kellyBet(Y_prob, alpha, prop_gained_home, prop_gained_away):
+def kellyBet(Y_prob, alpha, prop_gained_home, prop_gained_away, n):
     '''
     Given probability of bet outputs proportion of bet for long term expected growth
 
@@ -17,6 +17,7 @@ def kellyBet(Y_prob, alpha, prop_gained_home, prop_gained_away):
     if f_bet <= 0:
         pass
     else:
+        f_bet = avoidOdds(prop_gained_home, f_bet, n)
         return f_bet, True
     
     f_bet = alpha * ((1 - Y_prob) - Y_prob/(prop_gained_away))
@@ -24,7 +25,15 @@ def kellyBet(Y_prob, alpha, prop_gained_home, prop_gained_away):
     if f_bet <= 0:
         return 0, 0
     else:
+        f_bet = avoidOdds(prop_gained_away, f_bet, n)
         return f_bet, False
+
+
+def avoidOdds(prop_gained, f_bet, n):
+    if prop_gained < n:
+        f_bet = 0
+    return f_bet
+
 
 def convOdds(odd):
     if pd.isna(odd) == True:
