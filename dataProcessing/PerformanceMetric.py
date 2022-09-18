@@ -33,6 +33,18 @@ class PerformanceMetric:
 
         return mean
 
+
+    def returnBettingOddProbs(self, team, oddName):
+        adjProb = self.adj_prob_df
+        homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, self.year)
+
+        adjProbHome = adjProb[adjProb.index.isin(homeTeamSchedule.index)]
+        adjProbAway = adjProb[adjProb.index.isin(awayTeamSchedule.index)]
+        res = pd.concat([adjProbHome['homeProbAdj', oddName], adjProbAway['awayProbAdj', oddName]], axis = 0)
+        res = res.sort_index(ascending=True)
+        return res
+        
+
     def returnEloData(self, team):
         elo_df = self.elo_df
         homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, self.year) 

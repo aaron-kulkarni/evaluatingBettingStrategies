@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import sys
+import itertools
 sys.path.insert(0, "..")
 
 from utils.utils import *
@@ -11,6 +12,8 @@ from kelly import *
 import matplotlib.pyplot as plt
 import ray 
 import multiprocessing
+import random
+import statistics
 
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -34,16 +37,17 @@ def selectColOdds(select_x):
     return bettingOdds[select_x]
 
 # SELECTED HIGH PERFORMING BETTING BOOKMAKERS
-bettingOdds = selectColOdds(['1xBet (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)', 'bet-at-home (%)', 'bet365 (%)', 'bwin (%)'])
+bettingOddsAll = selectColOdds(['1xBet (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)', 'bet-at-home (%)', 'bet365 (%)', 'bwin (%)'])
+bettingOdds = selectColOdds(['Pinnacle (%)'])
 
-bettingOddsPCA, coeff = performPCA(bettingOdds, 2)
+bettingOddsPCA, coeff = performPCA(bettingOddsAll, 2)
 
 def selectColElo(select_x):
     eloData = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
     return eloData[select_x]
 # columns: season, neutral, team1, team2, elo1_pre, elo2_pre, elo_prob1, elo_prob2, elo1_post, elo2_post, carm-elo1_pre, carm-elo2_pre, carm-elo_prob1, carm-elo_prob2, carm-elo1_post, carm-elo2_post, raptor1_pre, raptor2_pre, raptor_prob1, raptor_prob2
+#elo = selectColElo(['elo_prob1', 'raptor_prob1', 'elo1_pre', 'elo2_pre', 'raptor1_pre', 'raptor2_pre'])
 elo = selectColElo(['elo_prob1', 'raptor_prob1'])
-#elo = selectColElo(['elo_prob1'])
 
 def selectColPerMetric(select_x):
     perMetric = pd.read_csv('../data/perMetric/performance_metric_all.csv', index_col = 0)
@@ -51,7 +55,7 @@ def selectColPerMetric(select_x):
 
 #perMetric = selectColPerMetric(['perMetricAway', 'perMetricHome', 'perMetricEloAway','perMetricEloHome', 'perMetricEloNAway', 'perMetricEloNHome','perMetricNAway', 'perMetricNHome', 'perMetricRaptorAway','perMetricRaptorHome', 'perMetricRaptorNAway', 'perMetricRaptorNHome'])
 
-perMetric = selectColPerMetric(['perMetricEloAway','perMetricEloHome', 'perMetricEloNAway', 'perMetricEloNHome', 'perMetricRaptorAway','perMetricRaptorHome', 'perMetricRaptorNAway', 'perMetricRaptorNHome'])
+perMetric = selectColPerMetric(['perMetricHome', 'perMetricAway', 'perMetricEloAway','perMetricEloHome', 'perMetricEloNAway', 'perMetricEloNHome', 'perMetricRaptorAway','perMetricRaptorHome', 'perMetricRaptorNAway', 'perMetricRaptorNHome'])
 
 #perMetric = selectColPerMetric(['perMetricHome', 'perMetricAway'])
 
@@ -96,20 +100,20 @@ def splitTrainTest(X, Y, p, state, shuffle = True):
 
     
 years = list(np.arange(2015, 2023))
-df_all = getDFAll([elo, perMetric], years, True)
+df_all = getDFAll([bettingOddsPCA, elo, perMetric], years, True)
 
 X = df_all
 Y = getSignal().reindex(X.index)
 
 X_train, X_test, Y_train, Y_test = splitTrainTestYear(X, Y, 2022)
-#X_train, X_test, Y_train, Y_test = splitTrainTest(X, Y, 0.2, 14, False)
+#X_train, X_test, Y_train, Y_test = splitTrainTest(X, Y, 0.2, 2022, True)
 
 # PARAMATER TUNING
 def findParamsXGB(X_train, Y_train):
     param_grid = {
-        "n_estimators" : [50, 100],
+        "n_estimators" : [50, 100, 150],
         "max_depth" : [1, 3, 5, 7],
-        "learning_rate" : [0.01, 0.1],
+        "learning_rate" : [0.005, 0.01, 0.02],
         "min_child_weight" : [4, 5, 6]
     }
 
@@ -119,11 +123,12 @@ def findParamsXGB(X_train, Y_train):
     print(grid.best_estimator_)
     return grid.best_estimator_
 
-params = findParamsXGB(X_train, Y_train)
+#clf = findParamsXGB(X_train, Y_train)
 
-clf = XGBClassifier(learning_rate = 0.1, max_depth = 3, n_estimators = 50, min_child_weight = 5)
+clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, n_estimators = 150, min_child_weight = 6)
+#clf = XGBClassifier(learning_rate = 0.02, max_depth = 1, min_child_weight = 4, n_estimators = 150)
 
-def xgboost(clf):
+def xgboost(clf, X_train, Y_train, X_test, Y_test):
     model = clf.fit(X_train, Y_train)
     name = 'XGBOOST'
     calibrated_clf = CalibratedClassifierCV(clf, cv = 5)
@@ -150,13 +155,13 @@ def xgboost(clf):
     print("Train Accuracy : %.3f" %accuracy_score(Y_train, Y_train_pred))
     return Y_pred_prob
 
-Y_pred_prob = xgboost(clf)
+Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
 gameStateData = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
 gameStateData = gameStateData[gameStateData.index.isin(Y_test.index)]['home']
 
-def getOddBreakdown(Y_pred_prob):
-    testOdds = bettingOdds[bettingOdds.index.isin(X_test.index)]
-    testOdds = testOdds.reindex(X_test.index)
+def getOddBreakdown(Y_pred_prob, index):
+    testOdds = bettingOddsAll[bettingOddsAll.index.isin(index)]
+    testOdds = testOdds.reindex(index)
     for col in testOdds.columns:
         odd_preds = [1 if odd > 0.5 else 0 for odd in list(testOdds[col])]
         print("Odd Accuracy of {}".format(col) + " : %.3f"%accuracy_score(Y_test, odd_preds))
@@ -177,7 +182,7 @@ def getOddBreakdown(Y_pred_prob):
     print(df.groupby('odd_bkt').signal.sum()/df.groupby('odd_bkt').size(),df.groupby('pred_bkt').size())
     return df
 
-df = getOddBreakdown(Y_pred_prob)
+df = getOddBreakdown(Y_pred_prob, Y_test.index)
 
 
 def findReturns(df, predProb, x_columns):
@@ -190,10 +195,10 @@ def findReturns(df, predProb, x_columns):
     return df
 
 
-def Kelly(df, alpha, predProb, x_columns, max_bet):
+def Kelly(df, alpha, predProb, x_columns, max_bet, n):
     df = findReturns(df, predProb, x_columns)
-    df['per_bet'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'])[0], axis = 1)
-    df['home'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'])[1], axis = 1)
+    df['per_bet'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'], n)[0], axis = 1)
+    df['home'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'], n)[1], axis = 1)
     df['per_bet'] = df['per_bet'].where(df['per_bet'] <= max_bet, max_bet)    
     df['return'] = df.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
     df['cum_return'] = df['return'].cumprod()
@@ -203,11 +208,79 @@ def Kelly(df, alpha, predProb, x_columns, max_bet):
 
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
-dfAll, returns = Kelly(df, 0.15, df['predProb'], x_columns, 1)
+dfAll, returns = Kelly(df, 0.15, df['predProb'], x_columns, 0.05, 0)
 print(returns)
 #print(cum_returns)
 
-dfAll.to_csv('0.25_2022.csv')
+x = np.arange(1, len(returns) + 1)
+y = list(returns.array)
+plt.plot(x, y, label = 'PERCENTAGE RETURN')
+plt.show()
+
+def testSeeds(clf, n):
+    returnList = []
+    maxReturns = []
+    rand = random.sample(range(2**32), n)
+    for seed in rand:
+        X_train, X_test, Y_train, Y_test = splitTrainTest(X, Y, 0.2, seed, True)
+        with HiddenPrints():
+            Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
+            df = getOddBreakdown(Y_pred_prob, Y_test.index)
+            dfAll, returnsAll = Kelly(df, 0.15, df['predProb'], x_columns, 0.05, 0)
+        returnList.append(returnsAll[-1])
+        maxReturns.append(max(list(returnsAll)))
+
+    return returnList, maxReturns
+    
+clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, n_estimators = 150, min_child_weight = 6)
+returnList, maxReturns = testSeeds(clf, 1000)
+
+print('median returns: {}'.format(statistics.median(returnList)))
+print('median max returns: {}'.format(statistics.median(maxReturns)))
+print('average returns: {}'.format(statistics.mean(returnList)))
+print('average max returns: {}'.format(statistics.mean(maxReturns)))
+
+print('successful returns: {}'.format((len([1 for i in returnList if i > 1]))/n))
+wonReturns = [item for item in returnList if item > 1]
+lostReturns = [item for item in returnList if item < 1]
+print('successful return average: {}'.format(statistics.mean(wonReturns)))
+print('unsuccessful return average: {}'.format(statistics.mean(lostReturns)))
+
+def findParamsXGBPost():
+    param_grid = {
+        "n_estimators" : [50, 100, 150],
+        "max_depth" : [1, 3, 5, 7],
+        "learning_rate" : [0.005, 0.01, 0.02],
+        "min_child_weight" : [4, 5, 6]
+    }
+
+    keys, values = zip(*param_grid.items())
+    permutations_grid = [dict(zip(keys, v)) for v in itertools.product(*values)]
+    return permutations_grid
+
+
+def findOptimalParams(): 
+    returnParams = []
+    permutations_grid = findParamsXGBPost()
+    for i in range (0, len(permutations_grid) - 1):
+        clf = XGBClassifier(n_estimators = permutations_grid[i]['n_estimators'], max_depth = permutations_grid[i]['max_depth'], learning_rate = permutations_grid[i]['learning_rate'], min_child_weight = permutations_grid[i]['min_child_weight'])
+        with HiddenPrints():
+            Y_pred_prob = xgboost(clf)
+            df = getOddBreakdown(Y_pred_prob)
+            dfAll, returns = Kelly(df, 0.15, df['predProb'], x_columns, 0.05)
+            returnParams.append(returns[-1])
+    return permutations_grid, returnParams
+permutations_grid, returnParams = findOptimalParams()
+print(max(returnParams))
+print(permutations_grid[returnParams.index(max(returnParams))])
+
+j = returnParams.index(max(returnParams))
+clfOpt = XGBClassifier(n_estimators = permutations_grid[j]['n_estimators'], max_depth = permutations_grid[j]['max_depth'], learning_rate = permutations_grid[j]['learning_rate'], min_child_weight = permutations_grid[j]['min_child_weight'])
+
+Y_pred_prob = xgboost(clfOpt)
+df = getOddBreakdown(xgboost(clfOpt))
+
+dfAll, returns = Kelly(df, 0.15, df['predProb'], x_columns, 0.05, 0)
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')

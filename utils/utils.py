@@ -1,6 +1,8 @@
 import datetime as dt
 import pandas as pd
 import re
+import sys
+import os 
 
 from sportsipy.nba.boxscore import Boxscores, Boxscore
 from sportsipy.nba.teams import Teams
@@ -208,5 +210,11 @@ def sortDate(gameIdList):
     dateCol.sort_values(by = 'datetime', ascending = True, inplace = True)
     return list(dateCol.index)
     
-    
-    
+class HiddenPrints:
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, 'w')
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout.close()
+        sys.stdout = self._original_stdout
