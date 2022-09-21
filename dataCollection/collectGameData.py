@@ -1,6 +1,7 @@
 import numpy as np
 import requests
 from lxml import html
+from datetime import datetime, timedelta
 
 import sys
 sys.path.insert(0, "..")
@@ -420,11 +421,19 @@ def concatDF(years):
         dfCurrent = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
         df = pd.concat([df, dfCurrent], axis = 0)
 
-    return df 
-        
+    return df
 
-#years = np.arange(2015, 2023)
-#concatDF(years).to_csv('../data/gameStats/game_state_data_ALL.csv')
+
+def addEndTime(years):
+    for year in years:
+        df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
+        df['gameState', 'datetime'] = pd.to_datetime(df['gameState']['datetime'])
+        df['gameState', 'endtime'] = df.apply(lambda d: d['gameState', 'datetime'] + timedelta(hours = 2), axis = 1)
+        df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    return df
+                                              
+years = np.arange(2015, 2023)
+concatDF(years).to_csv('../data/gameStats/game_state_data_ALL.csv')
 #for year in years:
 #    convDateTimeDF(year).to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
 

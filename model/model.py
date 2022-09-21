@@ -180,6 +180,7 @@ def getOddBreakdown(Y_pred_prob, Y_test):
     print(df.groupby('num_game_bkt').stat_pred.sum()/df.groupby('num_game_bkt').size(),df.groupby('num_game_bkt').size())
     print(df.groupby('pred_bkt').signal.sum()/df.groupby('pred_bkt').size(),df.groupby('pred_bkt').size())
     print(df.groupby('odd_bkt').signal.sum()/df.groupby('odd_bkt').size(),df.groupby('pred_bkt').size())
+    df = df[df.columns[:2]]
     return df
 
 df = getOddBreakdown(Y_pred_prob, Y_test)

@@ -209,6 +209,25 @@ def sortDate(gameIdList):
     dateCol = dateCol[dateCol.index.isin(gameIdList)]
     dateCol.sort_values(by = 'datetime', ascending = True, inplace = True)
     return list(dateCol.index)
+
+
+def sortAllDates(gameIdList):
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col = 0, header = [0, 1])
+    df1, df2 = pd.DataFrame(), pd.DataFrame()
+    df1['date'] = pd.to_datetime(df['gameState']['datetime'])
+    df1['start'] = 1
+    df2['date'] = pd.to_datetime(df['gameState']['endtime'])
+    df2['start'] = 0
+    df1.reset_index(inplace = True)
+    df2.reset_index(inplace = True)
+    df = pd.concat([df1, df2], axis = 0)
+    dateCol.sort_values(by = 'datetime', ascending = True, inplace = True)
+    df.set_index(['game_id', 'start'], inplace = True)
+
+    return df
+    
+
+
     
 class HiddenPrints:
     def __enter__(self):
