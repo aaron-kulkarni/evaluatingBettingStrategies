@@ -210,6 +210,21 @@ def sortDate(gameIdList):
     dateCol.sort_values(by = 'datetime', ascending = True, inplace = True)
     return list(dateCol.index)
 
+def returnDate(gameId, start):
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col = 0, header = [0, 1])
+    if start == 1:
+        return df['gameState', 'datetime'].loc[gameId]
+    if start == 0:
+        return df['gameState', 'endtime'].loc[gameId]
+    else:
+        return 'Error'
+
+def orderAllDates(df):
+    df.reset_index(inplace = True)
+    df['date'] = df.apply(lambda d: returnDate(d['index'], d['start']), axis = 1)
+    df.sort_values(by = 'date', ascending = True, inplace = True)
+    df.set_index(['index'], inplace = True)
+    return df 
 
 def sortAllDates(gameIdList):
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col = 0, header = [0, 1])
@@ -221,14 +236,12 @@ def sortAllDates(gameIdList):
     df1.reset_index(inplace = True)
     df2.reset_index(inplace = True)
     df = pd.concat([df1, df2], axis = 0)
-    dateCol.sort_values(by = 'datetime', ascending = True, inplace = True)
-    df.set_index(['game_id', 'start'], inplace = True)
+    df.sort_values(by = 'date', ascending = True, inplace = True)
+    df.set_index(['game_id'], inplace = True)
+    df = df[df.index.isin(gameIdList)]
 
     return df
-    
 
-
-    
 class HiddenPrints:
     def __enter__(self):
         self._original_stdout = sys.stdout
