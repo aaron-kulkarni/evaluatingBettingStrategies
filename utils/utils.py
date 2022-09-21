@@ -239,7 +239,7 @@ def sortAllDates(gameIdList):
     df.sort_values(by = 'date', ascending = True, inplace = True)
     df.set_index(['game_id'], inplace = True)
     df = df[df.index.isin(gameIdList)]
-    return df
+    df.reset_index(inplace = True)
     df.set_index(['game_id', 'start'], inplace = True)
     
     return df.index

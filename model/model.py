@@ -224,8 +224,7 @@ def Kelly(df, alpha, x_columns, max_bet, n):
 
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
-dfAll, returns = Kelly(df, 0.3, x_columns, 0.05, 0.5)
-print(returns)
+dfAll, returns = Kelly(df, 0.2, x_columns, 1, 0)
 #print(cum_returns)
 
 x = np.arange(1, len(returns) + 1)
