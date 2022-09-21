@@ -193,33 +193,38 @@ def findReturns(df, x_columns):
     df = df.reindex(sortDate(df.index))
     return df
 
-
-def Kelly(df, alpha, x_columns, max_bet, n):
+def getKellyBreakdown(df, alpha, x_columns, max_bet, n):
     df = findReturns(df, x_columns)
     df['per_bet'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'], n)[0], axis = 1)
     df['home'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'], n)[1], axis = 1)
     df['per_bet'] = df['per_bet'].where(df['per_bet'] <= max_bet, max_bet)
     df['return'] = df.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
-    df['adj_return'] = df.apply(lambda d: 1 if d['return'] < 1 else d['return'], axis = 1)
+    df['adj_return'] = df.apply(lambda d: 1 if d['return'] < 1 else d['return']/(1-d['per_bet']), axis = 1)
+    print(df)
+    return df 
 
+def Kelly(df, alpha, x_columns, max_bet, n):
+    df = getKellyBreakdown(df, alpha, x_columns, max_bet, n)
     
-    df_datetime = sortAllDates(df.index)
+    index = sortAllDates(df.index)
+    
     returnsPre = pd.DataFrame(1 - df['per_bet'])
     returnsPre['start'] = 1
     returnsPost = pd.DataFrame(df['adj_return'].rename('per_bet', inplace = True))
     returnsPost['start'] = 0
     df_per_bet = pd.concat([returnsPost, returnsPre], axis = 0)
-
-    df_datetime['return'] = 
-
-    df['cum_return'] = df['return'].cumprod()
-
-    return df, df['cum_return']
+    df_per_bet.reset_index(inplace = True)
+    df_per_bet.set_index(['index', 'start'], inplace = True)
+    df_per_bet.rename(columns = {'per_bet' : 'returns'}, inplace = True)
+    df_per_bet = df_per_bet.reindex(index)
+    df_per_bet['cum_return'] = df_per_bet['returns'].cumprod()
+    print(df_per_bet['cum_return'])
+    return df_per_bet, df_per_bet['cum_return']
 
 
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
-dfAll, returns = Kelly(df, 0.3, x_columns, 1, 0.5)
+dfAll, returns = Kelly(df, 0.3, x_columns, 0.05, 0.5)
 print(returns)
 #print(cum_returns)
 
