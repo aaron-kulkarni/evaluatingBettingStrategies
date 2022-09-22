@@ -180,35 +180,51 @@ def getOddBreakdown(Y_pred_prob, Y_test):
     print(df.groupby('num_game_bkt').stat_pred.sum()/df.groupby('num_game_bkt').size(),df.groupby('num_game_bkt').size())
     print(df.groupby('pred_bkt').signal.sum()/df.groupby('pred_bkt').size(),df.groupby('pred_bkt').size())
     print(df.groupby('odd_bkt').signal.sum()/df.groupby('odd_bkt').size(),df.groupby('pred_bkt').size())
+    df = df[df.columns[:2]]
     return df
 
 df = getOddBreakdown(Y_pred_prob, Y_test)
 
-def findReturns(df, predProb, x_columns):
+def findReturns(df, x_columns):
     retHome, retAway = findProportionGained(x_columns)
     retHome = retHome[retHome.index.isin(df.index)].rename('retHome', inplace = True)
     retAway = retAway[retAway.index.isin(df.index)].rename('retAway', inplace = True) 
-    predProb.rename('prob_Y', inplace = True)
     df = pd.concat([df, retHome, retAway], axis =1)
     df = df.reindex(sortDate(df.index))
     return df
 
-
-def Kelly(df, alpha, predProb, x_columns, max_bet, n):
-    df = findReturns(df, predProb, x_columns)
+def getKellyBreakdown(df, alpha, x_columns, max_bet, n):
+    df = findReturns(df, x_columns)
     df['per_bet'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'], n)[0], axis = 1)
     df['home'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'], n)[1], axis = 1)
-    df['per_bet'] = df['per_bet'].where(df['per_bet'] <= max_bet, max_bet)    
+    df['per_bet'] = df['per_bet'].where(df['per_bet'] <= max_bet, max_bet)
     df['return'] = df.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
-    df['cum_return'] = df['return'].cumprod()
+    df['adj_return'] = df.apply(lambda d: 1 if d['return'] < 1 else d['return']/(1-d['per_bet']), axis = 1)
+    print(df)
+    return df 
 
-    return df, df['cum_return']
+def Kelly(df, alpha, x_columns, max_bet, n):
+    df = getKellyBreakdown(df, alpha, x_columns, max_bet, n)
+    
+    index = sortAllDates(df.index)
+    
+    returnsPre = pd.DataFrame(1 - df['per_bet'])
+    returnsPre['start'] = 1
+    returnsPost = pd.DataFrame(df['adj_return'].rename('per_bet', inplace = True))
+    returnsPost['start'] = 0
+    df_per_bet = pd.concat([returnsPost, returnsPre], axis = 0)
+    df_per_bet.reset_index(inplace = True)
+    df_per_bet.set_index(['index', 'start'], inplace = True)
+    df_per_bet.rename(columns = {'per_bet' : 'returns'}, inplace = True)
+    df_per_bet = df_per_bet.reindex(index)
+    df_per_bet['cum_return'] = df_per_bet['returns'].cumprod()
+    print(df_per_bet['cum_return'])
+    return df_per_bet, df_per_bet['cum_return']
 
 
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
-dfAll, returns = Kelly(df, 0.15, df['predProb'], x_columns, 0.05, 0)
-print(returns)
+dfAll, returns = Kelly(df, 0.2, x_columns, 1, 0)
 #print(cum_returns)
 
 x = np.arange(1, len(returns) + 1)
@@ -228,13 +244,13 @@ def testSeeds(clf, n):
             Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
 
             df = getOddBreakdown(Y_pred_prob, Y_test)
-            dfAll, returnsAll = Kelly(df, 0.15, df['predProb'], x_columns, 0.05, 0.5)
+            dfAll, returnsAll = Kelly(df, 0.15, x_columns, 0.05, 0.5)
         returnList.append(returnsAll[-1])
         maxReturns.append(max(list(returnsAll)))
 
     return returnList, maxReturns
     
-returnList, maxReturns = testSeeds(clf, 10)
+returnList, maxReturns = testSeeds(clf, 2)
 
 print('median returns: {}'.format(statistics.median(returnList)))
 print('median max returns: {}'.format(statistics.median(maxReturns)))
@@ -269,7 +285,7 @@ def findOptimalParams():
         with HiddenPrints():
             Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
             df = getOddBreakdown(Y_pred_prob, Y_test)
-            dfAll, returns = Kelly(df, 0.15, df['predProb'], x_columns, 0.05, 0)
+            dfAll, returns = Kelly(df, 0.15, x_columns, 0.05, 0)
             returnParams.append(returns[-1])
     return permutations_grid, returnParams
 permutations_grid, returnParams = findOptimalParams()
@@ -280,9 +296,9 @@ j = returnParams.index(max(returnParams))
 clfOpt = XGBClassifier(n_estimators = permutations_grid[j]['n_estimators'], max_depth = permutations_grid[j]['max_depth'], learning_rate = permutations_grid[j]['learning_rate'], min_child_weight = permutations_grid[j]['min_child_weight'])
 
 Y_pred_prob = xgboost(clfOpt)
-df = getOddBreakdown(xgboost(clfOpt))
+df = getOddBreakdown(Y_pred_prob, Y_test)
 
-dfAll, returns = Kelly(df, 0.15, df['predProb'], x_columns, 0.05, 0)
+dfAll, returns = Kelly(df, 0.15, x_columns, 0.05, 0)
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')
