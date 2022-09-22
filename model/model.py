@@ -250,7 +250,7 @@ def findTotal(dictReturns):
     
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
-dfAll, returns = Kelly(df, 0.2, x_columns, 1, 0)
+dfAll, returns = Kelly(df, 0.3, x_columns, 1, 0)
 #print(cum_returns)
 
 x = np.arange(1, len(returns) + 1)
@@ -276,7 +276,7 @@ def testSeeds(clf, n):
 
     return returnList, maxReturns
     
-returnList, maxReturns = testSeeds(clf, 2)
+returnList, maxReturns = testSeeds(clf, 3)
 
 print('median returns: {}'.format(statistics.median(returnList)))
 print('median max returns: {}'.format(statistics.median(maxReturns)))
@@ -287,7 +287,8 @@ print('successful returns: {}'.format((len([1 for i in returnList if i > 1]))/le
 wonReturns = [item for item in returnList if item > 1]
 lostReturns = [item for item in returnList if item < 1]
 print('successful return average: {}'.format(statistics.mean(wonReturns)))
-print('unsuccessful return average: {}'.format(statistics.mean(lostReturns)))
+if statistics.mean(wonReturns) < 1:
+    print('unsuccessful return average: {}'.format(statistics.mean(lostReturns)))
 
 def findParamsXGBPost():
     param_grid = {
