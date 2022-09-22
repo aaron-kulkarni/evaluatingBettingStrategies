@@ -2,7 +2,8 @@ import datetime as dt
 import pandas as pd
 import re
 import sys
-import os 
+import os
+import numpy as np
 
 from sportsipy.nba.boxscore import Boxscores, Boxscore
 from sportsipy.nba.teams import Teams
@@ -244,6 +245,7 @@ def sortAllDates(gameIdList):
     
     return df.index
 
+
 class HiddenPrints:
     def __enter__(self):
         self._original_stdout = sys.stdout
@@ -252,3 +254,10 @@ class HiddenPrints:
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdout.close()
         sys.stdout = self._original_stdout
+        
+def cumsum_reset_on_null(srs):
+    cumulative = srs.cumsum().fillna(method = 'ffill')
+    restart = ((cumulative * srs.isnull()).replace(0.0, np.nan).fillna(method = 'ffill').fillna(0))
+    result = (cumulative - restart)
+
+    return result.replace(0, np.nan)
