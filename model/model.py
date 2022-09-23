@@ -201,7 +201,7 @@ def getKellyBreakdown(df, alpha, x_columns, max_bet, n):
     df['return'] = df.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
 
     
-    df['adj_return'] = df.apply(lambda d: 1 if d['return'] < 1 else d['return']/(1-d['per_bet']), axis = 1)
+    df['adj_return'] = df.apply(lambda d: 1 if d['return'] < 1 else d['return'], axis = 1)
     print(df)
     return df 
 
