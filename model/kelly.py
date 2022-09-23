@@ -73,5 +73,3 @@ def returnBet(per_bet, signal, retHome, retAway, home):
         return -per_bet
     if signal == 0 and home == False:
         return per_bet * retAway
-
-    

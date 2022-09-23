@@ -199,32 +199,58 @@ def getKellyBreakdown(df, alpha, x_columns, max_bet, n):
     df['home'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'], n)[1], axis = 1)
     df['per_bet'] = df['per_bet'].where(df['per_bet'] <= max_bet, max_bet)
     df['return'] = df.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
+
+    
     df['adj_return'] = df.apply(lambda d: 1 if d['return'] < 1 else d['return']/(1-d['per_bet']), axis = 1)
     print(df)
     return df 
 
 def Kelly(df, alpha, x_columns, max_bet, n):
     df = getKellyBreakdown(df, alpha, x_columns, max_bet, n)
-    
     index = sortAllDates(df.index)
     
-    returnsPre = pd.DataFrame(1 - df['per_bet'])
-    returnsPre['start'] = 1
-    returnsPost = pd.DataFrame(df['adj_return'].rename('per_bet', inplace = True))
-    returnsPost['start'] = 0
-    df_per_bet = pd.concat([returnsPost, returnsPre], axis = 0)
-    df_per_bet.reset_index(inplace = True)
-    df_per_bet.set_index(['index', 'start'], inplace = True)
-    df_per_bet.rename(columns = {'per_bet' : 'returns'}, inplace = True)
-    df_per_bet = df_per_bet.reindex(index)
-    df_per_bet['cum_return'] = df_per_bet['returns'].cumprod()
-    print(df_per_bet['cum_return'])
-    return df_per_bet, df_per_bet['cum_return']
+    per_bet = convertReturns(df['per_bet'], index)
+    returns = convertReturns(df['return'] - 1, index)
+    dictReturns = pd.concat([per_bet, returns], axis = 1).T.to_dict()
 
+    dfAll = pd.DataFrame(findTotal(dictReturns)).T
+    
+    print(dfAll['total'])
+    return dfAll, dfAll['total']
 
+def convertReturns(series, index):
+    df1 = pd.DataFrame(series)
+    df1['start'] = 1
+    df2 = pd.DataFrame(series)
+    df2['start'] = 0
+
+    df = pd.concat([df1, df2], axis = 0)
+    df.reset_index(inplace = True)
+    df.set_index(['index', 'start'], inplace = True)
+    df = df.reindex(index)
+    return df
+
+def findTotal(dictReturns):
+    dictReturns[list(dictReturns)[0]]['pre_total'] = 1
+    dictReturns[list(dictReturns)[0]]['total'] = 1 - dictReturns[list(dictReturns)[0]]['per_bet']
+
+    keys = list(dictReturns.keys())
+    for k in keys[1:] :
+        dictReturns[k]['pre_total'] = dictReturns[keys[keys.index(k) - 1]]['total']
+        if k[1] == 1:
+            dictReturns[k]['total'] = dictReturns[k]['pre_total'] * (1 - dictReturns[k]['per_bet'])
+        if k[1] == 0:
+            if dictReturns[k]['return'] == 0:
+                dictReturns[k]['total'] = dictReturns[k]['pre_total']
+            else:
+                dictReturns[k]['total'] = dictReturns[k]['pre_total'] + dictReturns[(k[0], 1)]['pre_total'] * (dictReturns[k]['return'] + dictReturns[k]['per_bet'])
+            
+    return dictReturns
+        
+    
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
-dfAll, returns = Kelly(df, 0.2, x_columns, 1, 0)
+dfAll, returns = Kelly(df, 0.3, x_columns, 1, 0)
 #print(cum_returns)
 
 x = np.arange(1, len(returns) + 1)
@@ -250,7 +276,7 @@ def testSeeds(clf, n):
 
     return returnList, maxReturns
     
-returnList, maxReturns = testSeeds(clf, 2)
+returnList, maxReturns = testSeeds(clf, 3)
 
 print('median returns: {}'.format(statistics.median(returnList)))
 print('median max returns: {}'.format(statistics.median(maxReturns)))
@@ -261,7 +287,8 @@ print('successful returns: {}'.format((len([1 for i in returnList if i > 1]))/le
 wonReturns = [item for item in returnList if item > 1]
 lostReturns = [item for item in returnList if item < 1]
 print('successful return average: {}'.format(statistics.mean(wonReturns)))
-print('unsuccessful return average: {}'.format(statistics.mean(lostReturns)))
+if statistics.mean(wonReturns) < 1:
+    print('unsuccessful return average: {}'.format(statistics.mean(lostReturns)))
 
 def findParamsXGBPost():
     param_grid = {
