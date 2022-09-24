@@ -201,7 +201,7 @@ def getKellyBreakdown(df, alpha, x_columns, max_bet, n):
     df['return'] = df.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
 
     
-    df['adj_return'] = df.apply(lambda d: 1 if d['return'] < 1 else d['return']/(1-d['per_bet']), axis = 1)
+    df['adj_return'] = df.apply(lambda d: 1 if d['return'] < 1 else d['return'], axis = 1)
     print(df)
     return df 
 
@@ -210,7 +210,8 @@ def Kelly(df, alpha, x_columns, max_bet, n):
     index = sortAllDates(df.index)
     
     per_bet = convertReturns(df['per_bet'], index)
-    returns = convertReturns(df['return'] - 1, index)
+    returns = convertReturns(df['adj_return'] - 1, index)
+    returns.rename(columns = {'adj_return' : 'return'}, inplace = True)
     dictReturns = pd.concat([per_bet, returns], axis = 1).T.to_dict()
 
     dfAll = pd.DataFrame(findTotal(dictReturns)).T
@@ -247,7 +248,7 @@ def findTotal(dictReturns):
             
     return dictReturns
         
-    
+
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
 dfAll, returns = Kelly(df, 0.3, x_columns, 1, 0)
