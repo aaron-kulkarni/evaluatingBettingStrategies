@@ -4,6 +4,7 @@ import re
 import pandas as pd
 from sportsipy.nba.boxscore import Boxscores
 import datetime as dt
+import numpy as np
 
 
 def getGameAttendanceReferees(str_time, end_time):
@@ -28,8 +29,8 @@ def getGameAttendanceReferees(str_time, end_time):
             Boxscores(dt.datetime.strptime(str_time, '%Y%m%d'),
                       dt.datetime.strptime(end_time, '%Y%m%d')).games.items()
             for g in v]
-
-    return pd.DataFrame(rows)
+    df = pd.DataFrame(data = rows).set_index('gameid')
+    return df
 
 
 def scrapeGameAttendanceReferees(gameid=None):
@@ -91,3 +92,10 @@ yeardates = {
 for year, dates in yeardates.items():
     getGameAttendanceReferees(dates[0], dates[1]).to_csv('game_attendance_ref_{0}.csv'.format(year))
     print('Created CSV for year {0} ({1} - {2})'.format(year, dates[0], dates[1]))
+
+#years = np.arange(2015, 2023)
+#for year in years:
+#    df = pd.read_csv('../data/gameStats/game_attendance_ref_{}.csv'.format(year))
+#    df.set_index('gameid', inplace = True)
+#    df.drop('Unnamed: 0', axis = 1, inplace = True)
+#    df.to_csv('../data/gameStats/game_attendance_ref_{}.csv'.format(year))
