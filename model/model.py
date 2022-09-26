@@ -199,7 +199,6 @@ def getKellyBreakdown(df, alpha, x_columns, max_bet, n):
     df['home'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'], n)[1], axis = 1)
     df['per_bet'] = df['per_bet'].where(df['per_bet'] <= max_bet, max_bet)
     df['return'] = df.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
-
     
     df['adj_return'] = df.apply(lambda d: 1 if d['return'] < 1 else d['return'], axis = 1)
     print(df)
@@ -251,8 +250,37 @@ def findTotal(dictReturns):
 
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
-dfAll, returns = Kelly(df, 0.3, x_columns, 1, 0)
+dfAll, returns = Kelly(df, 0.15, x_columns, 0.05, 0)
+
+x = np.arange(1, len(returns) + 1)
+y = list(returns.array)
+plt.plot(x, y, label = 'PERCENTAGE RETURN')
+plt.show()
+
+def findOptimalKellyParameters():
+    param_grid = {
+        'kelly_factor' : [0.1, 0.15, 0.2, 0.25, 0.3, 0.35],
+        'max_bet' : [0.05, 0.075, 0.10, 0.125,  0.15, 0.175],
+        'avoid_odds' : [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+                  }
+    keys, values = zip(*param_grid.items())
+    permutations_grid = [dict(zip(keys, v)) for v in itertools.product(*values)]
+    return permutations_grid
+
+def findMaxParams():
+    permutations_grid = findOptimalKellyParameters()
+    returnList = []
+    for i in range (0, len(permutations_grid) - 1):
+        with HiddenPrints(): 
+            dfAll, returns = Kelly(df, permutations_grid[i]['kelly_factor'], x_columns, permutations_grid[i]['max_bet'], permutations_grid[i]['avoid_odds'])
+            returnList.append(returns[-1])
+    print(max(returnList), returnList.index(max(returnList)))
+    return returnList, permutations_grid[returnList.index(max(returnList))]
+
+returns_params, opt_params = findMaxParams()
 #print(cum_returns)
+
+dfAll, returns = Kelly(df, opt_params['kelly_factor'], x_columns, opt_params['max_bet'], opt_params['avoid_odds'])
 
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
@@ -271,7 +299,7 @@ def testSeeds(clf, n):
             Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
 
             df = getOddBreakdown(Y_pred_prob, Y_test)
-            dfAll, returnsAll = Kelly(df, 0.15, x_columns, 0.05, 0.5)
+            dfAll, returnsAll = Kelly(df, 0.2, x_columns, 1, 0)
         returnList.append(returnsAll[-1])
         maxReturns.append(max(list(returnsAll)))
 
