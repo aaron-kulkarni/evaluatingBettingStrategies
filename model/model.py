@@ -59,35 +59,54 @@ perMetric = selectColPerMetric(['perMetricHome', 'perMetricAway', 'perMetricEloA
 
 #perMetric = selectColPerMetric(['perMetricHome', 'perMetricAway'])
 
-def getDFAll(dfList, years, dropNA = True):
+def getDataIndex(dfList, years, dropNA = True):
+    '''
+    IMPORTANT** NOT INCLUDING PCA
+
+    '''
     df_all = pd.concat(dfList, axis = 1, join = 'inner')
     df_all.reset_index(inplace = True)
     df_all['year'] = df_all.apply(lambda d: getYearFromId(d['index']), axis = 1)
     df_all.set_index('index', inplace = True)
     df_all = df_all[df_all['year'].isin(years)]
-    df_all.drop('year', axis = 1, inplace = True)
+    
     if dropNA == True:
         df_all.dropna(axis = 0, inplace = True)
-    return df_all
+    return df_all.index
 
-def splitTrainTestYear(X, Y, year):
+
+def splitTrainTestYear(index, year):
     '''
     splits data into training data and testing data (data that is tested is last year of input data
     
     '''
+    df = pd.DataFrame(index = index, data = index)
+    df['year'] = df.apply(lambda d: getYearFromId(d['index']), axis = 1)
+    df.drop('index', axis = 1, inplace = True)
+    X_train = df[df['year'] != year]
+    X_test = df[df['year'] == year]
 
-    X.reset_index(inplace = True)
-    X['year'] = X.apply(lambda d: getYearFromId(d['index']), axis = 1)
-    X.set_index('index', inplace = True)
-    X_train = X[X['year'] != year]
-    X_test = X[X['year'] == year]
-    X_train.drop('year', axis = 1, inplace = True)
-    X_test.drop('year', axis = 1, inplace = True)
     
+    #Y = getSignal().reindex(X.index)
+    #Y_train = Y[Y.index.isin(X_train.index)].reindex(X_train.index)
+    #Y_test = Y[Y.index.isin(X_test.index)].reindex(X_test.index)
 
-    Y_train = Y[Y.index.isin(X_train.index)].reindex(X_train.index)
-    Y_test = Y[Y.index.isin(X_test.index)].reindex(X_test.index)
-    return X_train, X_test, Y_train, Y_test
+    return sortDate(X_train.index), sortDate(X_test.index)
+
+def iteratedPCA(bettingOddsAll, n, train_index, test_index):
+    bettingOdds_train = bettingOddsAll.reindex(train_index)
+    bettingOdds_train_PCA, coeff = performPCA(bettingOdds_train, n)
+    bettingOdds_test = bettingOddsAll.reindex(test_index)
+    bettingOdds_test_PCA = pd.DataFrame(index = test_index, columns = ['PCA1', 'PCA2'])
+    with HiddenPrints():
+        
+        for i in range(0,len(test_index)):
+            bettingOdds_test = pd.concat([bettingOdds_test[:i+1], bettingOdds_train], axis = 0)
+            bettingOdds_test_i, coeff = performPCA(bettingOdds_test, n)
+            bettingOdds_test_PCA.iloc[i] = bettingOdds_test_i.iloc[-1]
+
+    return bettingOdds_train_PCA ,bettingOdds_test_PCA
+        
 
 def splitTrainTest(X, Y, p, state, shuffle = True):
     '''
@@ -96,10 +115,13 @@ def splitTrainTest(X, Y, p, state, shuffle = True):
     '''
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size = 1-p, test_size = p, random_state = state, shuffle = shuffle)
     
-    return X_train, X_test, Y_train, Y_test 
+    return X_train, X_test, Y_train, Y_test
+
+years = list(np.arange(2019, 2023))
+X_train_index, X_test_index = splitTrainTestYear(getDataIndex([elo, perMetric], years, True), 2022)
 
     
-years = list(np.arange(2015, 2023))
+years = list(np.arange(2019, 2023))
 df_all = getDFAll([bettingOddsPCA, elo, perMetric], years, True)
 
 X = df_all
