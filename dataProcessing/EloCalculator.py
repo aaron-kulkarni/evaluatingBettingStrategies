@@ -13,8 +13,8 @@ class EloCalculator:
     def win_probs(home_elo, away_elo, home_court_advantage):
         h = math.pow(10, home_elo / 400)
         r = math.pow(10, away_elo / 400)
-        a = math.pow(10, home_court_advantage / 400)
 
+        a = math.pow(10, home_court_advantage / 400)
         denom = r + a * h
         home_prob = a * h / denom
         away_prob = r / denom
@@ -337,10 +337,10 @@ class EloCalculator:
                                  index_col=0).index
         df = pd.DataFrame(columns=['game_id', 'homeTeamElo', 'awayTeamElo', 'homeTeamEloAfter', 'awayTeamEloAfter'])
         for gameId in list(gameIdList):
-            teamHome, teamAway, pointsAway, pointsHome = self.getEloInputs(gameId)
+            teamHome, teamAway, pointsAway, pointsHome = EloCalculator.getEloInputs(gameId)
             eloHome = eloDict[teamHome]
             eloAway = eloDict[teamAway]
-            eloDict = self.getEloDict(eloDict, gameId)
+            eloDict = EloCalculator.getEloDict(eloDict, gameId)
 
             newRow = {'game_id': gameId, 'homeTeamElo': eloHome, 'awayTeamElo': eloAway,
                       'homeTeamEloAfter': eloDict[teamHome], 'awayTeamEloAfter': eloDict[teamAway]}
@@ -351,11 +351,11 @@ class EloCalculator:
 
     @staticmethod
     def getEloDict(eloDict, gameId):
-        teamHome, teamAway, pointsAway, pointsHome = self.getEloInputs(gameId)
+        teamHome, teamAway, pointsAway, pointsHome = EloCalculator.getEloInputs(gameId)
         eloHome = eloDict[teamHome]
         eloAway = eloDict[teamAway]
 
-        eloHome, eloAway = self.update_elo(pointsHome, pointsAway, eloHome, eloAway, 100)
+        eloHome, eloAway = EloCalculator.update_elo(pointsHome, pointsAway, eloHome, eloAway, 100)
         upDict = {teamHome: eloHome, teamAway: eloAway
                   }
         eloDict.update(upDict)
@@ -375,25 +375,62 @@ class EloCalculator:
         return teamHome, teamAway, pointsAway, pointsHome
 
     @staticmethod
-    def getEloProbability(self, year):
+    def getEloProbability(year):
         df = pd.read_csv('../data/eloData/elo_{}.csv'.format(year), index_col=0)
-        df['homeTeamProb'] = df.apply(lambda d: self.win_probs(d['homeTeamElo'], d['awayTeamElo'], 100)[0], axis=1)
-        df['awayTeamProb'] = df.apply(lambda d: self.win_probs(d['homeTeamElo'], d['awayTeamElo'], 100)[1], axis=1)
+        df['homeTeamProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeTeamElo'], d['awayTeamElo'], 100)[0], axis=1)
+        df['awayTeamProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeTeamElo'], d['awayTeamElo'], 100)[1], axis=1)
 
         return df
 
+    @staticmethod
     def getEloProb(filename):
         df = pd.read_csv('../data/eloData/nba_elo_all_filled.csv', index_col = 0)
-        df['homeProb'] = df.apply(lambda d: self.win_probs(d['homeElo'], d['awayElo'], self.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
-        df['awayProb'] = df.apply(lambda d: self.win_probs(d['homeElo'], d['awayElo'], d['neutral'])[1], axis=1)
-        df['homeProbRAPTOR'] = df.apply(lambda d: self.win_probs(d['homeEloRAPTOR'], d['awayEloRAPTOR'], self.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
-        df['awayProbRAPTOR'] = df.apply(lambda d: self.win_probs(d['homeTeamElo'], d['awayTeamElo'], d['neutral'])[1], axis=1)
+        df['homeProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeElo'], d['awayElo'], EloCalculator.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
+        df['awayProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeElo'], d['awayElo'], d['neutral'])[1], axis=1)
+        df['homeProbRAPTOR'] = df.apply(lambda d: EloCalculator.win_probs(d['homeEloRAPTOR'], d['awayEloRAPTOR'], EloCalculator.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
+        df['awayProbRAPTOR'] = df.apply(lambda d: EloCalculator.win_probs(d['homeTeamElo'], d['awayTeamElo'], d['neutral'])[1], axis=1)
+
+        return df.drop(['neutral'], axis=1)
+
+    @staticmethod
+    def getUpdatedEloProb(year):
+        df = pd.read_csv('../data/eloData/nba_elo_all_filled.csv', index_col=0)
+        scoreDF = pd.read_csv('../data/gameStats/game_state_data_{0}.csv'.format(year), index_col=0, header=[0,1])
+
+        df = df[df.index.isin(scoreDF.index)]
+
+        df['homeProbRAPTOR'] = df.apply(lambda d: EloCalculator.win_probs(d['homeEloRAPTOR'], d['awayEloRAPTOR'],
+                                EloCalculator.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
+        df['awayProbRAPTOR'] = df.apply(lambda d: EloCalculator.win_probs(d['homeEloRAPTOR'], d['awayEloRAPTOR'],
+                                EloCalculator.returnHomeCourtAdvantage(d['neutral']))[1], axis=1)
+
+        df['homeTeamProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeElo'], d['awayElo'],
+                                EloCalculator.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
+        df['awayTeamProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeElo'], d['awayElo'],
+                                EloCalculator.returnHomeCourtAdvantage(d['neutral']))[1], axis=1)
+
+        df['homeTeamEloAfter'] = df.apply(lambda d: EloCalculator.update_elo(
+                                    scoreDF.loc[d.name]['home']['points'],
+                                    scoreDF.loc[d.name]['away']['points'],
+                                    d['homeElo'],
+                                    d['awayElo'],
+                                    EloCalculator.returnHomeCourtAdvantage(d['neutral'])
+                                )[0], axis=1)
+
+        df['awayTeamEloAfter'] = df.apply(lambda d: EloCalculator.update_elo(
+                                    scoreDF.loc[d.name]['home']['points'],
+                                    scoreDF.loc[d.name]['away']['points'],
+                                    d['homeElo'],
+                                    d['awayElo'],
+                                    EloCalculator.returnHomeCourtAdvantage(d['neutral'])
+                                )[1], axis=1)
 
         return df
-        
-years = np.arange(2015, 2023)
-for year in years:
-    EloCalculator.getEloProbability(year).to_csv('team_elo_{}.csv'.format(year))
+
+
+# years = np.arange(2015, 2023)
+# for year in years:
+#     EloCalculator.getEloProb(year).to_csv('team_elo_{}.csv'.format(year))
 
 '''
 
