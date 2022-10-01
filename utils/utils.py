@@ -22,7 +22,7 @@ def getGamesBetween(start_date, end_date):
     return Boxscores(dateToDateTime(start_date), dateToDateTime(end_date)).games
 
 
-def getGameData(game_id):
+def getBoxscoreData(game_id):
     return Boxscore(game_id)
 
 
@@ -56,7 +56,8 @@ def gameIdToDateTime(game_id):
 def dateToDateTime(date, format='%Y%m%d'):
     return dt.datetime.strptime(date[0:8], format)
 
-def dateDateTime(date, format = '%Y-%m-%d %H:%M:%S'):
+
+def dateDateTime(date, format='%Y-%m-%d %H:%M:%S'):
     return dt.datetime.strptime(date, format)
 
 
@@ -172,7 +173,7 @@ def getSeasonGames(gameId, team):
 def getRecentNGames(gameId, n, team):
     '''
     Obtains ids of the past n games (non inclusive) given the game_id of current game and team abbreviation
-    
+
     '''
     if n <= 0:
         raise Exception('N parameter must be greater than 0')
@@ -187,6 +188,7 @@ def getRecentNGames(gameId, n, team):
 
     return gameIdList
 
+
 def convDateTime(gameId, timeOfDay):
     if timeOfDay[-1:] == 'p':
         timeOfDay = timeOfDay[:-1] + 'PM'
@@ -197,22 +199,24 @@ def convDateTime(gameId, timeOfDay):
 
     else:
         return print('Error')
-    
+
+
 def sortDate(gameIdList):
     '''
     Sorts a gameIdList by time order and outputs sorted gameId list
-    
+
     '''
 
-    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col = 0, header = [0, 1])
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0, 1])
     dateCol = pd.DataFrame()
     dateCol['datetime'] = pd.to_datetime(df['gameState']['datetime'])
     dateCol = dateCol[dateCol.index.isin(gameIdList)]
-    dateCol.sort_values(by = 'datetime', ascending = True, inplace = True)
+    dateCol.sort_values(by='datetime', ascending=True, inplace=True)
     return list(dateCol.index)
 
+
 def returnDate(gameId, start):
-    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col = 0, header = [0, 1])
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0, 1])
     if start == 1:
         return df['gameState', 'datetime'].loc[gameId]
     if start == 0:
@@ -220,29 +224,31 @@ def returnDate(gameId, start):
     else:
         return 'Error'
 
+
 def orderAllDates(df):
-    df.reset_index(inplace = True)
-    df['date'] = df.apply(lambda d: returnDate(d['index'], d['start']), axis = 1)
-    df.sort_values(by = 'date', ascending = True, inplace = True)
-    df.set_index(['index'], inplace = True)
-    return df 
+    df.reset_index(inplace=True)
+    df['date'] = df.apply(lambda d: returnDate(d['index'], d['start']), axis=1)
+    df.sort_values(by='date', ascending=True, inplace=True)
+    df.set_index(['index'], inplace=True)
+    return df
+
 
 def sortAllDates(gameIdList):
-    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col = 0, header = [0, 1])
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0, 1])
     df1, df2 = pd.DataFrame(), pd.DataFrame()
     df1['date'] = pd.to_datetime(df['gameState']['datetime'])
     df1['start'] = 1
     df2['date'] = pd.to_datetime(df['gameState']['endtime'])
     df2['start'] = 0
-    df1.reset_index(inplace = True)
-    df2.reset_index(inplace = True)
-    df = pd.concat([df1, df2], axis = 0)
-    df.sort_values(by = 'date', ascending = True, inplace = True)
-    df.set_index(['game_id'], inplace = True)
+    df1.reset_index(inplace=True)
+    df2.reset_index(inplace=True)
+    df = pd.concat([df1, df2], axis=0)
+    df.sort_values(by='date', ascending=True, inplace=True)
+    df.set_index(['game_id'], inplace=True)
     df = df[df.index.isin(gameIdList)]
-    df.reset_index(inplace = True)
-    df.set_index(['game_id', 'start'], inplace = True)
-    
+    df.reset_index(inplace=True)
+    df.set_index(['game_id', 'start'], inplace=True)
+
     return df.index
 
 
@@ -254,10 +260,11 @@ class HiddenPrints:
     def __exit__(self, exc_type, exc_val, exc_tb):
         sys.stdout.close()
         sys.stdout = self._original_stdout
-        
+
+
 def cumsum_reset_on_null(srs):
-    cumulative = srs.cumsum().fillna(method = 'ffill')
-    restart = ((cumulative * srs.isnull()).replace(0.0, np.nan).fillna(method = 'ffill').fillna(0))
+    cumulative = srs.cumsum().fillna(method='ffill')
+    restart = ((cumulative * srs.isnull()).replace(0.0, np.nan).fillna(method='ffill').fillna(0))
     result = (cumulative - restart)
 
     return result.replace(0, np.nan)

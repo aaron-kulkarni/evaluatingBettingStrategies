@@ -19,7 +19,7 @@ pd.set_option("display.max_rows", 150)
 #https://www.anyscale.com/blog/how-to-distribute-hyperparameter-tuning-using-ray-tune
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, confusion_matrix
 import xgboost as xgb
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV

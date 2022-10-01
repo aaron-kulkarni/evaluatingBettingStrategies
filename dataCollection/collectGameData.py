@@ -1,11 +1,14 @@
 import numpy as np
+import pandas as pd
 import requests
 from lxml import html
+from utils.utils import *
 from datetime import timedelta
+from collectStaticData import *
+import os
 
 import sys
 sys.path.insert(0, "..")
-from utils.utils import *
 
 
 """
@@ -60,14 +63,15 @@ def getGameData(game_id):
     Returns
     -------
     An array of the following data:
-    [ game id, game winner, home team, away team, time of day, location,
+    [ game id, game winner, home team, away team, location,
         Q1 home score, Q2 home score, Q3 home score, Q4 home score, overtime home score,
         total home points, home winning/losing streak, number of days since last home team game,
         home team roster, home win/loss record, home wins for this match-up,
         Q1 away score, Q2 away score, Q3 away score, Q4 away score, overtime away score,
         total away points, away winning/losing streak, number of days since last away team game,
         away team roster, away win/loss record, away wins for this match-up,
-        rivalry type ]
+        rivalry type, home total salary, away total salary, home average salary, away average salary,
+        home # of games played, away # of games played, game start time, game end time ]
     """
 
     # Checks that the game id is a valid game id
@@ -80,7 +84,7 @@ def getGameData(game_id):
     teamHome = a['home_abbr']
     teamAway = a['away_abbr']
 
-    gameData = getGameData(game_id)
+    gameData = getBoxscoreData(game_id)
 
     # Gets the home and away past schedules and sorts the schedules by datetime
     teamHomeSchedule = getTeamScheduleAPI(teamHome, game_id[0:8]).sort_values(by='datetime')
@@ -97,8 +101,7 @@ def getGameData(game_id):
     # Sets the winner based on the total number of points scored
     winner = teamHome if pointsHome > pointsAway else teamAway
 
-    # Gets the time of day, location, and rivalry type of the game
-    timeOfDay = teamHomeSchedule.loc[game_id][13]
+    # Gets the location and rivalry type of the game
     location = gameData.location
     rivalry = getRivalry(teamHome, teamAway)
 
@@ -125,13 +128,27 @@ def getGameData(game_id):
     # TODO coaches are unused right now, might add to dataframe later?
     homeCoach, awayCoach = getCoaches(teamHome, teamAway, game_id[0:8])
 
+    #Gets player and team salaries
+    homeTotalSalary, homeAverageSalary = getTeamSalaryData(teamHome, game_id, homePlayerRoster)
+    awayTotalSalary, awayAverageSalary = getTeamSalaryData(teamAway, game_id, awayPlayerRoster)
+
+    #Gets Number of Games Played
+    year = getYearFromId(game_id)
+    homeGamesPlayed = getNumberGamesPlayed(teamHome, year, game_id)
+    awayGamesPlayed = getNumberGamesPlayed(teamAway, year, game_id)
+
+    #Times of game
+    timeOfDay = convDateTime(game_id, teamHomeSchedule.loc[game_id][13])
+    endTime = timeOfDay + (timedelta(hours=(2 + .5 * len(overtimeScoresHome))))
+
     # Condenses all the information into an array to return
-    gameData = [game_id, winner, teamHome, teamAway, timeOfDay, location,
+    gameData = [game_id, winner, teamHome, teamAway, location,
                 q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, overtimeScoresHome,
                 pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupWinsHome,
                 q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, overtimeScoresAway,
                 pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster, awayRecord, matchupWinsAway,
-                rivalry]
+                rivalry, homeTotalSalary, awayTotalSalary, homeAverageSalary, awayAverageSalary,
+                homeGamesPlayed, awayGamesPlayed, timeOfDay, endTime]
 
     return gameData
 
@@ -164,7 +181,7 @@ def getQuarterScore(game_summary):
     overtimeScoresAway = []
 
     overtimePeriods = len(game_summary['home']) - 4
-    for x in range(4, 4 + overtimePeriods - 1):
+    for x in range(4, 4 + overtimePeriods):
         overtimeScoresHome.append(game_summary['home'][x])
         overtimeScoresAway.append(game_summary['away'][x])
 
@@ -284,6 +301,39 @@ def getPastMatchUpWinLoss(home_team_schedule, game_id, away_team):
 
     return wins, losses
 
+def getTeamSalaryData(team_abbr, game_id, playerRoster):
+    """
+    Gets average salary for team as well as total salary for a specific game
+    given the game roster.
+
+    Parameters
+    ----------
+    team_abbr : the 3 letter basketball-reference abbreviation of the team
+    game_id : the basketball-reference.com id of the game
+    playerRoster : the list of players playing in the game for the team
+
+    Returns
+    -------
+    The salary data as a tuple (totalSalary, averageSalary)
+    """
+    curSalary = 0
+    totalSalary = 0
+    averageSalary = 0
+    i = 0
+
+    year = getYearFromId(game_id)
+    for playerId in playerRoster:
+        try:
+            curSalary = scrapePlayerSalaryData(year, playerId)
+        except Exception as e:
+            print(e)
+            curSalary = 0
+            i -= 1
+        totalSalary += curSalary
+        i += 1
+    averageSalary = totalSalary / i
+
+    return totalSalary, averageSalary
 
 def getRivalry(team_home, team_away):
     """
@@ -373,15 +423,19 @@ def getGameDataframe(start_time, end_time):
     for game_id in gameIdList:
         gameDataList.append(getGameData(game_id))
 
-    cols = ['game_id', 'winner', 'teamHome', 'teamAway', 'timeOfDay', 'location', 'q1ScoreHome',
-            'q2ScoreHome', 'q3ScoreHome', 'q4ScoreHome', 'overtimeScoresHome',
-            'pointsHome', 'streakHome', 'daysSinceLastGameHome', 'homePlayerRoster', 'homeRecord',
-            'matchupWinsHome', 'q1ScoreAway', 'q2ScoreAway', 'q3ScoreAway', 'q4ScoreAway',
-            'overtimeScoresAway', 'pointsAway', 'streakAway', 'daysSinceLastGameAway',
-            'awayPlayerRoster', 'awayRecord', 'matchupWinsAway', 'rivalry']
+    cols = ['game_id', 'winner', 'teamHome', 'teamAway', 'location', 'q1Score',
+            'q2Score', 'q3Score', 'q4Score', 'overtimeScores',
+            'points', 'streak', 'daysSinceLastGame', 'playerRoster', 'record',
+            'matchupWins', 'q1Score', 'q2Score', 'q3Score', 'q4Score',
+            'overtimeScores', 'points', 'streak', 'daysSinceLastGame',
+            'playerRoster', 'record', 'matchupWins', 'rivalry', 'salary', 'salary',
+            'avgSalary', 'avgSalary', 'numberOfGamesPlayed', 'numberOfGamesPlayed', 'datetime', 'endtime']
 
     df = pd.DataFrame(gameDataList, columns=cols)
     df.set_index('game_id', inplace=True)
+    fileName = '../data/tempBullshit.csv'
+    df.to_csv(fileName)
+    makeMultiIndexing(fileName)
     return df
 
 
@@ -433,16 +487,31 @@ def addEndTime(years):
         (2 + .5*(len((d['home', 'overtimeScores']).split(","))))), axis = 1)
         df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
     return df
+
+def makeMultiIndexing(file):
+    line = ',gameState,gameState,gameState,gameState,home,home,home,home,home,home,home,home,home,home,home,away,away,away,away,away,away,away,away,away,away,away,gameState,home,away,home,away,home,away,gameState,gameState'
+
+    tempfile = file + '.abc'
+    with open(file, 'r') as read_objc, open(tempfile, 'w') as write_objc:
+        write_objc.write(line + '\n')
+
+        for line in read_objc:
+            write_objc.write(line)
+
+    os.remove(file)
+    os.rename(tempfile, file)
+
+    return
                                               
-years = np.arange(2015, 2023)
+# years = np.arange(2015, 2023)
 #concatDF(years).to_csv('../data/gameStats/game_state_data_ALL.csv')
 # for year in years:
 #     convDateTimeDF(year).to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
 
 #addEndTime(years)
 
-
-
+print(getGameData("202102100LAL"))
+#getGameDataframe('20201225', '20201225')
 # TODO might be deleted
 # def getGameStatYear(year):
 #     """
