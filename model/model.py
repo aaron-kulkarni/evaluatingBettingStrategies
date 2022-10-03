@@ -143,7 +143,7 @@ EXECUTION
 
 # INDEX OF TRAINING DATA AND TESTING DATA, YEARS IS ALL RELEVANT DATA YOU WOUD LIKE TESTED
 years = list(np.arange(2019, 2023))
-train_index, test_index = splitTrainTestYear(getDataIndex([elo, perMetric], years, True), 2020)
+train_index, test_index = splitTrainTestYear(getDataIndex([elo, perMetric], years, True), 2022)
 
 train_index_all = sortDate(list(set(bettingOddsAll.index) - set(test_index)))
 bettingOddsPCA = iteratedPCA(bettingOddsAll, 2, train_index_all, test_index)
@@ -295,7 +295,7 @@ def findTotal(dictReturns):
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
 # SEEMS LIKE THESIS IS INCORRECT 
-dfAll, returns = Kelly(df, 0.3, x_columns, 1, 0, [0.05, 1])
+dfAll, returns = Kelly(df, 0.3, x_columns, 1, [0,100], [0.05, 1])
 
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
@@ -306,7 +306,7 @@ def findOptimalKellyParameters():
     param_grid = {
         'kelly_factor' : [0.1, 0.15, 0.2, 0.25, 0.3, 0.35],
         'max_bet' : [0.05, 0.075, 0.10, 0.125,  0.15, 0.175],
-        'avoid_odds' : [0, 0.2, 0.4, 0.6, 0.8],
+        'avoid_odds' : [[0, 100], [0.2, 100]],
         'bet_diff' : [[0.05, 1], [0.1, 1]]
                   }
     keys, values = zip(*param_grid.items())
@@ -350,7 +350,7 @@ def testSeeds(clf, n):
             Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
 
             df = getOddBreakdown(Y_pred_prob, Y_test)
-            dfAll, returnsAll = Kelly(df, 0.2, x_columns, 1, 0, [0.05, 1])
+            dfAll, returnsAll = Kelly(df, 0.2, x_columns, 1, [0, 100], [0.05, 1])
         returnList.append(returnsAll[-1])
         maxReturns.append(max(list(returnsAll)))
     
@@ -411,7 +411,7 @@ clfOpt = XGBClassifier(n_estimators = permutations_grid[j]['n_estimators'], max_
 Y_pred_prob = xgboost(clfOpt)
 df = getOddBreakdown(Y_pred_prob, Y_test)
 
-dfAll, returns = Kelly(df, 0.15, x_columns, 0.05, 0.6, [0.1, 1])
+dfAll, returns = Kelly(df, 0.15, x_columns, 0.05, [0, 100], [0.1, 1])
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')

@@ -30,7 +30,9 @@ def kellyBet(Y_prob, alpha, prop_gained_home, prop_gained_away, n):
 
 
 def avoidOdds(prop_gained, f_bet, n):
-    if prop_gained < n:
+    if prop_gained > n[1]:
+        f_bet = 0
+    if prop_gained < n[0]:
         f_bet = 0
     return f_bet
 
