@@ -17,8 +17,74 @@ class PerformanceMetric:
         self.adj_prob_df = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(self.year), index_col=0, header=[0, 1])
         self.elo = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
         self.elo_df = self.elo[self.elo['season'] == self.year]
+
+    def returnBettingOdds(self): 
+        adj_series = self.adj_prob_df['homeProbAdj'].mean(skipna=True, axis=1), self.adj_prob_df['awayProbAdj'].mean(skipna=True, axis=1), 
+        return adj_series
+
+    def returnTeamSeries(self, series, team):
+        home_schedule, away_schedule = getTeamScheduleCSV(team, self.year)
+        series_home = series[series.index.isin(home_schedule.index)]
+        series = 1 - series
+        series_away = series[series.index.isin(away_schedule.index)]
+        series_total = pd.concat([series_home, series_away], axis=0)
+        series_total = series_total.sort_index(ascending=True)
+        return series_total
+    
+    def getSignalTeam(self, team):
+        return self.returnTeamSeries(getSignal(), team)
+
+    def returnPerMetricTeam(self, series, team):
+        exp_wins = series.cumsum()
+        act_wins = self.getSignalTeam(team).cumsum()
+        return (act_wins - exp_wins).shift()
         
+    def returnPerMetricNTeam(self, series, team, n):
+        return self.returnPerMetricTeam(series, team).rolling(window = n).mean()
+
+    def returnPerMetric(self, series):
         
+        '''
+        Assumption - Probability of win in each game is independent (this is obviously not a true statement). Each variable is a Bernoulli random variable and thus the expectation of the number of wins they have is the sum of the expected values of each individual game
+        
+        '''
+        
+        df = getTeamsDF(self.year)
+        for team in getAllTeams():
+            perMetricTeam = self.returnPerMetricTeam(self.returnTeamSeries(series, team), team).to_frame(name=team)
+            df = pd.concat([df, perMetricTeam], axis = 1)
+        df['perMetricHome'] =  df.apply(lambda d: d[d['teamHome']], axis=1)
+        df['perMetricAway'] =  df.apply(lambda d: d[d['teamAway']], axis=1)
+        return df[['perMetricHome', 'perMetricAway']]
+
+    def returnPerMetricN(self, series, n):
+        '''
+        Rolling average of performance metrics
+        
+        '''
+        df = getTeamsDF(self.year)
+        for team in getAllTeams():
+            perMetricNTeam = self.returnPerMetricNTeam(self.returnTeamSeries(series, team), team, n).to_frame(name=team)
+            df = pd.concat([df, perMetricNTeam], axis = 1)
+        df['perMetric{}Home'.format(n)] =  df.apply(lambda d: d[d['teamHome']], axis=1)
+        df['perMetric{}Away'.format(n)] =  df.apply(lambda d: d[d['teamAway']], axis=1)
+        return df[['perMetric{}Home'.format(n), 'perMetric{}Away'.format(n)]]
+
+
+
+    '''
+    -----------------------------------------------
+    REDUNDANT
+    
+    '''
+    
+    def getSignal(self, team):
+        homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, self.year)
+        df = pd.concat([homeTeamSchedule['gameState', 'winner'], awayTeamSchedule['gameState', 'winner']], axis=0).to_frame()['gameState']
+        df = df.sort_index(ascending=True)
+        df['signal'] = df.apply(lambda d: 1 if d['winner'] == team else 0, axis=1)
+        return df['signal']
+    
     def returnBettingOddsAverage(self, team):
         adjProb = self.adj_prob_df
         homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, self.year)
@@ -59,14 +125,6 @@ class PerformanceMetric:
         raptor_elo_df = raptor_elo_df.sort_index(ascending = True)
         return elo_df, raptor_elo_df
 
-    def getSignal(self, team):
-        homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, self.year)
-
-        df = pd.concat([homeTeamSchedule['gameState', 'winner'], awayTeamSchedule['gameState', 'winner']], axis=0).to_frame()['gameState']
-        df = df.sort_index(ascending=True)
-        df['signal'] = df.apply(lambda d: 1 if d['winner'] == team else 0, axis=1)
-
-        return df['signal']
 
     def getPerformanceMetric(self, team, cum_sum=True):
         """
