@@ -62,17 +62,24 @@ def dateDateTime(date, format='%Y-%m-%d %H:%M:%S'):
 
 
 def getYearFromId(game_id):
-    if int(game_id[0:4]) == 2020:
-        if int(game_id[4:6].lstrip("0")) < 11:
-            year = int(game_id[0:4])
-        else:
-            year = int(game_id[0:4]) + 1
+    return getYearHelper(int(game_id[0:4]), int(game_id[4:6].lstrip("0")))
+
+def getYearFromDate(date):
+    year = date.strftime("%Y")
+    month = date.strftime("%m")
+    return getYearHelper(year, month)
+
+
+def getYearHelper(gameYear, month):
+    seasonYear = gameYear
+    if gameYear == 2020:
+        if month >= 11:
+            seasonYear += 1
     else:
-        if int(game_id[4:6].lstrip("0")) > 7:
-            year = int(game_id[0:4]) + 1
-        else:
-            year = int(game_id[0:4])
-    return year
+        if month > 7:
+            seasonYear += 1
+
+    return seasonYear
 
 
 def gameIdIsValid(game_id):
@@ -194,7 +201,7 @@ def convDateTime(gameId, timeOfDay):
         timeOfDay = timeOfDay[:-1] + 'PM'
         return dt.datetime.strptime(gameId[0:8] + timeOfDay, '%Y%m%d%I:%M%p')
     if timeOfDay[-1:] == 'a':
-        timeOfDat = timeOfDay[:-1] + 'AM'
+        timeOfDay = timeOfDay[:-1] + 'AM'
         return dt.datetime.strptime(gameId[0:8] + timeOfDay, '%Y%m%d%I:%M%p')
 
     else:

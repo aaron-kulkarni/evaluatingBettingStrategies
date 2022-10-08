@@ -7,7 +7,15 @@ from dateutil import parser
 
 import sys
 sys.path.insert(0, '..')
-from utils.utils import * 
+from utils.utils import *
+
+
+def getYearIds(year):
+    df = pd.read_csv('../data/gameStats/allGameIds.csv', index_col=False)
+    return df[str(year)].to_list()
+
+
+
 
 def getCurrentMonthIds(month, year):
     url = 'https://www.basketball-reference.com/leagues/NBA_{}_games-{}.html'.format(year, month)
@@ -29,17 +37,20 @@ def getCurrentMonthIds(month, year):
         dateTimeList.append(dateTime)
     return gameIdList, dateTimeList
 
-def getCurrentYearIds(year):
-    
-    gameIdList = []
-    dateTimeList = []
+getYearIds(2017)
 
-    months = ['october', 'november', 'december', 'january', 'february', 'march', 'april']
-    for month in months:
-        gameIdMonth, dateTimeMonth = getCurrentMonthIds(month, year)
-        gameIdList.extend(gameIdMonth)
-        dateTimeList.extend(dateTimeMonth)
+# def getCurrentYearIds(year):
+#
+#     gameIdList = []
+#     dateTimeList = []
+#
+#     months = ['october', 'november', 'december', 'january', 'february', 'march', 'april']
+#     for month in months:
+#         gameIdMonth, dateTimeMonth = getCurrentMonthIds(month, year)
+#         gameIdList.extend(gameIdMonth)
+#         dateTimeList.extend(dateTimeMonth)
+#
+#     return gameIdList, dateTimeList
 
-    return gameIdList, dateTimeList
 
-gameIdList, dateTimeList = getCurrentYearIds(2023)
+

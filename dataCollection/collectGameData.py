@@ -5,11 +5,13 @@ from lxml import html
 from utils.utils import *
 from datetime import timedelta
 from collectStaticData import *
+from collectGameIds import *
 import os
+import datetime as dt
 
 import sys
-sys.path.insert(0, "..")
 
+sys.path.insert(0, "..")
 
 """
 The output from this file can be checked using the regex found in
@@ -128,16 +130,16 @@ def getGameData(game_id):
     # TODO coaches are unused right now, might add to dataframe later?
     homeCoach, awayCoach = getCoaches(teamHome, teamAway, game_id[0:8])
 
-    #Gets player and team salaries
+    # Gets player and team salaries
     homeTotalSalary, homeAverageSalary = getTeamSalaryData(teamHome, game_id, homePlayerRoster)
     awayTotalSalary, awayAverageSalary = getTeamSalaryData(teamAway, game_id, awayPlayerRoster)
 
-    #Gets Number of Games Played
+    # Gets Number of Games Played
     year = getYearFromId(game_id)
     homeGamesPlayed = getNumberGamesPlayed(teamHome, year, game_id)
     awayGamesPlayed = getNumberGamesPlayed(teamAway, year, game_id)
 
-    #Times of game
+    # Times of game
     timeOfDay = convDateTime(game_id, teamHomeSchedule.loc[game_id][13])
     endTime = timeOfDay + (timedelta(hours=(2 + .5 * len(overtimeScoresHome))))
 
@@ -301,6 +303,7 @@ def getPastMatchUpWinLoss(home_team_schedule, game_id, away_team):
 
     return wins, losses
 
+
 def getTeamSalaryData(team_abbr, game_id, playerRoster):
     """
     Gets average salary for team as well as total salary for a specific game
@@ -334,6 +337,7 @@ def getTeamSalaryData(team_abbr, game_id, playerRoster):
     averageSalary = totalSalary / i
 
     return totalSalary, averageSalary
+
 
 def getRivalry(team_home, team_away):
     """
@@ -413,12 +417,13 @@ def getGameDataframe(start_time, end_time):
     the game_id column as the index.
     """
 
-    allGames = getGamesBetween(start_time, end_time)
-    gameIdList = []
-    for key in allGames.keys():
-        for i in range(len(allGames[key])):
-            gameIdList.append(allGames[key][i]['boxscore'])
+    # allGames = getGamesBetween(start_time, end_time)
+    # gameIdList = []
+    # for key in allGames.keys():
+    #     for i in range(len(allGames[key])):
+    #         gameIdList.append(allGames[key][i]['boxscore'])
 
+    gameIdList = []
     gameDataList = []
     for game_id in gameIdList:
         gameDataList.append(getGameData(game_id))
@@ -437,6 +442,39 @@ def getGameDataframe(start_time, end_time):
     df.to_csv(fileName)
     makeMultiIndexing(fileName)
     return df
+
+
+def updateGameData():
+    """
+    Checks if current year's CSV is up to date with game data information. If not, update it.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    True if files are up to date before or after changes
+    """
+
+    today = dt.datetime.today()
+    year = getYearFromDate(today)
+    gameIdList = getYearIds(year)
+    previousGameList = [gameId for gameId in gameIdList if gameIdToDateTime(gameId) < today]
+    mostRecentGame = previousGameList[len(previousGameList) - 1]
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    df2 = df.loc[:mostRecentGame]
+    lastGameRecorded = df2.last_valid_index()
+    if lastGameRecorded == mostRecentGame:
+        # list is already fully updated
+        return
+    else:
+        idx = previousGameList.index(lastGameRecorded)
+        previousGameList = previousGameList[idx:] # don't care about previous games that already have data
+        for curId in previousGameList: # i honestly didn't know how to do it better than a for loop. should be relatively short though
+            df.loc[curId] = getGameData(curId)
+        df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+        return
 
 
 def getNumberGamesPlayedDF(year):
@@ -462,31 +500,35 @@ def getNumberGamesPlayedDF(year):
 
     return df
 
-def convDateTimeDF(year):
 
+def convDateTimeDF(year):
     df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
     df['gameState', 'index'] = df.index
-    df['gameState', 'datetime'] = df.apply(lambda d: convDateTime(d['gameState', 'index'], d['gameState', 'timeOfDay']), axis = 1)
-    df.drop(['index' , 'timeOfDay'], level = 1, inplace = True, axis = 1)
+    df['gameState', 'datetime'] = df.apply(lambda d: convDateTime(d['gameState', 'index'], d['gameState', 'timeOfDay']),
+                                           axis=1)
+    df.drop(['index', 'timeOfDay'], level=1, inplace=True, axis=1)
     return df
+
 
 def concatDF(years):
     df = pd.DataFrame()
     for year in years:
         dfCurrent = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
-        df = pd.concat([df, dfCurrent], axis = 0)
+        df = pd.concat([df, dfCurrent], axis=0)
 
     return df
 
 
 def addEndTime(years):
     for year in years:
-        df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
+        df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header=[0, 1], index_col=0)
         df['gameState', 'datetime'] = pd.to_datetime(df['gameState']['datetime'])
-        df['gameState', 'endtime'] = df.apply(lambda d: d['gameState', 'datetime'] + timedelta(hours = 2 if d['home', 'overtimeScores'] == "[]" else
-        (2 + .5*(len((d['home', 'overtimeScores']).split(","))))), axis = 1)
+        df['gameState', 'endtime'] = df.apply(
+            lambda d: d['gameState', 'datetime'] + timedelta(hours=2 if d['home', 'overtimeScores'] == "[]" else
+            (2 + .5 * (len((d['home', 'overtimeScores']).split(","))))), axis=1)
         df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
     return df
+
 
 def makeMultiIndexing(file):
     line = ',gameState,gameState,gameState,gameState,home,home,home,home,home,home,home,home,home,home,home,away,away,away,away,away,away,away,away,away,away,away,gameState,home,away,home,away,home,away,gameState,gameState'
@@ -502,16 +544,17 @@ def makeMultiIndexing(file):
     os.rename(tempfile, file)
 
     return
-                                              
+
+
 # years = np.arange(2015, 2023)
-#concatDF(years).to_csv('../data/gameStats/game_state_data_ALL.csv')
+# concatDF(years).to_csv('../data/gameStats/game_state_data_ALL.csv')
 # for year in years:
 #     convDateTimeDF(year).to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
 
-#addEndTime(years)
+# addEndTime(years)
 
-print(getGameData("202102100LAL"))
-#getGameDataframe('20201225', '20201225')
+# print(getGameData("202102100LAL"))
+getGameDataframe('20201225', '20201225')
 # TODO might be deleted
 # def getGameStatYear(year):
 #     """
@@ -535,6 +578,6 @@ print(getGameData("202102100LAL"))
 #     df = getGameDataframe(startDate, endDate)
 #     return df
 
-#years = np.arange(2015, 2023)
-#for y in years:
+# years = np.arange(2015, 2023)
+# for y in years:
 #    getNumberGamesPlayedDF(y).to_csv('../data/gameStats/game_state_data_{}.csv'.format(y))
