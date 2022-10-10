@@ -43,6 +43,9 @@ def getTeamScheduleAPI(team, game_date):
 
     return teamSchedule
 
+def getGameIdList(year):
+    df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
+    return df.index
 
 """
 The following functions convert and validate items
@@ -59,7 +62,6 @@ def dateToDateTime(date, format='%Y%m%d'):
 
 def dateDateTime(date, format='%Y-%m-%d %H:%M:%S'):
     return dt.datetime.strptime(date, format)
-
 
 def getYearFromId(game_id):
     return getYearHelper(int(game_id[0:4]), int(game_id[4:6].lstrip("0")))
@@ -164,6 +166,13 @@ def getAllTeams():
 
     return teamList
 
+def getTeamDict():
+    teamDict = {}
+    for team in Teams():
+        teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
+        teamDict[team.name] = teamAbbr
+
+    return teamDict
 
 def getSeasonGames(gameId, team):
     if not gameIdIsValid(gameId):

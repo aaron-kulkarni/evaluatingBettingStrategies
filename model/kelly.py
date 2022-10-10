@@ -36,25 +36,6 @@ def avoidOdds(prop_gained, f_bet, n):
         f_bet = 0
     return f_bet
 
-
-def convOdds(odd):
-    if pd.isna(odd) == True:
-        return odd
-
-    if odd > 0:
-        return odd/100 
-    elif odd < 0:
-        return - 100/odd 
-
-def convAmericanOdds():
-    df = pd.read_csv('../data/bettingOddsData/closing_betting_odds_all.csv', index_col = 0, header = [0,1])
-    for col in df['OddHome'].columns:
-        df['OddHome', '{}_return'.format(col)] = df.apply(lambda d: convOdds(d['OddHome', col]), axis = 1)
-    for col in df['OddAway'].columns:
-        df['OddAway', '{}_return'.format(col)] = df.apply(lambda d: convOdds(d['OddAway', col]), axis = 1)
-        df.drop(col, axis = 1, inplace = True, level = 1)
-    return df
-
 def findProportionGained(select_x):
     df = pd.read_csv('../data/bettingOddsData/closing_betting_odds_returns.csv', index_col = 0, header = [0,1])
     
