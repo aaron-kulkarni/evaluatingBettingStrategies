@@ -44,8 +44,10 @@ def getTeamScheduleAPI(team, game_date):
     return teamSchedule
 
 def getGameIdList(year):
-    df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
-    return df.index
+    df = pd.read_csv('../data/gameStats/all_game_ids.csv')
+    gameIdList = list(df[str(year)])
+    gameIdList = [i for i in gameIdList if str(i) != 'nan']
+    return gameIdList
 
 """
 The following functions convert and validate items
