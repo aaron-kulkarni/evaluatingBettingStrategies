@@ -143,7 +143,7 @@ EXECUTION
 
 # INDEX OF TRAINING DATA AND TESTING DATA, YEARS IS ALL RELEVANT DATA YOU WOUD LIKE TESTED
 years = list(np.arange(2019, 2023))
-train_index, test_index = splitTrainTestYear(getDataIndex([elo, perMetric], years, True), 2022)
+train_index, test_index = splitTrainTestYear(getDataIndex([elo, perMetric], years, True), 2019)
 
 train_index_all = sortDate(list(set(bettingOddsAll.index) - set(test_index)))
 bettingOddsPCA = iteratedPCA(bettingOddsAll, 2, train_index_all, test_index)
@@ -198,10 +198,12 @@ def xgboost(clf, X_train, Y_train, X_test, Y_test):
     return Y_pred_prob
 
 Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
-gameStateData = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
-gameStateData = gameStateData[gameStateData.index.isin(Y_test.index)]['home']
+
 
 def getOddBreakdown(Y_pred_prob, Y_test):
+    gameStateData = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
+    gameStateData = gameStateData[gameStateData.index.isin(Y_test.index)]['home']
+    
     testOdds = bettingOddsAll[bettingOddsAll.index.isin(Y_test.index)]
     testOdds = testOdds.reindex(Y_test.index)
     for col in testOdds.columns:

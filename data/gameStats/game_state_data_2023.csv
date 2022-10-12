@@ -1,0 +1,1233 @@
+,gameState,gameState,gameState,gameState,gameState,gameState,gameState,home,home,home,home,home,home,home,home,home,home,home,home,home,home,away,away,away,away,away,away,away,away,away,away,away,away,away,away
+teamData,winner,teamHome,teamAway,location,rivalry,datetime,endtime,q1Score,q2Score,q3Score,q4Score,overtimeScores,points,streak,daysSinceLastGame,playerRoster,record,matchupWins,salary,avgSalary,numberOfGamesPlayed,q1Score,q2Score,q3Score,q4Score,overtimeScores,points,streak,daysSinceLastGame,playerRoster,record,matchupWins,salary,avgSalary,numberOfGamesPlayed
+game_id,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+202210180BOS,,BOS,PHI,TD Garden,division,2022-10-18 19:30:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210180GSW,,GSW,LAL,Chase Center,division,2022-10-18 22:00:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190DET,,DET,ORL,Little Caesars Arena,conference,2022-10-19 19:00:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190IND,,IND,WAS,Gainbridge Fieldhouse,conference,2022-10-19 19:00:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190ATL,,ATL,HOU,State Farm Arena,none,2022-10-19 19:30:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190BRK,,BRK,NOP,Barclays Center,none,2022-10-19 19:30:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190MEM,,MEM,NYK,FedEx Forum,none,2022-10-19 19:30:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190MIA,,MIA,CHI,FTX Arena,conference,2022-10-19 19:30:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190TOR,,TOR,CLE,Scotiabank Arena,conference,2022-10-19 19:30:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190MIN,,MIN,OKC,Target Center,division,2022-10-19 20:00:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190SAS,,SAS,CHO,AT&T Center,none,2022-10-19 20:00:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190UTA,,UTA,DEN,Vivint Arena,division,2022-10-19 21:00:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190PHO,,PHO,DAL,Footprint Center,conference,2022-10-19 22:00:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210190SAC,,SAC,POR,Golden 1 Center,conference,2022-10-19 22:00:00,,,,,,,,,,,,,,,0,,,,,,,,,,,,,,0
+202210200PHI,,PHI,MIL,Wells Fargo Center,conference,2022-10-20 19:30:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,0
+202210200LAL,,LAL,LAC,Crypto.com Arena,division,2022-10-20 22:00:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,0
+202210210CHO,,CHO,NOP,Spectrum Center,none,2022-10-21 19:00:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210210IND,,IND,SAS,Gainbridge Fieldhouse,none,2022-10-21 19:00:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210210WAS,,WAS,CHI,Capital One Arena,conference,2022-10-21 19:00:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210210ATL,,ATL,ORL,State Farm Arena,division,2022-10-21 19:30:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210210BRK,,BRK,TOR,Barclays Center,division,2022-10-21 19:30:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210210MIA,,MIA,BOS,FTX Arena,conference,2022-10-21 19:30:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210210NYK,,NYK,DET,Madison Square Garden (IV),conference,2022-10-21 19:30:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210210HOU,,HOU,MEM,Toyota Center,division,2022-10-21 20:00:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210210MIN,,MIN,UTA,Target Center,division,2022-10-21 20:00:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210210GSW,,GSW,DEN,Chase Center,conference,2022-10-21 22:00:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210210POR,,POR,PHO,Moda Center,conference,2022-10-21 22:00:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210220PHI,,PHI,SAS,Wells Fargo Center,none,2022-10-22 18:00:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2
+202210220IND,,IND,DET,Gainbridge Fieldhouse,division,2022-10-22 19:00:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2
+202210220ORL,,ORL,BOS,Amway Center,conference,2022-10-22 19:00:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2
+202210220CHI,,CHI,CLE,United Center,division,2022-10-22 20:00:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,1
+202210220MIA,,MIA,TOR,FTX Arena,conference,2022-10-22 20:00:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2
+202210220MIL,,MIL,HOU,Fiserv Forum,none,2022-10-22 20:00:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,2
+202210220DAL,,DAL,MEM,American Airlines Center,division,2022-10-22 20:30:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,2
+202210220DEN,,DEN,OKC,Ball Arena,division,2022-10-22 21:00:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,1
+202210220SAC,,SAC,LAC,Golden 1 Center,division,2022-10-22 22:00:00,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,1
+202210230LAL,,LAL,POR,Crypto.com Arena,conference,2022-10-23 15:30:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2
+202210230ATL,,ATL,CHO,State Farm Arena,division,2022-10-23 17:00:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2
+202210230CLE,,CLE,WAS,Rocket Mortgage Fieldhouse,conference,2022-10-23 19:00:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2
+202210230NOP,,NOP,UTA,Smoothie King Center,conference,2022-10-23 19:00:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2
+202210230OKC,,OKC,MIN,Paycom Center,division,2022-10-23 20:00:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2
+202210230GSW,,GSW,SAC,Chase Center,division,2022-10-23 20:30:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2
+202210230LAC,,LAC,PHO,Crypto.com Arena,division,2022-10-23 22:00:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,2
+202210240PHI,,PHI,IND,Wells Fargo Center,conference,2022-10-24 19:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,3
+202210240MIA,,MIA,TOR,FTX Arena,conference,2022-10-24 19:30:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,3
+202210240NYK,,NYK,ORL,Madison Square Garden (IV),conference,2022-10-24 19:30:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,3
+202210240CHI,,CHI,BOS,United Center,conference,2022-10-24 20:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,3
+202210240HOU,,HOU,UTA,Toyota Center,conference,2022-10-24 20:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,3
+202210240MEM,,MEM,BRK,FedEx Forum,none,2022-10-24 20:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,2
+202210240MIN,,MIN,SAS,Target Center,conference,2022-10-24 20:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,3
+202210240POR,,POR,DEN,Moda Center,division,2022-10-24 22:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,3
+202210250WAS,,WAS,DET,Capital One Arena,conference,2022-10-25 19:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,3
+202210250NOP,,NOP,DAL,Smoothie King Center,division,2022-10-25 19:30:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,2
+202210250OKC,,OKC,LAC,Paycom Center,conference,2022-10-25 20:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,3
+202210250PHO,,PHO,GSW,Footprint Center,division,2022-10-25 22:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,3
+202210260CLE,,CLE,ORL,Rocket Mortgage Fieldhouse,conference,2022-10-26 19:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,4
+202210260DET,,DET,ATL,Little Caesars Arena,conference,2022-10-26 19:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,3
+202210260MIL,,MIL,BRK,Fiserv Forum,conference,2022-10-26 19:30:00,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,3
+202210260NYK,,NYK,CHO,Madison Square Garden (IV),conference,2022-10-26 19:30:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,3
+202210260TOR,,TOR,PHI,Scotiabank Arena,division,2022-10-26 19:30:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,4
+202210260CHI,,CHI,IND,United Center,division,2022-10-26 20:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,4
+202210260MIN,,MIN,SAS,Target Center,conference,2022-10-26 20:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,4
+202210260UTA,,UTA,HOU,Vivint Arena,conference,2022-10-26 21:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,4
+202210260DEN,,DEN,LAL,Ball Arena,conference,2022-10-26 22:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,3
+202210260POR,,POR,MIA,Moda Center,none,2022-10-26 22:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,4
+202210270BRK,,BRK,DAL,Barclays Center,none,2022-10-27 19:30:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,3
+202210270OKC,,OKC,LAC,Paycom Center,conference,2022-10-27 20:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,4
+202210270GSW,,GSW,MIA,Chase Center,none,2022-10-27 22:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,5
+202210270SAC,,SAC,MEM,Golden 1 Center,conference,2022-10-27 22:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,4
+202210280DET,,DET,ATL,Little Caesars Arena,conference,2022-10-28 19:00:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,4
+202210280ORL,,ORL,CHO,Amway Center,division,2022-10-28 19:00:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,4
+202210280BOS,,BOS,CLE,TD Garden,conference,2022-10-28 19:30:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,4
+202210280TOR,,TOR,PHI,Scotiabank Arena,division,2022-10-28 19:30:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,5
+202210280WAS,,WAS,IND,Capital One Arena,conference,2022-10-28 19:30:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,5
+202210280MIL,,MIL,NYK,Fiserv Forum,conference,2022-10-28 20:00:00,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,4
+202210280MIN,,MIN,LAL,Target Center,conference,2022-10-28 20:00:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,4
+202210280SAS,,SAS,CHI,AT&T Center,none,2022-10-28 20:30:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,5
+202210280DEN,,DEN,UTA,Ball Arena,division,2022-10-28 21:00:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,5
+202210280PHO,,PHO,NOP,Footprint Center,conference,2022-10-28 22:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,4
+202210280POR,,POR,HOU,Moda Center,conference,2022-10-28 22:00:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,5
+202210290SAC,,SAC,MIA,Golden 1 Center,none,2022-10-29 18:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,6
+202210290CHO,,CHO,GSW,Spectrum Center,none,2022-10-29 19:00:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,5
+202210290BRK,,BRK,IND,Barclays Center,conference,2022-10-29 19:30:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,6
+202210290CHI,,CHI,PHI,United Center,conference,2022-10-29 20:00:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,6
+202210290MIL,,MIL,ATL,Fiserv Forum,conference,2022-10-29 20:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,5
+202210290DAL,,DAL,OKC,American Airlines Center,conference,2022-10-29 21:00:00,,,,,,,,,,,,,,,4,,,,,,,,,,,,,,5
+202210290UTA,,UTA,MEM,Vivint Arena,conference,2022-10-29 21:00:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,5
+202210300LAC,,LAC,NOP,Crypto.com Arena,conference,2022-10-30 15:00:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,5
+202210300BOS,,BOS,WAS,TD Garden,conference,2022-10-30 18:00:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,5
+202210300CLE,,CLE,NYK,Rocket Mortgage Fieldhouse,conference,2022-10-30 18:00:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,5
+202210300DET,,DET,GSW,Little Caesars Arena,none,2022-10-30 18:00:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,6
+202210300SAS,,SAS,MIN,AT&T Center,conference,2022-10-30 19:00:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,6
+202210300DAL,,DAL,ORL,American Airlines Center,none,2022-10-30 19:30:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,6
+202210300PHO,,PHO,HOU,Footprint Center,conference,2022-10-30 21:00:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,6
+202210300LAL,,LAL,DEN,Crypto.com Arena,conference,2022-10-30 21:30:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,6
+202210310CHO,,CHO,SAC,Spectrum Center,none,2022-10-31 19:00:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,5
+202210310WAS,,WAS,PHI,Capital One Arena,conference,2022-10-31 19:00:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,7
+202210310BRK,,BRK,IND,Barclays Center,conference,2022-10-31 19:30:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,7
+202210310TOR,,TOR,ATL,Scotiabank Arena,conference,2022-10-31 19:30:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,6
+202210310MIL,,MIL,DET,Fiserv Forum,division,2022-10-31 20:00:00,,,,,,,,,,,,,,,5,,,,,,,,,,,,,,7
+202210310UTA,,UTA,MEM,Vivint Arena,conference,2022-10-31 21:00:00,,,,,,,,,,,,,,,7,,,,,,,,,,,,,,6
+202210310LAC,,LAC,HOU,Crypto.com Arena,conference,2022-10-31 22:30:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,7
+202211010BRK,,BRK,CHI,Barclays Center,conference,2022-11-01 19:30:00,,,,,,,,,,,,,,,7,,,,,,,,,,,,,,7
+202211010MIA,,MIA,GSW,FTX Arena,none,2022-11-01 19:30:00,,,,,,,,,,,,,,,7,,,,,,,,,,,,,,7
+202211010OKC,,OKC,ORL,Paycom Center,none,2022-11-01 19:30:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,7
+202211010PHO,,PHO,MIN,Footprint Center,conference,2022-11-01 22:00:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,7
+202211020CLE,,CLE,BOS,Rocket Mortgage Fieldhouse,conference,2022-11-02 19:00:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,6
+202211020PHI,,PHI,WAS,Wells Fargo Center,conference,2022-11-02 19:00:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,7
+202211020CHI,,CHI,CHO,United Center,conference,2022-11-02 19:30:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,7
+202211020MIA,,MIA,SAC,FTX Arena,none,2022-11-02 19:30:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,6
+202211020NYK,,NYK,ATL,Madison Square Garden (IV),conference,2022-11-02 19:30:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,7
+202211020HOU,,HOU,LAC,Toyota Center,conference,2022-11-02 20:00:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,7
+202211020MIL,,MIL,DET,Fiserv Forum,division,2022-11-02 20:00:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,8
+202211020SAS,,SAS,TOR,AT&T Center,none,2022-11-02 20:00:00,,,,,,,,,,,,,,,7,,,,,,,,,,,,,,7
+202211020DAL,,DAL,UTA,American Airlines Center,conference,2022-11-02 20:30:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,8
+202211020POR,,POR,MEM,Moda Center,conference,2022-11-02 22:00:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,7
+202211020LAL,,LAL,NOP,Crypto.com Arena,conference,2022-11-02 22:30:00,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,6
+202211030ORL,,ORL,GSW,Amway Center,none,2022-11-03 19:00:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,8
+202211030OKC,,OKC,DEN,Paycom Center,division,2022-11-03 20:00:00,,,,,,,,,,,,,,,7,,,,,,,,,,,,,,7
+202211040DET,,DET,CLE,Little Caesars Arena,division,2022-11-04 19:00:00,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,7
+202211040IND,,IND,MIA,Gainbridge Fieldhouse,conference,2022-11-04 19:00:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,9
+202211040PHI,,PHI,NYK,Wells Fargo Center,division,2022-11-04 19:00:00,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,7
+202211040WAS,,WAS,BRK,Capital One Arena,conference,2022-11-04 19:00:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,8
+202211040BOS,,BOS,CHI,TD Garden,conference,2022-11-04 19:30:00,,,,,,,,,,,,,,,7,,,,,,,,,,,,,,9
+202211040MEM,,MEM,CHO,FedEx Forum,none,2022-11-04 20:00:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,8
+202211040SAS,,SAS,LAC,AT&T Center,conference,2022-11-04 20:00:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,8
+202211040DAL,,DAL,TOR,American Airlines Center,none,2022-11-04 20:30:00,,,,,,,,,,,,,,,7,,,,,,,,,,,,,,8
+202211040NOP,,NOP,GSW,Smoothie King Center,conference,2022-11-04 20:30:00,,,,,,,,,,,,,,,7,,,,,,,,,,,,,,9
+202211040MIN,,MIN,MIL,Target Center,none,2022-11-04 22:00:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,7
+202211040PHO,,PHO,POR,Footprint Center,conference,2022-11-04 22:00:00,,,,,,,,,,,,,,,7,,,,,,,,,,,,,,7
+202211040LAL,,LAL,UTA,Crypto.com Arena,conference,2022-11-04 22:30:00,,,,,,,,,,,,,,,7,,,,,,,,,,,,,,9
+202211050ORL,,ORL,SAC,Amway Center,none,2022-11-05 17:00:00,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,7
+202211050CHO,,CHO,BRK,Spectrum Center,conference,2022-11-05 19:00:00,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,9
+202211050ATL,,ATL,NOP,State Farm Arena,none,2022-11-05 19:30:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,8
+202211050NYK,,NYK,BOS,Madison Square Garden (IV),division,2022-11-05 19:30:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,8
+202211050MIL,,MIL,OKC,Fiserv Forum,none,2022-11-05 20:00:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,8
+202211050MIN,,MIN,HOU,Target Center,conference,2022-11-05 20:00:00,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,9
+202211050DEN,,DEN,SAS,Ball Arena,conference,2022-11-05 21:00:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,9
+202211050PHO,,PHO,POR,Footprint Center,conference,2022-11-05 22:00:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,8
+202211060LAL,,LAL,CLE,Crypto.com Arena,none,2022-11-06 15:30:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,8
+202211060MEM,,MEM,WAS,FedEx Forum,none,2022-11-06 18:00:00,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,9
+202211060TOR,,TOR,CHI,Scotiabank Arena,conference,2022-11-06 18:00:00,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,10
+202211060LAC,,LAC,UTA,Crypto.com Arena,conference,2022-11-06 22:00:00,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,10
+202211070CHO,,CHO,WAS,Spectrum Center,division,2022-11-07 19:00:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,10
+202211070ORL,,ORL,HOU,Amway Center,none,2022-11-07 19:15:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,10
+202211070DET,,DET,OKC,Little Caesars Arena,none,2022-11-07 19:30:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,9
+202211070IND,,IND,NOP,Gainbridge Fieldhouse,none,2022-11-07 19:45:00,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,9
+202211070PHI,,PHI,PHO,Wells Fargo Center,none,2022-11-07 20:00:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,9
+202211070ATL,,ATL,MIL,State Farm Arena,conference,2022-11-07 20:15:00,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,9
+202211070MIA,,MIA,POR,FTX Arena,none,2022-11-07 20:30:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,9
+202211070CHI,,CHI,TOR,United Center,conference,2022-11-07 20:45:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,10
+202211070MEM,,MEM,BOS,FedEx Forum,none,2022-11-07 21:00:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,9
+202211070MIN,,MIN,NYK,Target Center,none,2022-11-07 21:15:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,9
+202211070SAS,,SAS,DEN,AT&T Center,conference,2022-11-07 21:30:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,9
+202211070DAL,,DAL,BRK,American Airlines Center,none,2022-11-07 21:45:00,,,,,,,,,,,,,,,8,,,,,,,,,,,,,,10
+202211070GSW,,GSW,SAC,Chase Center,division,2022-11-07 22:00:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,8
+202211070UTA,,UTA,LAL,Vivint Arena,conference,2022-11-07 22:15:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,9
+202211070LAC,,LAC,CLE,Crypto.com Arena,none,2022-11-07 22:30:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,9
+202211090CHO,,CHO,POR,Spectrum Center,none,2022-11-09 19:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,10
+202211090IND,,IND,DEN,Gainbridge Fieldhouse,none,2022-11-09 19:00:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,10
+202211090ORL,,ORL,DAL,Amway Center,none,2022-11-09 19:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,9
+202211090ATL,,ATL,UTA,State Farm Arena,none,2022-11-09 19:30:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,12
+202211090BOS,,BOS,DET,TD Garden,conference,2022-11-09 19:30:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,11
+202211090BRK,,BRK,NYK,Barclays Center,division,2022-11-09 19:30:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,10
+202211090TOR,,TOR,HOU,Scotiabank Arena,none,2022-11-09 19:30:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,11
+202211090CHI,,CHI,NOP,United Center,none,2022-11-09 20:00:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,10
+202211090MIN,,MIN,PHO,Target Center,conference,2022-11-09 20:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,10
+202211090OKC,,OKC,MIL,Paycom Center,none,2022-11-09 20:00:00,,,,,,,,,,,,,,,10,,,,,,,,,,,,,,10
+202211090SAS,,SAS,MEM,AT&T Center,division,2022-11-09 20:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,11
+202211090LAC,,LAC,LAL,Crypto.com Arena,division,2022-11-09 22:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,10
+202211090SAC,,SAC,CLE,Golden 1 Center,none,2022-11-09 22:00:00,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,10
+202211100WAS,,WAS,DAL,Capital One Arena,none,2022-11-10 19:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,10
+202211100ATL,,ATL,PHI,State Farm Arena,conference,2022-11-10 19:30:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,11
+202211100MIA,,MIA,CHO,FTX Arena,division,2022-11-10 19:30:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,12
+202211100NOP,,NOP,POR,Smoothie King Center,conference,2022-11-10 20:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,11
+202211110BOS,,BOS,DEN,TD Garden,none,2022-11-11 19:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,11
+202211110ORL,,ORL,PHO,Amway Center,none,2022-11-11 19:00:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,11
+202211110NYK,,NYK,DET,Madison Square Garden (IV),conference,2022-11-11 19:30:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,12
+202211110OKC,,OKC,TOR,Paycom Center,none,2022-11-11 20:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,12
+202211110SAS,,SAS,MIL,AT&T Center,none,2022-11-11 20:00:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,11
+202211110MEM,,MEM,MIN,FedEx Forum,conference,2022-11-11 21:30:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,12
+202211110GSW,,GSW,CLE,Chase Center,none,2022-11-11 22:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,11
+202211110LAL,,LAL,SAC,Crypto.com Arena,division,2022-11-11 22:30:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,10
+202211120LAC,,LAC,BRK,Crypto.com Arena,none,2022-11-12 16:00:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,12
+202211120WAS,,WAS,UTA,Capital One Arena,none,2022-11-12 18:00:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,13
+202211120DET,,DET,BOS,Little Caesars Arena,conference,2022-11-12 19:00:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,12
+202211120IND,,IND,TOR,Gainbridge Fieldhouse,conference,2022-11-12 19:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,13
+202211120PHI,,PHI,ATL,Wells Fargo Center,conference,2022-11-12 19:30:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,12
+202211120MIA,,MIA,CHO,FTX Arena,division,2022-11-12 20:00:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,13
+202211120DAL,,DAL,POR,American Airlines Center,conference,2022-11-12 20:30:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,12
+202211120NOP,,NOP,HOU,Smoothie King Center,division,2022-11-12 20:30:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,12
+202211130NYK,,NYK,OKC,Madison Square Garden (IV),none,2022-11-13 12:00:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,12
+202211130CLE,,CLE,MIN,Rocket Mortgage Fieldhouse,none,2022-11-13 18:00:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,13
+202211130WAS,,WAS,MEM,Capital One Arena,none,2022-11-13 18:00:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,13
+202211130PHI,,PHI,UTA,Wells Fargo Center,none,2022-11-13 19:30:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,14
+202211130CHI,,CHI,DEN,United Center,none,2022-11-13 20:00:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,12
+202211130SAC,,SAC,GSW,Golden 1 Center,division,2022-11-13 21:00:00,,,,,,,,,,,,,,,11,,,,,,,,,,,,,,12
+202211130LAL,,LAL,BRK,Crypto.com Arena,none,2022-11-13 21:30:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,13
+202211140DET,,DET,TOR,Little Caesars Arena,conference,2022-11-14 19:00:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,14
+202211140ORL,,ORL,CHO,Amway Center,division,2022-11-14 19:00:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,14
+202211140BOS,,BOS,OKC,TD Garden,none,2022-11-14 19:30:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,13
+202211140MIA,,MIA,PHO,FTX Arena,none,2022-11-14 19:30:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,12
+202211140HOU,,HOU,LAC,Toyota Center,conference,2022-11-14 20:00:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,13
+202211140MIL,,MIL,ATL,Fiserv Forum,conference,2022-11-14 20:00:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,13
+202211140GSW,,GSW,SAS,Chase Center,conference,2022-11-14 22:00:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,13
+202211150NOP,,NOP,MEM,Smoothie King Center,division,2022-11-15 19:30:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,14
+202211150DAL,,DAL,LAC,American Airlines Center,conference,2022-11-15 20:30:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,14
+202211150POR,,POR,SAS,Moda Center,conference,2022-11-15 22:00:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,14
+202211150SAC,,SAC,BRK,Golden 1 Center,none,2022-11-15 22:00:00,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,14
+202211150UTA,,UTA,NYK,Vivint Arena,none,2022-11-15 22:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,13
+202211160CHO,,CHO,IND,Spectrum Center,conference,2022-11-16 19:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,12
+202211160ORL,,ORL,MIN,Amway Center,none,2022-11-16 19:00:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,14
+202211160WAS,,WAS,OKC,Capital One Arena,none,2022-11-16 19:00:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,14
+202211160ATL,,ATL,BOS,State Farm Arena,conference,2022-11-16 19:30:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,14
+202211160TOR,,TOR,MIA,Scotiabank Arena,conference,2022-11-16 19:30:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,14
+202211160MIL,,MIL,CLE,Fiserv Forum,division,2022-11-16 20:00:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,13
+202211160NOP,,NOP,CHI,Smoothie King Center,none,2022-11-16 20:00:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,14
+202211160DAL,,DAL,HOU,American Airlines Center,division,2022-11-16 20:30:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,14
+202211160DEN,,DEN,NYK,Ball Arena,none,2022-11-16 22:00:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,14
+202211160PHO,,PHO,GSW,Footprint Center,division,2022-11-16 22:00:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,14
+202211170POR,,POR,BRK,Moda Center,none,2022-11-17 22:00:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,15
+202211170SAC,,SAC,SAS,Golden 1 Center,conference,2022-11-17 22:00:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,15
+202211170LAC,,LAC,DET,Crypto.com Arena,none,2022-11-17 22:30:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,15
+202211180WAS,,WAS,MIA,Capital One Arena,division,2022-11-18 19:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,15
+202211180CLE,,CLE,CHO,Rocket Mortgage Fieldhouse,conference,2022-11-18 19:30:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,16
+202211180PHI,,PHI,MIL,Wells Fargo Center,conference,2022-11-18 19:30:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,14
+202211180CHI,,CHI,ORL,United Center,conference,2022-11-18 20:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,15
+202211180HOU,,HOU,IND,Toyota Center,none,2022-11-18 20:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,13
+202211180MEM,,MEM,OKC,FedEx Forum,conference,2022-11-18 20:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,15
+202211180DAL,,DAL,DEN,American Airlines Center,conference,2022-11-18 20:30:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,14
+202211180NOP,,NOP,BOS,Smoothie King Center,none,2022-11-18 20:30:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,15
+202211180UTA,,UTA,PHO,Vivint Arena,conference,2022-11-18 21:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,14
+202211180GSW,,GSW,NYK,Chase Center,none,2022-11-18 22:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,15
+202211180LAL,,LAL,DET,Crypto.com Arena,none,2022-11-18 22:30:00,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,16
+202211190ATL,,ATL,TOR,State Farm Arena,conference,2022-11-19 18:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,16
+202211190IND,,IND,ORL,Gainbridge Fieldhouse,conference,2022-11-19 19:00:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,16
+202211190PHI,,PHI,MIN,Wells Fargo Center,none,2022-11-19 19:30:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,15
+202211190POR,,POR,UTA,Moda Center,division,2022-11-19 22:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,17
+202211190LAC,,LAC,SAS,Crypto.com Arena,conference,2022-11-19 22:30:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,16
+202211200PHO,,PHO,NYK,Footprint Center,none,2022-11-20 15:30:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,16
+202211200SAC,,SAC,DET,Golden 1 Center,none,2022-11-20 18:00:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,17
+202211200WAS,,WAS,CHO,Capital One Arena,division,2022-11-20 18:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,17
+202211200BRK,,BRK,MEM,Barclays Center,none,2022-11-20 19:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,16
+202211200CLE,,CLE,MIA,Rocket Mortgage Fieldhouse,conference,2022-11-20 19:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,16
+202211200HOU,,HOU,GSW,Toyota Center,conference,2022-11-20 19:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,16
+202211200DAL,,DAL,DEN,American Airlines Center,conference,2022-11-20 19:30:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,15
+202211200LAL,,LAL,SAS,Crypto.com Arena,conference,2022-11-20 21:30:00,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,17
+202211210CLE,,CLE,ATL,Rocket Mortgage Fieldhouse,conference,2022-11-21 19:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,16
+202211210IND,,IND,ORL,Gainbridge Fieldhouse,conference,2022-11-21 19:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,17
+202211210CHI,,CHI,BOS,United Center,conference,2022-11-21 20:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,16
+202211210MIL,,MIL,POR,Fiserv Forum,none,2022-11-21 20:00:00,,,,,,,,,,,,,,,15,,,,,,,,,,,,,,16
+202211210MIN,,MIN,MIA,Target Center,none,2022-11-21 20:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,17
+202211210NOP,,NOP,GSW,Smoothie King Center,conference,2022-11-21 20:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,17
+202211210OKC,,OKC,NYK,Paycom Center,none,2022-11-21 20:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,17
+202211210LAC,,LAC,UTA,Crypto.com Arena,conference,2022-11-21 22:30:00,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,18
+202211220PHI,,PHI,BRK,Wells Fargo Center,division,2022-11-22 19:30:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,17
+202211220MEM,,MEM,SAC,FedEx Forum,conference,2022-11-22 20:00:00,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,15
+202211220DEN,,DEN,DET,Ball Arena,none,2022-11-22 21:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,18
+202211220PHO,,PHO,LAL,Footprint Center,division,2022-11-22 22:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,15
+202211230CHO,,CHO,PHI,Spectrum Center,conference,2022-11-23 19:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,17
+202211230CLE,,CLE,POR,Rocket Mortgage Fieldhouse,none,2022-11-23 19:00:00,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,17
+202211230IND,,IND,MIN,Gainbridge Fieldhouse,none,2022-11-23 19:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,17
+202211230ATL,,ATL,SAC,State Farm Arena,none,2022-11-23 19:30:00,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,16
+202211230BOS,,BOS,DAL,TD Garden,none,2022-11-23 19:30:00,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,16
+202211230MIA,,MIA,WAS,FTX Arena,division,2022-11-23 19:30:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,17
+202211230TOR,,TOR,BRK,Scotiabank Arena,division,2022-11-23 19:30:00,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,18
+202211230MIL,,MIL,CHI,Fiserv Forum,division,2022-11-23 20:00:00,,,,,,,,,,,,,,,16,,,,,,,,,,,,,,17
+202211230OKC,,OKC,DEN,Paycom Center,division,2022-11-23 20:00:00,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,17
+202211230SAS,,SAS,NOP,AT&T Center,division,2022-11-23 20:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,17
+202211230UTA,,UTA,DET,Vivint Arena,none,2022-11-23 21:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,19
+202211230GSW,,GSW,LAC,Chase Center,division,2022-11-23 22:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,18
+202211250CHO,,CHO,MIN,Spectrum Center,none,2022-11-25 17:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,18
+202211250ORL,,ORL,PHI,Amway Center,conference,2022-11-25 19:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,18
+202211250NYK,,NYK,POR,Madison Square Garden (IV),none,2022-11-25 19:30:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,18
+202211250BOS,,BOS,SAC,TD Garden,none,2022-11-25 20:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,17
+202211250HOU,,HOU,ATL,Toyota Center,none,2022-11-25 20:00:00,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,18
+202211250IND,,IND,BRK,Gainbridge Fieldhouse,conference,2022-11-25 20:00:00,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,19
+202211250MEM,,MEM,NOP,FedEx Forum,division,2022-11-25 20:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,18
+202211250MIA,,MIA,WAS,FTX Arena,division,2022-11-25 20:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,18
+202211250MIL,,MIL,CLE,Fiserv Forum,division,2022-11-25 20:00:00,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,18
+202211250OKC,,OKC,CHI,Paycom Center,none,2022-11-25 20:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,18
+202211250SAS,,SAS,LAL,AT&T Center,conference,2022-11-25 20:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,16
+202211250PHO,,PHO,DET,Footprint Center,none,2022-11-25 21:00:00,,,,,,,,,,,,,,,17,,,,,,,,,,,,,,20
+202211250GSW,,GSW,UTA,Chase Center,conference,2022-11-25 22:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,20
+202211250LAC,,LAC,DEN,Crypto.com Arena,conference,2022-11-25 22:30:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,18
+202211260TOR,,TOR,DAL,Scotiabank Arena,none,2022-11-26 17:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,17
+202211260HOU,,HOU,OKC,Toyota Center,conference,2022-11-26 20:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,19
+202211260SAS,,SAS,LAL,AT&T Center,conference,2022-11-26 20:00:00,,,,,,,,,,,,,,,20,,,,,,,,,,,,,,17
+202211260PHO,,PHO,UTA,Footprint Center,conference,2022-11-26 21:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,21
+202211270BRK,,BRK,POR,Barclays Center,none,2022-11-27 15:00:00,,,,,,,,,,,,,,,20,,,,,,,,,,,,,,19
+202211270MIN,,MIN,GSW,Target Center,conference,2022-11-27 15:30:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,20
+202211270LAC,,LAC,IND,Crypto.com Arena,none,2022-11-27 16:00:00,,,,,,,,,,,,,,,20,,,,,,,,,,,,,,18
+202211270ATL,,ATL,MIA,State Farm Arena,division,2022-11-27 17:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,20
+202211270BOS,,BOS,WAS,TD Garden,conference,2022-11-27 18:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,19
+202211270DET,,DET,CLE,Little Caesars Arena,division,2022-11-27 18:00:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,19
+202211270NYK,,NYK,MEM,Madison Square Garden (IV),none,2022-11-27 18:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,19
+202211270ORL,,ORL,PHI,Amway Center,conference,2022-11-27 18:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,19
+202211270MIL,,MIL,DAL,Fiserv Forum,none,2022-11-27 20:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,18
+202211280PHI,,PHI,ATL,Wells Fargo Center,conference,2022-11-28 19:00:00,,,,,,,,,,,,,,,20,,,,,,,,,,,,,,20
+202211280WAS,,WAS,MIN,Capital One Arena,none,2022-11-28 19:00:00,,,,,,,,,,,,,,,20,,,,,,,,,,,,,,20
+202211280BOS,,BOS,CHO,TD Garden,conference,2022-11-28 19:30:00,,,,,,,,,,,,,,,20,,,,,,,,,,,,,,20
+202211280BRK,,BRK,ORL,Barclays Center,conference,2022-11-28 19:30:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,20
+202211280TOR,,TOR,CLE,Scotiabank Arena,conference,2022-11-28 19:30:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,20
+202211280NOP,,NOP,OKC,Smoothie King Center,conference,2022-11-28 20:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,20
+202211280DEN,,DEN,HOU,Ball Arena,conference,2022-11-28 21:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,19
+202211280UTA,,UTA,CHI,Vivint Arena,none,2022-11-28 21:00:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,19
+202211280SAC,,SAC,PHO,Golden 1 Center,division,2022-11-28 22:00:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,19
+202211280LAL,,LAL,IND,Crypto.com Arena,none,2022-11-28 22:30:00,,,,,,,,,,,,,,,18,,,,,,,,,,,,,,19
+202211290DET,,DET,NYK,Little Caesars Arena,conference,2022-11-29 19:00:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,20
+202211290DAL,,DAL,GSW,American Airlines Center,conference,2022-11-29 19:30:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,21
+202211290POR,,POR,LAC,Moda Center,conference,2022-11-29 22:00:00,,,,,,,,,,,,,,,20,,,,,,,,,,,,,,21
+202211300CLE,,CLE,PHI,Rocket Mortgage Fieldhouse,conference,2022-11-30 19:00:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,21
+202211300ORL,,ORL,ATL,Amway Center,division,2022-11-30 19:00:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,21
+202211300BOS,,BOS,MIA,TD Garden,conference,2022-11-30 19:30:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,21
+202211300BRK,,BRK,WAS,Barclays Center,conference,2022-11-30 19:30:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,21
+202211300NYK,,NYK,MIL,Madison Square Garden (IV),conference,2022-11-30 19:30:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,19
+202211300MIN,,MIN,MEM,Target Center,conference,2022-11-30 20:00:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,20
+202211300NOP,,NOP,TOR,Smoothie King Center,none,2022-11-30 20:00:00,,,,,,,,,,,,,,,20,,,,,,,,,,,,,,20
+202211300OKC,,OKC,SAS,Paycom Center,conference,2022-11-30 20:00:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,21
+202211300DEN,,DEN,HOU,Ball Arena,conference,2022-11-30 21:00:00,,,,,,,,,,,,,,,20,,,,,,,,,,,,,,20
+202211300PHO,,PHO,CHI,Footprint Center,none,2022-11-30 21:00:00,,,,,,,,,,,,,,,20,,,,,,,,,,,,,,20
+202211300UTA,,UTA,LAC,Vivint Arena,conference,2022-11-30 21:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,22
+202211300SAC,,SAC,IND,Golden 1 Center,none,2022-11-30 22:00:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,20
+202211300LAL,,LAL,POR,Crypto.com Arena,conference,2022-11-30 22:30:00,,,,,,,,,,,,,,,19,,,,,,,,,,,,,,21
+202212010DET,,DET,DAL,Little Caesars Arena,none,2022-12-01 19:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,20
+202212020CHO,,CHO,WAS,Spectrum Center,division,2022-12-02 19:00:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,22
+202212020ATL,,ATL,DEN,State Farm Arena,none,2022-12-02 19:30:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,21
+202212020BOS,,BOS,MIA,TD Garden,conference,2022-12-02 19:30:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,22
+202212020BRK,,BRK,TOR,Barclays Center,division,2022-12-02 19:30:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,21
+202212020CLE,,CLE,ORL,Rocket Mortgage Fieldhouse,conference,2022-12-02 19:30:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,22
+202212020MIL,,MIL,LAL,Fiserv Forum,none,2022-12-02 19:30:00,,,,,,,,,,,,,,,20,,,,,,,,,,,,,,20
+202212020MEM,,MEM,PHI,FedEx Forum,none,2022-12-02 20:00:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,22
+202212020SAS,,SAS,NOP,AT&T Center,division,2022-12-02 20:00:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,21
+202212020PHO,,PHO,HOU,Footprint Center,conference,2022-12-02 21:00:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,21
+202212020UTA,,UTA,IND,Vivint Arena,none,2022-12-02 21:00:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,21
+202212020GSW,,GSW,CHI,Chase Center,none,2022-12-02 22:00:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,21
+202212030NYK,,NYK,DAL,Madison Square Garden (IV),none,2022-12-03 12:30:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,21
+202212030LAC,,LAC,SAC,Crypto.com Arena,division,2022-12-03 16:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,20
+202212030CHO,,CHO,MIL,Spectrum Center,conference,2022-12-03 18:00:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,21
+202212030MIN,,MIN,OKC,Target Center,division,2022-12-03 20:00:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,22
+202212030TOR,,TOR,ORL,Scotiabank Arena,conference,2022-12-03 20:00:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,23
+202212030GSW,,GSW,HOU,Chase Center,conference,2022-12-03 20:30:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,22
+202212030UTA,,UTA,POR,Vivint Arena,division,2022-12-03 21:00:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,22
+202212040NOP,,NOP,DEN,Smoothie King Center,conference,2022-12-04 15:30:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,22
+202212040SAS,,SAS,PHO,AT&T Center,conference,2022-12-04 16:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,22
+202212040BRK,,BRK,BOS,Barclays Center,division,2022-12-04 18:00:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,23
+202212040DET,,DET,MEM,Little Caesars Arena,none,2022-12-04 18:00:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,22
+202212040NYK,,NYK,CLE,Madison Square Garden (IV),conference,2022-12-04 18:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,23
+202212040SAC,,SAC,CHI,Golden 1 Center,none,2022-12-04 18:00:00,,,,,,,,,,,,,,,21,,,,,,,,,,,,,,22
+202212040WAS,,WAS,LAL,Capital One Arena,none,2022-12-04 18:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,21
+202212040POR,,POR,IND,Moda Center,none,2022-12-04 21:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,22
+202212050CHO,,CHO,LAC,Spectrum Center,none,2022-12-05 19:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,24
+202212050ORL,,ORL,MIL,Amway Center,conference,2022-12-05 19:00:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,22
+202212050ATL,,ATL,OKC,State Farm Arena,none,2022-12-05 19:30:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,23
+202212050TOR,,TOR,BOS,Scotiabank Arena,division,2022-12-05 19:30:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,24
+202212050HOU,,HOU,PHI,Toyota Center,none,2022-12-05 20:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,23
+202212050MEM,,MEM,MIA,FedEx Forum,none,2022-12-05 20:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,23
+202212050DAL,,DAL,PHO,American Airlines Center,conference,2022-12-05 20:30:00,,,,,,,,,,,,,,,22,,,,,,,,,,,,,,23
+202212050GSW,,GSW,IND,Chase Center,none,2022-12-05 22:00:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,23
+202212060CLE,,CLE,LAL,Rocket Mortgage Fieldhouse,none,2022-12-06 19:30:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,22
+202212060MIA,,MIA,DET,FTX Arena,conference,2022-12-06 19:30:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,25
+202212060DEN,,DEN,DAL,Ball Arena,conference,2022-12-06 22:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,23
+202212070ORL,,ORL,LAC,Amway Center,none,2022-12-07 19:00:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,25
+202212070BRK,,BRK,CHO,Barclays Center,conference,2022-12-07 19:30:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,24
+202212070NYK,,NYK,ATL,Madison Square Garden (IV),conference,2022-12-07 19:30:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,24
+202212070TOR,,TOR,LAL,Scotiabank Arena,none,2022-12-07 19:30:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,23
+202212070CHI,,CHI,WAS,United Center,conference,2022-12-07 20:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,24
+202212070MEM,,MEM,OKC,FedEx Forum,conference,2022-12-07 20:00:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,24
+202212070MIL,,MIL,SAC,Fiserv Forum,none,2022-12-07 20:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,22
+202212070MIN,,MIN,IND,Target Center,none,2022-12-07 20:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,24
+202212070NOP,,NOP,DET,Smoothie King Center,none,2022-12-07 20:00:00,,,,,,,,,,,,,,,23,,,,,,,,,,,,,,26
+202212070UTA,,UTA,GSW,Vivint Arena,conference,2022-12-07 21:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,25
+202212070PHO,,PHO,BOS,Footprint Center,none,2022-12-07 22:00:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,25
+202212080MIA,,MIA,LAC,FTX Arena,none,2022-12-08 19:30:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,26
+202212080SAS,,SAS,HOU,AT&T Center,division,2022-12-08 20:30:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,24
+202212080POR,,POR,DEN,Moda Center,division,2022-12-08 22:00:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,24
+202212090CHO,,CHO,NYK,Spectrum Center,conference,2022-12-09 19:00:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,25
+202212090IND,,IND,WAS,Gainbridge Fieldhouse,conference,2022-12-09 19:00:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,25
+202212090ORL,,ORL,TOR,Amway Center,conference,2022-12-09 19:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,25
+202212090BRK,,BRK,ATL,Barclays Center,conference,2022-12-09 19:30:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,25
+202212090CLE,,CLE,SAC,Rocket Mortgage Fieldhouse,none,2022-12-09 19:30:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,23
+202212090PHI,,PHI,LAL,Wells Fargo Center,none,2022-12-09 19:30:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,24
+202212090MEM,,MEM,DET,FedEx Forum,none,2022-12-09 20:00:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,27
+202212090NOP,,NOP,PHO,Smoothie King Center,conference,2022-12-09 20:30:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,25
+202212090UTA,,UTA,MIN,Vivint Arena,division,2022-12-09 21:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,24
+202212090DAL,,DAL,MIL,American Airlines Center,none,2022-12-09 22:00:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,24
+202212100MIA,,MIA,SAS,FTX Arena,none,2022-12-10 17:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,25
+202212100IND,,IND,BRK,Gainbridge Fieldhouse,conference,2022-12-10 19:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,27
+202212100WAS,,WAS,LAC,Capital One Arena,none,2022-12-10 19:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,27
+202212100CLE,,CLE,OKC,Rocket Mortgage Fieldhouse,none,2022-12-10 19:30:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,25
+202212100CHI,,CHI,DAL,United Center,none,2022-12-10 20:00:00,,,,,,,,,,,,,,,24,,,,,,,,,,,,,,25
+202212100GSW,,GSW,BOS,Chase Center,none,2022-12-10 20:30:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,26
+202212100DEN,,DEN,UTA,Ball Arena,division,2022-12-10 21:00:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,28
+202212100POR,,POR,MIN,Moda Center,division,2022-12-10 22:00:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,25
+202212110NOP,,NOP,PHO,Smoothie King Center,conference,2022-12-11 15:30:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,26
+202212110DET,,DET,LAL,Little Caesars Arena,none,2022-12-11 18:00:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,25
+202212110NYK,,NYK,SAC,Madison Square Garden (IV),none,2022-12-11 18:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,24
+202212110ORL,,ORL,TOR,Amway Center,conference,2022-12-11 18:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,26
+202212110PHI,,PHI,CHO,Wells Fargo Center,conference,2022-12-11 18:00:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,26
+202212110ATL,,ATL,CHI,State Farm Arena,conference,2022-12-11 18:30:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,25
+202212110HOU,,HOU,MIL,Toyota Center,none,2022-12-11 19:00:00,,,,,,,,,,,,,,,25,,,,,,,,,,,,,,25
+202212120IND,,IND,MIA,Gainbridge Fieldhouse,conference,2022-12-12 19:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,27
+202212120WAS,,WAS,BRK,Capital One Arena,conference,2022-12-12 19:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,28
+202212120MEM,,MEM,ATL,FedEx Forum,none,2022-12-12 20:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,27
+202212120DAL,,DAL,OKC,American Airlines Center,conference,2022-12-12 20:30:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,26
+202212120SAS,,SAS,CLE,AT&T Center,none,2022-12-12 20:30:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,27
+202212120POR,,POR,MIN,Moda Center,division,2022-12-12 22:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,26
+202212120LAC,,LAC,BOS,Crypto.com Arena,none,2022-12-12 22:30:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,27
+202212130PHI,,PHI,SAC,Wells Fargo Center,none,2022-12-13 19:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,25
+202212130MIL,,MIL,GSW,Fiserv Forum,none,2022-12-13 19:30:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,27
+202212130HOU,,HOU,PHO,Toyota Center,conference,2022-12-13 20:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,27
+202212130UTA,,UTA,NOP,Vivint Arena,conference,2022-12-13 21:00:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,26
+202212130LAL,,LAL,BOS,Crypto.com Arena,none,2022-12-13 22:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,28
+202212140CHO,,CHO,DET,Spectrum Center,conference,2022-12-14 19:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,29
+202212140IND,,IND,GSW,Gainbridge Fieldhouse,none,2022-12-14 19:00:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,28
+202212140ORL,,ORL,ATL,Amway Center,division,2022-12-14 19:00:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,28
+202212140CHI,,CHI,NYK,United Center,conference,2022-12-14 19:30:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,27
+202212140TOR,,TOR,SAC,Scotiabank Arena,none,2022-12-14 19:30:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,26
+202212140OKC,,OKC,MIA,Paycom Center,none,2022-12-14 20:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,28
+202212140SAS,,SAS,POR,AT&T Center,conference,2022-12-14 20:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,27
+202212140DAL,,DAL,CLE,American Airlines Center,none,2022-12-14 21:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,28
+202212140DEN,,DEN,WAS,Ball Arena,none,2022-12-14 21:00:00,,,,,,,,,,,,,,,26,,,,,,,,,,,,,,28
+202212140LAC,,LAC,MIN,Crypto.com Arena,conference,2022-12-14 22:00:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,27
+202212150HOU,,HOU,MIA,Toyota Center,none,2022-12-15 20:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,29
+202212150MEM,,MEM,MIL,FedEx Forum,none,2022-12-15 20:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,27
+202212150UTA,,UTA,NOP,Vivint Arena,conference,2022-12-15 21:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,27
+202212150LAC,,LAC,PHO,Crypto.com Arena,division,2022-12-15 22:30:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,28
+202212160CHO,,CHO,ATL,Spectrum Center,division,2022-12-16 19:00:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,29
+202212160DET,,DET,SAC,Little Caesars Arena,none,2022-12-16 19:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,27
+202212160BOS,,BOS,ORL,TD Garden,conference,2022-12-16 19:30:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,29
+202212160CLE,,CLE,IND,Rocket Mortgage Fieldhouse,division,2022-12-16 19:30:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,29
+202212160PHI,,PHI,GSW,Wells Fargo Center,none,2022-12-16 19:30:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,29
+202212160TOR,,TOR,BRK,Scotiabank Arena,division,2022-12-16 19:30:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,29
+202212160CHI,,CHI,NYK,United Center,conference,2022-12-16 20:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,28
+202212160OKC,,OKC,MIN,Paycom Center,division,2022-12-16 20:00:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,28
+202212160DAL,,DAL,POR,American Airlines Center,conference,2022-12-16 20:30:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,28
+202212160LAL,,LAL,DEN,Crypto.com Arena,conference,2022-12-16 22:00:00,,,,,,,,,,,,,,,27,,,,,,,,,,,,,,27
+202212170LAC,,LAC,WAS,Crypto.com Arena,none,2022-12-17 16:00:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,29
+202212170SAS,,SAS,MIA,Mexico City Arena,none,2022-12-17 17:00:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,30
+202212170CLE,,CLE,DAL,Rocket Mortgage Fieldhouse,none,2022-12-17 20:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,29
+202212170HOU,,HOU,POR,Toyota Center,conference,2022-12-17 20:00:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,29
+202212170MIL,,MIL,UTA,Fiserv Forum,none,2022-12-17 20:00:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,31
+202212170OKC,,OKC,MEM,Paycom Center,conference,2022-12-17 20:00:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,28
+202212170PHO,,PHO,NOP,Footprint Center,conference,2022-12-17 21:00:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,28
+202212180BOS,,BOS,ORL,TD Garden,conference,2022-12-18 15:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,30
+202212180IND,,IND,NYK,Gainbridge Fieldhouse,conference,2022-12-18 17:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,29
+202212180DET,,DET,BRK,Little Caesars Arena,conference,2022-12-18 18:00:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,30
+202212180TOR,,TOR,GSW,Scotiabank Arena,none,2022-12-18 18:00:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,30
+202212180MIN,,MIN,CHI,Target Center,none,2022-12-18 19:00:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,28
+202212180DEN,,DEN,CHO,Ball Arena,none,2022-12-18 20:00:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,29
+202212180LAL,,LAL,WAS,Crypto.com Arena,none,2022-12-18 21:30:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,30
+202212190CLE,,CLE,UTA,Rocket Mortgage Fieldhouse,none,2022-12-19 19:00:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,32
+202212190PHI,,PHI,TOR,Wells Fargo Center,division,2022-12-19 19:00:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,30
+202212190ATL,,ATL,ORL,State Farm Arena,division,2022-12-19 19:30:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,31
+202212190HOU,,HOU,SAS,Toyota Center,division,2022-12-19 20:00:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,29
+202212190MIN,,MIN,DAL,Target Center,conference,2022-12-19 20:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,30
+202212190NOP,,NOP,MIL,Smoothie King Center,none,2022-12-19 20:00:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,29
+202212190OKC,,OKC,POR,Paycom Center,division,2022-12-19 20:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,30
+202212190PHO,,PHO,LAL,Footprint Center,division,2022-12-19 21:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,29
+202212190SAC,,SAC,CHO,Golden 1 Center,none,2022-12-19 22:00:00,,,,,,,,,,,,,,,28,,,,,,,,,,,,,,30
+202212200DET,,DET,UTA,Little Caesars Arena,none,2022-12-20 19:00:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,33
+202212200MIA,,MIA,CHI,FTX Arena,conference,2022-12-20 19:30:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,29
+202212200NYK,,NYK,GSW,Madison Square Garden (IV),none,2022-12-20 19:30:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,31
+202212200PHO,,PHO,WAS,Footprint Center,none,2022-12-20 21:00:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,31
+202212200DEN,,DEN,MEM,Ball Arena,conference,2022-12-20 22:00:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,29
+202212210CLE,,CLE,MIL,Rocket Mortgage Fieldhouse,division,2022-12-21 19:00:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,30
+202212210PHI,,PHI,DET,Wells Fargo Center,conference,2022-12-21 19:00:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,33
+202212210ATL,,ATL,CHI,State Farm Arena,conference,2022-12-21 19:30:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,30
+202212210BOS,,BOS,IND,TD Garden,conference,2022-12-21 19:30:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,31
+202212210BRK,,BRK,GSW,Barclays Center,none,2022-12-21 19:30:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,32
+202212210NYK,,NYK,TOR,Madison Square Garden (IV),division,2022-12-21 19:30:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,31
+202212210HOU,,HOU,ORL,Toyota Center,none,2022-12-21 20:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,32
+202212210MIN,,MIN,DAL,Target Center,conference,2022-12-21 20:00:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,31
+202212210OKC,,OKC,POR,Paycom Center,division,2022-12-21 20:00:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,31
+202212210SAC,,SAC,LAL,Golden 1 Center,division,2022-12-21 22:00:00,,,,,,,,,,,,,,,29,,,,,,,,,,,,,,30
+202212210LAC,,LAC,CHO,Crypto.com Arena,none,2022-12-21 22:30:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,31
+202212220NOP,,NOP,SAS,Smoothie King Center,division,2022-12-22 20:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,30
+202212220UTA,,UTA,WAS,Vivint Arena,none,2022-12-22 21:00:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,32
+202212230ORL,,ORL,SAS,Amway Center,none,2022-12-23 19:00:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,31
+202212230PHI,,PHI,LAC,Wells Fargo Center,none,2022-12-23 19:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,33
+202212230ATL,,ATL,DET,State Farm Arena,conference,2022-12-23 19:30:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,34
+202212230BOS,,BOS,MIN,TD Garden,none,2022-12-23 19:30:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,32
+202212230BRK,,BRK,MIL,Barclays Center,conference,2022-12-23 19:30:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,31
+202212230CLE,,CLE,TOR,Rocket Mortgage Fieldhouse,conference,2022-12-23 19:30:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,32
+202212230NYK,,NYK,CHI,Madison Square Garden (IV),conference,2022-12-23 19:30:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,31
+202212230HOU,,HOU,DAL,Toyota Center,division,2022-12-23 20:00:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,32
+202212230MIA,,MIA,IND,FTX Arena,conference,2022-12-23 20:00:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,32
+202212230OKC,,OKC,NOP,Paycom Center,conference,2022-12-23 20:00:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,31
+202212230DEN,,DEN,POR,Ball Arena,division,2022-12-23 21:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,32
+202212230PHO,,PHO,MEM,Footprint Center,conference,2022-12-23 22:00:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,30
+202212230SAC,,SAC,WAS,Golden 1 Center,none,2022-12-23 22:00:00,,,,,,,,,,,,,,,30,,,,,,,,,,,,,,33
+202212230LAL,,LAL,CHO,Crypto.com Arena,none,2022-12-23 22:30:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,32
+202212250NYK,,NYK,PHI,Madison Square Garden (IV),division,2022-12-25 12:00:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,31
+202212250DAL,,DAL,LAL,American Airlines Center,conference,2022-12-25 14:30:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,32
+202212250BOS,,BOS,MIL,TD Garden,conference,2022-12-25 17:00:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,32
+202212250GSW,,GSW,MEM,Chase Center,conference,2022-12-25 20:00:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,31
+202212250DEN,,DEN,PHO,Ball Arena,conference,2022-12-25 22:30:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,33
+202212260CLE,,CLE,BRK,Rocket Mortgage Fieldhouse,conference,2022-12-26 19:00:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,33
+202212260DET,,DET,LAC,Little Caesars Arena,none,2022-12-26 19:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,34
+202212260MIA,,MIA,MIN,FTX Arena,none,2022-12-26 19:30:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,33
+202212260CHI,,CHI,HOU,United Center,none,2022-12-26 20:00:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,32
+202212260NOP,,NOP,IND,Smoothie King Center,none,2022-12-26 20:00:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,33
+202212260SAS,,SAS,UTA,AT&T Center,conference,2022-12-26 20:00:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,35
+202212260POR,,POR,CHO,Moda Center,none,2022-12-26 22:00:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,33
+202212270ORL,,ORL,LAL,Amway Center,none,2022-12-27 19:00:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,33
+202212270WAS,,WAS,PHI,Capital One Arena,conference,2022-12-27 19:00:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,32
+202212270BOS,,BOS,HOU,TD Garden,none,2022-12-27 19:30:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,33
+202212270IND,,IND,ATL,Gainbridge Fieldhouse,conference,2022-12-27 19:30:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,33
+202212270TOR,,TOR,LAC,Scotiabank Arena,none,2022-12-27 19:30:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,35
+202212270MEM,,MEM,PHO,FedEx Forum,conference,2022-12-27 20:00:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,34
+202212270OKC,,OKC,SAS,Paycom Center,conference,2022-12-27 20:00:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,33
+202212270DAL,,DAL,NYK,American Airlines Center,none,2022-12-27 20:30:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,34
+202212270GSW,,GSW,CHO,Chase Center,none,2022-12-27 22:00:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,34
+202212270SAC,,SAC,DEN,Golden 1 Center,conference,2022-12-27 22:00:00,,,,,,,,,,,,,,,31,,,,,,,,,,,,,,32
+202212280DET,,DET,ORL,Little Caesars Arena,conference,2022-12-28 19:00:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,35
+202212280WAS,,WAS,PHO,Capital One Arena,none,2022-12-28 19:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,35
+202212280ATL,,ATL,BRK,State Farm Arena,conference,2022-12-28 19:30:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,34
+202212280MIA,,MIA,LAL,FTX Arena,none,2022-12-28 19:30:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,34
+202212280CHI,,CHI,MIL,United Center,division,2022-12-28 20:00:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,33
+202212280NOP,,NOP,MIN,Smoothie King Center,conference,2022-12-28 20:00:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,34
+202212280GSW,,GSW,UTA,Chase Center,conference,2022-12-28 22:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,36
+202212280SAC,,SAC,DEN,Golden 1 Center,conference,2022-12-28 22:00:00,,,,,,,,,,,,,,,32,,,,,,,,,,,,,,33
+202212290CHO,,CHO,OKC,Spectrum Center,none,2022-12-29 19:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,34
+202212290IND,,IND,CLE,Gainbridge Fieldhouse,division,2022-12-29 19:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,35
+202212290BOS,,BOS,LAC,TD Garden,none,2022-12-29 19:30:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,36
+202212290TOR,,TOR,MEM,Scotiabank Arena,none,2022-12-29 19:30:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,33
+202212290SAS,,SAS,NYK,AT&T Center,none,2022-12-29 20:00:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,35
+202212290DAL,,DAL,HOU,American Airlines Center,division,2022-12-29 20:30:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,34
+202212300ORL,,ORL,WAS,Amway Center,division,2022-12-30 19:00:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,36
+202212300ATL,,ATL,LAL,State Farm Arena,none,2022-12-30 19:30:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,35
+202212300TOR,,TOR,PHO,Scotiabank Arena,none,2022-12-30 19:30:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,36
+202212300CHI,,CHI,DET,United Center,division,2022-12-30 20:00:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,37
+202212300MIL,,MIL,MIN,Fiserv Forum,none,2022-12-30 20:00:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,35
+202212300NOP,,NOP,PHI,Smoothie King Center,none,2022-12-30 20:30:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,33
+202212300DEN,,DEN,MIA,Ball Arena,none,2022-12-30 21:00:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,35
+202212300GSW,,GSW,POR,Chase Center,conference,2022-12-30 22:00:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,34
+202212300SAC,,SAC,UTA,Golden 1 Center,conference,2022-12-30 22:00:00,,,,,,,,,,,,,,,33,,,,,,,,,,,,,,37
+202212310IND,,IND,LAC,Gainbridge Fieldhouse,none,2022-12-31 15:00:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,37
+202212310CHI,,CHI,CLE,United Center,division,2022-12-31 19:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,36
+202212310CHO,,CHO,BRK,Spectrum Center,conference,2022-12-31 19:00:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,35
+202212310HOU,,HOU,NYK,Toyota Center,none,2022-12-31 19:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,36
+202212310SAS,,SAS,DAL,AT&T Center,division,2022-12-31 19:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,36
+202212310MEM,,MEM,NOP,FedEx Forum,division,2022-12-31 20:00:00,,,,,,,,,,,,,,,34,,,,,,,,,,,,,,35
+202212310MIN,,MIN,DET,Target Center,none,2022-12-31 20:00:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,38
+202212310OKC,,OKC,PHI,Paycom Center,none,2022-12-31 20:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,34
+202212310UTA,,UTA,MIA,Vivint Arena,none,2022-12-31 21:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,36
+202301010DEN,,DEN,BOS,Ball Arena,none,2023-01-01 20:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,36
+202301010MEM,,MEM,SAC,FedEx Forum,conference,2023-01-01 20:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,34
+202301010MIL,,MIL,WAS,Fiserv Forum,conference,2023-01-01 20:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,37
+202301020NYK,,NYK,PHO,Madison Square Garden (IV),none,2023-01-02 15:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,37
+202301020CHO,,CHO,LAL,Spectrum Center,none,2023-01-02 19:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,36
+202301020CLE,,CLE,CHI,Rocket Mortgage Fieldhouse,division,2023-01-02 19:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,36
+202301020IND,,IND,TOR,Gainbridge Fieldhouse,conference,2023-01-02 19:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,36
+202301020PHI,,PHI,NOP,Wells Fargo Center,none,2023-01-02 19:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,36
+202301020BRK,,BRK,SAS,Barclays Center,none,2023-01-02 19:30:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,36
+202301020HOU,,HOU,DAL,Toyota Center,division,2023-01-02 20:00:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,37
+202301020MIN,,MIN,DEN,Target Center,division,2023-01-02 20:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,36
+202301020GSW,,GSW,ATL,Chase Center,none,2023-01-02 22:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,36
+202301020POR,,POR,DET,Moda Center,none,2023-01-02 22:00:00,,,,,,,,,,,,,,,35,,,,,,,,,,,,,,39
+202301020LAC,,LAC,MIA,Crypto.com Arena,none,2023-01-02 22:30:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,37
+202301030MIL,,MIL,WAS,Fiserv Forum,conference,2023-01-03 20:00:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,38
+202301030OKC,,OKC,BOS,Paycom Center,none,2023-01-03 20:00:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,37
+202301030UTA,,UTA,SAC,Vivint Arena,conference,2023-01-03 21:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,35
+202301040CHO,,CHO,MEM,Spectrum Center,none,2023-01-04 19:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,36
+202301040CLE,,CLE,PHO,Rocket Mortgage Fieldhouse,none,2023-01-04 19:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,38
+202301040ORL,,ORL,OKC,Amway Center,none,2023-01-04 19:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,37
+202301040PHI,,PHI,IND,Wells Fargo Center,conference,2023-01-04 19:00:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,38
+202301040NYK,,NYK,SAS,Madison Square Garden (IV),none,2023-01-04 19:30:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,37
+202301040TOR,,TOR,MIL,Scotiabank Arena,conference,2023-01-04 19:30:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,37
+202301040CHI,,CHI,BRK,United Center,conference,2023-01-04 20:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,37
+202301040MIN,,MIN,POR,Target Center,division,2023-01-04 20:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,36
+202301040NOP,,NOP,HOU,Smoothie King Center,division,2023-01-04 20:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,37
+202301040GSW,,GSW,DET,Chase Center,none,2023-01-04 22:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,40
+202301040LAL,,LAL,MIA,Crypto.com Arena,none,2023-01-04 22:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,38
+202301040SAC,,SAC,ATL,Golden 1 Center,none,2023-01-04 22:00:00,,,,,,,,,,,,,,,36,,,,,,,,,,,,,,37
+202301050ORL,,ORL,MEM,Amway Center,none,2023-01-05 19:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,37
+202301050DAL,,DAL,BOS,American Airlines Center,none,2023-01-05 19:30:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,38
+202301050HOU,,HOU,UTA,Toyota Center,conference,2023-01-05 20:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,40
+202301050DEN,,DEN,LAC,Ball Arena,conference,2023-01-05 22:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,39
+202301060IND,,IND,POR,Gainbridge Fieldhouse,none,2023-01-06 19:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,37
+202301060PHI,,PHI,CHI,Wells Fargo Center,conference,2023-01-06 19:30:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,38
+202301060TOR,,TOR,NYK,Scotiabank Arena,division,2023-01-06 19:30:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,39
+202301060MIL,,MIL,CHO,Fiserv Forum,conference,2023-01-06 20:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,39
+202301060OKC,,OKC,WAS,Paycom Center,none,2023-01-06 20:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,39
+202301060SAS,,SAS,DET,AT&T Center,none,2023-01-06 20:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,41
+202301060NOP,,NOP,BRK,Smoothie King Center,none,2023-01-06 20:30:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,38
+202301060DEN,,DEN,CLE,Ball Arena,none,2023-01-06 21:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,39
+202301060MIN,,MIN,LAC,Target Center,conference,2023-01-06 21:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,40
+202301060PHO,,PHO,MIA,Footprint Center,none,2023-01-06 22:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,39
+202301060LAL,,LAL,ATL,Crypto.com Arena,none,2023-01-06 22:30:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,38
+202301070SAS,,SAS,BOS,AT&T Center,none,2023-01-07 18:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,39
+202301070CHI,,CHI,UTA,United Center,none,2023-01-07 20:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,41
+202301070DAL,,DAL,NOP,American Airlines Center,division,2023-01-07 20:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,39
+202301070GSW,,GSW,ORL,Chase Center,none,2023-01-07 20:30:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,39
+202301070SAC,,SAC,LAL,Golden 1 Center,division,2023-01-07 22:00:00,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,39
+202301080DET,,DET,PHI,Little Caesars Arena,conference,2023-01-08 15:00:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,38
+202301080TOR,,TOR,POR,Scotiabank Arena,none,2023-01-08 15:30:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,38
+202301080IND,,IND,CHO,Gainbridge Fieldhouse,conference,2023-01-08 17:00:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,40
+202301080MEM,,MEM,UTA,FedEx Forum,conference,2023-01-08 18:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,42
+202301080MIA,,MIA,BRK,FTX Arena,conference,2023-01-08 18:00:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,39
+202301080HOU,,HOU,MIN,Toyota Center,conference,2023-01-08 19:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,40
+202301080OKC,,OKC,DAL,Paycom Center,conference,2023-01-08 19:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,40
+202301080PHO,,PHO,CLE,Footprint Center,none,2023-01-08 20:00:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,40
+202301080LAC,,LAC,ATL,Crypto.com Arena,none,2023-01-08 21:00:00,,,,,,,,,,,,,,,41,,,,,,,,,,,,,,39
+202301090WAS,,WAS,NOP,Capital One Arena,none,2023-01-09 19:00:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,40
+202301090BOS,,BOS,CHI,TD Garden,conference,2023-01-09 19:30:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,40
+202301090NYK,,NYK,MIL,Madison Square Garden (IV),conference,2023-01-09 19:30:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,39
+202301090MEM,,MEM,SAS,FedEx Forum,division,2023-01-09 20:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,40
+202301090DEN,,DEN,LAL,Ball Arena,conference,2023-01-09 21:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,40
+202301090SAC,,SAC,ORL,Golden 1 Center,none,2023-01-09 22:00:00,,,,,,,,,,,,,,,38,,,,,,,,,,,,,,40
+202301100MIA,,MIA,OKC,FTX Arena,none,2023-01-10 19:30:00,,,,,,,,,,,,,,,41,,,,,,,,,,,,,,40
+202301100PHI,,PHI,DET,Wells Fargo Center,conference,2023-01-10 19:30:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,43
+202301100TOR,,TOR,CHO,Scotiabank Arena,conference,2023-01-10 19:30:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,41
+202301100UTA,,UTA,CLE,Vivint Arena,none,2023-01-10 21:00:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,41
+202301100GSW,,GSW,PHO,Chase Center,division,2023-01-10 22:00:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,41
+202301100POR,,POR,ORL,Moda Center,none,2023-01-10 22:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,41
+202301100LAC,,LAC,DAL,Crypto.com Arena,conference,2023-01-10 22:30:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,41
+202301110DET,,DET,MIN,Little Caesars Arena,none,2023-01-11 19:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,41
+202301110WAS,,WAS,CHI,Capital One Arena,conference,2023-01-11 19:00:00,,,,,,,,,,,,,,,41,,,,,,,,,,,,,,41
+202301110ATL,,ATL,MIL,State Farm Arena,conference,2023-01-11 19:30:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,40
+202301110BOS,,BOS,NOP,TD Garden,none,2023-01-11 19:30:00,,,,,,,,,,,,,,,41,,,,,,,,,,,,,,41
+202301110NYK,,NYK,IND,Madison Square Garden (IV),conference,2023-01-11 19:30:00,,,,,,,,,,,,,,,41,,,,,,,,,,,,,,41
+202301110MEM,,MEM,SAS,FedEx Forum,division,2023-01-11 20:00:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,41
+202301110DEN,,DEN,PHO,Ball Arena,conference,2023-01-11 21:00:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,42
+202301110SAC,,SAC,HOU,Golden 1 Center,conference,2023-01-11 22:00:00,,,,,,,,,,,,,,,39,,,,,,,,,,,,,,40
+202301120PHI,,PHI,OKC,Wells Fargo Center,none,2023-01-12 19:00:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,41
+202301120BRK,,BRK,BOS,Barclays Center,division,2023-01-12 19:30:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,42
+202301120MIA,,MIA,MIL,FTX Arena,conference,2023-01-12 19:30:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,41
+202301120TOR,,TOR,CHO,Scotiabank Arena,conference,2023-01-12 19:30:00,,,,,,,,,,,,,,,41,,,,,,,,,,,,,,42
+202301120LAL,,LAL,DAL,Crypto.com Arena,conference,2023-01-12 22:00:00,,,,,,,,,,,,,,,41,,,,,,,,,,,,,,42
+202301120POR,,POR,CLE,Moda Center,none,2023-01-12 22:00:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,42
+202301130DET,,DET,NOP,Little Caesars Arena,none,2023-01-13 19:00:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,42
+202301130IND,,IND,ATL,Gainbridge Fieldhouse,conference,2023-01-13 19:00:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,41
+202301130WAS,,WAS,NYK,Capital One Arena,conference,2023-01-13 19:00:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,42
+202301130SAS,,SAS,GSW,AT&T Center,conference,2023-01-13 19:30:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,41
+202301130CHI,,CHI,OKC,United Center,none,2023-01-13 20:00:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,42
+202301130MIN,,MIN,PHO,Target Center,conference,2023-01-13 20:00:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,43
+202301130UTA,,UTA,ORL,Vivint Arena,none,2023-01-13 21:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,42
+202301130LAC,,LAC,DEN,Crypto.com Arena,conference,2023-01-13 22:00:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,41
+202301130SAC,,SAC,HOU,Golden 1 Center,conference,2023-01-13 22:00:00,,,,,,,,,,,,,,,40,,,,,,,,,,,,,,41
+202301140MIA,,MIA,MIL,FTX Arena,conference,2023-01-14 13:00:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,42
+202301140CHO,,CHO,BOS,Spectrum Center,conference,2023-01-14 19:00:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,43
+202301140IND,,IND,MEM,Gainbridge Fieldhouse,none,2023-01-14 19:00:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,41
+202301140TOR,,TOR,ATL,Scotiabank Arena,conference,2023-01-14 19:30:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,42
+202301140MIN,,MIN,CLE,Target Center,none,2023-01-14 20:00:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,43
+202301140UTA,,UTA,PHI,Vivint Arena,none,2023-01-14 21:00:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,41
+202301140POR,,POR,DAL,Moda Center,conference,2023-01-14 22:00:00,,,,,,,,,,,,,,,41,,,,,,,,,,,,,,43
+202301150DET,,DET,NYK,Little Caesars Arena,conference,2023-01-15 13:00:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,43
+202301150LAC,,LAC,HOU,Crypto.com Arena,conference,2023-01-15 15:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,42
+202301150CHI,,CHI,GSW,United Center,none,2023-01-15 15:30:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,42
+202301150BRK,,BRK,OKC,Barclays Center,none,2023-01-15 18:00:00,,,,,,,,,,,,,,,41,,,,,,,,,,,,,,43
+202301150SAS,,SAS,SAC,AT&T Center,conference,2023-01-15 19:00:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,41
+202301150DEN,,DEN,ORL,Ball Arena,none,2023-01-15 20:00:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,43
+202301150POR,,POR,DAL,Moda Center,conference,2023-01-15 21:00:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,44
+202301150LAL,,LAL,PHI,Crypto.com Arena,none,2023-01-15 21:30:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,42
+202301160CHO,,CHO,BOS,Spectrum Center,conference,2023-01-16 13:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,44
+202301160MIL,,MIL,IND,Fiserv Forum,division,2023-01-16 14:30:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,44
+202301160CLE,,CLE,NOP,Rocket Mortgage Fieldhouse,none,2023-01-16 15:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,43
+202301160NYK,,NYK,TOR,Madison Square Garden (IV),division,2023-01-16 15:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,43
+202301160WAS,,WAS,GSW,Capital One Arena,none,2023-01-16 15:00:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,43
+202301160ATL,,ATL,MIA,State Farm Arena,division,2023-01-16 15:30:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,44
+202301160MIN,,MIN,UTA,Target Center,division,2023-01-16 16:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,46
+202301160MEM,,MEM,PHO,FedEx Forum,conference,2023-01-16 18:00:00,,,,,,,,,,,,,,,42,,,,,,,,,,,,,,44
+202301160LAL,,LAL,HOU,Crypto.com Arena,conference,2023-01-16 22:30:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,43
+202301170MIL,,MIL,TOR,Fiserv Forum,conference,2023-01-17 19:30:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,44
+202301170SAS,,SAS,BRK,AT&T Center,none,2023-01-17 20:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,42
+202301170DEN,,DEN,POR,Ball Arena,division,2023-01-17 21:00:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,43
+202301170LAC,,LAC,PHI,Crypto.com Arena,none,2023-01-17 22:00:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,43
+202301180DAL,,DAL,ATL,American Airlines Center,none,2023-01-18 19:30:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,44
+202301180NYK,,NYK,WAS,Madison Square Garden (IV),conference,2023-01-18 19:30:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,44
+202301180HOU,,HOU,CHO,Toyota Center,none,2023-01-18 20:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,45
+202301180MEM,,MEM,CLE,FedEx Forum,none,2023-01-18 20:00:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,45
+202301180NOP,,NOP,MIA,Smoothie King Center,none,2023-01-18 20:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,45
+202301180OKC,,OKC,IND,Paycom Center,none,2023-01-18 20:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,45
+202301180UTA,,UTA,LAC,Vivint Arena,conference,2023-01-18 21:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,46
+202301180DEN,,DEN,MIN,Ball Arena,division,2023-01-18 22:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,45
+202301180LAL,,LAL,SAC,Crypto.com Arena,division,2023-01-18 22:30:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,42
+202301190DET,,DET,CHI,AccorHotels Arena,division,2023-01-19 15:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,44
+202301190BOS,,BOS,GSW,TD Garden,none,2023-01-19 19:30:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,44
+202301190MIN,,MIN,TOR,Target Center,none,2023-01-19 20:00:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,45
+202301190PHO,,PHO,BRK,Footprint Center,none,2023-01-19 22:00:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,43
+202301190POR,,POR,PHI,Moda Center,none,2023-01-19 22:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,44
+202301200ORL,,ORL,NOP,Amway Center,none,2023-01-20 19:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,45
+202301200ATL,,ATL,NYK,State Farm Arena,conference,2023-01-20 19:30:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,46
+202301200CLE,,CLE,GSW,Rocket Mortgage Fieldhouse,none,2023-01-20 19:30:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,45
+202301200DAL,,DAL,MIA,American Airlines Center,none,2023-01-20 19:30:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,46
+202301200SAS,,SAS,LAC,AT&T Center,conference,2023-01-20 20:00:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,47
+202301200DEN,,DEN,IND,Ball Arena,none,2023-01-20 21:00:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,46
+202301200UTA,,UTA,BRK,Vivint Arena,none,2023-01-20 21:00:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,44
+202301200LAL,,LAL,MEM,Crypto.com Arena,conference,2023-01-20 22:00:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,44
+202301200SAC,,SAC,OKC,Golden 1 Center,conference,2023-01-20 22:00:00,,,,,,,,,,,,,,,43,,,,,,,,,,,,,,45
+202301210TOR,,TOR,BOS,Scotiabank Arena,division,2023-01-21 17:00:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,46
+202301210WAS,,WAS,ORL,Capital One Arena,division,2023-01-21 19:00:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,45
+202301210ATL,,ATL,CHO,State Farm Arena,division,2023-01-21 19:30:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,46
+202301210CLE,,CLE,MIL,Rocket Mortgage Fieldhouse,division,2023-01-21 19:30:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,45
+202301210MIN,,MIN,HOU,Target Center,conference,2023-01-21 20:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,45
+202301210PHO,,PHO,IND,Footprint Center,none,2023-01-21 21:00:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,47
+202301210SAC,,SAC,PHI,Golden 1 Center,none,2023-01-21 22:00:00,,,,,,,,,,,,,,,44,,,,,,,,,,,,,,45
+202301220MIA,,MIA,NOP,FTX Arena,none,2023-01-22 15:30:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,46
+202301220TOR,,TOR,NYK,Scotiabank Arena,division,2023-01-22 18:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,47
+202301220DAL,,DAL,LAC,American Airlines Center,conference,2023-01-22 19:30:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,48
+202301220DEN,,DEN,OKC,Ball Arena,division,2023-01-22 20:00:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,46
+202301220PHO,,PHO,MEM,Footprint Center,conference,2023-01-22 20:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,45
+202301220GSW,,GSW,BRK,Chase Center,none,2023-01-22 20:30:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,45
+202301220POR,,POR,LAL,Moda Center,conference,2023-01-22 21:00:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,46
+202301230DET,,DET,MIL,Little Caesars Arena,division,2023-01-23 19:00:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,46
+202301230ORL,,ORL,BOS,Amway Center,conference,2023-01-23 19:00:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,47
+202301230CHI,,CHI,ATL,United Center,conference,2023-01-23 20:00:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,47
+202301230HOU,,HOU,MIN,Toyota Center,conference,2023-01-23 20:00:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,48
+202301230UTA,,UTA,CHO,Vivint Arena,none,2023-01-23 21:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,47
+202301230POR,,POR,SAS,Moda Center,conference,2023-01-23 22:00:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,46
+202301230SAC,,SAC,MEM,Golden 1 Center,conference,2023-01-23 22:30:00,,,,,,,,,,,,,,,45,,,,,,,,,,,,,,46
+202301240IND,,IND,CHI,Gainbridge Fieldhouse,division,2023-01-24 19:00:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,46
+202301240MIA,,MIA,BOS,FTX Arena,conference,2023-01-24 19:30:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,48
+202301240NYK,,NYK,CLE,Madison Square Garden (IV),conference,2023-01-24 19:30:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,48
+202301240NOP,,NOP,DEN,Smoothie King Center,conference,2023-01-24 20:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,47
+202301240DAL,,DAL,WAS,American Airlines Center,none,2023-01-24 20:30:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,46
+202301240PHO,,PHO,CHO,Footprint Center,none,2023-01-24 21:00:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,48
+202301240LAL,,LAL,LAC,Crypto.com Arena,division,2023-01-24 22:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,49
+202301250ORL,,ORL,IND,Amway Center,conference,2023-01-25 19:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,49
+202301250PHI,,PHI,BRK,Wells Fargo Center,division,2023-01-25 19:30:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,46
+202301250HOU,,HOU,WAS,Toyota Center,none,2023-01-25 20:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,47
+202301250MIL,,MIL,DEN,Fiserv Forum,none,2023-01-25 20:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,48
+202301250NOP,,NOP,MIN,Smoothie King Center,conference,2023-01-25 20:00:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,49
+202301250OKC,,OKC,ATL,Paycom Center,none,2023-01-25 20:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,48
+202301250GSW,,GSW,MEM,Chase Center,conference,2023-01-25 22:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,47
+202301250POR,,POR,UTA,Moda Center,division,2023-01-25 22:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,50
+202301250SAC,,SAC,TOR,Golden 1 Center,none,2023-01-25 22:00:00,,,,,,,,,,,,,,,46,,,,,,,,,,,,,,48
+202301250LAL,,LAL,SAS,Crypto.com Arena,conference,2023-01-25 22:30:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,47
+202301260BOS,,BOS,NYK,TD Garden,division,2023-01-26 19:30:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,49
+202301260BRK,,BRK,DET,Barclays Center,conference,2023-01-26 19:30:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,49
+202301260CHO,,CHO,CHI,Spectrum Center,conference,2023-01-26 19:30:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,47
+202301260HOU,,HOU,CLE,Toyota Center,none,2023-01-26 20:00:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,49
+202301260PHO,,PHO,DAL,Footprint Center,conference,2023-01-26 22:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,49
+202301260LAC,,LAC,SAS,Crypto.com Arena,conference,2023-01-26 22:30:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,48
+202301270IND,,IND,MIL,Gainbridge Fieldhouse,division,2023-01-27 19:00:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,48
+202301270MIN,,MIN,MEM,Target Center,conference,2023-01-27 19:30:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,48
+202301270MIA,,MIA,ORL,FTX Arena,division,2023-01-27 20:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,48
+202301270OKC,,OKC,CLE,Paycom Center,none,2023-01-27 20:00:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,50
+202301270GSW,,GSW,TOR,Chase Center,none,2023-01-27 22:00:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,49
+202301280PHI,,PHI,DEN,Wells Fargo Center,none,2023-01-28 15:00:00,,,,,,,,,,,,,,,47,,,,,,,,,,,,,,49
+202301280BRK,,BRK,NYK,Barclays Center,division,2023-01-28 17:30:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,50
+202301280DET,,DET,HOU,Little Caesars Arena,none,2023-01-28 19:00:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,49
+202301280ORL,,ORL,CHI,Amway Center,conference,2023-01-28 19:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,48
+202301280ATL,,ATL,LAC,State Farm Arena,none,2023-01-28 19:30:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,51
+202301280MIN,,MIN,SAC,Target Center,conference,2023-01-28 20:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,47
+202301280NOP,,NOP,WAS,Smoothie King Center,none,2023-01-28 20:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,48
+202301280SAS,,SAS,PHO,AT&T Center,conference,2023-01-28 20:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,50
+202301280BOS,,BOS,LAL,TD Garden,none,2023-01-28 20:30:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,49
+202301280UTA,,UTA,DAL,Vivint Arena,conference,2023-01-28 21:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,50
+202301280POR,,POR,TOR,Moda Center,none,2023-01-28 22:00:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,50
+202301290CHO,,CHO,MIA,Spectrum Center,division,2023-01-29 13:00:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,50
+202301290MEM,,MEM,IND,FedEx Forum,none,2023-01-29 18:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,51
+202301290CLE,,CLE,LAC,Rocket Mortgage Fieldhouse,none,2023-01-29 19:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,52
+202301290MIL,,MIL,NOP,Fiserv Forum,none,2023-01-29 20:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,50
+202301300PHI,,PHI,ORL,Wells Fargo Center,conference,2023-01-30 19:00:00,,,,,,,,,,,,,,,48,,,,,,,,,,,,,,50
+202301300BRK,,BRK,LAL,Barclays Center,none,2023-01-30 19:30:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,50
+202301300MIN,,MIN,SAC,Target Center,conference,2023-01-30 20:00:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,48
+202301300OKC,,OKC,GSW,Paycom Center,conference,2023-01-30 20:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,49
+202301300SAS,,SAS,WAS,AT&T Center,none,2023-01-30 20:00:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,49
+202301300DAL,,DAL,DET,American Airlines Center,none,2023-01-30 20:30:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,51
+202301300PHO,,PHO,TOR,Footprint Center,none,2023-01-30 21:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,51
+202301300POR,,POR,ATL,Moda Center,none,2023-01-30 22:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,50
+202301310CLE,,CLE,MIA,Rocket Mortgage Fieldhouse,conference,2023-01-31 19:00:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,51
+202301310NYK,,NYK,LAL,Madison Square Garden (IV),none,2023-01-31 19:30:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,51
+202301310CHI,,CHI,LAC,United Center,none,2023-01-31 20:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,53
+202301310MIL,,MIL,CHO,Fiserv Forum,conference,2023-01-31 20:00:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,51
+202301310DEN,,DEN,NOP,Ball Arena,conference,2023-01-31 22:00:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,51
+202302010DET,,DET,WAS,Little Caesars Arena,conference,2023-02-01 19:00:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,50
+202302010MEM,,MEM,POR,FedEx Forum,conference,2023-02-01 19:00:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,50
+202302010PHI,,PHI,ORL,Wells Fargo Center,conference,2023-02-01 19:00:00,,,,,,,,,,,,,,,49,,,,,,,,,,,,,,51
+202302010BOS,,BOS,BRK,TD Garden,division,2023-02-01 19:30:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,50
+202302010HOU,,HOU,OKC,Toyota Center,conference,2023-02-01 20:00:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,50
+202302010MIN,,MIN,GSW,Target Center,conference,2023-02-01 20:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,50
+202302010SAS,,SAS,SAC,AT&T Center,conference,2023-02-01 20:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,49
+202302010UTA,,UTA,TOR,Vivint Arena,none,2023-02-01 21:00:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,52
+202302010PHO,,PHO,ATL,Footprint Center,none,2023-02-01 22:00:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,51
+202302020IND,,IND,LAL,Gainbridge Fieldhouse,none,2023-02-02 19:00:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,52
+202302020CLE,,CLE,MEM,Rocket Mortgage Fieldhouse,none,2023-02-02 19:30:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,51
+202302020NYK,,NYK,MIA,Madison Square Garden (IV),conference,2023-02-02 19:30:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,52
+202302020CHI,,CHI,CHO,United Center,conference,2023-02-02 20:00:00,,,,,,,,,,,,,,,50,,,,,,,,,,,,,,52
+202302020DAL,,DAL,NOP,American Airlines Center,division,2023-02-02 20:30:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,52
+202302020DEN,,DEN,GSW,Ball Arena,conference,2023-02-02 21:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,51
+202302020MIL,,MIL,LAC,Fiserv Forum,none,2023-02-02 22:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,54
+202302030DET,,DET,CHO,Little Caesars Arena,conference,2023-02-03 19:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,53
+202302030IND,,IND,SAC,Gainbridge Fieldhouse,none,2023-02-03 19:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,50
+202302030WAS,,WAS,POR,Capital One Arena,none,2023-02-03 19:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,51
+202302030BOS,,BOS,PHO,TD Garden,none,2023-02-03 19:30:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,53
+202302030HOU,,HOU,TOR,Toyota Center,none,2023-02-03 20:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,53
+202302030MIN,,MIN,ORL,Target Center,none,2023-02-03 20:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,52
+202302030SAS,,SAS,PHI,AT&T Center,none,2023-02-03 20:00:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,50
+202302030UTA,,UTA,ATL,Vivint Arena,none,2023-02-03 21:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,52
+202302040BRK,,BRK,WAS,Barclays Center,conference,2023-02-04 18:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,52
+202302040DET,,DET,PHO,Little Caesars Arena,none,2023-02-04 19:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,54
+202302040NYK,,NYK,LAC,Madison Square Garden (IV),none,2023-02-04 19:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,55
+202302040CHI,,CHI,POR,United Center,none,2023-02-04 20:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,52
+202302040MIL,,MIL,MIA,Fiserv Forum,conference,2023-02-04 20:00:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,53
+202302040NOP,,NOP,LAL,Smoothie King Center,conference,2023-02-04 20:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,53
+202302040OKC,,OKC,HOU,Paycom Center,conference,2023-02-04 20:00:00,,,,,,,,,,,,,,,51,,,,,,,,,,,,,,52
+202302040GSW,,GSW,DAL,Chase Center,conference,2023-02-04 20:30:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,53
+202302040DEN,,DEN,ATL,Ball Arena,none,2023-02-04 21:00:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,53
+202302050CHO,,CHO,ORL,Spectrum Center,division,2023-02-05 13:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,53
+202302050IND,,IND,CLE,Gainbridge Fieldhouse,division,2023-02-05 17:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,54
+202302050MEM,,MEM,TOR,FedEx Forum,none,2023-02-05 18:00:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,54
+202302050NYK,,NYK,PHI,Madison Square Garden (IV),division,2023-02-05 18:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,51
+202302050MIN,,MIN,DEN,Target Center,division,2023-02-05 19:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,53
+202302050NOP,,NOP,SAC,Smoothie King Center,conference,2023-02-05 19:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,51
+202302060DET,,DET,BOS,Little Caesars Arena,conference,2023-02-06 19:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,53
+202302060WAS,,WAS,CLE,Capital One Arena,conference,2023-02-06 19:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,55
+202302060BRK,,BRK,LAC,Barclays Center,none,2023-02-06 19:30:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,56
+202302060CHI,,CHI,SAS,United Center,none,2023-02-06 20:00:00,,,,,,,,,,,,,,,52,,,,,,,,,,,,,,53
+202302060HOU,,HOU,SAC,Toyota Center,conference,2023-02-06 20:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,52
+202302060UTA,,UTA,DAL,Vivint Arena,conference,2023-02-06 21:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,54
+202302060GSW,,GSW,OKC,Chase Center,conference,2023-02-06 22:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,52
+202302060POR,,POR,MIL,Moda Center,none,2023-02-06 22:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,53
+202302070ORL,,ORL,NYK,Amway Center,conference,2023-02-07 19:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,55
+202302070BRK,,BRK,PHO,Barclays Center,none,2023-02-07 19:30:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,55
+202302070NOP,,NOP,ATL,Smoothie King Center,none,2023-02-07 19:30:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,54
+202302070MEM,,MEM,CHI,FedEx Forum,none,2023-02-07 20:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,53
+202302070DEN,,DEN,MIN,Ball Arena,division,2023-02-07 22:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,56
+202302070LAL,,LAL,OKC,Crypto.com Arena,conference,2023-02-07 22:30:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,53
+202302080CLE,,CLE,DET,Rocket Mortgage Fieldhouse,division,2023-02-08 19:00:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,56
+202302080WAS,,WAS,CHO,Capital One Arena,division,2023-02-08 19:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,55
+202302080BOS,,BOS,PHI,TD Garden,division,2023-02-08 19:30:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,52
+202302080MIA,,MIA,IND,FTX Arena,conference,2023-02-08 19:30:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,55
+202302080TOR,,TOR,SAS,Scotiabank Arena,none,2023-02-08 19:30:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,54
+202302080HOU,,HOU,SAC,Toyota Center,conference,2023-02-08 20:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,53
+202302080UTA,,UTA,MIN,Vivint Arena,division,2023-02-08 21:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,57
+202302080LAC,,LAC,DAL,Crypto.com Arena,conference,2023-02-08 22:00:00,,,,,,,,,,,,,,,57,,,,,,,,,,,,,,55
+202302080POR,,POR,GSW,Moda Center,conference,2023-02-08 22:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,54
+202302090ORL,,ORL,DEN,Amway Center,none,2023-02-09 19:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,55
+202302090ATL,,ATL,PHO,State Farm Arena,none,2023-02-09 19:30:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,56
+202302090BRK,,BRK,CHI,Barclays Center,conference,2023-02-09 19:30:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,54
+202302090LAL,,LAL,MIL,Crypto.com Arena,none,2023-02-09 22:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,54
+202302100DET,,DET,SAS,Little Caesars Arena,none,2023-02-10 19:00:00,,,,,,,,,,,,,,,57,,,,,,,,,,,,,,55
+202302100IND,,IND,PHO,Gainbridge Fieldhouse,none,2023-02-10 19:00:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,57
+202302100PHI,,PHI,NYK,Wells Fargo Center,division,2023-02-10 19:00:00,,,,,,,,,,,,,,,53,,,,,,,,,,,,,,56
+202302100BOS,,BOS,CHO,TD Garden,conference,2023-02-10 19:30:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,56
+202302100TOR,,TOR,UTA,Scotiabank Arena,none,2023-02-10 19:30:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,56
+202302100MEM,,MEM,MIN,FedEx Forum,conference,2023-02-10 20:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,58
+202302100MIA,,MIA,HOU,FTX Arena,none,2023-02-10 20:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,55
+202302100NOP,,NOP,CLE,Smoothie King Center,none,2023-02-10 22:00:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,57
+202302100POR,,POR,OKC,Moda Center,division,2023-02-10 22:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,54
+202302100SAC,,SAC,DAL,Golden 1 Center,conference,2023-02-10 22:00:00,,,,,,,,,,,,,,,54,,,,,,,,,,,,,,56
+202302100LAC,,LAC,MIL,Crypto.com Arena,none,2023-02-10 22:30:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,55
+202302110BRK,,BRK,PHI,Barclays Center,division,2023-02-11 18:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,54
+202302110CHO,,CHO,DEN,Spectrum Center,none,2023-02-11 19:00:00,,,,,,,,,,,,,,,57,,,,,,,,,,,,,,56
+202302110ORL,,ORL,MIA,Amway Center,division,2023-02-11 19:00:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,56
+202302110WAS,,WAS,IND,Capital One Arena,conference,2023-02-11 19:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,57
+202302110ATL,,ATL,SAS,State Farm Arena,none,2023-02-11 19:30:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,56
+202302110NYK,,NYK,UTA,Madison Square Garden (IV),none,2023-02-11 19:30:00,,,,,,,,,,,,,,,57,,,,,,,,,,,,,,57
+202302110CLE,,CLE,CHI,Rocket Mortgage Fieldhouse,division,2023-02-11 20:00:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,55
+202302110GSW,,GSW,LAL,Chase Center,division,2023-02-11 20:30:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,56
+202302110SAC,,SAC,DAL,Golden 1 Center,conference,2023-02-11 22:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,57
+202302120BOS,,BOS,MEM,TD Garden,none,2023-02-12 14:00:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,55
+202302120TOR,,TOR,DET,Scotiabank Arena,conference,2023-02-12 15:00:00,,,,,,,,,,,,,,,57,,,,,,,,,,,,,,58
+202302130CHO,,CHO,ATL,Spectrum Center,division,2023-02-13 19:00:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,57
+202302130CLE,,CLE,SAS,Rocket Mortgage Fieldhouse,none,2023-02-13 19:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,57
+202302130IND,,IND,UTA,Gainbridge Fieldhouse,none,2023-02-13 19:00:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,58
+202302130PHI,,PHI,HOU,Wells Fargo Center,none,2023-02-13 19:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,56
+202302130MIA,,MIA,DEN,FTX Arena,none,2023-02-13 19:30:00,,,,,,,,,,,,,,,57,,,,,,,,,,,,,,57
+202302130NYK,,NYK,BRK,Madison Square Garden (IV),division,2023-02-13 19:30:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,56
+202302130CHI,,CHI,ORL,United Center,conference,2023-02-13 20:00:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,57
+202302130OKC,,OKC,NOP,Paycom Center,conference,2023-02-13 20:00:00,,,,,,,,,,,,,,,55,,,,,,,,,,,,,,57
+202302130DAL,,DAL,MIN,American Airlines Center,conference,2023-02-13 20:30:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,59
+202302130GSW,,GSW,WAS,Chase Center,none,2023-02-13 22:00:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,56
+202302130POR,,POR,LAL,Moda Center,conference,2023-02-13 22:00:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,57
+202302140MIL,,MIL,BOS,Fiserv Forum,conference,2023-02-14 19:30:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,57
+202302140TOR,,TOR,ORL,Scotiabank Arena,conference,2023-02-14 19:30:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,58
+202302140PHO,,PHO,SAC,Footprint Center,division,2023-02-14 21:00:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,56
+202302140LAC,,LAC,GSW,Crypto.com Arena,division,2023-02-14 22:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,57
+202302140POR,,POR,WAS,Moda Center,none,2023-02-14 22:00:00,,,,,,,,,,,,,,,57,,,,,,,,,,,,,,57
+202302150CHO,,CHO,SAS,Spectrum Center,none,2023-02-15 19:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,58
+202302150IND,,IND,CHI,Gainbridge Fieldhouse,division,2023-02-15 19:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,57
+202302150PHI,,PHI,CLE,Wells Fargo Center,conference,2023-02-15 19:00:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,60
+202302150ATL,,ATL,NYK,State Farm Arena,conference,2023-02-15 19:30:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,59
+202302150BOS,,BOS,DET,TD Garden,conference,2023-02-15 19:30:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,59
+202302150BRK,,BRK,MIA,Barclays Center,conference,2023-02-15 19:30:00,,,,,,,,,,,,,,,57,,,,,,,,,,,,,,58
+202302150MEM,,MEM,UTA,FedEx Forum,conference,2023-02-15 20:00:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,59
+202302150OKC,,OKC,HOU,Paycom Center,conference,2023-02-15 20:00:00,,,,,,,,,,,,,,,56,,,,,,,,,,,,,,57
+202302150DEN,,DEN,DAL,Ball Arena,conference,2023-02-15 21:00:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,59
+202302150LAL,,LAL,NOP,Crypto.com Arena,conference,2023-02-15 22:00:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,58
+202302160CHI,,CHI,MIL,United Center,division,2023-02-16 19:30:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,57
+202302160MIN,,MIN,WAS,Target Center,none,2023-02-16 20:00:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,58
+202302160PHO,,PHO,LAC,Footprint Center,division,2023-02-16 22:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,60
+202302230CLE,,CLE,DEN,Rocket Mortgage Fieldhouse,none,2023-02-23 19:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,59
+202302230IND,,IND,BOS,Gainbridge Fieldhouse,conference,2023-02-23 19:00:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,59
+202302230ORL,,ORL,DET,Amway Center,conference,2023-02-23 19:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,60
+202302230PHI,,PHI,MEM,Wells Fargo Center,none,2023-02-23 19:30:00,,,,,,,,,,,,,,,57,,,,,,,,,,,,,,57
+202302230TOR,,TOR,NOP,Scotiabank Arena,none,2023-02-23 19:30:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,59
+202302230DAL,,DAL,SAS,American Airlines Center,division,2023-02-23 20:30:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,59
+202302230UTA,,UTA,OKC,Vivint Arena,division,2023-02-23 21:00:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,57
+202302230LAL,,LAL,GSW,Crypto.com Arena,division,2023-02-23 22:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,58
+202302230SAC,,SAC,POR,Golden 1 Center,conference,2023-02-23 22:00:00,,,,,,,,,,,,,,,57,,,,,,,,,,,,,,58
+202302240WAS,,WAS,NYK,Capital One Arena,conference,2023-02-24 19:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,60
+202302240ATL,,ATL,CLE,State Farm Arena,conference,2023-02-24 19:30:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,62
+202302240MIL,,MIL,MIA,Fiserv Forum,conference,2023-02-24 19:30:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,59
+202302240MIN,,MIN,CHO,Target Center,none,2023-02-24 20:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,60
+202302240PHO,,PHO,OKC,Footprint Center,conference,2023-02-24 21:00:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,58
+202302240CHI,,CHI,BRK,United Center,conference,2023-02-24 22:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,58
+202302240GSW,,GSW,HOU,Chase Center,conference,2023-02-24 22:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,58
+202302240LAC,,LAC,SAC,Crypto.com Arena,division,2023-02-24 22:30:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,58
+202302250DET,,DET,TOR,Little Caesars Arena,conference,2023-02-25 12:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,60
+202302250CHO,,CHO,MIA,Spectrum Center,division,2023-02-25 19:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,60
+202302250ORL,,ORL,IND,Amway Center,conference,2023-02-25 19:00:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,61
+202302250NYK,,NYK,NOP,Madison Square Garden (IV),none,2023-02-25 19:30:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,60
+202302250MEM,,MEM,DEN,FedEx Forum,conference,2023-02-25 20:00:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,60
+202302250PHI,,PHI,BOS,Wells Fargo Center,division,2023-02-25 20:30:00,,,,,,,,,,,,,,,58,,,,,,,,,,,,,,60
+202302250UTA,,UTA,SAS,Vivint Arena,conference,2023-02-25 21:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,60
+202302260MIL,,MIL,PHO,Fiserv Forum,none,2023-02-26 13:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,61
+202302260ATL,,ATL,BRK,State Farm Arena,conference,2023-02-26 15:00:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,59
+202302260CHI,,CHI,WAS,United Center,conference,2023-02-26 15:30:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,60
+202302260DAL,,DAL,LAL,American Airlines Center,conference,2023-02-26 15:30:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,60
+202302260CLE,,CLE,TOR,Rocket Mortgage Fieldhouse,conference,2023-02-26 18:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,61
+202302260OKC,,OKC,SAC,Paycom Center,conference,2023-02-26 19:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,59
+202302260GSW,,GSW,MIN,Chase Center,conference,2023-02-26 19:30:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,62
+202302260POR,,POR,HOU,Moda Center,conference,2023-02-26 21:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,59
+202302260DEN,,DEN,LAC,Ball Arena,conference,2023-02-26 22:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,62
+202302270CHO,,CHO,DET,Spectrum Center,conference,2023-02-27 19:00:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,62
+202302270PHI,,PHI,MIA,Wells Fargo Center,conference,2023-02-27 19:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,61
+202302270NYK,,NYK,BOS,Madison Square Garden (IV),division,2023-02-27 19:30:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,61
+202302270NOP,,NOP,ORL,Smoothie King Center,none,2023-02-27 20:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,61
+202302280ATL,,ATL,WAS,State Farm Arena,division,2023-02-28 19:30:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,61
+202302280BRK,,BRK,MIL,Barclays Center,conference,2023-02-28 19:30:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,60
+202302280TOR,,TOR,CHI,Scotiabank Arena,conference,2023-02-28 19:30:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,61
+202302280HOU,,HOU,DEN,Toyota Center,conference,2023-02-28 20:00:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,62
+202302280MEM,,MEM,LAL,FedEx Forum,conference,2023-02-28 20:00:00,,,,,,,,,,,,,,,59,,,,,,,,,,,,,,61
+202302280OKC,,OKC,SAC,Paycom Center,conference,2023-02-28 20:00:00,,,,,,,,,,,,,,,60,,,,,,,,,,,,,,60
+202302280DAL,,DAL,IND,American Airlines Center,none,2023-02-28 20:30:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,62
+202302280UTA,,UTA,SAS,Vivint Arena,conference,2023-02-28 21:00:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,61
+202302280GSW,,GSW,POR,Chase Center,conference,2023-02-28 22:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,60
+202302280LAC,,LAC,MIN,Crypto.com Arena,conference,2023-02-28 22:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,63
+202303010CHO,,CHO,PHO,Spectrum Center,none,2023-03-01 19:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,62
+202303010DET,,DET,CHI,Little Caesars Arena,division,2023-03-01 19:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,62
+202303010BOS,,BOS,CLE,TD Garden,conference,2023-03-01 19:30:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,64
+202303010MIA,,MIA,PHI,FTX Arena,conference,2023-03-01 19:30:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,60
+202303010NYK,,NYK,BRK,Madison Square Garden (IV),division,2023-03-01 19:30:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,61
+202303010HOU,,HOU,MEM,Toyota Center,division,2023-03-01 20:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,60
+202303010MIL,,MIL,ORL,Fiserv Forum,conference,2023-03-01 20:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,62
+202303010OKC,,OKC,LAL,Paycom Center,conference,2023-03-01 20:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,62
+202303010POR,,POR,NOP,Moda Center,conference,2023-03-01 22:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,62
+202303020WAS,,WAS,TOR,Capital One Arena,conference,2023-03-02 19:00:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,63
+202303020DAL,,DAL,PHI,American Airlines Center,none,2023-03-02 19:30:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,61
+202303020SAS,,SAS,IND,AT&T Center,none,2023-03-02 20:30:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,63
+202303020GSW,,GSW,LAC,Chase Center,division,2023-03-02 22:00:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,64
+202303030CHO,,CHO,ORL,Spectrum Center,division,2023-03-03 19:00:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,63
+202303030ATL,,ATL,POR,State Farm Arena,none,2023-03-03 19:30:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,62
+202303030BOS,,BOS,BRK,TD Garden,division,2023-03-03 19:30:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,62
+202303030CHI,,CHI,PHO,United Center,none,2023-03-03 20:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,63
+202303030MIA,,MIA,NYK,FTX Arena,conference,2023-03-03 20:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,64
+202303030OKC,,OKC,UTA,Paycom Center,division,2023-03-03 20:00:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,63
+202303030DEN,,DEN,MEM,Ball Arena,conference,2023-03-03 22:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,61
+202303030GSW,,GSW,NOP,Chase Center,conference,2023-03-03 22:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,63
+202303030SAC,,SAC,LAC,Golden 1 Center,division,2023-03-03 22:00:00,,,,,,,,,,,,,,,61,,,,,,,,,,,,,,65
+202303030LAL,,LAL,MIN,Crypto.com Arena,conference,2023-03-03 22:30:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,64
+202303040WAS,,WAS,TOR,Capital One Arena,conference,2023-03-04 17:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,64
+202303040CLE,,CLE,DET,Rocket Mortgage Fieldhouse,division,2023-03-04 20:00:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,64
+202303040MIA,,MIA,ATL,FTX Arena,division,2023-03-04 20:00:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,63
+202303040SAS,,SAS,HOU,AT&T Center,division,2023-03-04 20:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,62
+202303040MIL,,MIL,PHI,Fiserv Forum,conference,2023-03-04 20:30:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,62
+202303040SAC,,SAC,MIN,Golden 1 Center,conference,2023-03-04 22:00:00,,,,,,,,,,,,,,,62,,,,,,,,,,,,,,65
+202303050DAL,,DAL,PHO,American Airlines Center,conference,2023-03-05 13:00:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,64
+202303050CHI,,CHI,IND,United Center,division,2023-03-05 15:30:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,64
+202303050LAL,,LAL,GSW,Crypto.com Arena,division,2023-03-05 15:30:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,64
+202303050BRK,,BRK,CHO,Barclays Center,conference,2023-03-05 18:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,65
+202303050ORL,,ORL,POR,Amway Center,none,2023-03-05 18:00:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,63
+202303050HOU,,HOU,SAS,Toyota Center,division,2023-03-05 19:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,64
+202303050OKC,,OKC,UTA,Paycom Center,division,2023-03-05 19:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,64
+202303050BOS,,BOS,NYK,TD Garden,division,2023-03-05 19:30:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,65
+202303050LAC,,LAC,MEM,Crypto.com Arena,conference,2023-03-05 22:00:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,62
+202303060CLE,,CLE,BOS,Rocket Mortgage Fieldhouse,conference,2023-03-06 19:00:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,65
+202303060IND,,IND,PHI,Gainbridge Fieldhouse,conference,2023-03-06 19:00:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,63
+202303060WAS,,WAS,MIL,Capital One Arena,conference,2023-03-06 19:00:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,63
+202303060MIA,,MIA,ATL,FTX Arena,division,2023-03-06 19:30:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,64
+202303060DEN,,DEN,TOR,Ball Arena,none,2023-03-06 21:00:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,65
+202303060SAC,,SAC,NOP,Golden 1 Center,conference,2023-03-06 22:00:00,,,,,,,,,,,,,,,63,,,,,,,,,,,,,,64
+202303070DET,,DET,POR,Little Caesars Arena,none,2023-03-07 19:00:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,64
+202303070ORL,,ORL,MIL,Amway Center,conference,2023-03-07 19:00:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,64
+202303070MIN,,MIN,PHI,Target Center,none,2023-03-07 19:30:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,64
+202303070NYK,,NYK,CHO,Madison Square Garden (IV),conference,2023-03-07 19:30:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,66
+202303070HOU,,HOU,BRK,Toyota Center,none,2023-03-07 20:00:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,64
+202303070OKC,,OKC,GSW,Paycom Center,conference,2023-03-07 20:00:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,65
+202303070DAL,,DAL,UTA,American Airlines Center,conference,2023-03-07 20:30:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,65
+202303070LAL,,LAL,MEM,Crypto.com Arena,conference,2023-03-07 22:00:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,63
+202303080WAS,,WAS,ATL,Capital One Arena,division,2023-03-08 19:00:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,65
+202303080BOS,,BOS,POR,TD Garden,none,2023-03-08 19:30:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,65
+202303080MIA,,MIA,CLE,FTX Arena,conference,2023-03-08 19:30:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,67
+202303080NOP,,NOP,DAL,Smoothie King Center,division,2023-03-08 19:30:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,66
+202303080DEN,,DEN,CHI,Ball Arena,none,2023-03-08 21:00:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,65
+202303080PHO,,PHO,OKC,Footprint Center,conference,2023-03-08 21:00:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,65
+202303080LAC,,LAC,TOR,Crypto.com Arena,none,2023-03-08 22:00:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,66
+202303090DET,,DET,CHO,Little Caesars Arena,conference,2023-03-09 19:00:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,67
+202303090IND,,IND,HOU,Gainbridge Fieldhouse,none,2023-03-09 19:00:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,65
+202303090ORL,,ORL,UTA,Amway Center,none,2023-03-09 19:00:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,66
+202303090MIL,,MIL,BRK,Fiserv Forum,conference,2023-03-09 19:30:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,65
+202303090MEM,,MEM,GSW,FedEx Forum,conference,2023-03-09 22:00:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,66
+202303090SAC,,SAC,NYK,Golden 1 Center,none,2023-03-09 22:00:00,,,,,,,,,,,,,,,64,,,,,,,,,,,,,,67
+202303100PHI,,PHI,POR,Wells Fargo Center,none,2023-03-10 19:00:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,66
+202303100WAS,,WAS,ATL,Capital One Arena,division,2023-03-10 19:00:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,66
+202303100MIA,,MIA,CLE,FTX Arena,conference,2023-03-10 20:00:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,68
+202303100MIN,,MIN,BRK,Target Center,none,2023-03-10 20:00:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,66
+202303100SAS,,SAS,DEN,AT&T Center,conference,2023-03-10 20:00:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,66
+202303100LAL,,LAL,TOR,Crypto.com Arena,none,2023-03-10 22:30:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,67
+202303110LAC,,LAC,NYK,Crypto.com Arena,none,2023-03-11 16:00:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,68
+202303110CHO,,CHO,UTA,Spectrum Center,none,2023-03-11 19:00:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,67
+202303110DET,,DET,IND,Little Caesars Arena,division,2023-03-11 19:00:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,67
+202303110ORL,,ORL,MIA,Amway Center,division,2023-03-11 19:00:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,68
+202303110ATL,,ATL,BOS,State Farm Arena,conference,2023-03-11 19:30:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,67
+202303110HOU,,HOU,CHI,Toyota Center,none,2023-03-11 20:00:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,66
+202303110MEM,,MEM,DAL,FedEx Forum,division,2023-03-11 20:00:00,,,,,,,,,,,,,,,65,,,,,,,,,,,,,,67
+202303110GSW,,GSW,MIL,Chase Center,none,2023-03-11 20:30:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,66
+202303110NOP,,NOP,OKC,Smoothie King Center,conference,2023-03-11 20:30:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,66
+202303110PHO,,PHO,SAC,Footprint Center,division,2023-03-11 22:00:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,65
+202303120DEN,,DEN,BRK,Ball Arena,none,2023-03-12 15:30:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,67
+202303120CHO,,CHO,CLE,Spectrum Center,conference,2023-03-12 17:00:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,69
+202303120PHI,,PHI,WAS,Wells Fargo Center,conference,2023-03-12 18:00:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,67
+202303120NOP,,NOP,POR,Smoothie King Center,conference,2023-03-12 19:00:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,67
+202303120SAS,,SAS,OKC,AT&T Center,conference,2023-03-12 19:00:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,67
+202303120LAL,,LAL,NYK,Crypto.com Arena,none,2023-03-12 21:00:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,69
+202303130DET,,DET,IND,Little Caesars Arena,division,2023-03-13 19:00:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,68
+202303130ATL,,ATL,MIN,State Farm Arena,none,2023-03-13 19:30:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,68
+202303130DAL,,DAL,MEM,American Airlines Center,division,2023-03-13 19:30:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,66
+202303130MIA,,MIA,UTA,FTX Arena,none,2023-03-13 19:30:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,68
+202303130HOU,,HOU,BOS,Toyota Center,none,2023-03-13 20:00:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,68
+202303130GSW,,GSW,PHO,Chase Center,division,2023-03-13 22:00:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,67
+202303130SAC,,SAC,MIL,Golden 1 Center,none,2023-03-13 22:00:00,,,,,,,,,,,,,,,66,,,,,,,,,,,,,,67
+202303140CHO,,CHO,CLE,Spectrum Center,conference,2023-03-14 19:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,70
+202303140WAS,,WAS,DET,Capital One Arena,conference,2023-03-14 19:00:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,69
+202303140TOR,,TOR,DEN,Scotiabank Arena,none,2023-03-14 19:30:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,68
+202303140NOP,,NOP,LAL,Smoothie King Center,conference,2023-03-14 20:00:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,68
+202303140OKC,,OKC,BRK,Paycom Center,none,2023-03-14 20:00:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,68
+202303140SAS,,SAS,ORL,AT&T Center,none,2023-03-14 20:00:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,68
+202303140PHO,,PHO,MIL,Footprint Center,none,2023-03-14 22:00:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,68
+202303140POR,,POR,NYK,Moda Center,none,2023-03-14 22:00:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,70
+202303150CLE,,CLE,PHI,Rocket Mortgage Fieldhouse,conference,2023-03-15 19:30:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,67
+202303150MIA,,MIA,MEM,FTX Arena,none,2023-03-15 19:30:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,67
+202303150CHI,,CHI,SAC,United Center,none,2023-03-15 20:00:00,,,,,,,,,,,,,,,67,,,,,,,,,,,,,,67
+202303150HOU,,HOU,LAL,Toyota Center,conference,2023-03-15 20:00:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,69
+202303150MIN,,MIN,BOS,Target Center,none,2023-03-15 20:00:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,69
+202303150SAS,,SAS,DAL,AT&T Center,division,2023-03-15 20:30:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,69
+202303150LAC,,LAC,GSW,Crypto.com Arena,division,2023-03-15 22:00:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,69
+202303160DET,,DET,DEN,Little Caesars Arena,none,2023-03-16 19:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,69
+202303160BRK,,BRK,SAC,Barclays Center,none,2023-03-16 19:30:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,68
+202303160TOR,,TOR,OKC,Scotiabank Arena,none,2023-03-16 19:30:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,69
+202303160MIL,,MIL,IND,Fiserv Forum,division,2023-03-16 20:00:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,69
+202303160PHO,,PHO,ORL,Footprint Center,none,2023-03-16 22:00:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,69
+202303170CHO,,CHO,PHI,Spectrum Center,conference,2023-03-17 19:00:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,68
+202303170ATL,,ATL,GSW,State Farm Arena,none,2023-03-17 19:30:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,70
+202303170CLE,,CLE,WAS,Rocket Mortgage Fieldhouse,conference,2023-03-17 19:30:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,69
+202303170CHI,,CHI,MIN,United Center,none,2023-03-17 20:00:00,,,,,,,,,,,,,,,68,,,,,,,,,,,,,,70
+202303170HOU,,HOU,NOP,Toyota Center,division,2023-03-17 20:00:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,69
+202303170SAS,,SAS,MEM,AT&T Center,division,2023-03-17 20:00:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,68
+202303170POR,,POR,BOS,Moda Center,none,2023-03-17 22:00:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,70
+202303170LAL,,LAL,DAL,Crypto.com Arena,conference,2023-03-17 22:30:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,70
+202303180NYK,,NYK,DEN,Madison Square Garden (IV),none,2023-03-18 13:00:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,70
+202303180LAC,,LAC,ORL,Crypto.com Arena,none,2023-03-18 15:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,70
+202303180IND,,IND,PHI,Gainbridge Fieldhouse,conference,2023-03-18 19:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,69
+202303180TOR,,TOR,MIN,Scotiabank Arena,none,2023-03-18 19:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,71
+202303180CHI,,CHI,MIA,United Center,conference,2023-03-18 20:00:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,71
+202303180MEM,,MEM,GSW,FedEx Forum,conference,2023-03-18 20:00:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,71
+202303180WAS,,WAS,SAC,Capital One Arena,none,2023-03-18 20:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,69
+202303180UTA,,UTA,BOS,Vivint Arena,none,2023-03-18 21:00:00,,,,,,,,,,,,,,,69,,,,,,,,,,,,,,71
+202303190BRK,,BRK,DEN,Barclays Center,none,2023-03-19 15:30:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,71
+202303190OKC,,OKC,PHO,Paycom Center,conference,2023-03-19 15:30:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,70
+202303190SAS,,SAS,ATL,AT&T Center,none,2023-03-19 16:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,70
+202303190DET,,DET,MIA,Little Caesars Arena,conference,2023-03-19 18:00:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,72
+202303190HOU,,HOU,NOP,Toyota Center,division,2023-03-19 19:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,70
+202303190MIL,,MIL,TOR,Fiserv Forum,conference,2023-03-19 20:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,71
+202303190POR,,POR,LAC,Moda Center,conference,2023-03-19 21:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,71
+202303190LAL,,LAL,ORL,Crypto.com Arena,none,2023-03-19 21:30:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,71
+202303200CHO,,CHO,IND,Spectrum Center,conference,2023-03-20 19:00:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,71
+202303200PHI,,PHI,CHI,Wells Fargo Center,conference,2023-03-20 19:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,70
+202303200NYK,,NYK,MIN,Madison Square Garden (IV),none,2023-03-20 19:30:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,72
+202303200HOU,,HOU,GSW,Toyota Center,conference,2023-03-20 20:00:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,72
+202303200MEM,,MEM,DAL,FedEx Forum,division,2023-03-20 20:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,71
+202303200UTA,,UTA,SAC,Vivint Arena,conference,2023-03-20 21:00:00,,,,,,,,,,,,,,,70,,,,,,,,,,,,,,70
+202303210ORL,,ORL,WAS,Amway Center,division,2023-03-21 19:00:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,71
+202303210ATL,,ATL,DET,State Farm Arena,conference,2023-03-21 19:30:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,72
+202303210BRK,,BRK,CLE,Barclays Center,conference,2023-03-21 19:30:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,73
+202303210NOP,,NOP,SAS,Smoothie King Center,division,2023-03-21 20:00:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,71
+202303210SAC,,SAC,BOS,Golden 1 Center,none,2023-03-21 22:00:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,72
+202303210LAC,,LAC,OKC,Crypto.com Arena,conference,2023-03-21 22:30:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,71
+202303220WAS,,WAS,DEN,Capital One Arena,none,2023-03-22 19:00:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,72
+202303220DAL,,DAL,GSW,American Airlines Center,conference,2023-03-22 19:30:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,73
+202303220MIA,,MIA,NYK,FTX Arena,conference,2023-03-22 19:30:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,73
+202303220TOR,,TOR,IND,Scotiabank Arena,conference,2023-03-22 19:30:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,72
+202303220CHI,,CHI,PHI,United Center,conference,2023-03-22 20:00:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,71
+202303220MEM,,MEM,HOU,FedEx Forum,division,2023-03-22 20:00:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,72
+202303220MIL,,MIL,SAS,Fiserv Forum,none,2023-03-22 20:00:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,72
+202303220MIN,,MIN,ATL,Target Center,none,2023-03-22 20:00:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,72
+202303220UTA,,UTA,POR,Vivint Arena,division,2023-03-22 21:00:00,,,,,,,,,,,,,,,71,,,,,,,,,,,,,,71
+202303220LAL,,LAL,PHO,Crypto.com Arena,division,2023-03-22 22:00:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,71
+202303230ORL,,ORL,NYK,Amway Center,conference,2023-03-23 19:00:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,74
+202303230BRK,,BRK,CLE,Barclays Center,conference,2023-03-23 19:30:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,74
+202303230NOP,,NOP,CHO,Smoothie King Center,none,2023-03-23 20:00:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,73
+202303230LAC,,LAC,OKC,Crypto.com Arena,conference,2023-03-23 22:30:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,72
+202303240BOS,,BOS,IND,TD Garden,conference,2023-03-24 19:00:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,73
+202303240WAS,,WAS,SAS,Capital One Arena,none,2023-03-24 19:00:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,73
+202303240TOR,,TOR,DET,Scotiabank Arena,conference,2023-03-24 19:30:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,73
+202303240MEM,,MEM,HOU,FedEx Forum,division,2023-03-24 20:00:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,73
+202303240DAL,,DAL,CHO,American Airlines Center,none,2023-03-24 20:30:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,74
+202303240UTA,,UTA,MIL,Vivint Arena,none,2023-03-24 21:00:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,72
+202303240GSW,,GSW,PHI,Chase Center,none,2023-03-24 22:00:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,72
+202303240POR,,POR,CHI,Moda Center,none,2023-03-24 22:00:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,72
+202303240SAC,,SAC,PHO,Golden 1 Center,division,2023-03-24 22:00:00,,,,,,,,,,,,,,,72,,,,,,,,,,,,,,72
+202303240LAL,,LAL,OKC,Crypto.com Arena,conference,2023-03-24 22:30:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,73
+202303250ATL,,ATL,IND,State Farm Arena,conference,2023-03-25 17:00:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,74
+202303250MIA,,MIA,BRK,FTX Arena,conference,2023-03-25 20:00:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,73
+202303250DEN,,DEN,MIL,Ball Arena,none,2023-03-25 21:00:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,73
+202303250PHO,,PHO,PHI,Footprint Center,none,2023-03-25 22:00:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,73
+202303250SAC,,SAC,UTA,Golden 1 Center,conference,2023-03-25 22:00:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,73
+202303250LAC,,LAC,NOP,Crypto.com Arena,conference,2023-03-25 22:30:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,73
+202303260CHO,,CHO,DAL,Spectrum Center,none,2023-03-26 13:00:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,74
+202303260LAL,,LAL,CHI,Crypto.com Arena,none,2023-03-26 15:30:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,73
+202303260ATL,,ATL,MEM,State Farm Arena,none,2023-03-26 18:00:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,73
+202303260BOS,,BOS,SAS,TD Garden,none,2023-03-26 18:00:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,74
+202303260CLE,,CLE,HOU,Rocket Mortgage Fieldhouse,none,2023-03-26 18:00:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,74
+202303260ORL,,ORL,BRK,Amway Center,conference,2023-03-26 18:00:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,74
+202303260TOR,,TOR,WAS,Scotiabank Arena,conference,2023-03-26 18:00:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,74
+202303260POR,,POR,OKC,Moda Center,division,2023-03-26 19:00:00,,,,,,,,,,,,,,,73,,,,,,,,,,,,,,74
+202303260GSW,,GSW,MIN,Chase Center,conference,2023-03-26 20:30:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,74
+202303270DET,,DET,MIL,Little Caesars Arena,division,2023-03-27 19:00:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,74
+202303270IND,,IND,DAL,Gainbridge Fieldhouse,none,2023-03-27 19:00:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,75
+202303270NYK,,NYK,HOU,Madison Square Garden (IV),none,2023-03-27 19:30:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,75
+202303270UTA,,UTA,PHO,Vivint Arena,conference,2023-03-27 21:00:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,74
+202303270DEN,,DEN,PHI,Ball Arena,none,2023-03-27 21:30:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,74
+202303270POR,,POR,NOP,Moda Center,conference,2023-03-27 22:00:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,74
+202303270SAC,,SAC,MIN,Golden 1 Center,conference,2023-03-27 22:00:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,75
+202303270LAC,,LAC,CHI,Crypto.com Arena,none,2023-03-27 22:30:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,74
+202303280WAS,,WAS,BOS,Capital One Arena,conference,2023-03-28 19:00:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,75
+202303280ATL,,ATL,CLE,State Farm Arena,conference,2023-03-28 19:30:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,76
+202303280TOR,,TOR,MIA,Scotiabank Arena,conference,2023-03-28 19:30:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,75
+202303280MEM,,MEM,ORL,FedEx Forum,none,2023-03-28 20:00:00,,,,,,,,,,,,,,,74,,,,,,,,,,,,,,75
+202303280OKC,,OKC,CHO,Paycom Center,none,2023-03-28 20:00:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,76
+202303280GSW,,GSW,NOP,Chase Center,conference,2023-03-28 22:00:00,,,,,,,,,,,,,,,76,,,,,,,,,,,,,,75
+202303290IND,,IND,MIL,Gainbridge Fieldhouse,division,2023-03-29 19:00:00,,,,,,,,,,,,,,,76,,,,,,,,,,,,,,75
+202303290BRK,,BRK,HOU,Barclays Center,none,2023-03-29 19:30:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,76
+202303290NYK,,NYK,MIA,Madison Square Garden (IV),conference,2023-03-29 19:30:00,,,,,,,,,,,,,,,76,,,,,,,,,,,,,,76
+202303290PHI,,PHI,DAL,Wells Fargo Center,none,2023-03-29 19:30:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,76
+202303290CHI,,CHI,LAL,United Center,none,2023-03-29 20:00:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,75
+202303290MEM,,MEM,LAC,FedEx Forum,conference,2023-03-29 20:00:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,76
+202303290OKC,,OKC,DET,Paycom Center,none,2023-03-29 20:00:00,,,,,,,,,,,,,,,76,,,,,,,,,,,,,,75
+202303290SAS,,SAS,UTA,AT&T Center,conference,2023-03-29 20:00:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,75
+202303290PHO,,PHO,MIN,Footprint Center,conference,2023-03-29 22:00:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,76
+202303290POR,,POR,SAC,Moda Center,conference,2023-03-29 22:00:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,75
+202303300MIL,,MIL,BOS,Fiserv Forum,conference,2023-03-30 19:30:00,,,,,,,,,,,,,,,76,,,,,,,,,,,,,,76
+202303300DEN,,DEN,NOP,Ball Arena,conference,2023-03-30 22:00:00,,,,,,,,,,,,,,,75,,,,,,,,,,,,,,76
+202303310CHO,,CHO,CHI,Spectrum Center,conference,2023-03-31 19:00:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,76
+202303310IND,,IND,OKC,Gainbridge Fieldhouse,none,2023-03-31 19:00:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,77
+202303310PHI,,PHI,TOR,Wells Fargo Center,division,2023-03-31 19:00:00,,,,,,,,,,,,,,,76,,,,,,,,,,,,,,76
+202303310WAS,,WAS,ORL,Capital One Arena,division,2023-03-31 19:00:00,,,,,,,,,,,,,,,76,,,,,,,,,,,,,,76
+202303310BOS,,BOS,UTA,TD Garden,none,2023-03-31 19:30:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,76
+202303310BRK,,BRK,ATL,Barclays Center,conference,2023-03-31 19:30:00,,,,,,,,,,,,,,,76,,,,,,,,,,,,,,76
+202303310CLE,,CLE,NYK,Rocket Mortgage Fieldhouse,conference,2023-03-31 19:30:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,77
+202303310HOU,,HOU,DET,Toyota Center,none,2023-03-31 20:00:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,76
+202303310MEM,,MEM,LAC,FedEx Forum,conference,2023-03-31 20:00:00,,,,,,,,,,,,,,,76,,,,,,,,,,,,,,77
+202303310MIN,,MIN,LAL,Target Center,conference,2023-03-31 20:00:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,76
+202303310GSW,,GSW,SAS,Chase Center,conference,2023-03-31 22:00:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,76
+202303310POR,,POR,SAC,Moda Center,conference,2023-03-31 22:00:00,,,,,,,,,,,,,,,76,,,,,,,,,,,,,,76
+202303310PHO,,PHO,DEN,Footprint Center,conference,2023-03-31 22:30:00,,,,,,,,,,,,,,,76,,,,,,,,,,,,,,76
+202304010MIA,,MIA,DAL,FTX Arena,none,2023-04-01 19:30:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,77
+202304010NOP,,NOP,LAC,Smoothie King Center,conference,2023-04-01 20:30:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,78
+202304020CHO,,CHO,TOR,Spectrum Center,conference,2023-04-02 13:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,77
+202304020BRK,,BRK,UTA,Barclays Center,none,2023-04-02 15:30:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,77
+202304020CHI,,CHI,MEM,United Center,none,2023-04-02 15:30:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,77
+202304020MIN,,MIN,POR,Target Center,division,2023-04-02 15:30:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,77
+202304020ATL,,ATL,DAL,State Farm Arena,none,2023-04-02 18:00:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,78
+202304020SAC,,SAC,SAS,Golden 1 Center,conference,2023-04-02 18:00:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,77
+202304020ORL,,ORL,DET,Amway Center,conference,2023-04-02 18:00:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,77
+202304020NYK,,NYK,WAS,Madison Square Garden (IV),conference,2023-04-02 18:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,77
+202304020HOU,,HOU,LAL,Toyota Center,conference,2023-04-02 19:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,77
+202304020OKC,,OKC,PHO,Paycom Center,conference,2023-04-02 19:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,77
+202304020MIL,,MIL,PHI,Fiserv Forum,conference,2023-04-02 20:00:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,77
+202304020CLE,,CLE,IND,Rocket Mortgage Fieldhouse,division,2023-04-02 20:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,78
+202304020DEN,,DEN,GSW,Ball Arena,conference,2023-04-02 20:30:00,,,,,,,,,,,,,,,77,,,,,,,,,,,,,,78
+202304040CHO,,CHO,TOR,Spectrum Center,conference,2023-04-04 19:00:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,78
+202304040WAS,,WAS,MIL,Capital One Arena,conference,2023-04-04 19:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,78
+202304040ORL,,ORL,CLE,Amway Center,conference,2023-04-04 19:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,79
+202304040DET,,DET,MIA,Little Caesars Arena,conference,2023-04-04 19:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,78
+202304040BRK,,BRK,MIN,Barclays Center,none,2023-04-04 19:30:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,79
+202304040HOU,,HOU,DEN,Toyota Center,conference,2023-04-04 20:00:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,78
+202304040MEM,,MEM,POR,FedEx Forum,conference,2023-04-04 20:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,78
+202304040NOP,,NOP,SAC,Smoothie King Center,conference,2023-04-04 20:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,78
+202304040PHI,,PHI,BOS,Wells Fargo Center,division,2023-04-04 20:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,78
+202304040CHI,,CHI,ATL,United Center,conference,2023-04-04 20:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,78
+202304040UTA,,UTA,LAL,Vivint Arena,conference,2023-04-04 21:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,78
+202304040GSW,,GSW,OKC,Chase Center,conference,2023-04-04 22:00:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304040PHO,,PHO,SAS,Footprint Center,conference,2023-04-04 22:00:00,,,,,,,,,,,,,,,78,,,,,,,,,,,,,,78
+202304050DET,,DET,BRK,Little Caesars Arena,conference,2023-04-05 19:00:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304050IND,,IND,NYK,Gainbridge Fieldhouse,conference,2023-04-05 19:00:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304050ATL,,ATL,WAS,State Farm Arena,division,2023-04-05 19:30:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304050BOS,,BOS,TOR,TD Garden,division,2023-04-05 19:30:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304050MIL,,MIL,CHI,Fiserv Forum,division,2023-04-05 19:30:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304050NOP,,NOP,MEM,Smoothie King Center,division,2023-04-05 20:00:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304050DAL,,DAL,SAC,American Airlines Center,conference,2023-04-05 20:30:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304050LAC,,LAC,LAL,Crypto.com Arena,division,2023-04-05 22:00:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304060ORL,,ORL,CLE,Amway Center,conference,2023-04-06 19:00:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,80
+202304060PHI,,PHI,MIA,Wells Fargo Center,conference,2023-04-06 19:30:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304060SAS,,SAS,POR,Moody Center,conference,2023-04-06 20:00:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304060UTA,,UTA,OKC,Vivint Arena,division,2023-04-06 21:00:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,80
+202304060PHO,,PHO,DEN,Footprint Center,conference,2023-04-06 22:00:00,,,,,,,,,,,,,,,79,,,,,,,,,,,,,,79
+202304070CHO,,CHO,HOU,Spectrum Center,none,2023-04-07 19:00:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304070WAS,,WAS,MIA,Capital One Arena,division,2023-04-07 19:00:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304070IND,,IND,DET,Gainbridge Fieldhouse,division,2023-04-07 19:00:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304070BRK,,BRK,ORL,Barclays Center,conference,2023-04-07 19:30:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304070BOS,,BOS,TOR,TD Garden,division,2023-04-07 19:30:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304070ATL,,ATL,PHI,State Farm Arena,conference,2023-04-07 19:30:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304070MIL,,MIL,MEM,Fiserv Forum,none,2023-04-07 20:00:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304070NOP,,NOP,NYK,Smoothie King Center,none,2023-04-07 20:00:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304070DAL,,DAL,CHI,American Airlines Center,none,2023-04-07 20:30:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304070SAC,,SAC,GSW,Golden 1 Center,division,2023-04-07 22:00:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304070LAL,,LAL,PHO,Crypto.com Arena,division,2023-04-07 22:30:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304080UTA,,UTA,DEN,Vivint Arena,division,2023-04-08 15:30:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304080LAC,,LAC,POR,Crypto.com Arena,conference,2023-04-08 16:00:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304080SAS,,SAS,MIN,Moody Center,conference,2023-04-08 16:00:00,,,,,,,,,,,,,,,80,,,,,,,,,,,,,,80
+202304090BOS,,BOS,ATL,TD Garden,conference,2023-04-09 13:00:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090BRK,,BRK,PHI,Barclays Center,division,2023-04-09 13:00:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090CHI,,CHI,DET,United Center,division,2023-04-09 13:00:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090CLE,,CLE,CHO,Rocket Mortgage Fieldhouse,conference,2023-04-09 13:00:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090MIA,,MIA,ORL,FTX Arena,division,2023-04-09 13:00:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090NYK,,NYK,IND,Madison Square Garden (IV),conference,2023-04-09 13:00:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090TOR,,TOR,MIL,Scotiabank Arena,conference,2023-04-09 13:00:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090WAS,,WAS,HOU,Capital One Arena,none,2023-04-09 13:00:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090DAL,,DAL,SAS,American Airlines Center,division,2023-04-09 15:30:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090DEN,,DEN,SAC,Ball Arena,conference,2023-04-09 15:30:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090LAL,,LAL,UTA,Crypto.com Arena,conference,2023-04-09 15:30:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090MIN,,MIN,NOP,Target Center,conference,2023-04-09 15:30:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090OKC,,OKC,MEM,Paycom Center,conference,2023-04-09 15:30:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090PHO,,PHO,LAC,Footprint Center,division,2023-04-09 15:30:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
+202304090POR,,POR,GSW,Moda Center,conference,2023-04-09 15:30:00,,,,,,,,,,,,,,,81,,,,,,,,,,,,,,81
