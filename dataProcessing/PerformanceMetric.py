@@ -229,6 +229,10 @@ for year in years:
     pm.convertDataFrame(df).to_csv('../data/perMetric/performance_metric_{}.csv'.format(year))
 
 concatPerMetric(years).to_csv('../data/perMetric/performance_metric_all.csv')
+
+df = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col=0)
+df = df[df['season'] == year]
+
     
 year = 2018
 n = 10
