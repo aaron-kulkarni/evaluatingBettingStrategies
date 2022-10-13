@@ -2,16 +2,17 @@ import numpy as np
 import pandas as pd
 import requests
 from lxml import html
-from utils.utils import *
 from datetime import timedelta
-from collectStaticData import *
-from collectGameIds import *
 import os
 import datetime as dt
-
 import sys
 
 sys.path.insert(0, "..")
+
+from utils.utils import *
+from collectStaticData import *
+from collectGameIds import *
+
 
 """
 The output from this file can be checked using the regex found in
@@ -554,10 +555,10 @@ def makeMultiIndexing(file):
 # addEndTime(years)
 
 # print(getGameData("202102100LAL"))
-getGameDataframe('20201225', '20201225')
+#getGameDataframe('20201225', '20201225')
 # TODO might be deleted
 # def getGameStatYear(year):
-#     """
+#     """ 
 #     Gets the game stats for a given year by extracting
 #     the start and end dates from the game_data_player_stats
 #     CSV files.
