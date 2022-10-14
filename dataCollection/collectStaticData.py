@@ -245,3 +245,4 @@ def scrapePlayerSalaryData(year, playerid):
 # years = np.arange(2015, 2023)
 # for year in years:
 #     getAllStaticPlayerData(year).to_csv('static_player_stats_{0}.csv'.format(year))
+print(scrapePlayerSalaryData(2022, 'duranke01'))

@@ -445,39 +445,6 @@ def getGameDataframe(start_time, end_time):
     return df
 
 
-def updateGameData():
-    """
-    Checks if current year's CSV is up to date with game data information. If not, update it.
-
-    Parameters
-    ----------
-    None
-
-    Returns
-    -------
-    True if files are up to date before or after changes
-    """
-
-    today = dt.datetime.today()
-    year = getYearFromDate(today)
-    gameIdList = getYearIds(year)
-    previousGameList = [gameId for gameId in gameIdList if gameIdToDateTime(gameId) < today]
-    mostRecentGame = previousGameList[len(previousGameList) - 1]
-    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
-    df2 = df.loc[:mostRecentGame]
-    lastGameRecorded = df2.last_valid_index()
-    if lastGameRecorded == mostRecentGame:
-        # list is already fully updated
-        return
-    else:
-        idx = previousGameList.index(lastGameRecorded)
-        previousGameList = previousGameList[idx:] # don't care about previous games that already have data
-        for curId in previousGameList: # i honestly didn't know how to do it better than a for loop. should be relatively short though
-            df.loc[curId] = getGameData(curId)
-        df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
-        return
-
-
 def getNumberGamesPlayedDF(year):
     """
     Gets dataframes for a given year with information

@@ -77,19 +77,102 @@ def fillStaticValues(year):
     df['gameState', 'teamAway'] = awayTeamList
     df['gameState', 'location'] = locationList
 
-    return df 
+    df['gameState', 'index'] = df.index
+
+    df['home', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamHome'], year, d['gameState', 'index']), axis=1)
+    df['away', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamAway'], year, d['gameState', 'index']), axis=1)
+    df['home', 'daysSinceLastGame'] = df.apply(lambda d: getDaysSinceLastGame(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
+    df['away', 'daysSinceLastGame'] = df.apply(lambda d: getDaysSinceLastGame(getTeamScheduleAPI(d['gameState', 'teamAway'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
+    df['gameState', 'rivalry'] = df.apply(lambda d: getRivalry(d['gameState', 'teamHome'], d['gameState', 'teamAway']), axis=1)
+    df.drop('index', inplace=True, level=1, axis=1)
+    return
+
+def updatePastGameData():
+    """
+    Checks if current year's CSV is up to date with game data information. If not, update it.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    Nothing
+    """
+
+    today = dt.datetime.today()
+    year = getYearFromDate(today)
+    gameIdList = getYearIds(year)
+    previousGameList = [gameId for gameId in gameIdList if gameIdToDateTime(gameId) < today]
+    mostRecentGame = previousGameList[len(previousGameList) - 1]
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    df2 = df.loc[:mostRecentGame]
+    lastGameRecorded = df2.last_valid_index()
+    if lastGameRecorded == mostRecentGame:
+        # list is already fully updated
+        return
+    else:
+        idx = previousGameList.index(lastGameRecorded)
+        previousGameList = previousGameList[idx:] # don't care about previous games that already have data
+        for curId in previousGameList: # i honestly didn't know how to do it better than a for loop. should be relatively short though
+            df.loc[curId] = getGameData(curId)
+        df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+        return
+
+def updateFutureGameData():
+    today = dt.datetime.today()
+    tomorrow = today + dt.datetime.timedelta(days=1)
+    year = getYearFromDate(today)
+    gameIdList = getYearIds(year)
+    futureGameList = [gameId for gameId in gameIdList if gameIdToDateTime(gameId) >= today]
+    nextGame = futureGameList[0]
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    df2 = df.loc[nextGame:]
+    tooFarFuture = df2[df2['gameState', 'datetime'] > tomorrow]
+    df2.drop(tooFarFuture, inplace=True)
+    #df2 should now only contain gameIds that occur within the next 24 hours
+    if (df2.empty): #no games happening in next 24 hours
+        return
+    df2['home', 'streak'] = df2.apply(lambda d: getTeamStreak(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
+    df2['away', 'streak'] = df2.apply(lambda d: getTeamStreak(getTeamScheduleAPI(d['gameState', 'teamAway'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
+    df2['home', 'record'] = df2.apply(lambda d: getTeamRecord(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
+    df2['home', 'record'] = df2.apply(lambda d: getTeamRecord(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
+    df2['home', 'matchupWins'] = df2.apply(lambda d: getPastMatchUpWinLoss(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']), d['gameState', 'index'], d['gameState', 'teamAway']), axis=1)
+    df2['home', 'matchupWins'] = df2.apply(lambda d: getPastMatchUpWinLoss(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']),d['gameState', 'index'], d['gameState', 'teamAway']), axis=1)
+
+    for gameid in df2.index.values.tolist():
+        df.loc[gameid] = df2.loc[gameid]
+    df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    return
+
+
 
 #fillStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
 
-def fillDependentStaticValues(year):
-    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
-    df['gameState', 'index'] = df.index
-    
-    df['home', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamHome'], year, d['gameState', 'index']), axis = 1)
-    df['away', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamAway'], year, d['gameState', 'index']), axis = 1)
-    df['gameState', 'rivalry'] = df.apply(lambda d: getRivalry(d['gameState', 'teamHome'], d['gameState', 'teamAway']), axis = 1)
-    df.drop('index', inplace = True, level = 1, axis = 1)
-    return df 
+#fills in numberOfGamesPlayed/daysSinceLastGame for home and awaay, as well as rivalry
+# def fillDependentStaticValues(year):
+#     """
+#     Fills in the game
+#
+#     Parameters
+#     ----------
+#     team_schedule : the schedule of the specific team
+#     game_id : the basketball-reference.com id of the game
+#
+#     Returns
+#     -------
+#     The number of days it has been
+#     """
+#     df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
+#     df['gameState', 'index'] = df.index
+#
+#     df['home', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamHome'], year, d['gameState', 'index']), axis = 1)
+#     df['away', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamAway'], year, d['gameState', 'index']), axis = 1)
+#     df['home', 'daysSinceLastGame'] = df.apply(lambda d: getDaysSinceLastGame(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']), d['gameState', 'index']), axis = 1)
+#     df['away', 'daysSinceLastGame'] = df.apply(lambda d: getDaysSinceLastGame(getTeamScheduleAPI(d['gameState', 'teamAway'], d['gameState', 'index']), d['gameState', 'index']), axis = 1)
+#     df['gameState', 'rivalry'] = df.apply(lambda d: getRivalry(d['gameState', 'teamHome'], d['gameState', 'teamAway']), axis = 1)
+#     df.drop('index', inplace = True, level = 1, axis = 1)
+#     return df
 
 #fillDependentStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
 
