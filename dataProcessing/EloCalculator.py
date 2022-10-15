@@ -2,7 +2,10 @@ import numpy as np
 import pandas as pd
 import re
 import math
+import sys
+sys.path.insert(0, "..")
 
+from utils.utils import *
 
 class EloCalculator:
 
@@ -56,11 +59,11 @@ class EloCalculator:
 
         return updated_home_elo, updated_away_elo
 
-    def returnHomeCourtAdvantage(neutral):
-        if neutral == 0:
-            return 100
+    def ret_ct_adv(neutral):
         if neutral == 1:
             return 0
+        if neutral == 0:
+            return 100
 
     @staticmethod
     def getElo(year):
@@ -330,32 +333,36 @@ class EloCalculator:
                 'UTA': 1615,
                 'WAS': 1495
             }
+        elif year == 2023:
+            eloDict = {
+                
+            }
         else:
             raise Exception("Unsupported year {0}".format(year))
 
-        gameIdList = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header=[0, 1],
-                                 index_col=0).index
-        df = pd.DataFrame(columns=['game_id', 'homeTeamElo', 'awayTeamElo', 'homeTeamEloAfter', 'awayTeamEloAfter'])
+        gameIdList = getYearIds(year)
+        df = pd.DataFrame(columns=['game_id', 'elo1_pre', 'elo2_pre', 'elo1_post', 'elo_2post', 'neutral'])
         for gameId in list(gameIdList):
-            teamHome, teamAway, pointsAway, pointsHome = EloCalculator.getEloInputs(gameId)
+            teamHome, teamAway, pointsAway, pointsHome, neutral = EloCalculator.getEloInputs(gameId)
             eloHome = eloDict[teamHome]
             eloAway = eloDict[teamAway]
-            eloDict = EloCalculator.getEloDict(eloDict, gameId)
+            eloDict = EloCalculator.getEloDict(eloDict, gameId, neutral)
 
-            newRow = {'game_id': gameId, 'homeTeamElo': eloHome, 'awayTeamElo': eloAway,
-                      'homeTeamEloAfter': eloDict[teamHome], 'awayTeamEloAfter': eloDict[teamAway]}
+            newRow = {'game_id': gameId, 'elo1_pre': eloHome, 'elo2_pre': eloAway,
+                      'elo1_post': eloDict[teamHome], 'elo_2post': eloDict[teamAway], 'neutral': neutral}
             df = df.append(newRow, ignore_index=True)
+            print(newRow)
         df.set_index('game_id', inplace=True)
         return df
 
 
     @staticmethod
-    def getEloDict(eloDict, gameId):
-        teamHome, teamAway, pointsAway, pointsHome = EloCalculator.getEloInputs(gameId)
+    def getEloDict(eloDict, gameId, neutral):
+        teamHome, teamAway, pointsAway, pointsHome, neutral = EloCalculator.getEloInputs(gameId)
         eloHome = eloDict[teamHome]
         eloAway = eloDict[teamAway]
 
-        eloHome, eloAway = EloCalculator.update_elo(pointsHome, pointsAway, eloHome, eloAway, 100)
+        eloHome, eloAway = EloCalculator.update_elo(pointsHome, pointsAway, eloHome, eloAway, EloCalculator.ret_ct_adv(neutral))
         upDict = {teamHome: eloHome, teamAway: eloAway
                   }
         eloDict.update(upDict)
@@ -363,77 +370,25 @@ class EloCalculator:
 
 
     @staticmethod
-    def getEloInputs(gameId, year):
+    def getEloInputs(gameId):
+        year = getYearFromId(gameId)
         df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header=[0, 1], index_col=0)
-        df = df.loc[:, [('home', 'points'), ('away', 'points'), ('gameState', 'teamHome'), ('gameState', 'teamAway')]]
+        df = df.loc[:, [('home', 'points'), ('away', 'points'), ('gameState', 'teamHome'), ('gameState', 'teamAway'), ('gameState', 'neutral')]]
         pointsHome = df.loc[gameId]['home']['points']
         pointsAway = df.loc[gameId]['away']['points']
 
         teamHome = df.loc[gameId]['gameState']['teamHome']
         teamAway = df.loc[gameId]['gameState']['teamAway']
+        neutral = df.loc[gameId]['gameState']['neutral']
 
-        return teamHome, teamAway, pointsAway, pointsHome
+        return teamHome, teamAway, pointsAway, pointsHome, neutral
 
     @staticmethod
-    def getEloProbability(year):
-        df = pd.read_csv('../data/eloData/elo_{}.csv'.format(year), index_col=0)
-        df['homeTeamProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeTeamElo'], d['awayTeamElo'], 100)[0], axis=1)
-        df['awayTeamProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeTeamElo'], d['awayTeamElo'], 100)[1], axis=1)
+    def getEloProb(year):
+        df = EloCalculator.getElo(year)
+        df['elo_prob1'] = df.apply(lambda d: EloCalculator.win_probs(d['elo1_pre'], d['elo2_pre'], EloCalculator.ret_ct_adv(d['neutral']))[0], axis=1)
+        df['elo_prob2'] = df.apply(lambda d: EloCalculator.win_probs(d['elo1_pre'], d['elo2_pre'], EloCalculator.ret_ct_adv(d['neutral']))[1], axis=1)
 
         return df
 
-    @staticmethod
-    def getEloProb(filename):
-        df = pd.read_csv('../data/eloData/nba_elo_all_filled.csv', index_col = 0)
-        df['homeProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeElo'], d['awayElo'], EloCalculator.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
-        df['awayProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeElo'], d['awayElo'], d['neutral'])[1], axis=1)
-        df['homeProbRAPTOR'] = df.apply(lambda d: EloCalculator.win_probs(d['homeEloRAPTOR'], d['awayEloRAPTOR'], EloCalculator.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
-        df['awayProbRAPTOR'] = df.apply(lambda d: EloCalculator.win_probs(d['homeTeamElo'], d['awayTeamElo'], d['neutral'])[1], axis=1)
-
-        return df.drop(['neutral'], axis=1)
-
-    @staticmethod
-    def getUpdatedEloProb(year):
-        df = pd.read_csv('../data/eloData/nba_elo_all_filled.csv', index_col=0)
-        scoreDF = pd.read_csv('../data/gameStats/game_state_data_{0}.csv'.format(year), index_col=0, header=[0,1])
-
-        df = df[df.index.isin(scoreDF.index)]
-
-        df['homeProbRAPTOR'] = df.apply(lambda d: EloCalculator.win_probs(d['homeEloRAPTOR'], d['awayEloRAPTOR'],
-                                EloCalculator.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
-        df['awayProbRAPTOR'] = df.apply(lambda d: EloCalculator.win_probs(d['homeEloRAPTOR'], d['awayEloRAPTOR'],
-                                EloCalculator.returnHomeCourtAdvantage(d['neutral']))[1], axis=1)
-
-        df['homeTeamProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeElo'], d['awayElo'],
-                                EloCalculator.returnHomeCourtAdvantage(d['neutral']))[0], axis=1)
-        df['awayTeamProb'] = df.apply(lambda d: EloCalculator.win_probs(d['homeElo'], d['awayElo'],
-                                EloCalculator.returnHomeCourtAdvantage(d['neutral']))[1], axis=1)
-
-        df['homeTeamEloAfter'] = df.apply(lambda d: EloCalculator.update_elo(
-                                    scoreDF.loc[d.name]['home']['points'],
-                                    scoreDF.loc[d.name]['away']['points'],
-                                    d['homeElo'],
-                                    d['awayElo'],
-                                    EloCalculator.returnHomeCourtAdvantage(d['neutral'])
-                                )[0], axis=1)
-
-        df['awayTeamEloAfter'] = df.apply(lambda d: EloCalculator.update_elo(
-                                    scoreDF.loc[d.name]['home']['points'],
-                                    scoreDF.loc[d.name]['away']['points'],
-                                    d['homeElo'],
-                                    d['awayElo'],
-                                    EloCalculator.returnHomeCourtAdvantage(d['neutral'])
-                                )[1], axis=1)
-
-        return df
-
-
-# years = np.arange(2015, 2023)
-# for year in years:
-#     EloCalculator.getEloProb(year).to_csv('team_elo_{}.csv'.format(year))
-
-'''
-
-IMPORTANT: TO GET NEW SEASON DATA, RUN getElo FUNCTION AND THEN CONVERT THE FILES USING getEloProbability. WRAP THE FUNCTION INSIDE LATER. 
-
-'''
+    
