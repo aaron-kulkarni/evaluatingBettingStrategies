@@ -147,6 +147,10 @@ def getTeamsDF(year):
 Other functions
 """
 
+def getYearIds(year):
+    df = pd.read_csv('../data/gameStats/all_game_ids.csv', index_col=False)
+    return df[str(year)].to_list()
+
 
 def getNumberGamesPlayed(team, year, game_id):
     index = getTeamGameIds(team, year).index(game_id)
