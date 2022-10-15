@@ -335,8 +335,38 @@ class EloCalculator:
             }
         elif year == 2023:
             eloDict = {
-                
+                'ATL': 1546,
+                'BOS': 1709,
+                'BRK': 1536,
+                'CHO': 1535,
+                'CHI': 1428,
+                'CLE': 1483,
+                'DAL': 1632,
+                'DEN': 1532,
+                'DET': 1356,
+                'GSW': 1712,
+                'HOU': 1300,
+                'IND': 1364,
+                'LAC': 1524,
+                'LAL': 1421,
+                'MEM': 1638,
+                'MIA': 1656,
+                'MIL': 1611,
+                'MIN': 1555,
+                'NOP': 1545,
+                'NYK': 1526,
+                'OKC': 1320,
+                'ORL': 1320,
+                'PHI': 1608,
+                'PHO': 1616,
+                'POR': 1253,
+                'SAC': 1383,
+                'SAS': 1485,
+                'TOR': 1570,
+                'UTA': 1567,
+                'WAS': 1418
             }
+            eloDict = {i: 3/4*eloDict[i]+1504/4 for i in eloDict}
         else:
             raise Exception("Unsupported year {0}".format(year))
 
@@ -351,7 +381,6 @@ class EloCalculator:
             newRow = {'game_id': gameId, 'elo1_pre': eloHome, 'elo2_pre': eloAway,
                       'elo1_post': eloDict[teamHome], 'elo_2post': eloDict[teamAway], 'neutral': neutral}
             df = df.append(newRow, ignore_index=True)
-            print(newRow)
         df.set_index('game_id', inplace=True)
         return df
 
@@ -391,4 +420,5 @@ class EloCalculator:
 
         return df
 
-    
+EloCalculator.getEloProb(2023).to_csv('../data/eloData/elo_2023.csv')
+
