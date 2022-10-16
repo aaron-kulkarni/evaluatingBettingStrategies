@@ -104,7 +104,7 @@ EXECUTABLE
 ---------------------
 '''
 
-def fillBettingOdds():
+def fillBettingOdds(years):
     '''
 
     INITIALIZES DATAFRAME FOR PCA => CONCATS ALL SEPERATE ADJPROB CSVS AND REPLACES ALL NAN VALUES WITH THE ROW AVERAGE
@@ -112,15 +112,17 @@ def fillBettingOdds():
     '''
     
     df = pd.DataFrame()
-    years = np.arange(2015, 2023)
     for year in years:
-        adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), header = [0,1], index_col = 0)['homeProbAdj']
+        adjProb = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(year), header = [0,1], index_col = 0)
         df = pd.concat([df, adjProb], axis = 0)
-    df = df.apply(lambda row: row.fillna(row.mean()), axis = 1)
-
+    df.drop('homeProb', axis = 1, inplace = True, level = 0)
+    df.drop('awayProb', axis = 1, inplace = True, level = 0)
+    df['homeProbAdj'] = df['homeProbAdj'].apply(lambda row: row.fillna(row.mean()), axis = 1)
+    df['awayProbAdj'] = df['homeProbAdj'].apply(lambda row: row.fillna(row.mean()), axis = 1)
+    
     return df
 
-fillBettingOdds().to_csv('adj_prob_home_win_ALL.csv')
+fillBettingOdds(np.arange(2015,2023)).to_csv('../data/bettingOddsData/adj_prob_win_ALL.csv')
 
 from TeamPerformance import * 
 
