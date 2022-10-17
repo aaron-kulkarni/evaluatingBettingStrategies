@@ -27,8 +27,10 @@ def getBoxscoreData(game_id):
 
 
 def getTeamScheduleAPI(team, game_date):
+    game_date = str(game_date)
     gameYear = game_date[0:4]
     gameMonth = game_date[4:6]
+
     if int(gameYear) == 2020:  # 2020 was exception because covid messed up schedule
         if int(gameMonth.lstrip(
                 "0")) < 11:  # converted gameMonth to int without leading 0. check month to find correct season
@@ -42,6 +44,15 @@ def getTeamScheduleAPI(team, game_date):
             teamSchedule = Schedule(team, int(gameYear)).dataframe
 
     return teamSchedule
+
+
+def getTeamsNextGame(team, game_id):
+
+    year = getYearFromId(game_id)
+    gameIdList = getTeamGameIds(team, year)
+    index = gameIdList.index(game_id)
+    return gameIdList[index+1]
+
 
 def getGameIdList(year):
     df = pd.read_csv('../data/gameStats/all_game_ids.csv')
@@ -75,6 +86,8 @@ def getYearFromDate(date):
 
 
 def getYearHelper(gameYear, month):
+    gameYear = int(gameYear)
+    month = int(month)
     seasonYear = gameYear
     if gameYear == 2020:
         if month >= 11:

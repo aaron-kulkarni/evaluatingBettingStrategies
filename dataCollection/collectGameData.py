@@ -11,7 +11,6 @@ sys.path.insert(0, "..")
 
 from utils.utils import *
 from collectStaticData import *
-from collectGameIds import *
 
 
 """
@@ -53,7 +52,7 @@ teamRivalryDict = {
 }
 
 
-def getGameData(game_id):
+def getGameData(game_id, neutral):
     """
     This function returns a 1 x n array of data about the game
     represented by the given game id. See helper functions for
@@ -62,6 +61,7 @@ def getGameData(game_id):
     Parameters
     ----------
     game_id : the id of the game on basketball-reference.com
+    neutral : indicates whether the game was played on neutral territory or not
 
     Returns
     -------
@@ -145,13 +145,13 @@ def getGameData(game_id):
     endTime = timeOfDay + (timedelta(hours=(2 + .5 * len(overtimeScoresHome))))
 
     # Condenses all the information into an array to return
-    gameData = [game_id, winner, teamHome, teamAway, location,
+    gameData = [game_id, winner, teamHome, teamAway, location, rivalry, timeOfDay, endTime, neutral,
                 q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, overtimeScoresHome,
                 pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupWinsHome,
+                homeTotalSalary, homeAverageSalary, homeGamesPlayed,
                 q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, overtimeScoresAway,
                 pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster, awayRecord, matchupWinsAway,
-                rivalry, homeTotalSalary, awayTotalSalary, homeAverageSalary, awayAverageSalary,
-                homeGamesPlayed, awayGamesPlayed, timeOfDay, endTime]
+                awayTotalSalary, awayAverageSalary, awayGamesPlayed]
 
     return gameData
 
@@ -302,7 +302,7 @@ def getPastMatchUpWinLoss(home_team_schedule, game_id, away_team):
     wins = tempDf.loc[home_team_schedule['result'] == 'Win'].shape[0]
     losses = tempDf.loc[home_team_schedule['result'] == 'Loss'].shape[0]
 
-    return wins, losses
+    return [wins, losses]
 
 
 def getTeamSalaryData(team_abbr, game_id, playerRoster):
@@ -429,13 +429,11 @@ def getGameDataframe(start_time, end_time):
     for game_id in gameIdList:
         gameDataList.append(getGameData(game_id))
 
-    cols = ['game_id', 'winner', 'teamHome', 'teamAway', 'location', 'q1Score',
-            'q2Score', 'q3Score', 'q4Score', 'overtimeScores',
-            'points', 'streak', 'daysSinceLastGame', 'playerRoster', 'record',
-            'matchupWins', 'q1Score', 'q2Score', 'q3Score', 'q4Score',
-            'overtimeScores', 'points', 'streak', 'daysSinceLastGame',
-            'playerRoster', 'record', 'matchupWins', 'rivalry', 'salary', 'salary',
-            'avgSalary', 'avgSalary', 'numberOfGamesPlayed', 'numberOfGamesPlayed', 'datetime', 'endtime']
+    cols = ['game_id', 'winner', 'teamHome', 'teamAway', 'location', 'rivalry', 'datetime', 'endtime', 'neutral',
+            'q1Score', 'q2Score', 'q3Score', 'q4Score', 'overtimeScores', 'points', 'streak', 'daysSinceLastGame',
+            'playerRoster', 'record', 'matchupWins', 'salary', 'avgSalary', 'numberOfGamesPlayed',
+            'q1Score', 'q2Score', 'q3Score', 'q4Score', 'overtimeScores', 'points', 'streak', 'daysSinceLastGame',
+            'playerRoster', 'record', 'matchupWins', 'salary', 'avgSalary', 'numberOfGamesPlayed']
 
     df = pd.DataFrame(gameDataList, columns=cols)
     df.set_index('game_id', inplace=True)

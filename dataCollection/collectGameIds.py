@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from collectGameData import getGameData, getDaysSinceLastGame, getTeamStreak, getPastMatchUpWinLoss, getTeamRecord, getRivalry
 import bs4 as bs
 from urllib.request import urlopen
 import re
@@ -8,7 +9,40 @@ from dateutil import parser
 import sys
 sys.path.insert(0, '..')
 from utils.utils import *
-from collectGameData import * 
+
+teamNameDict = {
+    "ATL": "atlanta-hawks",
+    "BOS": ["Eastern", "Atlantic"],
+    "BRK": ["Eastern", "Atlantic"],
+    "CHO": ["Eastern", "Southeast"],
+    "CHI": ["Eastern", "Central"],
+    "CLE": ["Eastern", "Central"],
+    "DAL": ["Western", "Southwest"],
+    "DEN": ["Western", "Northwest"],
+    "DET": ["Eastern", "Central"],
+    "GSW": ["Western", "Pacific"],
+    "HOU": ["Western", "Southwest"],
+    "IND": ["Eastern", "Central"],
+    "LAC": ["Western", "Pacific"],
+    "LAL": ["Western", "Pacific"],
+    "MEM": ["Western", "Southwest"],
+    "MIA": ["Eastern", "Southeast"],
+    "MIL": ["Eastern", "Central"],
+    "MIN": ["Western", "Northwest"],
+    "NOP": ["Western", "Southwest"],
+    "NYK": ["Eastern", "Atlantic"],
+    "OKC": ["Western", "Northwest"],
+    "ORL": ["Eastern", "Southeast"],
+    "PHI": ["Eastern", "Atlantic"],
+    "PHO": ["Western", "Pacific"],
+    "POR": ["Western", "Northwest"],
+    "SAC": ["Western", "Pacific"],
+    "SAS": ["Western", "Southwest"],
+    "TOR": ["Eastern", "Atlantic"],
+    "UTA": ["Western", "Northwest"],
+    "WAS": ["Eastern", "Southeast"],
+}
+
 
 def getStaticMonthData(month, year):
     url = 'https://www.basketball-reference.com/leagues/NBA_{}_games-{}.html'.format(year, month)
@@ -24,11 +58,11 @@ def getStaticMonthData(month, year):
         homeTeam = aChildrenH.partition('teams/')[2][:3]
         aChildrenA = str(rowList[i][2].findChildren('a'))
         awayTeam = aChildrenA.partition('teams/')[2][:3]
-        
+
         gameId = '{}0{}'.format(dateTime.strftime("%Y%m%d"), homeTeam)
         dateTime = convDateTime(gameId, rowList[i][1].getText())
         location = rowList[i][9].getText()
-        if rowList[i][10].getText() == '': 
+        if rowList[i][10].getText() == '':
             neutral = 0
         else:
             neutral = 1
@@ -38,14 +72,14 @@ def getStaticMonthData(month, year):
         awayTeamList.append(awayTeam)
         locationList.append(location)
         neutralList.append(neutral)
-        
+
     return gameIdList, dateTimeList, homeTeamList, awayTeamList, locationList, neutralList
 
 def getStaticYearData(year):
 
     gameIdList, dateTimeList, homeTeamList, awayTeamList, locationList, neutralList = [], [], [], [], [], []
     months = ['october', 'november', 'december', 'january', 'february', 'march', 'april']
-    
+
     for month in months:
         gameIdMonth, dateTimeMonth, homeTeamMonth, awayTeamMonth, locationMonth, neutralMonth = getStaticMonthData(month, year)
         gameIdList.extend(gameIdMonth)
@@ -60,12 +94,12 @@ def getStaticYearData(year):
 
 def initGameStateData(year):
 
-    col = [['gameState', 'gameState','gameState','gameState','gameState','gameState','gameState','gameState','home','home','home','home','home','home','home','home','home','home','home','home','home','home','away','away','away','away','away','away','away','away','away','away','away','away','away','away'],['winner','teamHome','teamAway','location','rivalry','datetime','endtime', 'neutral', 'q1Score','q2Score','q3Score','q4Score','overtimeScores','points','streak','daysSinceLastGame','playerRoster','record','matchupWins','salary','avgSalary','numberOfGamesPlayed','q1Score','q2Score','q3Score','q4Score','overtimeScores','points','streak','daysSinceLastGame','playerRoster','record','matchupWins','salary','avgSalary','numberOfGamesPlayed']]
+    col = [['gameState','gameState','gameState','gameState','gameState','gameState','gameState','gameState','home','home','home','home','home','home','home','home','home','home','home','home','home','home','away','away','away','away','away','away','away','away','away','away','away','away','away','away'],['winner','teamHome','teamAway','location','rivalry','datetime','endtime','q1Score','q2Score','q3Score','q4Score','overtimeScores','points','streak','daysSinceLastGame','playerRoster','record','matchupWins','salary','avgSalary','numberOfGamesPlayed','q1Score','q2Score','q3Score','q4Score','overtimeScores','points','streak','daysSinceLastGame','playerRoster','record','matchupWins','salary','avgSalary','numberOfGamesPlayed']]
 
     col = pd.MultiIndex.from_arrays(col, names = ['','teamData'])
     df = pd.DataFrame(index = getYearIds(year), columns = col)
     df.index.name = 'game_id'
-    return df 
+    return df
 
 #initGameStateData(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
 
@@ -76,6 +110,7 @@ def fillStaticValues(year):
     df['gameState', 'teamHome'] = homeTeamList
     df['gameState', 'teamAway'] = awayTeamList
     df['gameState', 'location'] = locationList
+
     df['gameState', 'neutral'] = neutralList
     df['gameState', 'index'] = df.index
 
@@ -85,7 +120,6 @@ def fillStaticValues(year):
     df['away', 'daysSinceLastGame'] = df.apply(lambda d: getDaysSinceLastGame(getTeamScheduleAPI(d['gameState', 'teamAway'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
     df['gameState', 'rivalry'] = df.apply(lambda d: getRivalry(d['gameState', 'teamHome'], d['gameState', 'teamAway']), axis=1)
     df.drop('index', inplace=True, level=1, axis=1)
-
     return df
 
 #fillStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
@@ -93,72 +127,79 @@ def fillStaticValues(year):
 def fillDependentStaticValues(year):
     df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
     df['gameState', 'index'] = df.index
-    
+
     df['home', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamHome'], year, d['gameState', 'index']), axis = 1)
     df['away', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamAway'], year, d['gameState', 'index']), axis = 1)
     df['gameState', 'rivalry'] = df.apply(lambda d: getRivalry(d['gameState', 'teamHome'], d['gameState', 'teamAway']), axis = 1)
     df.drop('index', inplace = True, level = 1, axis = 1)
-    return df 
+    return df
 
 #fillDependentStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
 
-
-def updatePastGameData():
+def updateGameStateData():
     """
     Checks if current year's CSV is up to date with game data information. If not, update it.
+
     Parameters
     ----------
     None
+
     Returns
     -------
     Nothing
     """
 
     today = dt.datetime.today()
-    year = getYearFromDate(today)
-    gameIdList = getYearIds(year)
-    previousGameList = [gameId for gameId in gameIdList if gameIdToDateTime(gameId) < today]
-    mostRecentGame = previousGameList[len(previousGameList) - 1]
-    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
-    df2 = df.loc[:mostRecentGame]
-    lastGameRecorded = df2.last_valid_index()
+    today = today - dt.timedelta(days=360)
+    df = pd.read_csv('../data/gameStats/game_state_data_fake.csv', header = [0,1], index_col = 0)
+    df.dropna()
+    df_dict = df.to_dict('index')
+    lastGameRecorded = 0 #most recent game that was played and we have data for
+    previousGameList = []
+    for key, value in df_dict.items():
+        if str(value[('gameState', 'datetime')]) != 'nan' and dt.datetime.strptime(str(value[('gameState', 'datetime')]), '%m/%d/%Y %H:%M') + dt.timedelta(hours=5) < today:  # only get stats for games that started at least 5 hours ago
+            previousGameList.append(key)
+            if str(value[('gameState', 'winner')]) != 'nan':
+                lastGameRecorded = key
+        else:
+            break
+    mostRecentGame = previousGameList[-1] #most recent game played
     if lastGameRecorded == mostRecentGame:
         # list is already fully updated
         return
-    else:
-        idx = previousGameList.index(lastGameRecorded)
-        previousGameList = previousGameList[idx:] # don't care about previous games that already have data
-        for curId in previousGameList: # i honestly didn't know how to do it better than a for loop. should be relatively short though
-            df.loc[curId] = getGameData(curId)
-        df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
-        return
 
-def updateFutureGameData():
-    today = dt.datetime.today()
-    tomorrow = today + dt.datetime.timedelta(days=1)
-    year = getYearFromDate(today)
-    gameIdList = getYearIds(year)
-    futureGameList = [gameId for gameId in gameIdList if gameIdToDateTime(gameId) >= today]
-    nextGame = futureGameList[0]
-    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
-    df2 = df.loc[nextGame:]
-    tooFarFuture = df2[df2['gameState', 'datetime'] > tomorrow]
-    df2.drop(tooFarFuture, inplace=True)
-    #df2 should now only contain gameIds that occur within the next 24 hours
-    if (df2.empty): #no games happening in next 24 hours
-        return
-    df2['home', 'streak'] = df2.apply(lambda d: getTeamStreak(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
-    df2['away', 'streak'] = df2.apply(lambda d: getTeamStreak(getTeamScheduleAPI(d['gameState', 'teamAway'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
-    df2['home', 'record'] = df2.apply(lambda d: getTeamRecord(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
-    df2['home', 'record'] = df2.apply(lambda d: getTeamRecord(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
-    df2['home', 'matchupWins'] = df2.apply(lambda d: getPastMatchUpWinLoss(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']), d['gameState', 'index'], d['gameState', 'teamAway']), axis=1)
-    df2['home', 'matchupWins'] = df2.apply(lambda d: getPastMatchUpWinLoss(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']),d['gameState', 'index'], d['gameState', 'teamAway']), axis=1)
+    idx = previousGameList.index(lastGameRecorded)
+    previousGameList = previousGameList[idx + 1:]  # don't care about previous games that already have data
 
-    for gameid in df2.index.values.tolist():
-        df.loc[gameid] = df2.loc[gameid]
-    df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
+    for curId in previousGameList:  # i honestly didn't know how to do it better than a for loop. should be relatively short list though
+        tempList = getGameData(curId, df.loc[curId]['gameState']['neutral'])
+        tempList = tempList[1:]
+        df.loc[curId] = tempList
+        #edit the next game data for both teams
+        teamHome = tempList[1]
+        teamAway = tempList[2]
+        indexHome = getTeamsNextGame(tempList[1], curId)
+        indexAway = getTeamsNextGame(tempList[2], curId)
+        homeTeamSchedule = getTeamScheduleAPI(teamHome, gameIdToDateTime(indexHome).strftime('%Y%m%d'))
+        awayTeamSchedule = getTeamScheduleAPI(teamAway, gameIdToDateTime(indexHome).strftime('%Y%m%d'))
+
+        #df.astype(object).dtypes
+        df.loc[indexHome, ('home', 'record')] = str(getTeamRecord(homeTeamSchedule, indexHome))
+        df.loc[indexAway, ('away', 'record')] = str(getTeamRecord(awayTeamSchedule, indexAway))
+        df.loc[indexHome, ('home', 'streak')] = getTeamStreak(homeTeamSchedule, indexHome)
+        df.loc[indexAway, ('away', 'streak')] = getTeamStreak(awayTeamSchedule, indexAway)
+        df.loc[indexHome, ('home', 'matchupWins')] = str(getPastMatchUpWinLoss(homeTeamSchedule, indexHome, teamAway))
+        df.loc[indexAway, ('away', 'matchupWins')] = str(getPastMatchUpWinLoss(awayTeamSchedule, indexAway, teamHome))
+
+    df.to_csv('../data/gameStats/game_state_data_fake.csv')
+
     return
 
+updateGameStateData()
+
+
+def getRosterBeforeGame(team_abbr):
+    return
 
 def updateGameStateDataAll(year):
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
@@ -166,6 +207,5 @@ def updateGameStateDataAll(year):
     df = pd.concat([df, df_current], axis = 0)
     return df
 
-updateGameStateDataAll(2023).to_csv('../data/gameStats/game_state_data_ALL.csv')
+#updateGameStateDataAll(2023).to_csv('../data/gameStats/game_state_data_ALL.csv')
 
-    
