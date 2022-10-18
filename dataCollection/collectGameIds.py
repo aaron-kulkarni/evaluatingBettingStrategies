@@ -150,9 +150,10 @@ def updateGameStateData():
     """
 
     today = dt.datetime.today()
-    today = today - dt.timedelta(days=360)
-    df = pd.read_csv('../data/gameStats/game_state_data_fake.csv', header = [0,1], index_col = 0)
+    df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header = [0,1], index_col = 0)
+    df2 = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
     df.dropna()
+    df2.dropna()
     df_dict = df.to_dict('index')
     lastGameRecorded = 0 #most recent game that was played and we have data for
     previousGameList = []
@@ -172,9 +173,10 @@ def updateGameStateData():
     previousGameList = previousGameList[idx + 1:]  # don't care about previous games that already have data
 
     for curId in previousGameList:  # i honestly didn't know how to do it better than a for loop. should be relatively short list though
-        tempList = getGameData(curId, df.loc[curId]['gameState']['neutral'])
+        tempList = getGameData(curId, int(df.loc[curId]['gameState']['neutral']))
         tempList = tempList[1:]
         df.loc[curId] = tempList
+        df2.loc[curId] = tempList
         #edit the next game data for both teams
         teamHome = tempList[1]
         teamAway = tempList[2]
@@ -190,15 +192,22 @@ def updateGameStateData():
         df.loc[indexAway, ('away', 'streak')] = getTeamStreak(awayTeamSchedule, indexAway)
         df.loc[indexHome, ('home', 'matchupWins')] = str(getPastMatchUpWinLoss(homeTeamSchedule, indexHome, teamAway))
         df.loc[indexAway, ('away', 'matchupWins')] = str(getPastMatchUpWinLoss(awayTeamSchedule, indexAway, teamHome))
+        df2.loc[indexHome, ('home', 'record')] = str(getTeamRecord(homeTeamSchedule, indexHome))
+        df2.loc[indexAway, ('away', 'record')] = str(getTeamRecord(awayTeamSchedule, indexAway))
+        df2.loc[indexHome, ('home', 'streak')] = getTeamStreak(homeTeamSchedule, indexHome)
+        df2.loc[indexAway, ('away', 'streak')] = getTeamStreak(awayTeamSchedule, indexAway)
+        df2.loc[indexHome, ('home', 'matchupWins')] = str(getPastMatchUpWinLoss(homeTeamSchedule, indexHome, teamAway))
+        df2.loc[indexAway, ('away', 'matchupWins')] = str(getPastMatchUpWinLoss(awayTeamSchedule, indexAway, teamHome))
 
-    df.to_csv('../data/gameStats/game_state_data_fake.csv')
-
+    df.to_csv('../data/gameStats/game_state_data_2023.csv')
+    df2.to_csv('../data/gameStats/game_state_data_ALL.csv')
     return
 
 updateGameStateData()
 
 
 def getRosterBeforeGame(team_abbr):
+
     return
 
 def updateGameStateDataAll(year):

@@ -210,7 +210,7 @@ def scrapePlayerSalaryData(year, playerid):
         soup = bs.BeautifulSoup(urlopen(url), features='lxml')
         matches = re.findall(regex, str(soup.find('div', {'id': 'all_all_salaries'})))
         if len(matches) > 1:
-            print('len > 1 for {0}'.format(playerid))
+            #print('len > 1 for {0}'.format(playerid))
             max_sal = -1
             for m in matches:
                 if isinstance(m, tuple) and not len(m) == 0:
@@ -224,7 +224,7 @@ def scrapePlayerSalaryData(year, playerid):
                 max_sal = new_sal if new_sal > max_sal else max_sal
             return max_sal
         elif len(matches) == 0:
-            print('len == 0 for {0}'.format(playerid))
+            #print('len == 0 for {0}'.format(playerid))
             raise Exception()
         else:
             if isinstance(matches[0], tuple) and not len(matches[0]) == 0:
