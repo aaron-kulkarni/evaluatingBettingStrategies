@@ -251,7 +251,13 @@ def sortDate(gameIdList):
     dateCol.sort_values(by='datetime', ascending=True, inplace=True)
     return list(dateCol.index)
 
-
+def sortDateMulti(gameIdList):
+    gameIdList = sortDate(gameIdList)
+    ids = [i for pair in zip(gameIdList,gameIdList) for i in pair]
+    alt = list(np.resize([1,0],len(ids)))
+    index = pd.MultiIndex.from_arrays([ids, alt])
+    return index
+    
 def returnDate(gameId, start):
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0, 1])
     if start == 1:
@@ -268,6 +274,7 @@ def orderAllDates(df):
     df.sort_values(by='date', ascending=True, inplace=True)
     df.set_index(['index'], inplace=True)
     return df
+
 
 
 def sortAllDates(gameIdList):

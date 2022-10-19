@@ -126,19 +126,46 @@ class TeamPerformance:
         gameIdList = teamDF.index
         for gameId in gameIdList:
             team = teamDF.loc[gameId]
-            teamTotalStats = pd.concat([self.getTeamAveragePerformance(gameId, n, team), self.getOpponentAveragePerformance(gameId, n, team)], axis = 0, keys = ['home', 'opp'], join = 'inner')
+            teamTotalStats = pd.concat([self.getTeamAveragePerformance(gameId, n, team), self.getOpponentAveragePerformance(gameId, n, team)], axis = 0, keys = ['team', 'opp'], join = 'inner')
             teamTotalStats = teamTotalStats.to_frame()
             df = pd.concat([df, teamTotalStats], axis = 0)
 
         return df
 
+def concat(n, years):
+    df_all = pd.DataFrame()
+    for year in years:
+        df_home = pd.read_csv('../data/averageTeamData/per_{}/average_team_per_{}_{}.csv'.format(n, n, year), index_col=0, header=[0,1])['team']
+        df_away = pd.read_csv('../data/averageTeamData/per_{}/average_team_per_{}_{}.csv'.format(n, n, year), index_col=0, header=[0,1])['team']
+        df_home['home'], df_away['home'] = 1, 0
+        df_home.reset_index(inplace = True)
+        df_away.reset_index(inplace = True)
+        df_home.set_index(['gameId', 'home'], inplace=True)
+        df_away.set_index(['gameId', 'home'], inplace=True)
+        df_year = pd.concat([df_home, df_away], axis=0)
+        df_year = df_year.reindex(sortDateMulti(df_year.index.get_level_values(0).unique()))
+        df_all = pd.concat([df_all, df_year], axis=0)
+    df_all.to_csv('../data/averageTeamData/average_team_stats_per_{}.csv'.format(n))
+    return df_all
+
+for n in n_list:
+    df = concat(n, years)
+
 def getSignal():
-     df = pd.DataFrame()
-     years = np.arange(2015, 2023)
-     for year in years:
-         dfCurrent = pd.DataFrame(
-             pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
-         df = pd.concat([df, dfCurrent], axis=0)
-     df = df['gameState']
-     df['signal'] = df.apply(lambda d: 1 if d['winner'] == d['teamHome'] else 0, axis=1)
-     return df['signal']    
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0,1])
+    signal = pd.DataFrame(df['gameState'])
+    signal['signal'] = signal.apply(lambda d: return_signal(d['winner'], d['teamHome'], d['teamAway']), axis=1)
+    signal = signal.dropna(axis=0)
+    signal['signal'] = signal['signal'].apply(int)
+    return signal['signal']
+
+def return_signal(winner,home_team,away_team):
+    if home_team == winner:
+        return int(1)
+    if away_team == winner:
+        return int(0)
+    else:
+        return winner
+
+    
+    

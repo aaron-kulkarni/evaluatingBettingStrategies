@@ -118,7 +118,7 @@ def fillBettingOdds(years):
     df.drop('homeProb', axis = 1, inplace = True, level = 0)
     df.drop('awayProb', axis = 1, inplace = True, level = 0)
     df['homeProbAdj'] = df['homeProbAdj'].apply(lambda row: row.fillna(row.mean()), axis = 1)
-    df['awayProbAdj'] = df['homeProbAdj'].apply(lambda row: row.fillna(row.mean()), axis = 1)
+    df['awayProbAdj'] = df['awayProbAdj'].apply(lambda row: row.fillna(row.mean()), axis = 1)
     
     return df
 
