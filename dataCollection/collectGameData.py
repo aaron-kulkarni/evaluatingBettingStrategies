@@ -132,8 +132,13 @@ def getGameData(game_id, neutral):
     homeCoach, awayCoach = getCoaches(teamHome, teamAway, game_id[0:8])
 
     # Gets player and team salaries
-    homeTotalSalary, homeAverageSalary = getTeamSalaryData(teamHome, game_id, homePlayerRoster)
-    awayTotalSalary, awayAverageSalary = getTeamSalaryData(teamAway, game_id, awayPlayerRoster)
+    # homeTotalSalary, homeAverageSalary = getTeamSalaryData(teamHome, game_id, homePlayerRoster)
+    # awayTotalSalary, awayAverageSalary = getTeamSalaryData(teamAway, game_id, awayPlayerRoster)
+    homeTotalSalary = 7e8
+    awayTotalSalary = 7e8
+    homeAverageSalary = homeTotalSalary/12
+    awayAverageSalary = awayTotalSalary/12
+
 
     # Gets Number of Games Played
     year = getYearFromId(game_id)
