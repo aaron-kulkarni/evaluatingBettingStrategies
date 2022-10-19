@@ -169,8 +169,9 @@ def updateGameStateData():
         # list is already fully updated
         return
 
-    idx = previousGameList.index(lastGameRecorded)
-    previousGameList = previousGameList[idx + 1:]  # don't care about previous games that already have data
+    if (lastGameRecorded != 0):
+        idx = previousGameList.index(lastGameRecorded)
+        previousGameList = previousGameList[idx + 1:]  # don't care about previous games that already have data
 
     for curId in previousGameList:  # i honestly didn't know how to do it better than a for loop. should be relatively short list though
         tempList = getGameData(curId, int(df.loc[curId]['gameState']['neutral']))
