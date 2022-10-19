@@ -158,7 +158,7 @@ def updateGameStateData():
     lastGameRecorded = 0 #most recent game that was played and we have data for
     previousGameList = []
     for key, value in df_dict.items():
-        if str(value[('gameState', 'datetime')]) != 'nan' and dt.datetime.strptime(str(value[('gameState', 'datetime')]), '%m/%d/%Y %H:%M') + dt.timedelta(hours=5) < today:  # only get stats for games that started at least 5 hours ago
+        if str(value[('gameState', 'datetime')]) != 'nan' and dt.datetime.strptime(str(value[('gameState', 'datetime')]), '%Y-%m-%d %H:%M:%S') + dt.timedelta(hours=5) < today:  # only get stats for games that started at least 5 hours ago
             previousGameList.append(key)
             if str(value[('gameState', 'winner')]) != 'nan':
                 lastGameRecorded = key
