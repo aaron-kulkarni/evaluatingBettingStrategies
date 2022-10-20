@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from collectGameData import getGameData, getDaysSinceLastGame, getTeamStreak, getPastMatchUpWinLoss, getTeamRecord, getRivalry
+from collectGameData import *
 import bs4 as bs
 from urllib.request import urlopen
 import re
@@ -150,8 +150,8 @@ def updateGameStateData():
     """
 
     today = dt.datetime.today()
-    df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header = [0,1], index_col = 0)
-    df2 = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
+    df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header = [0,1], index_col = 0, dtype = object)
+    df2 = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0, dtype = object)
     df.dropna()
     df2.dropna()
     df_dict = df.to_dict('index')
