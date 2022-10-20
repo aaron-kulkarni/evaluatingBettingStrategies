@@ -420,5 +420,30 @@ class EloCalculator:
 
         return df
 
-EloCalculator.getEloProb(2023).to_csv('../data/eloData/elo_2023.csv')
+class convertEloCSVs:
+    def _init_(self):
+        self._ = None
+    
+    @staticmethod
+    def returnCSV(filename):
+        df = pd.read_csv(filename)
+        df['game_id'] = df.apply(lambda d: '{}0{}'.format(d['date'].replace('-', ''), d['team1']), axis=1)
+        df.drop(['playoff', 'score1', 'score2', 'quality', 'importance', 'total_rating', 'date'], axis=1, inplace=True)
+        df.set_index('game_id', inplace = True)
+        return df
+
+    @staticmethod
+    def concatCSV(filename):
+        df_all = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col=0)
+        df = convertEloCSVs.returnCSV(filename)
+        df_all = pd.concat([df, df_all], axis=0).drop_duplicates()
+        df_prev = df_all[df_all.index.isin(getPreviousGames())]
+        df_today = df_all[df_all.index.isin(getGamesToday())]
+        pd.concat([df_prev, df_today], axis=0).to_csv('../data/eloData/nba_elo_all.csv')
+        return print('Todays inputs updated')
+    
+    
+#EloCalculator.getEloProb(2023).to_csv('../data/eloData/elo_2023.csv')
+
+convertEloCSVs.concatCSV('../data/eloData/nba_elo_latest.csv')
 
