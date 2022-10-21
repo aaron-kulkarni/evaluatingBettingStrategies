@@ -3,6 +3,7 @@ import pandas as pd
 import re
 import math
 import sys
+import urllib.request
 sys.path.insert(0, "..")
 
 from utils.utils import *
@@ -425,25 +426,29 @@ class convertEloCSVs:
         self._ = None
     
     @staticmethod
-    def returnCSV(filename):
-        df = pd.read_csv(filename)
+    def returnCSV():
+        df = pd.read_csv('https://projects.fivethirtyeight.com/nba-model/nba_elo_latest.csv')
         df['game_id'] = df.apply(lambda d: '{}0{}'.format(d['date'].replace('-', ''), d['team1']), axis=1)
+        df_status = df[df['score1'].notna()]
+        df_status.drop(['playoff', 'score1', 'score2', 'quality', 'importance', 'total_rating', 'date'], axis=1, inplace=True)
         df.drop(['playoff', 'score1', 'score2', 'quality', 'importance', 'total_rating', 'date'], axis=1, inplace=True)
         df.set_index('game_id', inplace = True)
-        return df
+        df_status.set_index('game_id', inplace = True)
+        return df, df_status
 
     @staticmethod
-    def concatCSV(filename):
+    def concatCSV():
         df_all = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col=0)
-        df = convertEloCSVs.returnCSV(filename)
-        df_all = pd.concat([df, df_all], axis=0).drop_duplicates()
-        df_prev = df_all[df_all.index.isin(getPreviousGames())]
-        df_today = df_all[df_all.index.isin(getGamesToday())]
-        pd.concat([df_prev, df_today], axis=0).to_csv('../data/eloData/nba_elo_all.csv')
-        return print('Todays inputs updated')
+        df, df_status = convertEloCSVs.returnCSV()
+        df = df[df.index.isin(getGamesToday())]
+        df_all.drop(df_status.index, axis=0, inplace=True)
+        df_all.drop(df.index, axis=0, inplace=True)
+        df_all = pd.concat([df_all, df, df_status], axis=0).drop_duplicates()
+        df_all = df_all.reindex(sortDate(df_all.index))
+        df_all.to_csv('../data/eloData/nba_elo_all.csv')
+        return 
     
     
 #EloCalculator.getEloProb(2023).to_csv('../data/eloData/elo_2023.csv')
 
-convertEloCSVs.concatCSV('../data/eloData/nba_elo_latest.csv')
-
+convertEloCSVs.concatCSV()
