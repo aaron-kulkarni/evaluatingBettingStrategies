@@ -5,6 +5,7 @@ import bs4 as bs
 from urllib.request import urlopen
 import re
 from dateutil import parser
+import requests
 
 import sys
 sys.path.insert(0, '..')
@@ -149,7 +150,6 @@ def updateGameStateData():
     Nothing
     """
 
-    today = dt.datetime.today()
     df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header = [0,1], index_col = 0, dtype = object)
     df2 = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0, dtype = object)
     df.dropna()
@@ -158,7 +158,8 @@ def updateGameStateData():
     lastGameRecorded = 0 #most recent game that was played and we have data for
     previousGameList = []
     for key, value in df_dict.items():
-        if str(value[('gameState', 'datetime')]) != 'nan' and dt.datetime.strptime(str(value[('gameState', 'datetime')]), '%Y-%m-%d %H:%M:%S') + dt.timedelta(hours=5) < today:  # only get stats for games that started at least 5 hours ago
+        print(key)
+        if str(value[('gameState', 'datetime')]) != 'nan' and gameFinished(key):
             previousGameList.append(key)
             if str(value[('gameState', 'winner')]) != 'nan':
                 lastGameRecorded = key
@@ -204,12 +205,26 @@ def updateGameStateData():
     df2.to_csv('../data/gameStats/game_state_data_ALL.csv')
     return
 
-updateGameStateData()
+#updateGameStateData()
 
 
 def getRosterBeforeGame(team_abbr):
 
     return
+
+def gameFinished(gameId):
+    try:
+        r = requests.get("https://www.basketball-reference.com/boxscores/{}.html".format(gameId))
+        if r.status_code == 200:
+            return 1
+        else:
+            return 0
+    except Exception as e:
+        print("Game id({}) does not exist".format(gameId))
+        return 0
+
+print(gameFinished('202012230CHI'))
+print(gameFinished('202210230GSW'))
 
 def updateGameStateDataAll(year):
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
