@@ -148,9 +148,6 @@ def concat(n, years):
     df_all.to_csv('../data/averageTeamData/average_team_stats_per_{}.csv'.format(n))
     return df_all
 
-for n in n_list:
-    df = concat(n, years)
-
 def getSignal():
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0,1])
     signal = pd.DataFrame(df['gameState'])

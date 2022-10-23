@@ -442,7 +442,6 @@ class convertEloCSVs:
         df, df_status = convertEloCSVs.returnCSV()
         df = df[df.index.isin(getGamesToday())]
         df_all.drop(df_status.index, axis=0, inplace=True)
-        df_all.drop(df.index, axis=0, inplace=True)
         df_all = pd.concat([df_all, df, df_status], axis=0).drop_duplicates()
         df_all = df_all.reindex(sortDate(df_all.index))
         df_all.to_csv('../data/eloData/nba_elo_all.csv')
@@ -452,3 +451,4 @@ class convertEloCSVs:
 #EloCalculator.getEloProb(2023).to_csv('../data/eloData/elo_2023.csv')
 
 convertEloCSVs.concatCSV()
+

@@ -89,9 +89,9 @@ yeardates = {
 
 # Check format of output with the following regex:
 # [\d]{1,4},20[1-2][\d]{3}[0-3][\d]0[A-Z]{3},((\"\[('[A-Za-z \.-]+',? ?)+\]\")|(\['[A-Za-z \.-]+'\])),[\d]+
-for year, dates in yeardates.items():
-    getGameAttendanceReferees(dates[0], dates[1]).to_csv('game_attendance_ref_{0}.csv'.format(year))
-    print('Created CSV for year {0} ({1} - {2})'.format(year, dates[0], dates[1]))
+#for year, dates in yeardates.items():
+#    getGameAttendanceReferees(dates[0], dates[1]).to_csv('game_attendance_ref_{0}.csv'.format(year))
+#    print('Created CSV for year {0} ({1} - {2})'.format(year, dates[0], dates[1]))
 
 #years = np.arange(2015, 2023)
 #for year in years:

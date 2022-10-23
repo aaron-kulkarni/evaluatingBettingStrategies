@@ -33,6 +33,13 @@ def convertBettingOdds(filename):
 
     return df
 
+def findArb(odd_a, odd_b):
+    oddA =  convOdds(odd_a) + 1
+    oddB = convOdds(odd_b) + 1
+
+    return (oddB)/(oddA + oddB), (oddA)/(oddA + oddB)
+
+
 def computeImpliedProb(x):
     if pd.isna(x) == True:
         return x
@@ -97,6 +104,11 @@ def convAmericanOdds(filename):
     return df
 
 
+convertBettingOdds('../data/bettingOddsData/closing_betting_odds_2023_FIXED.csv').to_csv('../data/bettingOddsData/closing_betting_odds_2023_clean.csv')
+
+addAdjProb('../data/bettingOddsData/closing_betting_odds_2023_clean.csv').to_csv('../data/bettingOddsData/adj_prob_2023.csv')
+
+
 
 '''
 ---------------------
@@ -117,12 +129,14 @@ def fillBettingOdds(years):
         df = pd.concat([df, adjProb], axis = 0)
     df.drop('homeProb', axis = 1, inplace = True, level = 0)
     df.drop('awayProb', axis = 1, inplace = True, level = 0)
-    df['homeProbAdj'] = df['homeProbAdj'].apply(lambda row: row.fillna(row.mean()), axis = 1)
-    df['awayProbAdj'] = df['awayProbAdj'].apply(lambda row: row.fillna(row.mean()), axis = 1)
+    df_home, df_away = df['homeProbAdj'], df['awayProbAdj']
+    df_home = df_home.apply(lambda row: row.fillna(row.mean()), axis = 1)
+    df_away = df_away.apply(lambda row: row.fillna(row.mean()), axis = 1)
+    df = pd.concat([df_home, df_away], axis=1, keys=['homeProbAdj', 'awayProbAdj'])
     
     return df
 
-fillBettingOdds(np.arange(2015,2023)).to_csv('../data/bettingOddsData/adj_prob_win_ALL.csv')
+fillBettingOdds(np.arange(2015,2024)).to_csv('../data/bettingOddsData/adj_prob_win_ALL.csv')
 
 from TeamPerformance import * 
 
@@ -152,8 +166,8 @@ def performPCA(n):
     print(pca.explained_variance_ratio_)
     return principalDF
 
-dfFinal = performPCA(2).set_index(df.index)
-dfFinal.to_csv('PCA_2_betting_odds_all.csv')
+#dfFinal = performPCA(2).set_index(df.index)
+#dfFinal.to_csv('PCA_2_betting_odds_all.csv')
 
 
 def concatBettingOdds(years):

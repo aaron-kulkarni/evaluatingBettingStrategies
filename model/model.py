@@ -32,130 +32,135 @@ elif (cpuCount > 4 and cpuCount < 8):
 else:
     ray.init(num_cpus=6)
 
-def selectColOdds(select_x):
-    bettingOdds = pd.read_csv('../data/bettingOddsData/adj_prob_home_win_ALL.csv', index_col = 0)
-    return bettingOdds[select_x]
-
-'''
-EXECUTION (BETTING ODDS)
----------------------------------------------
-
-'''
-# SELECTED HIGH PERFORMING BETTING BOOKMAKERS
-bettingOddsAll = selectColOdds(['1xBet (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)', 'bet-at-home (%)', 'bet365 (%)', 'bwin (%)'])
-bettingOdds = selectColOdds(['Pinnacle (%)'])
-# REFERENCE
-bettingOddsPCA_all, coeff = performPCA(bettingOddsAll, 2)
-
-def selectColElo(select_x):
-    eloData = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
-    return eloData[select_x]
-# columns: season, neutral, team1, team2, elo1_pre, elo2_pre, elo_prob1, elo_prob2, elo1_post, elo2_post, carm-elo1_pre, carm-elo2_pre, carm-elo_prob1, carm-elo_prob2, carm-elo1_post, carm-elo2_post, raptor1_pre, raptor2_pre, raptor_prob1, raptor_prob2
-#elo = selectColElo(['elo_prob1', 'raptor_prob1', 'elo1_pre', 'elo2_pre', 'raptor1_pre', 'raptor2_pre'])
-elo = selectColElo(['elo_prob1', 'raptor_prob1'])
-
-def selectColPerMetric(select_x):
-    perMetric = pd.read_csv('../data/perMetric/performance_metric_all.csv', index_col = 0)
-    return perMetric[select_x]
-
-#perMetric = selectColPerMetric(['perMetricAway', 'perMetricHome', 'perMetricEloAway','perMetricEloHome', 'perMetricEloNAway', 'perMetricEloNHome','perMetricNAway', 'perMetricNHome', 'perMetricRaptorAway','perMetricRaptorHome', 'perMetricRaptorNAway', 'perMetricRaptorNHome'])
-'''
-EXECUTION (PERFORMANCE METRIC)
----------------------------------------------
-
-'''
-perMetric = selectColPerMetric(['perMetricHome', 'perMetricAway', 'perMetricEloAway','perMetricEloHome', 'perMetricEloNAway', 'perMetricEloNHome', 'perMetricRaptorAway','perMetricRaptorHome', 'perMetricRaptorNAway', 'perMetricRaptorNHome'])
-
-#perMetric = selectColPerMetric(['perMetricHome', 'perMetricAway'])
-
-def getDataIndex(dfList, years, dropNA = True):
-    '''
-    IMPORTANT** NOT INCLUDING PCA
-
-    '''
-    df_all = pd.concat(dfList, axis = 1, join = 'inner')
-    df_all.reset_index(inplace = True)
-    df_all['year'] = df_all.apply(lambda d: getYearFromId(d['index']), axis = 1)
-    df_all.set_index('index', inplace = True)
-    df_all = df_all[df_all['year'].isin(years)]
-    
-    if dropNA == True:
-        df_all.dropna(axis = 0, inplace = True)
-    return df_all.index
-
-def splitTrainTestYear(index, year):
+def splitTrainTestYear(index, train_years, test_year):
     '''
     splits data into training data and testing data (data that is tested is last year of input data
     
     '''
-    df = pd.DataFrame(index = index, data = index)
+    df = pd.DataFrame(index = index)
+    df['index'] = df.index.get_level_values(0)
     df['year'] = df.apply(lambda d: getYearFromId(d['index']), axis = 1)
     df.drop('index', axis = 1, inplace = True)
-    X_train = df[df['year'] != year]
-    X_test = df[df['year'] == year]
+    X_train = df[df['year'].isin(train_years)]
+    X_test = df[df['year'] == test_year]
+    return X_train.index, X_test.index
 
-    #Y = getSignal().reindex(X.index)
-    #Y_train = Y[Y.index.isin(X_train.index)].reindex(X_train.index)
-    #Y_test = Y[Y.index.isin(X_test.index)].reindex(X_test.index)
+def iteratedPCA(df, n, train_index, test_index):
+    df_train = df[df.index.isin(train_index)].reindex(train_index)
+    df_train_PCA, coeff = performPCA(df_train, n)
 
-    return sortDate(X_train.index), sortDate(X_test.index)
-
-def iteratedPCA(bettingOddsAll, n, train_index, test_index):
-    bettingOdds_train = bettingOddsAll[bettingOddsAll.index.isin(train_index)].reindex(train_index)
-    bettingOdds_train_PCA, coeff = performPCA(bettingOdds_train, n)
-    bettingOdds_test = bettingOddsAll[bettingOddsAll.index.isin(test_index)].reindex(test_index)
-    bettingOdds_test_PCA = pd.DataFrame()
+    df_test = df[df.index.isin(test_index)].reindex(test_index)
+    df_test_PCA = pd.DataFrame()  
     with HiddenPrints():
-        for i in range(0,len(test_index)):
-            bettingOdds_test_all = pd.concat([bettingOdds_train, bettingOdds_test[:i+1]], axis = 0)
-            bettingOdds_test_i, coeff = performPCA(bettingOdds_test_all, n)
-            bettingOdds_test_PCA = pd.concat([bettingOdds_test_PCA, pd.DataFrame(bettingOdds_test_i.iloc[-1]).T], axis = 0)
-    print(bettingOdds_train_PCA)
-    print(bettingOdds_test_PCA)
-    bettingOddsPCA = pd.concat([bettingOdds_train_PCA, bettingOdds_test_PCA], axis = 0)
-    return bettingOddsPCA
-        
+        for i in range(1, len(df_test.index.get_level_values(0).unique())+1):
+            df_test_all = pd.concat([df_train, df_test.iloc[:2*i]], axis = 0)
+            df_test_i, coeff = performPCA(df_test_all, n)
+            df_test_PCA = pd.concat([df_test_PCA, pd.DataFrame(df_test_i.iloc[-2:])], axis = 0)
+    print(df_train_PCA)
+    print(df_test_PCA)
+    dfPCA = pd.concat([df_train_PCA, df_test_PCA], axis = 0)
+    return dfPCA
 
-def splitTrainTestIndex(X, p, state, shuffle = True):
-    '''
-    splits data into training data and testing data (data that is tested is the last p (where p is expressed as a decimal) of input data
-    
-    '''
-    X_train, X_test = train_test_split(X, train_size = 1-p, test_size = p, random_state = state, shuffle = shuffle)
-    
-    return sortDate(X_train), sortDate(X_test)
+def selectColOdds(select_x):
+    select_x.append('home')
+    bettingOdds = pd.read_csv('../data/bettingOddsData/adj_prob_win_ALL.csv', header = [0,1], index_col = 0)
+    bettingOdds['homeProbAdj', 'home'], bettingOdds['awayProbAdj', 'home'] = 1, 0
+    df = pd.concat([bettingOdds['homeProbAdj'][select_x], bettingOdds['awayProbAdj'][select_x]], axis=0)
+    df.reset_index(inplace = True)
+    df.set_index(['game_id', 'home'], inplace = True)
+    df = df.reindex(sortDateMulti(bettingOdds.index))
+    return df
 
-def splitTrainTest(dfList, train_index, test_index):
+def selectMLVal(select_x):
+    mlval = pd.read_csv('../data/eloData/adj_elo_ml.csv', index_col = 0)
+    mlval.reset_index(inplace = True)
+    mlval['home'] = mlval.apply(lambda d: 1 if d['team'] == d['gameid'][-3:] else 0, axis=1)
+    mlval.set_index(['gameid', 'home'], inplace = True)
+    mlval = mlval.reindex(sortDateMulti(mlval.index.get_level_values(0)))
+    return mlval[select_x]
+
+def selectColElo(select_x):
+    elo_data = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
+    home_elo = elo_data[['elo_prob1', 'raptor_prob1']].rename(columns = lambda x : str(x)[:-1])
+    away_elo = elo_data[['elo_prob2', 'raptor_prob2']].rename(columns = lambda x : str(x)[:-1])
+    home_elo['home'], away_elo['home'] = 1, 0
+    df = pd.concat([home_elo, away_elo], axis=0)
+    df.reset_index(inplace = True)
+    df.set_index(['index', 'home'], inplace = True)
+    df = df.reindex(sortDateMulti(elo_data.index))
+    return df[select_x]
+
+def selectColPerMetric(select_x):
+    perMetric = pd.read_csv('../data/perMetric/performance_metric_ALL_.csv', index_col = 0, header = [0,1])
+    perMetric['home', 'home'], perMetric['away', 'home'] = 1, 0
+    df = pd.concat([perMetric['home'], perMetric['away']], axis=0)
+    df.reset_index(inplace = True)
+    df.set_index(['game_id', 'home'], inplace = True)
+    df = df.reindex(sortDateMulti(perMetric.index))
+    return df[select_x]
+
+def selectColGameData(select_x):
+    game_data = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col = 0, header = [0,1])
+    game_data['home', 'home'], game_data['away', 'home'] = 1, 0
+    df = pd.concat([game_data['home'], game_data['away']], axis=0)
+    df.reset_index(inplace = True)
+    df.set_index(['game_id', 'home'], inplace = True)
+    df = df.reindex(sortDateMulti(game_data.index))
+    return df[select_x]
+
+def selectColTeamData(select_x, n):
+    team_avg = pd.read_csv('../data/averageTeamData/average_team_stats_per_{}.csv'.format(n), index_col = [0,1])
+    return team_avg[select_x]
+
+def testData(dfList, train_years, test_year, drop_na = True):
     X = pd.concat(dfList, axis = 1)
-    X_train = X[X.index.isin(train_index)]
-    X_test = X[X.index.isin(test_index)]
-
-    Y = getSignal()
+    X['home'] = X.index.get_level_values(1)
+    if drop_na == True:
+        ret_all = X.dropna(axis = 0).index.get_level_values(0)
+        ret = [i for i in ret_all if list(ret_all).count(i) == 2]
+        X = X[X.index.isin(sortDateMulti(ret))]
+    gameIdList = X.index.get_level_values(0).unique()
+    X_train_index, X_test_index = splitTrainTestYear(X.index, train_years, test_year)
+    X_train = X[X.index.isin(X_train_index)]
+    X_test = X[X.index.isin(X_test_index)]
+    Y = get_signal()
     Y_train = Y[Y.index.isin(X_train.index)].reindex(X_train.index)
     Y_test = Y[Y.index.isin(X_test.index)].reindex(X_test.index)
-
     return X_train, X_test, Y_train, Y_test
 
-'''
-EXECUTION 
+def get_signal():
+    signal_home = pd.DataFrame(getSignal())
+    signal_away = pd.DataFrame(1-getSignal())
+    signal_home['home'], signal_away['home'] = 1, 0
+    signal = pd.concat([signal_home, signal_away], axis=0)
+    signal.reset_index(inplace = True)
+    signal.set_index(['game_id', 'home'], inplace = True)
+    signal = signal.reindex(sortDateMulti(getSignal().index))
+    return signal
+
 
 '''
+EXECUTION (BETTING ODDS)
+---------------------------------------------
+'''
 
-# INDEX OF TRAINING DATA AND TESTING DATA, YEARS IS ALL RELEVANT DATA YOU WOUD LIKE TESTED
-years = list(np.arange(2019, 2023))
-train_index, test_index = splitTrainTestYear(getDataIndex([elo, perMetric], years, True), 2019)
+perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1'])    
+mlval = selectMLVal(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
+bettingOddsAll = selectColOdds(['1xBet (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)'])
+elo = selectColElo(['elo_prob', 'raptor_prob'])
+gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame'])
+#tr_in, te_in = splitTrainTestYear(bettingOddsAll.index, np.arange(2015,2022), 2022)
+#bettingOddsPCA = iteratedPCA(bettingOddsAll, 2, tr_in, te_in)
+#bettingOddsPCA, coeff = performPCA(bettingOddsAll, 2)
+teamData = selectColTeamData(['3P%', 'Ortg', 'Drtg', 'PTS', 'TOV%', 'eFG%'], 5)
+X_train, X_test, Y_train, Y_test = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2019], 2020, True)
 
-train_index_all = sortDate(list(set(bettingOddsAll.index) - set(test_index)))
-bettingOddsPCA = iteratedPCA(bettingOddsAll, 2, train_index_all, test_index)
-
-X_train, X_test, Y_train, Y_test = splitTrainTest([bettingOddsPCA, elo, perMetric], train_index, test_index)
-    
 # PARAMATER TUNING
 def findParamsXGB(X_train, Y_train):
     param_grid = {
         "n_estimators" : [50, 100, 150],
         "max_depth" : [1, 3, 5, 7],
-        "learning_rate" : [0.005, 0.01, 0.02],
+        "learning_rate" : [0.01, 0.02, 0.03, 0.04],
         "min_child_weight" : [4, 5, 6]
     }
 
@@ -166,8 +171,7 @@ def findParamsXGB(X_train, Y_train):
     return grid.best_estimator_
 
 #clf = findParamsXGB(X_train, Y_train)
-
-#clf = XGBClassifier(learning_rate = 0.01, max_depth = 6, n_estimators = 150, min_child_weight = 4) #NO PCA
+#clf = XGBClassifier(learning_rate = 0.01, max_depth = 6, n_estimators = 150, min_child_weight = 4) 
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
 
 def xgboost(clf, X_train, Y_train, X_test, Y_test):
@@ -176,58 +180,36 @@ def xgboost(clf, X_train, Y_train, X_test, Y_test):
     calibrated_clf = CalibratedClassifierCV(clf, cv = 5)
     calibrated_clf.fit(X_train, Y_train)
 
-    #calibrated_clf.predict_proba(X_test)
-    #Y_pred = clf.predict(X_test)
-    #Y_train_pred = clf.predict(X_train)
-
-    Y_pred_prob = calibrated_clf.predict_proba(X_test)[:, 1]
-    Y_train_pred = calibrated_clf.predict_proba(X_train)[:, 1]
-
+    Y_pred_prob_adj = calibrated_clf.predict_proba(X_test)[:, 1]
+    Y_train_pred_adj = calibrated_clf.predict_proba(X_train)[:, 1]
+    Y_train_pred = Y_train_pred_adj/(np.repeat(Y_train_pred_adj[0::2] + Y_train_pred_adj[1::2], 2))
+    Y_pred_prob = Y_pred_prob_adj/(np.repeat(Y_pred_prob_adj[0::2] + Y_pred_prob_adj[1::2], 2))
+    
     Y_pred = [1 if p > 0.5 else 0 for p in Y_pred_prob]
     Y_train_pred = [1 if p > 0.5 else 0 for p in Y_train_pred]
-
-    acc = accuracy_score(Y_test, Y_pred)
-    print("\nAccuracy of %s is %s"%(name, acc))
-    #print(clf.feature_importances_)
-    print(pd.DataFrame(data = list(model.feature_importances_), index = list(X_train.columns), columns = ["score"]).sort_values(by = "score", ascending = False).head(30))
     
-    #cm = confusion_matrix(Y_test, Y_pred)/len(Y_pred) 
-
+    acc = accuracy_score(Y_test, Y_pred)
+    
+    print("\nAccuracy of %s is %s"%(name, acc))
+    print(pd.DataFrame(data = list(model.feature_importances_), index = list(X_train.columns), columns = ["score"]).sort_values(by = "score", ascending = False).head(30))
     print("Test  Accuracy : %.3f" %accuracy_score(Y_test, Y_pred))
     print("Train Accuracy : %.3f" %accuracy_score(Y_train, Y_train_pred))
-    return Y_pred_prob
-
-Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
-
-
-def getOddBreakdown(Y_pred_prob, Y_test):
-    gameStateData = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
-    gameStateData = gameStateData[gameStateData.index.isin(Y_test.index)]['home']
     
-    testOdds = bettingOddsAll[bettingOddsAll.index.isin(Y_test.index)]
-    testOdds = testOdds.reindex(Y_test.index)
-    for col in testOdds.columns:
-        odd_preds = [1 if odd > 0.5 else 0 for odd in list(testOdds[col])]
+    return Y_pred_prob, Y_pred_prob_adj
+
+Y_pred_prob, Y_pred_prob_adj = xgboost(clf, X_train, Y_train, X_test, Y_test)
+df, odds_all = getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll)
+
+def getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll):
+    odds_all = bettingOddsAll[bettingOddsAll.index.isin(Y_test.index)]
+    for col in odds_all.columns:
+        odd_preds = [1 if odd > 0.5 else 0 for odd in list(odds_all[col])]
         print("Odd Accuracy of {}".format(col) + " : %.3f"%accuracy_score(Y_test, odd_preds))
-    #print("Confusion Matrix of %s is %s"%(name, cm))
-
-    Y_pred_prob = pd.Series(Y_pred_prob, name = 'predProb', index = Y_test.index)
-   
-    df = pd.concat([Y_test, Y_pred_prob, testOdds['Pinnacle (%)'], gameStateData['numberOfGamesPlayed']],join = 'inner', axis = 1)
-    df['num_game_bkt'] = pd.qcut(df['numberOfGamesPlayed'], 10, duplicates = 'drop')
-    df['pred_bkt'] = pd.qcut(df['predProb'], 10 , duplicates = 'drop')
-    df['odd_bkt'] = pd.qcut(df['Pinnacle (%)'], 10)
-    df['stat_pred'] = df.apply(lambda d: 1 if d['predProb'] > 0.5 else 0, axis = 1)
-    df['stat_odd'] = df.apply(lambda d: 1 if d['Pinnacle (%)'] > 0.5 else 0 ,axis = 1)
-    
-    print(df.groupby('num_game_bkt').signal.sum()/df.groupby('num_game_bkt').size(),df.groupby('num_game_bkt').size())
-    print(df.groupby('num_game_bkt').stat_pred.sum()/df.groupby('num_game_bkt').size(),df.groupby('num_game_bkt').size())
-    print(df.groupby('pred_bkt').signal.sum()/df.groupby('pred_bkt').size(),df.groupby('pred_bkt').size())
-    print(df.groupby('odd_bkt').signal.sum()/df.groupby('odd_bkt').size(),df.groupby('pred_bkt').size())
-    df = df[df.columns[:2]]
-    return df
-
-df = getOddBreakdown(Y_pred_prob, Y_test)
+    df = pd.DataFrame(index = Y_test.index.get_level_values(0).unique(), data = Y_pred_prob[::2], columns = ['predProb'])
+    odds_all_adj = odds_all[::2].set_index(df.index)
+    df['signal'] = Y_test[::2].set_index(df.index)
+    return df, odds_all_adj
+        
 
 def findReturns(df, x_columns):
     retHome, retAway = findProportionGained(x_columns)
@@ -237,9 +219,9 @@ def findReturns(df, x_columns):
     df = df.reindex(sortDate(df.index))
     return df
 
-def getKellyBreakdown(df, alpha, x_columns, max_bet, n, bet_diff):
+def getKellyBreakdown(df, odds_all, alpha, x_columns, max_bet, n, bet_diff):
     df = findReturns(df, x_columns)
-    df['mean'] = bettingOddsAll.mean(axis = 1)[bettingOddsAll.index.isin(df.index)]
+    df['mean'] = odds_all.mean(axis = 1)[odds_all.index.isin(df.index)]
     df['mean_diff'] = abs(df['predProb'] - df['mean'])
     df['per_bet'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'], n)[0], axis = 1)
     df['per_bet'] = df.apply(lambda d: d['per_bet'] if bet_diff[0] < d['mean_diff'] < bet_diff[1] else 0, axis = 1)  
@@ -251,8 +233,8 @@ def getKellyBreakdown(df, alpha, x_columns, max_bet, n, bet_diff):
     print(df)
     return df 
 
-def Kelly(df, alpha, x_columns, max_bet, n, bet_diff):
-    df = getKellyBreakdown(df, alpha, x_columns, max_bet, n, bet_diff)
+def Kelly(df, odds_all, alpha, x_columns, max_bet, n, bet_diff):
+    df = getKellyBreakdown(df, odds_all, alpha, x_columns, max_bet, n, bet_diff)
     index = sortAllDates(df.index)
     
     per_bet = convertReturns(df['per_bet'], index)
@@ -297,7 +279,7 @@ def findTotal(dictReturns):
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
 # SEEMS LIKE THESIS IS INCORRECT 
-dfAll, returns = Kelly(df, 0.3, x_columns, 1, [0,100], [0.05, 1])
+dfAll, returns = Kelly(df, odds_all, 0.2, x_columns, 1, [0,100], [0, 1])
 
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
