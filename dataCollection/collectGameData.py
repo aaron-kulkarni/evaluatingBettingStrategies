@@ -11,6 +11,7 @@ sys.path.insert(0, "..")
 
 from utils.utils import *
 from collectStaticData import *
+from collectGameAttendanceReferees import *
 
 
 """
@@ -93,6 +94,11 @@ def getGameData(game_id, neutral):
     teamHomeSchedule = getTeamScheduleAPI(teamHome, game_id[0:8]).sort_values(by='datetime')
     teamAwaySchedule = getTeamScheduleAPI(teamAway, game_id[0:8]).sort_values(by='datetime')
 
+    otherDict = scrapeGameAttendanceReferees(game_id)
+    attendance = otherDict['att']
+    referees = otherDict['ref']
+
+
     # Gets the number of points scored in each quarter
     ((q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, overtimeScoresHome),
      (q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, overtimeScoresAway)) = getQuarterScore(gameData.summary)
@@ -150,7 +156,7 @@ def getGameData(game_id, neutral):
     endTime = timeOfDay + (timedelta(hours=(2 + .5 * len(overtimeScoresHome))))
 
     # Condenses all the information into an array to return
-    gameData = [game_id, winner, teamHome, teamAway, location, rivalry, timeOfDay, endTime, neutral,
+    gameData = [game_id, winner, teamHome, teamAway, location, rivalry, timeOfDay, endTime, referees, attendance, neutral,
                 q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, overtimeScoresHome,
                 pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupWinsHome,
                 homeTotalSalary, homeAverageSalary, homeGamesPlayed,
