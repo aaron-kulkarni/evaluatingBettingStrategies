@@ -66,9 +66,8 @@ def scrapeGameAttendanceReferees(gameid=None):
                 outdict['ref'] = div.replace('Officials:', '').replace('\xa0', '').strip().split(', ')
             elif 'Attendance' in div:
                 outdict['att'] = int(div.replace('Attendance:', '').replace('\xa0', '').strip().replace(',', ''))
-        print("Successfully added game: {0}".format(gameid))
     except Exception as e:
-        print("Failed to add game: {0}".format(gameid))
+        print("Referee/attendance failed to add game: {0}".format(gameid))
     # print(outdict)
     return outdict
 
