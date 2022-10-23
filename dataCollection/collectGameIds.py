@@ -95,12 +95,24 @@ def getStaticYearData(year):
 
 def initGameStateData(year):
 
-    col = [['gameState','gameState','gameState','gameState','gameState','gameState','gameState','gameState', 'gameState', 'gameState', 'gameState', 'home','home','home','home','home','home','home','home','home','home','home','home','home','home','away','away','away','away','away','away','away','away','away','away','away','away','away','away'],['winner','teamHome','teamAway','location','rivalry','datetime','neutral', 'endtime', 'attendance', 'referees', 'q1Score','q2Score','q3Score','q4Score','overtimeScores','points','streak','daysSinceLastGame','playerRoster','record','matchupWins','salary','avgSalary','numberOfGamesPlayed','q1Score','q2Score','q3Score','q4Score','overtimeScores','points','streak','daysSinceLastGame','playerRoster','record','matchupWins','salary','avgSalary','numberOfGamesPlayed']]
+    col = [['gameState','gameState','gameState','gameState','gameState','gameState','gameState','gameState', 'gameState', 'gameState', 'home','home','home','home','home','home','home','home','home','home','home','home','home','home','away','away','away','away','away','away','away','away','away','away','away','away','away','away'],['winner','teamHome','teamAway','location','rivalry','datetime','neutral', 'endtime', 'attendance', 'referees', 'q1Score','q2Score','q3Score','q4Score','overtimeScores','points','streak','daysSinceLastGame','playerRoster','record','matchupWins','salary','avgSalary','numberOfGamesPlayed','q1Score','q2Score','q3Score','q4Score','overtimeScores','points','streak','daysSinceLastGame','playerRoster','record','matchupWins','salary','avgSalary','numberOfGamesPlayed']]
 
     col = pd.MultiIndex.from_arrays(col, names = ['','teamData'])
     df = pd.DataFrame(index = getYearIds(year), columns = col)
     df.index.name = 'game_id'
     return df
+
+
+def gameFinished(gameId):
+    try:
+        r = requests.get("https://www.basketball-reference.com/boxscores/{}.html".format(gameId))
+        if r.status_code == 200:
+            return 1
+        else:
+            return 0
+    except Exception as e:
+        print("Game id({}) does not exist".format(gameId))
+        return 0
 
 #initGameStateData(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
 
@@ -205,26 +217,13 @@ def updateGameStateData():
     df2.to_csv('../data/gameStats/game_state_data_ALL.csv')
     return
 
-#updateGameStateData()
+updateGameStateData()
 
 
 def getRosterBeforeGame(team_abbr):
 
     return
 
-def gameFinished(gameId):
-    try:
-        r = requests.get("https://www.basketball-reference.com/boxscores/{}.html".format(gameId))
-        if r.status_code == 200:
-            return 1
-        else:
-            return 0
-    except Exception as e:
-        print("Game id({}) does not exist".format(gameId))
-        return 0
-
-print(gameFinished('202012230CHI'))
-print(gameFinished('202210230GSW'))
 
 def updateGameStateDataAll(year):
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
