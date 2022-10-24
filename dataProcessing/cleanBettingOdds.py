@@ -140,19 +140,19 @@ fillBettingOdds(np.arange(2015,2024)).to_csv('../data/bettingOddsData/adj_prob_w
 
 from TeamPerformance import * 
 
-df = pd.read_csv('../data/bettingOddsData/adj_prob_home_win_ALL.csv', index_col = 0)
+#df = pd.read_csv('../data/bettingOddsData/adj_prob_home_win_ALL.csv', index_col = 0)
 
-df['signal'] = getSignal()
+#df['signal'] = getSignal()
 
 'STANDARIZE DATA FEATURES TO UNIT SCALE (mean = 0 and variance = 1)'
 
 from sklearn.preprocessing import StandardScaler
 
-features = list(df.columns[:-1])
-x = df.loc[:, features].values
-y = df.loc[:, ['signal']].values
+#features = list(df.columns[:-1])
+#x = df.loc[:, features].values
+#y = df.loc[:, ['signal']].values
 
-x = StandardScaler().fit_transform(x)
+#x = StandardScaler().fit_transform(x)
 
 'BEGIN PERFORMING PCA'
 

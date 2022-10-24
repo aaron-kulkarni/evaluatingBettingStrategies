@@ -429,20 +429,25 @@ class convertEloCSVs:
     def returnCSV():
         df = pd.read_csv('https://projects.fivethirtyeight.com/nba-model/nba_elo_latest.csv')
         df['game_id'] = df.apply(lambda d: '{}0{}'.format(d['date'].replace('-', ''), d['team1']), axis=1)
-        df_status = df[df['score1'].notna()]
-        df_status.drop(['playoff', 'score1', 'score2', 'quality', 'importance', 'total_rating', 'date'], axis=1, inplace=True)
         df.drop(['playoff', 'score1', 'score2', 'quality', 'importance', 'total_rating', 'date'], axis=1, inplace=True)
         df.set_index('game_id', inplace = True)
-        df_status.set_index('game_id', inplace = True)
-        return df, df_status
+        return df
 
     @staticmethod
     def concatCSV():
         df_all = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col=0)
-        df, df_status = convertEloCSVs.returnCSV()
+        df_fin = df_all[df_all['elo1_post'].notna()]
+        df = convertEloCSVs.returnCSV()
+        df = df[df.index.isin(list(set(df.index) - set(df_fin.index)))]
+        df_fin_upd = df[df['elo1_post'].notna()]
+        print('updated games: ')
+        print(*list(df_fin_upd.index), sep = ',')
+
         df = df[df.index.isin(getGamesToday())]
-        df_all.drop(df_status.index, axis=0, inplace=True)
-        df_all = pd.concat([df_all, df, df_status], axis=0).drop_duplicates()
+        print('todays games inputs: ')
+        print(*list(df.index), sep = ',')
+        
+        df_all = pd.concat([df_fin, df_fin_upd, df], axis=0)
         df_all = df_all.reindex(sortDate(df_all.index))
         df_all.to_csv('../data/eloData/nba_elo_all.csv')
         return 
