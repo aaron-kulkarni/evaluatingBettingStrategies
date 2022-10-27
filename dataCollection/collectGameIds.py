@@ -167,24 +167,24 @@ def updateGameStateData():
     df.dropna()
     df2.dropna()
     df_dict = df.to_dict('index')
-    lastGameRecorded = 0 #most recent game that was played and we have data for
+    #lastGameRecorded = 0 #most recent game that was played and we have data for
     previousGameList = []
     for key, value in df_dict.items():
         print(key)
         if str(value[('gameState', 'datetime')]) != 'nan' and gameFinished(key):
             previousGameList.append(key)
-            if str(value[('gameState', 'winner')]) != 'nan':
-                lastGameRecorded = key
+            #if str(value[('gameState', 'winner')]) != 'nan':
+                #lastGameRecorded = key
         else:
             break
     mostRecentGame = previousGameList[-1] #most recent game played
-    if lastGameRecorded == mostRecentGame:
+    #if lastGameRecorded == mostRecentGame:
         # list is already fully updated
-        return
+        #return
 
-    if (lastGameRecorded != 0):
-        idx = previousGameList.index(lastGameRecorded)
-        previousGameList = previousGameList[idx + 1:]  # don't care about previous games that already have data
+    #if (lastGameRecorded != 0):
+        #idx = previousGameList.index(lastGameRecorded)
+        #previousGameList = previousGameList[idx + 1:]  # don't care about previous games that already have data
 
     for curId in previousGameList:  # i honestly didn't know how to do it better than a for loop. should be relatively short list though
         tempList = getGameData(curId, int(df.loc[curId]['gameState']['neutral']))
@@ -218,7 +218,8 @@ def updateGameStateData():
     df2.to_csv('../data/gameStats/game_state_data_ALL.csv')
     return
 
-# updateGameStateData()
+updateGameStateData()
+#df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
 
 
