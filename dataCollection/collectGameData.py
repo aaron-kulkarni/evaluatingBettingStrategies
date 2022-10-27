@@ -138,12 +138,8 @@ def getGameData(game_id, neutral):
     homeCoach, awayCoach = getCoaches(teamHome, teamAway, game_id[0:8])
 
     # Gets player and team salaries
-    # homeTotalSalary, homeAverageSalary = getTeamSalaryData(teamHome, game_id, homePlayerRoster)
-    # awayTotalSalary, awayAverageSalary = getTeamSalaryData(teamAway, game_id, awayPlayerRoster)
-    homeTotalSalary = 7e8
-    awayTotalSalary = 7e8
-    homeAverageSalary = homeTotalSalary/12
-    awayAverageSalary = awayTotalSalary/12
+    homeTotalSalary, homeAverageSalary = getTeamSalaryData(teamHome, game_id, homePlayerRoster)
+    awayTotalSalary, awayAverageSalary = getTeamSalaryData(teamAway, game_id, awayPlayerRoster)
 
 
     # Gets Number of Games Played
@@ -339,7 +335,7 @@ def getTeamSalaryData(team_abbr, game_id, playerRoster):
     year = getYearFromId(game_id)
     for playerId in playerRoster:
         try:
-            curSalary = scrapePlayerSalaryData(year, playerId)
+            curSalary = scrapePlayerSalaryData(playerId, team_abbr)
         except Exception as e:
             print(e)
             curSalary = 0

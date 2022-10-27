@@ -170,7 +170,7 @@ def getPlayerSalaryData(year):
     salaries = []
     for playerid in playerids:
         try:
-            sal = scrapePlayerSalaryData(year, playerid)
+            sal = scrapePlayerPastYearSalaryData(year, playerid)
             print('Successful: {0}, {1}'.format(playerid, sal))
             salaries.append(sal)
         except Exception as e:
@@ -185,9 +185,9 @@ def getPlayerSalaryData(year):
     df.to_csv('../data/staticPlayerData/static_player_stats_{0}.csv'.format(year))
     return df
 
-def scrapePlayerSalaryData(year, playerid):
+def scrapePlayerPastYearSalaryData(year, playerid):
     """
-    Scrapes a given player's salary for the given year.
+    Scrapes a given player's salary for a given year in the past.
 
     Parameters
     ----------
@@ -242,7 +242,69 @@ def scrapePlayerSalaryData(year, playerid):
     except Exception:
         raise Exception('Player {0} salary not found on basketball-reference.com for year {1}'.format(playerid, year))
 
+
+def scrapePlayerSalaryData(playerid, team_abbr):
+    """
+        Scrapes a given player's salary for the current year
+
+        Parameters
+        ----------
+        playerid : the player id to scrape
+        team_abbr: the team that the player is playing on
+
+        Returns
+        -------
+        a numerical salary value
+    """
+
+    url = f"https://www.basketball-reference.com/players/{playerid[0:1].lower()}/{playerid}.html"
+    year = 2023;
+    try:
+        soup = bs.BeautifulSoup(urlopen(url), features='lxml')
+        # regex = r"<tr ><th [^<>]* data-stat=\"season\" >" + str(year - 1) + "-" + str(year)[2:4] \
+        #         + r"<\/th>[^\n]*<td [^<>]* data-stat=\"salary\" [^<>]*>(\$([\d,]+)|(<? \$Minimum))</td></tr>\n"
+        regex = r"<table [^<>]* id=\"contracts_" + team_abbr.lower() + r"\" [^<>]*>[\W\w]*<tr>[\W\w]*<td[^<>]*>" \
+                + r"<span [^<>]*>(\$([\d,]+)|(<? \$Minimum))</span></td>\n*</tr>\n*</table>"
+        matches = re.findall(regex, str(soup.find('div', {'id': 'all_contract'})))
+        print(matches)
+        if len(matches) > 1:
+            # print('len > 1 for {0}'.format(playerid))
+            max_sal = -1
+            for m in matches:
+                if isinstance(m, tuple) and not len(m) == 0:
+                    m = m[0]
+                if not m:
+                    continue
+                elif "Minimum" in m:
+                    new_sal = 1e5
+                else:
+                    new_sal = int(m.replace(',', '').replace('$', ''))
+                max_sal = new_sal if new_sal > max_sal else max_sal
+            return max_sal
+        elif len(matches) == 0:
+            # print('len == 0 for {0}'.format(playerid))
+            raise Exception()
+        else:
+            if isinstance(matches[0], tuple) and not len(matches[0]) == 0:
+                matches[0] = matches[0][0]
+
+            if not matches[0]:
+                raise Exception()
+            elif "Minimum" in matches[0]:
+                new_sal = 1e5
+            else:
+                new_sal = int(matches[0].replace(',', '').replace('$', ''))
+
+            return new_sal
+
+    except Exception:
+        raise Exception('Player {0} salary not found on basketball-reference.com for year {1}'.format(playerid, year))
+
+
+
+
 # years = np.arange(2015, 2023)
 # for year in years:
 #     getAllStaticPlayerData(year).to_csv('static_player_stats_{0}.csv'.format(year))
-print(scrapePlayerSalaryData(2022, 'duranke01'))
+# print(scrapePlayerPastYearSalaryData(2022, 'duranke01'))
+print(scrapePlayerSalaryData('rosste01', 'ORL'))
