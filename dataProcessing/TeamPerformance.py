@@ -131,9 +131,9 @@ class TeamPerformance:
             df.to_csv('../data/averageTeamData/per_{}/average_away_per_{}_{}.csv'.format(n, n, self.year))
         return df
 
-TeamPerformance(2023).getTeamPerformanceDF(5, True)
-TeamPerformance(2023).getTeamPerformanceDF(5, False)
-concat(5, np.arange(2015,2024))
+#TeamPerformance(2023).getTeamPerformanceDF(5, True)
+#TeamPerformance(2023).getTeamPerformanceDF(5, False)
+#concat(5, np.arange(2015,2024))
 
 def concat(n, years):
     df_all = pd.DataFrame()

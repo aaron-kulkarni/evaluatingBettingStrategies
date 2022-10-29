@@ -88,14 +88,14 @@ class PerformanceMetric:
         df = pd.concat([perMetricElo, perMetricOdds, perMetricRaptor, perMetricNElo, perMetricNOdds, perMetricNRatpor], axis = 1)
         return df
 
-years = np.arange(2015, 2023)
-dfAll = pd.DataFrame()
-for year in years:
-    df = pd.read_csv('../data/perMetric/performance_metric_{}.csv'.format(year), index_col=0, header=[0,1])
-    dfAll = pd.concat([df, dfAll], axis = 0)
+#years = np.arange(2015, 2023)
+#dfAll = pd.DataFrame()
+#for year in years:
+#    df = pd.read_csv('../data/perMetric/performance_metric_{}.csv'.format(year), index_col=0, header=[0,1])
+#    dfAll = pd.concat([df, dfAll], axis = 0)
 
 def updatePerMetric(year):
-    df = PerformanceMetric(year).concatPerMetric(6).to_csv('../data/perMetric/performance_metric_{}.csv')
+    df = PerformanceMetric(year).concatPerMetric(6).to_csv('../data/perMetric/performance_metric_{}.csv'.format(year))
     dfAll = pd.read_csv('../data/perMetric/performance_metric_ALL.csv', header=[0,1], index_col=0)
     dfAll = pd.concat([df, dfAll], axis = 0)
     dfAll.to_csv('../data/perMetric/performance_metric_ALL.csv')
