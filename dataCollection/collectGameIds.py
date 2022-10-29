@@ -167,24 +167,24 @@ def updateGameStateData():
     df.dropna()
     df2.dropna()
     df_dict = df.to_dict('index')
-    #lastGameRecorded = 0 #most recent game that was played and we have data for
+    lastGameRecorded = 0 #most recent game that was played and we have data for
     previousGameList = []
     for key, value in df_dict.items():
         print(key)
         if str(value[('gameState', 'datetime')]) != 'nan' and gameFinished(key):
             previousGameList.append(key)
-            #if str(value[('gameState', 'winner')]) != 'nan':
-                #lastGameRecorded = key
+            if str(value[('gameState', 'winner')]) != 'nan':
+                lastGameRecorded = key
         else:
             break
     mostRecentGame = previousGameList[-1] #most recent game played
-    #if lastGameRecorded == mostRecentGame:
+    if lastGameRecorded == mostRecentGame:
         # list is already fully updated
-        #return
+        return
 
-    #if (lastGameRecorded != 0):
-        #idx = previousGameList.index(lastGameRecorded)
-        #previousGameList = previousGameList[idx + 1:]  # don't care about previous games that already have data
+    if lastGameRecorded != 0:
+        idx = previousGameList.index(lastGameRecorded)
+        previousGameList = previousGameList[idx + 1:]  # don't care about previous games that already have data
 
     for curId in previousGameList:  # i honestly didn't know how to do it better than a for loop. should be relatively short list though
         tempList = getGameData(curId, int(df.loc[curId]['gameState']['neutral']))
@@ -223,9 +223,86 @@ updateGameStateData()
 
 
 
-def getRosterBeforeGame(team_abbr):
+def getTeamCurrentRoster(team_abbr):
+    """
+        Scrapes a teams current roster. Players who are injured and guaranteed not to play
+        are removed from the roster
 
-    return
+        Parameters
+        ----------
+        playerid : the player id to scrape
+        team_abbr: the team that the player is playing on
+
+        Returns
+        -------
+        a numerical salary value
+    """
+
+    year = 2023;
+    url = f"https://www.basketball-reference.com/teams/{str(team_abbr).upper()}/{str(year)}.html"
+
+    try:
+        soup = bs.BeautifulSoup(urlopen(url), features='lxml')
+
+        regex = r"<div class=\"table_container\" id=\"div_injuries\">[\S\s]*<table [\S\s]* id=\"injuries\"[\S\s]*data-append-csv=\"([\S\s]+)\"[\S\s]*data-stat=\"note\" >([\S\s]*)</td></tr>[\S\s]*</div>"
+        matches = re.findall(regex, str(soup.find('div', {'id': 'div_injuries'})))
+        print(matches)
+
+        return
+
+        playerTable = soup.find("table", {"id": "roster"})
+        teamRoster = []
+
+        for row in playerTable.tbody.find_all('tr'):
+            achildren = row[0].findChildren('a')
+            if len(achildren) == 1 and achildren[0].has_attr('href'):
+                teamRoster.append(achildren[0]['href'].split("/")[3].split(".")[0])
+
+        #now we have teams total roster. time to remove injured players
+
+
+        return
+        # regex = r"<tr ><th [^<>]* data-stat=\"season\" >" + str(year - 1) + "-" + str(year)[2:4] \
+        #         + r"<\/th>[^\n]*<td [^<>]* data-stat=\"salary\" [^<>]*>(\$([\d,]+)|(<? \$Minimum))</td></tr>\n"
+        regex = r"<table [^<>]* id=\"contracts_" + team_abbr.lower() + r"\" [^<>]*>[\W\w]*<tr>[\W\w]*<td[^<>]*>" \
+                + r"<span [^<>]*>(\$([\d,]+)|(<? \$Minimum))</span></td>\n*</tr>\n*</table>"
+        regex = r"<table [\S\s]* id=\"injuries\"[\S\s]*data-append-csv=\"([\S\s]+)\"[\S\s]*data-stat=\"note\" >([\S\s]*)</td></tr>[\S\s]*</div>"
+        matches = re.findall(regex, str(soup.find('div', {'id': 'all_contract'})))
+        print(matches)
+        if len(matches) > 1:
+            # print('len > 1 for {0}'.format(playerid))
+            max_sal = -1
+            for m in matches:
+                if isinstance(m, tuple) and not len(m) == 0:
+                    m = m[0]
+                if not m:
+                    continue
+                elif "Minimum" in m:
+                    new_sal = 1e5
+                else:
+                    new_sal = int(m.replace(',', '').replace('$', ''))
+                max_sal = new_sal if new_sal > max_sal else max_sal
+            return max_sal
+        elif len(matches) == 0:
+            # print('len == 0 for {0}'.format(playerid))
+            raise Exception()
+        else:
+            if isinstance(matches[0], tuple) and not len(matches[0]) == 0:
+                matches[0] = matches[0][0]
+
+            if not matches[0]:
+                raise Exception()
+            elif "Minimum" in matches[0]:
+                new_sal = 1e5
+            else:
+                new_sal = int(matches[0].replace(',', '').replace('$', ''))
+
+            return new_sal
+
+    except Exception:
+        raise Exception('Player {0} salary not found on basketball-reference.com for year {1}'.format(playerid, year))
+
+#getTeamCurrentRoster('BRK')
 
 
 def updateGameStateDataAll(year):
