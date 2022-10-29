@@ -10,39 +10,7 @@ import requests
 import sys
 sys.path.insert(0, '..')
 from utils.utils import *
-
-teamNameDict = {
-    "ATL": "atlanta-hawks",
-    "BOS": ["Eastern", "Atlantic"],
-    "BRK": ["Eastern", "Atlantic"],
-    "CHO": ["Eastern", "Southeast"],
-    "CHI": ["Eastern", "Central"],
-    "CLE": ["Eastern", "Central"],
-    "DAL": ["Western", "Southwest"],
-    "DEN": ["Western", "Northwest"],
-    "DET": ["Eastern", "Central"],
-    "GSW": ["Western", "Pacific"],
-    "HOU": ["Western", "Southwest"],
-    "IND": ["Eastern", "Central"],
-    "LAC": ["Western", "Pacific"],
-    "LAL": ["Western", "Pacific"],
-    "MEM": ["Western", "Southwest"],
-    "MIA": ["Eastern", "Southeast"],
-    "MIL": ["Eastern", "Central"],
-    "MIN": ["Western", "Northwest"],
-    "NOP": ["Western", "Southwest"],
-    "NYK": ["Eastern", "Atlantic"],
-    "OKC": ["Western", "Northwest"],
-    "ORL": ["Eastern", "Southeast"],
-    "PHI": ["Eastern", "Atlantic"],
-    "PHO": ["Western", "Pacific"],
-    "POR": ["Western", "Northwest"],
-    "SAC": ["Western", "Pacific"],
-    "SAS": ["Western", "Southwest"],
-    "TOR": ["Eastern", "Atlantic"],
-    "UTA": ["Western", "Northwest"],
-    "WAS": ["Eastern", "Southeast"],
-}
+from dataProcessing.progress.rosterDict import scrapeRoster
 
 
 def getStaticMonthData(month, year):
@@ -218,7 +186,7 @@ def updateGameStateData():
     df2.to_csv('../data/gameStats/game_state_data_ALL.csv')
     return
 
-updateGameStateData()
+#updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
 
@@ -242,67 +210,34 @@ def getTeamCurrentRoster(team_abbr):
     url = f"https://www.basketball-reference.com/teams/{str(team_abbr).upper()}/{str(year)}.html"
 
     try:
+        teamRoster = scrapeRoster(team_abbr, year)[0]
         soup = bs.BeautifulSoup(urlopen(url), features='lxml')
-
-        regex = r"<div class=\"table_container\" id=\"div_injuries\">[\S\s]*<table [\S\s]* id=\"injuries\"[\S\s]*data-append-csv=\"([\S\s]+)\"[\S\s]*data-stat=\"note\" >([\S\s]*)</td></tr>[\S\s]*</div>"
-        matches = re.findall(regex, str(soup.find('div', {'id': 'div_injuries'})))
-        print(matches)
-
-        return
-
-        playerTable = soup.find("table", {"id": "roster"})
-        teamRoster = []
-
-        for row in playerTable.tbody.find_all('tr'):
-            achildren = row[0].findChildren('a')
-            if len(achildren) == 1 and achildren[0].has_attr('href'):
-                teamRoster.append(achildren[0]['href'].split("/")[3].split(".")[0])
-
-        #now we have teams total roster. time to remove injured players
-
-
-        return
-        # regex = r"<tr ><th [^<>]* data-stat=\"season\" >" + str(year - 1) + "-" + str(year)[2:4] \
-        #         + r"<\/th>[^\n]*<td [^<>]* data-stat=\"salary\" [^<>]*>(\$([\d,]+)|(<? \$Minimum))</td></tr>\n"
-        regex = r"<table [^<>]* id=\"contracts_" + team_abbr.lower() + r"\" [^<>]*>[\W\w]*<tr>[\W\w]*<td[^<>]*>" \
-                + r"<span [^<>]*>(\$([\d,]+)|(<? \$Minimum))</span></td>\n*</tr>\n*</table>"
-        regex = r"<table [\S\s]* id=\"injuries\"[\S\s]*data-append-csv=\"([\S\s]+)\"[\S\s]*data-stat=\"note\" >([\S\s]*)</td></tr>[\S\s]*</div>"
-        matches = re.findall(regex, str(soup.find('div', {'id': 'all_contract'})))
-        print(matches)
-        if len(matches) > 1:
-            # print('len > 1 for {0}'.format(playerid))
-            max_sal = -1
-            for m in matches:
-                if isinstance(m, tuple) and not len(m) == 0:
-                    m = m[0]
-                if not m:
-                    continue
-                elif "Minimum" in m:
-                    new_sal = 1e5
+        injuriesTable = re.split(r"<th scope=\"row\"[^<>]*class=\"left \"", str(soup.find('div', {'id': 'all_injuries'})))
+        regex = r"data-append-csv=\"([a-z0-9]+)\"[^<>]*data-stat=\"player\"[^<>]*>[\W\w]*<td[^<>]*data-stat=\"note\"[^<>]*>([\S ]*)</td></tr>"
+        for row in injuriesTable:
+            matches = re.findall(regex, row)
+            try:
+                if len(matches) != 1:
+                    raise Exception()
                 else:
-                    new_sal = int(m.replace(',', '').replace('$', ''))
-                max_sal = new_sal if new_sal > max_sal else max_sal
-            return max_sal
-        elif len(matches) == 0:
-            # print('len == 0 for {0}'.format(playerid))
-            raise Exception()
-        else:
-            if isinstance(matches[0], tuple) and not len(matches[0]) == 0:
-                matches[0] = matches[0][0]
+                    matches = matches[0]
 
-            if not matches[0]:
-                raise Exception()
-            elif "Minimum" in matches[0]:
-                new_sal = 1e5
-            else:
-                new_sal = int(matches[0].replace(',', '').replace('$', ''))
+                if len(matches) != 2:
+                    raise Exception()
+                else:
+                    if str(matches[1]).lower().startswith('out'):
+                        teamRoster.remove(matches[0])
+            except Exception:
+                formatString = matches[0] if len(matches) else 'UNKNOWN'
+                print('Player {0} status not found on basketball-reference.com'.format(formatString))
 
-            return new_sal
+        return teamRoster
 
-    except Exception:
-        raise Exception('Player {0} salary not found on basketball-reference.com for year {1}'.format(playerid, year))
+    except Exception as e:
+        print(e)
+        raise Exception('UNABLE TO NAVIGATE TO: {}'.format(url))
 
-#getTeamCurrentRoster('BRK')
+#getTeamCurrentRoster('DET')
 
 
 def updateGameStateDataAll(year):
