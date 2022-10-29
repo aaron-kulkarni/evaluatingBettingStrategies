@@ -266,7 +266,6 @@ def scrapePlayerSalaryData(playerid, team_abbr):
         regex = r"<table [^<>]* id=\"contracts_" + team_abbr.lower() + r"\" [^<>]*>[\W\w]*<tr>[\W\w]*<td[^<>]*>" \
                 + r"<span [^<>]*>(\$([\d,]+)|(<? \$Minimum))</span></td>\n*</tr>\n*</table>"
         matches = re.findall(regex, str(soup.find('div', {'id': 'all_contract'})))
-        print(matches)
         if len(matches) > 1:
             # print('len > 1 for {0}'.format(playerid))
             max_sal = -1
@@ -307,4 +306,4 @@ def scrapePlayerSalaryData(playerid, team_abbr):
 # for year in years:
 #     getAllStaticPlayerData(year).to_csv('static_player_stats_{0}.csv'.format(year))
 # print(scrapePlayerPastYearSalaryData(2022, 'duranke01'))
-print(scrapePlayerSalaryData('rosste01', 'ORL'))
+#print(scrapePlayerSalaryData('rosste01', 'ORL'))
