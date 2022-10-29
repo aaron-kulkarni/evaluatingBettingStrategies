@@ -10,7 +10,7 @@ class TeamPerformance:
     def __init__(self, year):
         self.year = year
         self.team_df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(self.year), index_col=0, header=[0, 1])
-        self.player_df = pd.read_csv('../data/gameStats/game_data_player_stats_{}.csv'.format(self.year), index_col=0, header=[0])
+#        self.player_df = pd.read_csv('../data/gameStats/game_data_player_stats_{}.csv'.format(self.year), index_col=0, header=[0])
         self.adj_prob_df = pd.read_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(self.year), index_col=0, header=[0, 1])
         self.game_state_df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(self.year),index_col=0, header=[0, 1])
 
@@ -53,7 +53,7 @@ class TeamPerformance:
         df1 = df1[df1.index.isin(gameIdList)]
         df2 = df2[df2.index.isin(gameIdList)]
 
-        df = pd.concat([df1['home'], df2['home']], axis = 0)
+        df = pd.concat([df1['home'], df2['away']], axis = 0)
 
         df.loc[gameId] = df.mean()
 
@@ -106,7 +106,7 @@ class TeamPerformance:
         df1 = df1[df1.index.isin(gameIdList)]
         df2 = df2[df2.index.isin(gameIdList)]
 
-        df = pd.concat([df1['home'], df2['home']], axis = 0)
+        df = pd.concat([df1['home'], df2['away']], axis = 0)
 
         df.loc[gameId] = df.mean()
 
@@ -115,22 +115,25 @@ class TeamPerformance:
         return df.loc[gameId]
 
     def getTeamPerformanceDF(self, n, home):
-
-        teamDF = self.game_state_df
-        if home:
-            teamDF = teamDF['gameState']['teamHome']
-        else:
-            teamDF = teamDF['gameState']['teamAway']
-            
+        if home == True:
+            teams = getTeamsDF(self.year)['teamHome']
+        if home == False:
+            teams = getTeamsDF(self.year)['teamAway']
         df = pd.DataFrame()
-        gameIdList = teamDF.index
-        for gameId in gameIdList:
-            team = teamDF.loc[gameId]
-            teamTotalStats = pd.concat([self.getTeamAveragePerformance(gameId, n, team), self.getOpponentAveragePerformance(gameId, n, team)], axis = 0, keys = ['team', 'opp'], join = 'inner')
-            teamTotalStats = teamTotalStats.to_frame()
-            df = pd.concat([df, teamTotalStats], axis = 0)
-
+        for gameId in getYearIds(self.year):
+            team = teams.loc[gameId]
+            team_df = pd.concat([self.getTeamAveragePerformance(gameId, n, team), self.getOpponentAveragePerformance(gameId, n, team)], axis = 0, keys = ['team', 'opp'], join = 'inner')
+            df = pd.concat([df, pd.DataFrame(team_df).T], axis=0)
+        df.index.name = 'gameId' 
+        if home == True:
+            df.to_csv('../data/averageTeamData/per_{}/average_team_per_{}_{}.csv'.format(n, n, self.year))
+        if home == False:
+            df.to_csv('../data/averageTeamData/per_{}/average_away_per_{}_{}.csv'.format(n, n, self.year))
         return df
+
+TeamPerformance(2023).getTeamPerformanceDF(5, True)
+TeamPerformance(2023).getTeamPerformanceDF(5, False)
+concat(5, np.arange(2015,2024))
 
 def concat(n, years):
     df_all = pd.DataFrame()
