@@ -9,6 +9,10 @@ import sys
 sys.path.insert(0, "..")
 from utils.utils import *
 
+import requests
+import bs4 as bs
+from urllib.request import urlopen
+
 def convertBettingOdds(filename):
     """
     function does following:

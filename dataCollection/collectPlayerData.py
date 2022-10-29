@@ -5,6 +5,10 @@ from urllib.request import urlopen
 from sportsipy.nba.boxscore import Boxscores
 import re
 
+import sys
+sys.path.insert(0, '..')
+from utils.utils import *
+
 def getPlayerGameStatDataFrame(gameId):
     '''
     Gets the static data about a player by scraping
@@ -201,7 +205,13 @@ def getTeamGameStat(gameId):
     result = getTeamGameStatHelper(home_abbr, result, url)
     result = getTeamGameStatHelper(away_abbr, result, url)
 
-    return result
+    columns = ['teamAbbr', 'Placeholder', 'MP', 'FG', 'FGA', 'FG%', '3P', '3PA', '3P%', 'FT', 'FTA', 'FT%', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS', 'TS%', 'eFG%', '3pAr', 'FTr', 'ORB%', 'DRB%', 'TRB%', 'AST%', 'STL%', 'BLK%', 'TOV%', 'USG%', 'ORtg', 'Drtg', 'poss', 'pace', 'poss_per_poss', 'ass_per_poss']
+    col = [['home'] * len(columns) + ['away'] * len(columns), columns * 2]
+    col = pd.MultiIndex.from_arrays(col, names = ['','gameId'])
+    df = pd.DataFrame(columns = col)
+    df.loc[gameId] = result
+    df.drop(['Placeholder'], axis = 1, level = 1, inplace = True)
+    return df
 
 def getTeamGameStatHelper(teamAbbr, result, url):
     """
@@ -322,37 +332,50 @@ def getGameStatsDataFrame(startTime, endTime):
         df = df.append(gameData, ignore_index = True)
     return df
 
-def extract_lines(filename):
-    startGameId = pd.read_csv(filename).head(1)['gameid'].iloc[0]
-    endGameId = pd.read_csv(filename).tail(1)['gameid'].iloc[0]
-    
-    startDate = dt.datetime.strptime(startGameId[0:4]+', '+startGameId[4:6]+', '+startGameId[6:8], '%Y, %m, %d')
-    endDate = dt.datetime.strptime(endGameId[0:4]+', '+endGameId[4:6]+', '+endGameId[6:8], '%Y, %m, %d')
-    
-    return startDate, endDate
 
 # Check format of the output with the following regex:
 # [\d]{8}0[A-Z]{3},([A-Z]{3},([\d]+,){3}((1\.000)|(\.[\d]{3})),([\d]+,){2}((1\.000)|(\.[\d]{3})),([\d]+,){2}((1\.000)|(\.[\d]{3})),([\d]+,){9}(((1\.000)|(\.[\d]{3})),){4}([\d\.]*,){13}([\d\.]*,?)){2}\n
-def getTeamGameStatDataFrame(year):
-    
-    fileLocation = 'data\gameStats\game_data_player_stats_{}.csv'.format(year)
-
-    startDate = str(extract_lines(fileLocation)[0])[0:10]
-    endDate = str(extract_lines(fileLocation)[1])[0:10]
-    gameIdList = []
-    allGames = Boxscores(dt.datetime.strptime(startDate, '%Y-%m-%d'), dt.datetime.strptime(endDate, '%Y-%m-%d')).games
-    for key in allGames.keys():
-        for i in range(len(allGames[key])):
-             gameIdList.append(allGames[key][i]['boxscore'])
-    gameDataList = []
-    for id in gameIdList:
-        gameDataList.append(getTeamGameStat(id))
-    df = pd.DataFrame(gameDataList, columns = ['homeTeamAbbr', 'PlaceholderH', 'MP_H', 'FG_H', 'FGA_H', 'FG%_H', '3P_H', '3PA_H', '3P%_H', 'FT_H', 'FTA_H', 'FT%_H', 'ORB_H', 'DRB_H', 'TRB_H', 'AST_H', 'STL_H', 'BLK_H', 'TOV_H', 'PF_H', 'PTS_H', 'TS%_H', 'eFG%_H', '3pAr_H', 'FTr_H', 'ORB%_H', 'DRB%_H', 'TRB%_H', 'AST%_H', 'STL%_H', 'BLK%_H', 'TOV%_H', 'USG%_H', 'ORtg_H', 'Drtg_H', 'poss_H', 'pace_H', 'poss_per_poss_H', 'ass_per_poss_H','awayTeamAbbr', 'PlaceholderA', 'MP_A', 'FG_A', 'FGA_A', 'FG%_A', '3P_A', '3PA_A', 'EP%_A', 'FT_A', 'FTA_A', 'FT%_A', 'ORB_A', 'DRB_A', 'TRB_A', 'AST_A', 'STL_A', 'BLK_A', 'TOV_A', 'PF_A', 'PTS_A', 'TS%_A', 'eFG%_A', '3pAr_A', 'FTr_A', 'ORB%_A', 'DRB%_A', 'TRB%_A', 'AST%_A', 'STL%_A', 'BLK%_A', 'TOV%_A', 'USG%_A', 'ORtg_A', 'Drtg_A', 'poss_A', 'pace_A', 'poss_per_poss_A', 'ass_per_poss_A'])
-    df['game_id'] = gameIdList
-    df.set_index('game_id', inplace = True)
-    df.drop(['PlaceholderH', 'PlaceholderA'], axis = 1, inplace = True)
+def getTeamGameStatDataFrame(gameIdList):
+    df = pd.DataFrame()
+    for gameId in gameIdList:
+        df = pd.concat([df, getTeamGameStat(gameId)], axis=0)
     return df
 
+#getTeamGameStatDataFrame().to_csv('../data/teamStats/team_total_stats_2023.csv')
+     
+def update_stats(year):
+    df = pd.read_csv('../data/teamStats/team_total_stats_{}.csv'.format(year), header=[0,1], index_col = 0)
+    index_fin = df[df.index.isin(getPreviousGames())].index
+    index_upd = df[df.index.isin(index_fin)].dropna().index
+    print('updating:')
+    df_update = pd.DataFrame()
+    for gameId in list((set(index_fin) - set(index_upd))):
+        print(gameId)
+        if gameFinished(gameId) == 1:
+            df_update = pd.concat([df_update, getTeamGameStat(gameId)], axis=0)
+    df = pd.concat([df_update, df.drop(df_update.index, axis=0)], axis=0)
+    df = df.reindex(sortDate(df.index))
+    df.to_csv('../data/teamStats/team_total_stats_{}.csv'.format(year))
+    return df 
+    
+def update_team_stats(years):
+    df = pd.DataFrame()
+    for year in years:
+        df_current = update_stats(year)
+        df = pd.concat([df, df_current], axis=0)
+    df = df.reindex(sortDate(df.index))
+    df.to_csv('../data/teamStats/team_total_stats_ALL.csv')
+    return 
+    
+def init_team_stat_dataframe(year):
+    columns = ['teamAbbr', 'Placeholder', 'MP', 'FG', 'FGA', 'FG%', '3P', '3PA', '3P%', 'FT', 'FTA', 'FT%', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS', 'TS%', 'eFG%', '3pAr', 'FTr', 'ORB%', 'DRB%', 'TRB%', 'AST%', 'STL%', 'BLK%', 'TOV%', 'USG%', 'ORtg', 'Drtg', 'poss', 'pace', 'poss_per_poss', 'ass_per_poss']
+    col = [['home'] * len(columns) + ['away'] * len(columns), columns * 2]
+    col = pd.MultiIndex.from_arrays(col, names = ['', 'gameId'])
+    df = pd.DataFrame(columns = col, index = getYearIds(year))
+    df.drop(['Placeholder'], axis = 1, level = 1, inplace = True)
+    df = pd.concat([getTeamGameStat(df.index[0]), df.drop(df.index[0], axis=0)], axis=0)
+    return df
 
-     
-     
+#init_team_stat_dataframe(2023).to_csv('../data/teamStats/team_total_stats_2023.csv')
+
+update_team_stats(np.arange(2015,2024))

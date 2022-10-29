@@ -4,6 +4,8 @@ import re
 import sys
 import os
 import numpy as np
+from urllib.request import urlopen
+import requests
 
 from sportsipy.nba.boxscore import Boxscores, Boxscore
 from sportsipy.nba.teams import Teams
@@ -325,3 +327,14 @@ def cumsum_reset_on_null(srs):
     result = (cumulative - restart)
 
     return result.replace(0, np.nan)
+
+def gameFinished(gameId):
+    try:
+        r = requests.get('https://www.basketball-reference.com/boxscores/{}.html'.format(gameId))
+        if r.status_code == 200:
+            return 1
+        else:
+            return 0
+    except Exception as e:
+        print("Game id({}) does not exist".format(gameId))
+        return 0
