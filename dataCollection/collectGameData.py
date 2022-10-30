@@ -337,7 +337,7 @@ def getTeamSalaryData(team_abbr, game_id, playerRoster):
         try:
             curSalary = scrapePlayerSalaryData(playerId, team_abbr)
         except Exception as e:
-            print(e)
+            #print(e)
             curSalary = 0
             i -= 1
         totalSalary += curSalary

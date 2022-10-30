@@ -84,7 +84,7 @@ def getTeamCurrentRoster(team_abbr):
                         teamRoster.remove(matches[0])
             except Exception:
                 formatString = matches[0] if len(matches) else 'UNKNOWN'
-                print('Player {0} status not found on basketball-reference.com'.format(formatString))
+                #print('Player {0} status not found on basketball-reference.com'.format(formatString))
 
         return teamRoster
 
