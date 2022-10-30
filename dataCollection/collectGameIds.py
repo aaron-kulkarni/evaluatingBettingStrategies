@@ -44,6 +44,54 @@ def getStaticMonthData(month, year):
 
     return gameIdList, dateTimeList, homeTeamList, awayTeamList, locationList, neutralList
 
+
+
+def getTeamCurrentRoster(team_abbr):
+    """
+        Scrapes a teams current roster. Players who are injured and guaranteed not to play
+        are removed from the roster
+
+        Parameters
+        ----------
+        playerid : the player id to scrape
+        team_abbr: the team that the player is playing on
+
+        Returns
+        -------
+        a numerical salary value
+    """
+
+    year = 2023;
+    url = f"https://www.basketball-reference.com/teams/{str(team_abbr).upper()}/{str(year)}.html"
+
+    try:
+        teamRoster = scrapeRoster(team_abbr, year)[0]
+        soup = bs.BeautifulSoup(urlopen(url), features='lxml')
+        injuriesTable = re.split(r"<th scope=\"row\"[^<>]*class=\"left \"", str(soup.find('div', {'id': 'all_injuries'})))
+        regex = r"data-append-csv=\"([a-z0-9]+)\"[^<>]*data-stat=\"player\"[^<>]*>[\W\w]*<td[^<>]*data-stat=\"note\"[^<>]*>([\S ]*)</td></tr>"
+        for row in injuriesTable:
+            matches = re.findall(regex, row)
+            try:
+                if len(matches) != 1:
+                    raise Exception()
+                else:
+                    matches = matches[0]
+
+                if len(matches) != 2:
+                    raise Exception()
+                else:
+                    if str(matches[1]).lower().startswith('out'):
+                        teamRoster.remove(matches[0])
+            except Exception:
+                formatString = matches[0] if len(matches) else 'UNKNOWN'
+                print('Player {0} status not found on basketball-reference.com'.format(formatString))
+
+        return teamRoster
+
+    except Exception as e:
+        print(e)
+        raise Exception('UNABLE TO NAVIGATE TO: {}'.format(url))
+
 def getStaticYearData(year):
 
     gameIdList, dateTimeList, homeTeamList, awayTeamList, locationList, neutralList = [], [], [], [], [], []
@@ -138,7 +186,6 @@ def updateGameStateData():
     lastGameRecorded = 0 #most recent game that was played and we have data for
     previousGameList = []
     for key, value in df_dict.items():
-        print(key)
         if str(value[('gameState', 'datetime')]) != 'nan' and gameFinished(key):
             previousGameList.append(key)
             if str(value[('gameState', 'winner')]) != 'nan':
@@ -162,12 +209,22 @@ def updateGameStateData():
         #edit the next game data for both teams
         teamHome = tempList[1]
         teamAway = tempList[2]
-        indexHome = getTeamsNextGame(tempList[1], curId)
-        indexAway = getTeamsNextGame(tempList[2], curId)
+        indexHome = getTeamsNextGame(teamHome, curId)
+        indexAway = getTeamsNextGame(teamAway, curId)
+
         homeTeamSchedule = getTeamScheduleAPI(teamHome, gameIdToDateTime(indexHome).strftime('%Y%m%d'))
         awayTeamSchedule = getTeamScheduleAPI(teamAway, gameIdToDateTime(indexHome).strftime('%Y%m%d'))
+        homeTeamRoster = getTeamCurrentRoster(teamHome)
+        awayTeamRoster = getTeamCurrentRoster(teamAway)
+        homeTotalSalary, homeAverageSalary = getTeamSalaryData(teamHome, indexHome, homeTeamRoster)
+        awayTotalSalary, awayAverageSalary = getTeamSalaryData(teamAway, indexAway, awayTeamRoster)
 
-        #df.astype(object).dtypes
+        df.loc[indexHome, ('home', 'playerRoster')] = str(homeTeamRoster)
+        df.loc[indexAway, ('away', 'playerRoster')] = str(awayTeamRoster)
+        df.loc[indexHome, ('home', 'salary')] = homeTotalSalary
+        df.loc[indexAway, ('away', 'salary')] = awayTotalSalary
+        df.loc[indexHome, ('home', 'avgSalary')] = homeAverageSalary
+        df.loc[indexAway, ('away', 'avgSalary')] = awayAverageSalary
         df.loc[indexHome, ('home', 'record')] = str(getTeamRecord(homeTeamSchedule, indexHome))
         df.loc[indexAway, ('away', 'record')] = str(getTeamRecord(awayTeamSchedule, indexAway))
         df.loc[indexHome, ('home', 'streak')] = getTeamStreak(homeTeamSchedule, indexHome)
@@ -175,67 +232,27 @@ def updateGameStateData():
         matchupWinsHome, matchupWinsAway = getPastMatchUpWinLoss(homeTeamSchedule, indexHome, teamAway)
         df.loc[indexHome, ('home', 'matchupWins')] = int(matchupWinsHome)
         df.loc[indexAway, ('away', 'matchupWins')] = int(matchupWinsAway)
+
+        df2.loc[indexHome, ('home', 'playerRoster')] = str(homeTeamRoster)
+        df2.loc[indexAway, ('away', 'playerRoster')] = str(awayTeamRoster)
+        df2.loc[indexHome, ('home', 'salary')] = homeTotalSalary
+        df2.loc[indexAway, ('away', 'salary')] = awayTotalSalary
+        df2.loc[indexHome, ('home', 'avgSalary')] = homeAverageSalary
+        df2.loc[indexAway, ('away', 'avgSalary')] = awayAverageSalary
         df2.loc[indexHome, ('home', 'record')] = str(getTeamRecord(homeTeamSchedule, indexHome))
         df2.loc[indexAway, ('away', 'record')] = str(getTeamRecord(awayTeamSchedule, indexAway))
         df2.loc[indexHome, ('home', 'streak')] = getTeamStreak(homeTeamSchedule, indexHome)
         df2.loc[indexAway, ('away', 'streak')] = getTeamStreak(awayTeamSchedule, indexAway)
         df2.loc[indexHome, ('home', 'matchupWins')] = int(matchupWinsHome)
         df2.loc[indexAway, ('away', 'matchupWins')] = int(matchupWinsAway)
+        print(curId)
 
     df.to_csv('../data/gameStats/game_state_data_2023.csv')
     df2.to_csv('../data/gameStats/game_state_data_ALL.csv')
     return
 
-#updateGameStateData()
+updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
-
-
-
-def getTeamCurrentRoster(team_abbr):
-    """
-        Scrapes a teams current roster. Players who are injured and guaranteed not to play
-        are removed from the roster
-
-        Parameters
-        ----------
-        playerid : the player id to scrape
-        team_abbr: the team that the player is playing on
-
-        Returns
-        -------
-        a numerical salary value
-    """
-
-    year = 2023;
-    url = f"https://www.basketball-reference.com/teams/{str(team_abbr).upper()}/{str(year)}.html"
-
-    try:
-        teamRoster = scrapeRoster(team_abbr, year)[0]
-        soup = bs.BeautifulSoup(urlopen(url), features='lxml')
-        injuriesTable = re.split(r"<th scope=\"row\"[^<>]*class=\"left \"", str(soup.find('div', {'id': 'all_injuries'})))
-        regex = r"data-append-csv=\"([a-z0-9]+)\"[^<>]*data-stat=\"player\"[^<>]*>[\W\w]*<td[^<>]*data-stat=\"note\"[^<>]*>([\S ]*)</td></tr>"
-        for row in injuriesTable:
-            matches = re.findall(regex, row)
-            try:
-                if len(matches) != 1:
-                    raise Exception()
-                else:
-                    matches = matches[0]
-
-                if len(matches) != 2:
-                    raise Exception()
-                else:
-                    if str(matches[1]).lower().startswith('out'):
-                        teamRoster.remove(matches[0])
-            except Exception:
-                formatString = matches[0] if len(matches) else 'UNKNOWN'
-                print('Player {0} status not found on basketball-reference.com'.format(formatString))
-
-        return teamRoster
-
-    except Exception as e:
-        print(e)
-        raise Exception('UNABLE TO NAVIGATE TO: {}'.format(url))
 
 #getTeamCurrentRoster('DET')
 
