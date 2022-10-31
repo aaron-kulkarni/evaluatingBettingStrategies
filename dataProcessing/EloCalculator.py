@@ -454,6 +454,3 @@ class convertEloCSVs:
     
     
 #EloCalculator.getEloProb(2023).to_csv('../data/eloData/elo_2023.csv')
-
-convertEloCSVs.concatCSV()
-
