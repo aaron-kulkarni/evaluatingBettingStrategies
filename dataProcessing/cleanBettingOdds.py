@@ -129,7 +129,7 @@ def convAmericanOdds(filename):
 
 #convertBettingOdds('../data/bettingOddsData/closing_betting_odds_2023_FIXED.csv').to_csv('../data/bettingOddsData/closing_betting_odds_2023_clean.csv')
 
-addAdjProb('../data/bettingOddsData/closing_betting_odds_2023_clean.csv').to_csv('../data/bettingOddsData/adj_prob_2023.csv')
+#addAdjProb('../data/bettingOddsData/closing_betting_odds_2023_clean.csv').to_csv('../data/bettingOddsData/adj_prob_2023.csv')
 
 
 
@@ -159,7 +159,7 @@ def fillBettingOdds(years):
     
     return df
 
-fillBettingOdds(np.arange(2015,2024)).to_csv('../data/bettingOddsData/adj_prob_win_ALL.csv')
+#fillBettingOdds(np.arange(2015,2024)).to_csv('../data/bettingOddsData/adj_prob_win_ALL.csv')
 
 from TeamPerformance import * 
 
@@ -202,4 +202,4 @@ def concatBettingOdds(years):
 
     return df_all
 
-concatBettingOdds(np.arange(2015, 2024)).to_csv('../data/bettingOddsData/closing_betting_odds_all.csv')
+#concatBettingOdds(np.arange(2015, 2024)).to_csv('../data/bettingOddsData/closing_betting_odds_all.csv')

@@ -3,6 +3,7 @@ sys.path.insert(0, "..")
 from utils.utils import *
 from TeamPerformance import * 
 from EloCalculator import *
+from cleanBettingOdds import * 
 
 TeamPerformance(2023).getTeamPerformanceDF(5, True)
 TeamPerformance(2023).getTeamPerformanceDF(5, False)
