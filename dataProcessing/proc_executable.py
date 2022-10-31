@@ -14,7 +14,7 @@ convertEloCSVs.concatCSV()
 updatePerMetric(2023)
 concatAll(np.arange(2015,2024))
 
-
+addReturns('../data/bettingOddsData/closing_betting_odds_all.csv')
 #addAdjProb('../data/bettingOddsData/closing_betting_odds_2023_clean.csv').to_csv('../data/bettingOddsData/adj_prob_2023.csv')
 #concatBettingOdds(np.arange(2015, 2024)).to_csv('../data/bettingOddsData/closing_betting_odds_all.csv')
 #fillBettingOdds(np.arange(2015,2024)).to_csv('../data/bettingOddsData/adj_prob_win_ALL.csv')
