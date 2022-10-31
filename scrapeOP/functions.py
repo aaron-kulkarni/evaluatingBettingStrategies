@@ -25,8 +25,12 @@ DRIVER_LOCATION = "/opt/homebrew/bin/chromedriver"
 
 global TYPE_ODDS
 TYPE_ODDS = 'CLOSING'
-#TYPE_ODDS = 'OPENING'
+# TYPE_ODDS = 'OPENING'
 # you can change to 'OPENING' if you want to collect opening odds, any other value will make the program collect CLOSING odds
+
+global driver
+driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+driver.quit()
 
 def get_opening_odd(xpath):
     # I. Get the raw data by hovering and collecting
@@ -90,12 +94,10 @@ def ffi2(a):
 def get_data_typeA(i, link):
     driver.get(link)
     target = '//*[@id="tournamentTable"]/tbody/tr[{}]/td[2]/a'.format(i)
-    print("Link",i)
-    _a = ffi2(target)
+    a = ffi2(target)
     
-    print("HELLO",_a)
     #pdb.set_trace()
-    if _a == True:
+    if a == True:
         print('We wait 4 seconds')
         L = []
         time.sleep(4)
@@ -115,67 +117,6 @@ def get_data_typeA(i, link):
         return(L)
     
     return(None)
-
-
-def get_data(link):
-    driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
-    driver.get('http://www.oddsportal.com/set-timezone/15/')
-    time.sleep(4)
-    driver.get(link)
-    print('We wait 4 seconds')
-    L = []
-    time.sleep(4)
-        # Now we collect all bookmaker
-    for j in range(1,30): # only first 10 bookmakers displayed
-        Book = ffi('//*[@id="odds-data-table"]/div[1]/table/tbody/tr[{}]/td[1]/div/a[2]'.format(j)) # first bookmaker name
-        Odd_1 = fffi('//*[@id="odds-data-table"]/div[1]/table/tbody/tr[{}]/td[2]/div'.format(j)) # first home odd
-        Odd_2 = fffi('//*[@id="odds-data-table"]/div[1]/table/tbody/tr[{}]/td[3]/div'.format(j)) # first away odd
-        match = ffi('//*[@id="col-content"]/h1') # match teams
-        final_score = ffi('//*[@id="event-status"]')
-            #pdb.set_trace()
-        date = ffi('//*[@id="col-content"]/p[1]') # Date and time
-            #print(match, Book, Odd_1, Odd_2, date, final_score, i, '/ 500 ')
-        L = L + [(match, Book, Odd_1, Odd_2, date, final_score)]
-    return(L)
-
-def convert_data(link):
-    DATA_ALL = get_data(link)
-    data_df = pd.DataFrame(DATA_ALL)
-    try:
-        data_df.columns = ['TeamsRaw', 'Bookmaker', 'OddHome', 'OddAway', 'DateRaw' ,'ScoreRaw']
-    except:
-        print('Function crashed, probable reason : no games scraped (empty season)')
-        return(1)
-    ##################### FINALLY WE CLEAN THE DATA AND SAVE IT ##########################
-    '''Now we simply need to split team names, transform date, split score'''
-
-    # (0) Filter out None rows
-    data_df = data_df[~data_df['Bookmaker'].isnull()].dropna().reset_index()
-    data_df["TO_KEEP"] = 1
-    for i in range(len(data_df["TO_KEEP"])):
-        if len(re.split(':',data_df["ScoreRaw"][i]))<2 :
-            data_df["TO_KEEP"].iloc[i] = 0
-
-    data_df = data_df[data_df["TO_KEEP"] == 1]
-    # (a) Split team names
-    data_df["Home_id"] = [re.split(' - ',y)[0] for y in data_df["TeamsRaw"]]
-    data_df["Away_id"] = [re.split(' - ',y)[1] for y in data_df["TeamsRaw"]]
-    # (b) Transform date
-    data_df["Date"] = [re.split(', ',y)[1] for y in data_df["DateRaw"]]
-    # (c) Split score
-    data_df["Score_home"] = [re.split(':',y)[0][-3:] for y in data_df["ScoreRaw"]]
-    data_df["Score_away"] = [re.split(':',y)[1][:3] for y in data_df["ScoreRaw"]]
-    
-    for j in range(len(data_df["Score_home"])):
-      str_home = data_df["Score_home"].iloc[j]
-      str_away = data_df["Score_away"].iloc[j]
-      if str_home[0] == 't':
-        data_df["Score_home"].iloc[j] = str_home[1:]
-      if str_away[-1] == '(':
-        data_df["Score_away"].iloc[j] = str_away[:-1]
-
-    return data_df
-
 
 def get_data_next_games_typeA(i, link):
     L = None
@@ -264,7 +205,7 @@ def scrape_page_next_games_typeA(country, sport, tournament, nmax = 20):
     print(DATA)
     return(DATA)
 
-def scrape_page_current_season_typeA(page,sport, country, tournament):
+def scrape_page_current_season_typeA(page, sport, country, tournament):
     link = 'https://www.oddsportal.com/{}/{}/{}/results/page/1/#/page/{}'.format(sport,country,tournament,page)
     
     DATA = []
