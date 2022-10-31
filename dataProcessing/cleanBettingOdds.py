@@ -13,6 +13,13 @@ import requests
 import bs4 as bs
 from urllib.request import urlopen
 
+def concatOdds(file_1, file_2):
+    df_1, df_2 = convertBettingOdds(file_1), convertBettingOdds(file_2)
+    df = pd.concat([df_1, df_2], axis=0).drop_duplicates()
+    df.dropna(axis=0, inplace=True)
+    
+    return df 
+
 def convertBettingOdds(filename):
     """
     function does following:

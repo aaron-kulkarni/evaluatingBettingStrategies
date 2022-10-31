@@ -378,4 +378,4 @@ def init_team_stat_dataframe(year):
 
 #init_team_stat_dataframe(2023).to_csv('../data/teamStats/team_total_stats_2023.csv')
 
-update_team_stats(np.arange(2015,2024))
+#update_team_stats(np.arange(2015,2024))
