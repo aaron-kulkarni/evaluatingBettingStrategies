@@ -91,7 +91,7 @@ def selectColElo(select_x):
     return df[select_x]
 
 def selectColPerMetric(select_x):
-    perMetric = pd.read_csv('../data/perMetric/performance_metric_ALL_.csv', index_col = 0, header = [0,1])
+    perMetric = pd.read_csv('../data/perMetric/performance_metric_ALL.csv', index_col = 0, header = [0,1])
     perMetric['home', 'home'], perMetric['away', 'home'] = 1, 0
     df = pd.concat([perMetric['home'], perMetric['away']], axis=0)
     df.reset_index(inplace = True)
