@@ -133,7 +133,6 @@ class TeamPerformance:
 
 #TeamPerformance(2023).getTeamPerformanceDF(5, True)
 #TeamPerformance(2023).getTeamPerformanceDF(5, False)
-#concat(5, np.arange(2015,2024))
 
 def concat(n, years):
     df_all = pd.DataFrame()
@@ -150,6 +149,8 @@ def concat(n, years):
         df_all = pd.concat([df_all, df_year], axis=0)
     df_all.to_csv('../data/averageTeamData/average_team_stats_per_{}.csv'.format(n))
     return df_all
+
+#concat(5, np.arange(2015,2024))
 
 def getSignal():
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0,1])
