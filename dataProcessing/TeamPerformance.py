@@ -138,7 +138,7 @@ def concat(n, years):
     df_all = pd.DataFrame()
     for year in years:
         df_home = pd.read_csv('../data/averageTeamData/per_{}/average_team_per_{}_{}.csv'.format(n, n, year), index_col=0, header=[0,1])['team']
-        df_away = pd.read_csv('../data/averageTeamData/per_{}/average_team_per_{}_{}.csv'.format(n, n, year), index_col=0, header=[0,1])['team']
+        df_away = pd.read_csv('../data/averageTeamData/per_{}/average_away_per_{}_{}.csv'.format(n, n, year), index_col=0, header=[0,1])['team']
         df_home['home'], df_away['home'] = 1, 0
         df_home.reset_index(inplace = True)
         df_away.reset_index(inplace = True)

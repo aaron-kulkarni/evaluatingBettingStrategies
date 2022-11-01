@@ -338,3 +338,14 @@ def gameFinished(gameId):
     except Exception as e:
         print("Game id({}) does not exist".format(gameId))
         return 0
+
+def returnDatetime(gameId):
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header=[0,1], index_col=0)['gameState']
+    return df.loc[gameId]['datetime']
+    
+    
+def getGameInfo():
+    for i in getGamesToday():
+        print('{} - {}'.format(i, returnDatetime(i)))
+        
+    

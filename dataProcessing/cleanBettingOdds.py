@@ -128,7 +128,7 @@ def convAmericanOdds(filename):
 
 
 #convertBettingOdds('../data/bettingOddsData/closing_betting_odds_2023_FIXED.csv').to_csv('../data/bettingOddsData/closing_betting_odds_2023_clean.csv')
-
+#convAmericanOdds('../data/bettingOddsData/closing_betting_odds_all.csv').to_csv('../data/bettingOddsData/closing_betting_odds_returns.csv')
 #addAdjProb('../data/bettingOddsData/closing_betting_odds_2023_clean.csv').to_csv('../data/bettingOddsData/adj_prob_2023.csv')
 
 

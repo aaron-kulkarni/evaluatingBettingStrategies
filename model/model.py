@@ -5,7 +5,6 @@ import itertools
 sys.path.insert(0, "..")
 
 from utils.utils import *
-from dataProcessing.TeamPerformance import *
 from dataProcessing.PCA import *
 from kelly import *
 
@@ -31,6 +30,14 @@ elif (cpuCount > 4 and cpuCount < 8):
     ray.init(num_cpus=4)
 else:
     ray.init(num_cpus=6)
+
+def getSignal():
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0,1])
+    signal = pd.DataFrame(df['gameState'])
+    signal['signal'] = signal.apply(lambda d: return_signal(d['winner'], d['teamHome'], d['teamAway']), axis=1)
+    signal = signal.dropna(axis=0)
+    signal['signal'] = signal['signal'].apply(int)
+    return signal['signal']
 
 def splitTrainTestYear(index, train_years, test_year):
     '''
@@ -146,7 +153,7 @@ EXECUTION (BETTING ODDS)
 
 perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1'])    
 mlval = selectMLVal(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
-bettingOddsAll = selectColOdds(['1xBet (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)'])
+bettingOddsAll = selectColOdds(['Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)', 'bet365 (%)'])
 elo = selectColElo(['elo_prob', 'raptor_prob'])
 gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame'])
 #tr_in, te_in = splitTrainTestYear(bettingOddsAll.index, np.arange(2015,2022), 2022)
@@ -198,7 +205,6 @@ def xgboost(clf, X_train, Y_train, X_test, Y_test):
     return Y_pred_prob, Y_pred_prob_adj
 
 Y_pred_prob, Y_pred_prob_adj = xgboost(clf, X_train, Y_train, X_test, Y_test)
-df, odds_all = getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll)
 
 def getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll):
     odds_all = bettingOddsAll[bettingOddsAll.index.isin(Y_test.index)]
@@ -209,7 +215,7 @@ def getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll):
     odds_all_adj = odds_all[::2].set_index(df.index)
     df['signal'] = Y_test[::2].set_index(df.index)
     return df, odds_all_adj
-        
+df, odds_all = getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll)
 
 def findReturns(df, x_columns):
     retHome, retAway = findProportionGained(x_columns)
@@ -219,13 +225,13 @@ def findReturns(df, x_columns):
     df = df.reindex(sortDate(df.index))
     return df
 
-def getKellyBreakdown(df, odds_all, alpha, x_columns, max_bet, n, bet_diff):
+def getKellyBreakdown(df, odds_all, alpha, x_columns, max_bet, bet_diff):
     df = findReturns(df, x_columns)
     df['mean'] = odds_all.mean(axis = 1)[odds_all.index.isin(df.index)]
     df['mean_diff'] = abs(df['predProb'] - df['mean'])
-    df['per_bet'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'], n)[0], axis = 1)
+    df['per_bet'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'])[0], axis = 1)
     df['per_bet'] = df.apply(lambda d: d['per_bet'] if bet_diff[0] < d['mean_diff'] < bet_diff[1] else 0, axis = 1)  
-    df['home'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'], n)[1], axis = 1)
+    df['home'] = df.apply(lambda d: kellyBet(d['predProb'], alpha, d['retHome'], d['retAway'])[1], axis = 1)
     df['per_bet'] = df['per_bet'].where(df['per_bet'] <= max_bet, max_bet)
     df['return'] = df.apply(lambda d: 1 + returnBet(d['per_bet'], d['signal'], d['retHome'], d['retAway'], d['home']), axis = 1)
     
@@ -233,8 +239,8 @@ def getKellyBreakdown(df, odds_all, alpha, x_columns, max_bet, n, bet_diff):
     print(df)
     return df 
 
-def Kelly(df, odds_all, alpha, x_columns, max_bet, n, bet_diff):
-    df = getKellyBreakdown(df, odds_all, alpha, x_columns, max_bet, n, bet_diff)
+def Kelly(df, odds_all, alpha, x_columns, max_bet, bet_diff):
+    df = getKellyBreakdown(df, odds_all, alpha, x_columns, max_bet, bet_diff)
     index = sortAllDates(df.index)
     
     per_bet = convertReturns(df['per_bet'], index)
@@ -279,7 +285,7 @@ def findTotal(dictReturns):
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
 # SEEMS LIKE THESIS IS INCORRECT 
-dfAll, returns = Kelly(df, odds_all, 0.2, x_columns, 1, [0,100], [0, 1])
+dfAll, returns = Kelly(df, odds_all, 0.2, x_columns, 1, [0, 1])
 
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)

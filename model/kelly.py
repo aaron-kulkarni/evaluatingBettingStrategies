@@ -6,35 +6,28 @@ from utils.utils import *
 from dataProcessing.TeamPerformance import *
 from dataProcessing.PCA import *
 
-def kellyBet(Y_prob, alpha, prop_gained_home, prop_gained_away, n):
+def kellyBet(Y_prob, alpha, prop_gained_home, prop_gained_away):
     '''
     Given probability of bet outputs proportion of bet for long term expected growth
 
     '''
     
-    f_bet = alpha * (Y_prob - (1 - Y_prob)/(prop_gained_home))
+    f_bet_home = alpha * (Y_prob - (1 - Y_prob)/(prop_gained_home))
     
-    if f_bet <= 0:
-        pass
-    else:
-        f_bet = avoidOdds(prop_gained_home, f_bet, n)
-        return f_bet, True
-    
-    f_bet = alpha * ((1 - Y_prob) - Y_prob/(prop_gained_away))
+    f_bet_away = alpha * ((1 - Y_prob) - Y_prob/(prop_gained_away))
 
-    if f_bet <= 0:
+    if f_bet_home < 0 and f_bet_away < 0 :
         return 0, 0
-    else:
-        f_bet = avoidOdds(prop_gained_away, f_bet, n)
-        return f_bet, False
+    if f_bet_home > 0 and f_bet_away < 0 :
+        return f_bet_home, True
+    if f_bet_home < 0 and f_bet_away > 0 :
+        return f_bet_away, False
+    if f_bet_home > 0 and f_bet_away > 0 :
+        if max(f_bet_home, f_bet_away) == f_bet_home: 
+            return f_bet_home, True
+        if max(f_bet_home, f_bet_away) == f_bet_away: 
+            return f_bet_away, False
 
-
-def avoidOdds(prop_gained, f_bet, n):
-    if prop_gained > n[1]:
-        f_bet = 0
-    if prop_gained < n[0]:
-        f_bet = 0
-    return f_bet
 
 def findProportionGained(select_x):
     df = pd.read_csv('../data/bettingOddsData/closing_betting_odds_returns.csv', index_col = 0, header = [0,1])
