@@ -242,13 +242,13 @@ def convDateTime(gameId, timeOfDay):
 
 def getGamesToday():
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header=[0,1], index_col=0)['gameState']
-    df['id'] = df.apply(lambda d: d['datetime'][0:10].replace('-', ''), axis=1)
+    df['id'] = df.apply(lambda d: str(d['datetime'])[0:10].replace('-', ''), axis=1)
     index = df[df['id'] == dt.datetime.today().strftime('%Y%m%d')].index
     return index
 
 def getPreviousGames():
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header=[0,1], index_col=0)['gameState']
-    df['id'] = df.apply(lambda d: d['datetime'][0:10].replace('-', ''), axis=1)
+    df['id'] = df.apply(lambda d: str(d['datetime'])[0:10].replace('-', ''), axis=1)
     index = df[df['id'] < dt.datetime.today().strftime('%Y%m%d')].index
     return index
 

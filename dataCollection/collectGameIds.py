@@ -257,11 +257,12 @@ def updateGameStateData():
 #getTeamCurrentRoster('DET')
 
 
-def updateGameStateDataAll(year):
-    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0)
-    df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
-    df = pd.concat([df, df_current], axis = 0)
+def updateGameStateDataAll(years):
+    df = pd.DataFrame()
+    for year in years:
+        df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
+        df = pd.concat([df, df_current], axis = 0)
     return df
 
-#updateGameStateDataAll(2023).to_csv('../data/gameStats/game_state_data_ALL.csv')
+#updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
 
