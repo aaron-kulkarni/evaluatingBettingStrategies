@@ -160,7 +160,7 @@ gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGam
 #bettingOddsPCA = iteratedPCA(bettingOddsAll, 2, tr_in, te_in)
 #bettingOddsPCA, coeff = performPCA(bettingOddsAll, 2)
 teamData = selectColTeamData(['3P%', 'Ortg', 'Drtg', 'PTS', 'TOV%', 'eFG%'], 5)
-X_train, X_test, Y_train, Y_test = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2019], 2020, True)
+X_train, X_test, Y_train, Y_test = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2020, 2021], 2022, True)
 
 # PARAMATER TUNING
 def findParamsXGB(X_train, Y_train):
@@ -241,6 +241,7 @@ def getKellyBreakdown(df, odds_all, alpha, x_columns, max_bet, bet_diff):
 
 def Kelly(df, odds_all, alpha, x_columns, max_bet, bet_diff):
     df = getKellyBreakdown(df, odds_all, alpha, x_columns, max_bet, bet_diff)
+    df = df.reindex(sortDate(df.index))
     index = sortAllDates(df.index)
     
     per_bet = convertReturns(df['per_bet'], index)
@@ -285,7 +286,7 @@ def findTotal(dictReturns):
 x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
 
 # SEEMS LIKE THESIS IS INCORRECT 
-dfAll, returns = Kelly(df, odds_all, 0.2, x_columns, 1, [0, 1])
+dfAll, returns = Kelly(df, odds_all, 0.2, x_columns, 1, [0, 100])
 
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
