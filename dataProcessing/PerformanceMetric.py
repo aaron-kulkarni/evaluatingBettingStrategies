@@ -86,6 +86,7 @@ class PerformanceMetric:
         perMetricElo, perMetricOdds, perMetricRaptor = self.returnPerMetric(eloProb), self.returnPerMetric(bettingOdds), self.returnPerMetric(raptorProb)
         perMetricNElo, perMetricNOdds, perMetricNRatpor = self.returnPerMetricN(eloProb, n), self.returnPerMetricN(bettingOdds, n), self.returnPerMetricN(raptorProb, n)
         df = pd.concat([perMetricElo, perMetricOdds, perMetricRaptor, perMetricNElo, perMetricNOdds, perMetricNRatpor], axis = 1)
+        df.index.name = 'game_id'
         return df
 
 #years = np.arange(2015, 2023)
