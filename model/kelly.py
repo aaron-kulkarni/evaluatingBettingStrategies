@@ -46,7 +46,9 @@ def returnBettingFirm(select_x, index):
     oddAway = oddAway[select_x]
     oddHome = oddHome[oddHome.index.isin(index)]
     oddAway = oddAway[oddAway.index.isin(index)]
-    colHome, colAway = pd.DataFrame(oddHome.idxmax(axis=1)), pd.DataFrame(oddAway.idxmax(axis=1))    
+    oddHome.columns = oddHome.columns.str.removesuffix('_return')
+    oddAway.columns = oddAway.columns.str.removesuffix('_return')
+    colHome, colAway = pd.DataFrame(oddHome.idxmax(axis=1)), pd.DataFrame(oddAway.idxmax(axis=1))
     return colHome, colAway
 
 def returnBet(per_bet, signal, retHome, retAway, home):
