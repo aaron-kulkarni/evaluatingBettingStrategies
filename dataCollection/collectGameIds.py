@@ -264,5 +264,5 @@ def updateGameStateDataAll(years):
         df = pd.concat([df, df_current], axis = 0)
     return df
 
-#updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
+updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
 
