@@ -342,7 +342,8 @@ def getTeamSalaryData(team_abbr, game_id, playerRoster):
             i -= 1
         totalSalary += curSalary
         i += 1
-    averageSalary = totalSalary / i
+    if i != 0:
+        averageSalary = totalSalary / i
 
     return totalSalary, averageSalary
 
@@ -498,7 +499,7 @@ def addEndTime(years):
         df['gameState', 'datetime'] = pd.to_datetime(df['gameState']['datetime'])
         df['gameState', 'endtime'] = df.apply(
             lambda d: d['gameState', 'datetime'] + timedelta(hours=2 if d['home', 'overtimeScores'] == "[]" else
-            (2 + .5 * (len((d['home', 'overtimeScores']).split(","))))), axis=1)
+            (2 + .5 * (len((str(d['home', 'overtimeScores'])).split(","))))), axis=1)
         df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
     return df
 
@@ -519,6 +520,7 @@ def makeMultiIndexing(file):
     return
 
 
+#addEndTime(np.arange(2015, 2023))
 # years = np.arange(2015, 2023)
 # concatDF(years).to_csv('../data/gameStats/game_state_data_ALL.csv')
 # for year in years:
