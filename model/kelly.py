@@ -42,11 +42,12 @@ def findProportionGained(select_x):
 def returnBettingFirm(select_x, index):
     df = pd.read_csv('../data/bettingOddsData/closing_betting_odds_returns.csv', index_col = 0, header = [0,1])
     oddHome, oddAway = df['OddHome'], df['OddAway']
-    oddHome = oddHome[select_x], oddAway = oddAway[select_x]
+    oddHome = oddHome[select_x]
+    oddAway = oddAway[select_x]
     oddHome = oddHome[oddHome.index.isin(index)]
     oddAway = oddAway[oddAway.index.isin(index)]
-    return oddHome.idxmax(axis=1).replace('_return', ''), oddAway.idxmax(axis=1).replace('_return', '')
-    
+    colHome, colAway = pd.DataFrame(oddHome.idxmax(axis=1)), pd.DataFrame(oddAway.idxmax(axis=1))    
+    return colHome, colAway
 
 def returnBet(per_bet, signal, retHome, retAway, home):
 
