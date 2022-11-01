@@ -205,7 +205,7 @@ def getTeamGameStat(gameId):
     result = getTeamGameStatHelper(home_abbr, result, url)
     result = getTeamGameStatHelper(away_abbr, result, url)
 
-    columns = ['teamAbbr', 'Placeholder', 'MP', 'FG', 'FGA', 'FG%', '3P', '3PA', '3P%', 'FT', 'FTA', 'FT%', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS', 'TS%', 'eFG%', '3pAr', 'FTr', 'ORB%', 'DRB%', 'TRB%', 'AST%', 'STL%', 'BLK%', 'TOV%', 'USG%', 'ORtg', 'Drtg', 'poss', 'pace', 'poss_per_poss', 'ass_per_poss']
+    columns = ['teamAbbr', 'Placeholder', 'MP', 'FG', 'FGA', 'FG%', '3P', '3PA', '3P%', 'FT', 'FTA', 'FT%', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS', 'TS%', 'eFG%', '3pAr', 'FTr', 'ORB%', 'DRB%', 'TRB%', 'AST%', 'STL%', 'BLK%', 'TOV%', 'USG%', 'Ortg', 'Drtg', 'poss', 'pace', 'poss_per_poss', 'ass_per_poss']
     col = [['home'] * len(columns) + ['away'] * len(columns), columns * 2]
     col = pd.MultiIndex.from_arrays(col, names = ['','gameId'])
     df = pd.DataFrame(columns = col)
@@ -368,7 +368,7 @@ def update_team_stats(years):
     return 
     
 def init_team_stat_dataframe(year):
-    columns = ['teamAbbr', 'Placeholder', 'MP', 'FG', 'FGA', 'FG%', '3P', '3PA', '3P%', 'FT', 'FTA', 'FT%', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS', 'TS%', 'eFG%', '3pAr', 'FTr', 'ORB%', 'DRB%', 'TRB%', 'AST%', 'STL%', 'BLK%', 'TOV%', 'USG%', 'ORtg', 'Drtg', 'poss', 'pace', 'poss_per_poss', 'ass_per_poss']
+    columns = ['teamAbbr', 'Placeholder', 'MP', 'FG', 'FGA', 'FG%', '3P', '3PA', '3P%', 'FT', 'FTA', 'FT%', 'ORB', 'DRB', 'TRB', 'AST', 'STL', 'BLK', 'TOV', 'PF', 'PTS', 'TS%', 'eFG%', '3pAr', 'FTr', 'ORB%', 'DRB%', 'TRB%', 'AST%', 'STL%', 'BLK%', 'TOV%', 'USG%', 'Ortg', 'Drtg', 'poss', 'pace', 'poss_per_poss', 'ass_per_poss']
     col = [['home'] * len(columns) + ['away'] * len(columns), columns * 2]
     col = pd.MultiIndex.from_arrays(col, names = ['', 'gameId'])
     df = pd.DataFrame(columns = col, index = getYearIds(year))
