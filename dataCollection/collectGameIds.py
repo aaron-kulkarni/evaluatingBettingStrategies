@@ -207,6 +207,7 @@ def updateGameStateData():
         df.loc[curId] = tempList
         df2.loc[curId] = tempList
         #edit the next game data for both teams
+
         teamHome = tempList[1]
         teamAway = tempList[2]
         indexHome = getTeamsNextGame(teamHome, curId)
@@ -218,6 +219,11 @@ def updateGameStateData():
         awayTeamRoster = getTeamCurrentRoster(teamAway)
         homeTotalSalary, homeAverageSalary = getTeamSalaryData(teamHome, indexHome, homeTeamRoster)
         awayTotalSalary, awayAverageSalary = getTeamSalaryData(teamAway, indexAway, awayTeamRoster)
+        homeStreak = getTeamStreak(homeTeamSchedule, indexHome)
+        awayStreak = getTeamStreak(awayTeamSchedule, indexAway)
+        homeRecord = getTeamRecord(homeTeamSchedule, indexHome)
+        awayRecord = getTeamRecord(awayTeamSchedule, indexAway)
+        matchupWinsHome, matchupWinsAway = getPastMatchUpWinLoss(homeTeamSchedule, indexHome, teamAway)
 
         df.loc[indexHome, ('home', 'playerRoster')] = str(homeTeamRoster)
         df.loc[indexAway, ('away', 'playerRoster')] = str(awayTeamRoster)
@@ -225,11 +231,10 @@ def updateGameStateData():
         df.loc[indexAway, ('away', 'salary')] = awayTotalSalary
         df.loc[indexHome, ('home', 'avgSalary')] = homeAverageSalary
         df.loc[indexAway, ('away', 'avgSalary')] = awayAverageSalary
-        df.loc[indexHome, ('home', 'record')] = str(getTeamRecord(homeTeamSchedule, indexHome))
-        df.loc[indexAway, ('away', 'record')] = str(getTeamRecord(awayTeamSchedule, indexAway))
-        df.loc[indexHome, ('home', 'streak')] = getTeamStreak(homeTeamSchedule, indexHome)
-        df.loc[indexAway, ('away', 'streak')] = getTeamStreak(awayTeamSchedule, indexAway)
-        matchupWinsHome, matchupWinsAway = getPastMatchUpWinLoss(homeTeamSchedule, indexHome, teamAway)
+        df.loc[indexHome, ('home', 'record')] = str(homeRecord)
+        df.loc[indexAway, ('away', 'record')] = str(awayRecord)
+        df.loc[indexHome, ('home', 'streak')] = homeStreak
+        df.loc[indexAway, ('away', 'streak')] = awayStreak
         df.loc[indexHome, ('home', 'matchupWins')] = int(matchupWinsHome)
         df.loc[indexAway, ('away', 'matchupWins')] = int(matchupWinsAway)
 
@@ -239,10 +244,10 @@ def updateGameStateData():
         df2.loc[indexAway, ('away', 'salary')] = awayTotalSalary
         df2.loc[indexHome, ('home', 'avgSalary')] = homeAverageSalary
         df2.loc[indexAway, ('away', 'avgSalary')] = awayAverageSalary
-        df2.loc[indexHome, ('home', 'record')] = str(getTeamRecord(homeTeamSchedule, indexHome))
-        df2.loc[indexAway, ('away', 'record')] = str(getTeamRecord(awayTeamSchedule, indexAway))
-        df2.loc[indexHome, ('home', 'streak')] = getTeamStreak(homeTeamSchedule, indexHome)
-        df2.loc[indexAway, ('away', 'streak')] = getTeamStreak(awayTeamSchedule, indexAway)
+        df2.loc[indexHome, ('home', 'record')] = str(homeRecord)
+        df2.loc[indexAway, ('away', 'record')] = str(awayRecord)
+        df2.loc[indexHome, ('home', 'streak')] = homeStreak
+        df2.loc[indexAway, ('away', 'streak')] = awayStreak
         df2.loc[indexHome, ('home', 'matchupWins')] = int(matchupWinsHome)
         df2.loc[indexAway, ('away', 'matchupWins')] = int(matchupWinsAway)
         print(curId)
@@ -251,7 +256,7 @@ def updateGameStateData():
     df2.to_csv('../data/gameStats/game_state_data_ALL.csv')
     return
 
-#updateGameStateData()
+updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
 #getTeamCurrentRoster('DET')
@@ -264,5 +269,5 @@ def updateGameStateDataAll(years):
         df = pd.concat([df, df_current], axis = 0)
     return df
 
-updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
+#updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
 
