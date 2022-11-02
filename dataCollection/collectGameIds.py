@@ -261,6 +261,18 @@ updateGameStateData()
 
 #getTeamCurrentRoster('DET')
 
+def fixFutureData(game_id, team_abbr):
+    schedule = getTeamScheduleAPI(team_abbr, gameIdToDateTime(game_id).strftime('%Y%m%d'))
+    streak = getTeamStreak(schedule, game_id)
+    record = getTeamRecord(schedule, game_id)
+    #matchupWins = getPastMatchUpWinLoss(schedule, game_id, )
+    roster = getTeamCurrentRoster(team_abbr)
+    salary, avgSalary = getTeamSalaryData(team_abbr, game_id, roster)
+    print(streak)
+    print(record)
+    print(salary)
+    print(avgSalary)
+    print(roster)
 
 def updateGameStateDataAll(years):
     df = pd.DataFrame()
