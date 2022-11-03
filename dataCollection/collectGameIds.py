@@ -319,7 +319,7 @@ def fixFutureData(game_id, team_abbr):
     print(avgSalary)
     print(roster)
 
-#fixFutureData('202211030ORL', 'ORL')
+#fixFutureData('202211030ORL', 'GSW')
 
 def updateGameStateDataAll(years):
     df = pd.DataFrame()
