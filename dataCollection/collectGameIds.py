@@ -12,6 +12,20 @@ sys.path.insert(0, '..')
 from utils.utils import *
 from dataProcessing.progress.rosterDict import scrapeRoster
 
+monthDict = {
+    "01": "january",
+    "02": "february",
+    "03": "march",
+    "04": "april",
+    "05": "may",
+    "06": "june",
+    "07": "july",
+    "08": "august",
+    "09": "september",
+    "10": "october",
+    "11": "november",
+    "12": "december"
+}
 
 def getStaticMonthData(month, year):
     url = 'https://www.basketball-reference.com/leagues/NBA_{}_games-{}.html'.format(year, month)
@@ -43,6 +57,41 @@ def getStaticMonthData(month, year):
         neutralList.append(neutral)
 
     return gameIdList, dateTimeList, homeTeamList, awayTeamList, locationList, neutralList
+
+def getStaticGameData(game_id):
+    month = monthDict[game_id[4:6]]
+    year = getYearFromId(game_id)
+    url = 'https://www.basketball-reference.com/leagues/NBA_{}_games-{}.html'.format(year, month)
+    soup = bs.BeautifulSoup(urlopen(url), features='lxml')
+    rows = [p for p in soup.find('div', {'id': 'div_schedule'}).findAll('tr')]
+    rowList = []
+    for row in rows:
+        rowList.append([td for td in row.findAll(['td', 'th'])])
+    gameIdList, dateTimeList, homeTeamList, awayTeamList, locationList, neutralList = [], [], [], [], [], []
+    for i in range(1, len(rowList)):
+        dateTime = parser.parse(rowList[i][0].getText())
+        aChildrenH = str(rowList[i][4].findChildren('a'))
+        homeTeam = aChildrenH.partition('teams/')[2][:3]
+        aChildrenA = str(rowList[i][2].findChildren('a'))
+        awayTeam = aChildrenA.partition('teams/')[2][:3]
+
+        gameId = '{}0{}'.format(dateTime.strftime("%Y%m%d"), homeTeam)
+        dateTime = convDateTime(gameId, rowList[i][1].getText())
+        location = rowList[i][9].getText()
+        if rowList[i][10].getText() == '':
+            neutral = 0
+        else:
+            neutral = 1
+        gameIdList.append(gameId)
+        dateTimeList.append(dateTime)
+        homeTeamList.append(homeTeam)
+        awayTeamList.append(awayTeam)
+        locationList.append(location)
+        neutralList.append(neutral)
+        if gameId == game_id:
+            break
+
+    return dateTimeList[-1], homeTeamList[-1], awayTeamList[-1], locationList[-1], neutralList[-1]
 
 
 
@@ -213,48 +262,87 @@ def updateGameStateData():
         indexHome = getTeamsNextGame(teamHome, curId)
         indexAway = getTeamsNextGame(teamAway, curId)
 
-        homeTeamSchedule = getTeamScheduleAPI(teamHome, gameIdToDateTime(indexHome).strftime('%Y%m%d'))
-        awayTeamSchedule = getTeamScheduleAPI(teamAway, gameIdToDateTime(indexHome).strftime('%Y%m%d'))
-        homeTeamRoster = getTeamCurrentRoster(teamHome)
-        awayTeamRoster = getTeamCurrentRoster(teamAway)
-        homeTotalSalary, homeAverageSalary = getTeamSalaryData(teamHome, indexHome, homeTeamRoster)
-        awayTotalSalary, awayAverageSalary = getTeamSalaryData(teamAway, indexAway, awayTeamRoster)
-        homeStreak = getTeamStreak(homeTeamSchedule, indexHome)
-        awayStreak = getTeamStreak(awayTeamSchedule, indexAway)
-        homeRecord = getTeamRecord(homeTeamSchedule, indexHome)
-        awayRecord = getTeamRecord(awayTeamSchedule, indexAway)
-        matchupWinsHome, matchupWinsAway = getPastMatchUpWinLoss(homeTeamSchedule, indexHome, teamAway)
+        homeGameData = getGameStateFutureData(indexHome)
+        homeData = getTeamFutureData(indexHome, teamHome, teamAway, 1)
 
-        df.loc[indexHome, ('home', 'playerRoster')] = str(homeTeamRoster)
-        df.loc[indexAway, ('away', 'playerRoster')] = str(awayTeamRoster)
-        df.loc[indexHome, ('home', 'salary')] = homeTotalSalary
-        df.loc[indexAway, ('away', 'salary')] = awayTotalSalary
-        df.loc[indexHome, ('home', 'avgSalary')] = homeAverageSalary
-        df.loc[indexAway, ('away', 'avgSalary')] = awayAverageSalary
-        df.loc[indexHome, ('home', 'record')] = str(homeRecord)
-        df.loc[indexAway, ('away', 'record')] = str(awayRecord)
-        df.loc[indexHome, ('home', 'streak')] = homeStreak
-        df.loc[indexAway, ('away', 'streak')] = awayStreak
-        df.loc[indexHome, ('home', 'matchupWins')] = int(matchupWinsHome)
-        df.loc[indexAway, ('away', 'matchupWins')] = int(matchupWinsAway)
+        awayGameData = getGameStateFutureData(indexAway)
+        awayData = getTeamFutureData(indexAway, teamAway, teamHome, 0)
 
-        df2.loc[indexHome, ('home', 'playerRoster')] = str(homeTeamRoster)
-        df2.loc[indexAway, ('away', 'playerRoster')] = str(awayTeamRoster)
-        df2.loc[indexHome, ('home', 'salary')] = homeTotalSalary
-        df2.loc[indexAway, ('away', 'salary')] = awayTotalSalary
-        df2.loc[indexHome, ('home', 'avgSalary')] = homeAverageSalary
-        df2.loc[indexAway, ('away', 'avgSalary')] = awayAverageSalary
-        df2.loc[indexHome, ('home', 'record')] = str(homeRecord)
-        df2.loc[indexAway, ('away', 'record')] = str(awayRecord)
-        df2.loc[indexHome, ('home', 'streak')] = homeStreak
-        df2.loc[indexAway, ('away', 'streak')] = awayStreak
-        df2.loc[indexHome, ('home', 'matchupWins')] = int(matchupWinsHome)
-        df2.loc[indexAway, ('away', 'matchupWins')] = int(matchupWinsAway)
+        df.loc[indexHome, 'gameState'] = homeGameData
+        df.loc[indexHome, 'home'] = homeData
+
+        df.loc[indexAway, 'gameState'] = awayGameData
+        df.loc[indexAway, 'away'] = awayData
+
+        df2.loc[indexHome, 'gameState'] = homeGameData
+        df2.loc[indexHome, 'home'] = homeData
+
+        df2.loc[indexAway, 'gameState'] = awayGameData
+        df2.loc[indexAway, 'away'] = awayData
+
+        # homeTeamSchedule = getTeamScheduleAPI(teamHome, gameIdToDateTime(indexHome).strftime('%Y%m%d'))
+        # awayTeamSchedule = getTeamScheduleAPI(teamAway, gameIdToDateTime(indexHome).strftime('%Y%m%d'))
+        # homeTeamRoster = getTeamCurrentRoster(teamHome)
+        # awayTeamRoster = getTeamCurrentRoster(teamAway)
+        # homeTotalSalary, homeAverageSalary = getTeamSalaryData(teamHome, indexHome, homeTeamRoster)
+        # awayTotalSalary, awayAverageSalary = getTeamSalaryData(teamAway, indexAway, awayTeamRoster)
+        # homeStreak = getTeamStreak(homeTeamSchedule, indexHome)
+        # awayStreak = getTeamStreak(awayTeamSchedule, indexAway)
+        # homeRecord = getTeamRecord(homeTeamSchedule, indexHome)
+        # awayRecord = getTeamRecord(awayTeamSchedule, indexAway)
+        # matchupWinsHome, matchupWinsAway = getPastMatchUpWinLoss(homeTeamSchedule, indexHome, teamAway)
+        #
+        # df.loc[indexHome, ('home', 'playerRoster')] = str(homeTeamRoster)
+        # df.loc[indexAway, ('away', 'playerRoster')] = str(awayTeamRoster)
+        # df.loc[indexHome, ('home', 'salary')] = homeTotalSalary
+        # df.loc[indexAway, ('away', 'salary')] = awayTotalSalary
+        # df.loc[indexHome, ('home', 'avgSalary')] = homeAverageSalary
+        # df.loc[indexAway, ('away', 'avgSalary')] = awayAverageSalary
+        # df.loc[indexHome, ('home', 'record')] = str(homeRecord)
+        # df.loc[indexAway, ('away', 'record')] = str(awayRecord)
+        # df.loc[indexHome, ('home', 'streak')] = homeStreak
+        # df.loc[indexAway, ('away', 'streak')] = awayStreak
+        # df.loc[indexHome, ('home', 'matchupWins')] = int(matchupWinsHome)
+        # df.loc[indexAway, ('away', 'matchupWins')] = int(matchupWinsAway)
+        #
+        # df2.loc[indexHome, ('home', 'playerRoster')] = str(homeTeamRoster)
+        # df2.loc[indexAway, ('away', 'playerRoster')] = str(awayTeamRoster)
+        # df2.loc[indexHome, ('home', 'salary')] = homeTotalSalary
+        # df2.loc[indexAway, ('away', 'salary')] = awayTotalSalary
+        # df2.loc[indexHome, ('home', 'avgSalary')] = homeAverageSalary
+        # df2.loc[indexAway, ('away', 'avgSalary')] = awayAverageSalary
+        # df2.loc[indexHome, ('home', 'record')] = str(homeRecord)
+        # df2.loc[indexAway, ('away', 'record')] = str(awayRecord)
+        # df2.loc[indexHome, ('home', 'streak')] = homeStreak
+        # df2.loc[indexAway, ('away', 'streak')] = awayStreak
+        # df2.loc[indexHome, ('home', 'matchupWins')] = int(matchupWinsHome)
+        # df2.loc[indexAway, ('away', 'matchupWins')] = int(matchupWinsAway)
         print(curId)
 
     df.to_csv('../data/gameStats/game_state_data_2023.csv')
     df2.to_csv('../data/gameStats/game_state_data_ALL.csv')
     return
+
+def getTeamFutureData(game_id, team_abbr, opp_team, home):
+    teamSchedule = getTeamScheduleAPI(team_abbr, gameIdToDateTime(game_id).strftime('%Y%m%d'))
+    streak = getTeamStreak(teamSchedule, game_id)
+    days = getDaysSinceLastGame(teamSchedule, game_id)
+    roster = getTeamCurrentRoster(team_abbr)
+    record = getTeamRecord(teamSchedule, game_id)
+    matchupRecord = getPastMatchUpWinLoss(teamSchedule, game_id, opp_team)
+    if home == 1:
+        matchupWins = matchupRecord[0]
+    else:
+        matchupWins = matchupRecord[1]
+    salary, avgSalary = getTeamSalaryData(team_abbr, game_id, roster)
+    gamesPlayed = getNumberGamesPlayed(team_abbr, 2023, game_id)
+    return [None,None,None,None,None,None,streak, days, roster, record, matchupWins, salary, avgSalary, gamesPlayed]
+
+def getGameStateFutureData(game_id):
+    datetime, teamHome, teamAway, location, neutral = getStaticGameData(game_id)
+    rivalry = getRivalry(teamHome, teamAway)
+    return [None, teamHome, teamAway, location, rivalry, datetime, datetime, None, None, neutral]
+
 
 updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
