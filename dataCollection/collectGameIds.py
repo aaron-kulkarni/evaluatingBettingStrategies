@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from collectGameData import *
+from dataCollection.collectGameData import *
 import bs4 as bs
 from urllib.request import urlopen
 import re
@@ -269,10 +269,16 @@ def updateGameStateData():
         awayData = getTeamFutureData(indexAway, teamAway, teamHome, 0)
 
         df.loc[indexHome, 'gameState'] = homeGameData
-        df.loc[indexHome, 'home'] = homeData
+        if homeGameData[1] == teamHome:
+            df.loc[indexHome, 'home'] = homeData
+        else:
+            df.loc[indexHome, 'away'] = homeData
 
         df.loc[indexAway, 'gameState'] = awayGameData
-        df.loc[indexAway, 'away'] = awayData
+        if awayGameData[1] == teamAway:
+            df.loc[indexAway, 'home'] = awayData
+        else:
+            df.loc[indexAway, 'away'] = awayData
 
         print(curId)
 
