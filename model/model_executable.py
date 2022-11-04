@@ -149,7 +149,7 @@ def testData(dfList, train_years, test_year, drop_na = True):
     return X_train, X_test, Y_train
 
 
-def testDataNow(dfList, start_train_year, drop_na = True):
+def testDataNow(dfList, start_train_year, test_games, drop_na = True):
     X = pd.concat(dfList, axis = 1)
     X['home'] = X.index.get_level_values(1)
     if drop_na == True:
@@ -161,9 +161,9 @@ def testDataNow(dfList, start_train_year, drop_na = True):
     X_train['game_id'] = X_train.index.get_level_values(0)
     X_train['year'] = X_train.apply(lambda d: getYearFromId(d['game_id']), axis=1)
     X_train = X_train[~X_train['year'].isin(range(2015, start_train_year))]
-    X_train.drop(['game_id', 'year'], axis=1)
+    X_train.drop(['game_id', 'year'], inplace = True, axis=1)
     try:
-        X_test = X[X.index.isin(getNextGames())]
+        X_test = X[X.index.isin(sortDateMulti(test_games))]
     except:
         X_test = None
         print('Data has not been updated or error in compilation')
@@ -190,7 +190,7 @@ gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGam
 teamData = selectColTeamData(['3P%', 'Drtg', 'Ortg', 'TOV%', 'eFG%'], 5)
 
 X_train, X_test, Y_train = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2021, 2022], 2023, True)
-X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], 2021, True)
+X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], 2021, getGamesToday()[0:4], True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
 
 def xgboost(clf, X_train, Y_train, X_test):
@@ -231,7 +231,7 @@ def get_firm(home, firm_home, firm_away):
 
 def get_ret(home, retHome, retAway):
     if type(home) != bool:
-        return None
+        return 0
     if home == True:
         return retHome
     if home == False:
@@ -257,7 +257,7 @@ Y_pred_prob = xgboost(clf, X_train, Y_train, X_test)
 x_columns = ['bet365_return', 'Unibet_return']
 Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_)
 df = getDataFrame(Y_pred_prob, x_columns, X_test.index)
-df = getDataFrame(Y_pred_prob_, x_columns, X_test.index_)
+df_ = getDataFrame(Y_pred_prob_, x_columns, X_test_.index)
 
 
 
