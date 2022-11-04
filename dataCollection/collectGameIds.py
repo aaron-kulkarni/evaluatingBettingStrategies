@@ -93,8 +93,6 @@ def getStaticGameData(game_id):
 
     return dateTimeList[-1], homeTeamList[-1], awayTeamList[-1], locationList[-1], neutralList[-1]
 
-
-
 def getTeamCurrentRoster(team_abbr):
     """
         Scrapes a teams current roster. Players who are injured and guaranteed not to play
@@ -179,8 +177,6 @@ def gameFinished(gameId):
         print("Game id({}) does not exist".format(gameId))
         return 0
 
-#initGameStateData(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
-
 def fillStaticValues(year):
     df = initGameStateData(year)
     gameIdList, dateTimeList, homeTeamList, awayTeamList, locationList, neutralList = getStaticYearData(year)
@@ -213,6 +209,13 @@ def fillDependentStaticValues(year):
     return df
 
 #fillDependentStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
+
+def updateGameStateDataAll(years):
+    df = pd.DataFrame()
+    for year in years:
+        df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
+        df = pd.concat([df, df_current], axis = 0)
+    return df
 
 def updateGameStateData():
     """
@@ -257,6 +260,7 @@ def updateGameStateData():
         df.loc[curId] = tempList
 
         #edit the next game data for both teams
+
         teamHome = tempList[1]
         teamAway = tempList[2]
         indexHome = getTeamsNextGame(teamHome, curId)
@@ -307,32 +311,8 @@ def getGameStateFutureData(game_id):
     return [None, teamHome, teamAway, location, rivalry, datetime, datetime, None, None, neutral]
 
 
-#updateGameStateData()
+updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
-
-#getTeamCurrentRoster('DET')
-
-def fixFutureData(game_id, team_abbr):
-    schedule = getTeamScheduleAPI(team_abbr, gameIdToDateTime(game_id).strftime('%Y%m%d'))
-    streak = getTeamStreak(schedule, game_id)
-    record = getTeamRecord(schedule, game_id)
-    #matchupWins = getPastMatchUpWinLoss(schedule, game_id, )
-    roster = getTeamCurrentRoster(team_abbr)
-    salary, avgSalary = getTeamSalaryData(team_abbr, game_id, roster)
-    print(streak)
-    print(record)
-    print(salary)
-    print(avgSalary)
-    print(roster)
-
-#fixFutureData('202211030ORL', 'GSW')
-
-def updateGameStateDataAll(years):
-    df = pd.DataFrame()
-    for year in years:
-        df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
-        df = pd.concat([df, df_current], axis = 0)
-    return df
 
 #updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
 
