@@ -155,12 +155,12 @@ perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','
 mlval = selectMLVal(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
 bettingOddsAll = selectColOdds(['Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)', 'bet365 (%)'])
 elo = selectColElo(['elo_prob', 'raptor_prob'])
-gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame'])
+gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins'])
 #tr_in, te_in = splitTrainTestYear(bettingOddsAll.index, np.arange(2015,2022), 2022)
 #bettingOddsPCA = iteratedPCA(bettingOddsAll, 2, tr_in, te_in)
 #bettingOddsPCA, coeff = performPCA(bettingOddsAll, 2)
 teamData = selectColTeamData(['3P%', 'Ortg', 'Drtg', 'PTS', 'TOV%', 'eFG%'], 5)
-X_train, X_test, Y_train, Y_test = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2020, 2021], 2022, True)
+X_train, X_test, Y_train, Y_test = testData([teamData, bettingOddsAll, elo, mlval, gameData, perMetric], [2020, 2019], 2021, True)
 
 # PARAMATER TUNING
 def findParamsXGB(X_train, Y_train):
@@ -179,7 +179,6 @@ def findParamsXGB(X_train, Y_train):
 
 #clf = findParamsXGB(X_train, Y_train)
 #clf = XGBClassifier(learning_rate = 0.01, max_depth = 6, n_estimators = 150, min_child_weight = 4) 
-clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
 
 def xgboost(clf, X_train, Y_train, X_test, Y_test):
     model = clf.fit(X_train, Y_train)
@@ -204,8 +203,6 @@ def xgboost(clf, X_train, Y_train, X_test, Y_test):
     
     return Y_pred_prob, Y_pred_prob_adj
 
-Y_pred_prob, Y_pred_prob_adj = xgboost(clf, X_train, Y_train, X_test, Y_test)
-
 def getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll):
     odds_all = bettingOddsAll[bettingOddsAll.index.isin(Y_test.index)]
     for col in odds_all.columns:
@@ -215,7 +212,6 @@ def getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll):
     odds_all_adj = odds_all[::2].set_index(df.index)
     df['signal'] = Y_test[::2].set_index(df.index)
     return df, odds_all_adj
-df, odds_all = getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll)
 
 def findReturns(df, x_columns):
     retHome, retAway = findProportionGained(x_columns)
@@ -283,10 +279,11 @@ def findTotal(dictReturns):
             
     return dictReturns
 
-x_columns = ['bet365_return', 'William Hill_return', 'Pinnacle_return', 'Coolbet_return', 'Unibet_return', 'Marathonbet_return']
-
-# SEEMS LIKE THESIS IS INCORRECT 
+clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
+Y_pred_prob, Y_pred_prob_adj = xgboost(clf, X_train, Y_train, X_test, Y_test)
+df, odds_all = getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll)
 dfAll, returns = Kelly(df, odds_all, 0.2, x_columns, 1, [0, 100])
+x_columns = ['bet365_return', 'Unibet_return']
 
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
@@ -295,10 +292,9 @@ plt.show()
 
 def findOptimalKellyParameters():
     param_grid = {
-        'kelly_factor' : [0.1, 0.15, 0.2, 0.25, 0.3, 0.35],
-        'max_bet' : [0.05, 0.075, 0.10, 0.125,  0.15, 0.175],
-        'avoid_odds' : [[0, 100], [0.2, 100]],
-        'bet_diff' : [[0.05, 1], [0.1, 1]]
+        'kelly_factor' : [0.15, 0.2, 0.25],
+        'max_bet' : [0.05, 0.075, 0.10, 0.15, 0.2],
+        'bet_diff' : [[0, 0.2], [0, 0.1], [0.03, 0.2], [0.03, 0.1]]
                   }
     keys, values = zip(*param_grid.items())
     permutations_grid = [dict(zip(keys, v)) for v in itertools.product(*values)]
@@ -309,7 +305,7 @@ def findMaxParams():
     returnList = []
     for i in range (0, len(permutations_grid) - 1):
         with HiddenPrints(): 
-            dfAll, returns = Kelly(df, permutations_grid[i]['kelly_factor'], x_columns, permutations_grid[i]['max_bet'], permutations_grid[i]['avoid_odds'], bet_diff = permutations_grid[i]['bet_diff'])
+            dfAll, returns = Kelly(df, odds_all, permutations_grid[i]['kelly_factor'], x_columns, permutations_grid[i]['max_bet'], bet_diff = permutations_grid[i]['bet_diff'])
             returnList.append(returns[-1])
     print(max(returnList), returnList.index(max(returnList)))
     return returnList, permutations_grid[returnList.index(max(returnList))]
@@ -330,42 +326,11 @@ plt.show()
 
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, n_estimators = 150, min_child_weight = 6)
 
-def testSeeds(clf, n):
-    returnList = []
-    maxReturns = []
-    rand = random.sample(range(2**32), n)
-    for i in range(len(rand)):
-        with HiddenPrints():
-            train_index, test_index = splitTrainTestIndex(getDataIndex([elo, perMetric], years, True), 0.2, rand[i], True)
-            X_train, X_test, Y_train, Y_test = splitTrainTest([bettingOddsPCA, elo, perMetric], train_index, test_index)
-            Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
-
-            df = getOddBreakdown(Y_pred_prob, Y_test)
-            dfAll, returnsAll = Kelly(df, 0.2, x_columns, 1, [0, 100], [0.05, 1])
-        returnList.append(returnsAll[-1])
-        maxReturns.append(max(list(returnsAll)))
-    
-    print('median returns: {}'.format(statistics.median(returnList)))
-    print('median max returns: {}'.format(statistics.median(maxReturns)))
-    print('average returns: {}'.format(statistics.mean(returnList)))
-    print('average max returns: {}'.format(statistics.mean(maxReturns)))
-
-    print('successful returns: {}'.format((len([1 for i in returnList if i > 1]))/len(returnList)))
-    wonReturns = [item for item in returnList if item > 1]
-    lostReturns = [item for item in returnList if item < 1]
-    if len(wonReturns) > 0:
-        print('successful return average: {}'.format(statistics.mean(wonReturns)))
-    if len(lostReturns) > 0: 
-        print('unsuccessful return average: {}'.format(statistics.mean(lostReturns)))
-    
-    return returnList, maxReturns
-    
-returnList, maxReturns = testSeeds(clf, 3)
 
 def findParamsXGBPost():
     param_grid = {
         "n_estimators" : [50, 100, 150],
-        "max_depth" : [1, 3, 5, 7],
+        "max_depth" : [3, 5, 7],
         "learning_rate" : [0.005, 0.01, 0.02],
         "min_child_weight" : [4, 5, 6]
     }
@@ -374,24 +339,18 @@ def findParamsXGBPost():
     permutations_grid = [dict(zip(keys, v)) for v in itertools.product(*values)]
     return permutations_grid
 
-# EXECUTE TRAIN TEST DATA
-years = list(np.arange(2019, 2023))
-train_index, test_index = splitTrainTestYear(getDataIndex([elo, perMetric], years, True), 2022)
-
-X_train, X_test, Y_train, Y_test = splitTrainTest([bettingOddsPCA, elo, perMetric], train_index, test_index)
-
-
 def findOptimalParams(): 
     returnParams = []
     permutations_grid = findParamsXGBPost()
-    for i in range (0, len(permutations_grid) - 1):
-        clf = XGBClassifier(n_estimators = permutations_grid[i]['n_estimators'], max_depth = permutations_grid[i]['max_depth'], learning_rate = permutations_grid[i]['learning_rate'], min_child_weight = permutations_grid[i]['min_child_weight'])
+    for i in range(0, len(permutations_grid) - 1):
+        clf = XGBClassifier(learning_rate = permutations_grid[i]['learning_rate'], max_depth = permutations_grid[1]['max_depth'], n_estimators = permutations_grid[1]['n_estimators'], min_child_weight = permutations_grid[1]['min_child_weight'])
         with HiddenPrints():
-            Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
-            df = getOddBreakdown(Y_pred_prob, Y_test)
-            dfAll, returns = Kelly(df, 0.3, x_columns, 0.15, 0.6, [0.1, 1])
+            Y_pred_prob, Y_pred_prob_adj = xgboost(clf, X_train, Y_train, X_test, Y_test)
+            df, odds_all = getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll)
+            dfAll, returns = Kelly(df, odds_all, 0.2, x_columns, 1, [0, 100])
             returnParams.append(returns[-1])
     return permutations_grid, returnParams
+
 permutations_grid, returnParams = findOptimalParams()
 print(max(returnParams))
 print(permutations_grid[returnParams.index(max(returnParams))])
