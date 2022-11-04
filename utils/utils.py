@@ -348,4 +348,12 @@ def getGameInfo():
     for i in getGamesToday():
         print('{} - {}'.format(i, returnDatetime(i)))
         
-    
+def getNextGames():
+    datetime = dt.datetime.now()
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header=[0,1], index_col=0)['gameState']
+    df['datetime'] = pd.to_datetime(df['datetime'])
+    datetimelist = pd.to_datetime(df['datetime']).to_list()
+    next_date = min(item for item in datetimelist if item > datetime)
+    index = df[df['datetime'] == next_date].index
+    print(next_date)
+    return index

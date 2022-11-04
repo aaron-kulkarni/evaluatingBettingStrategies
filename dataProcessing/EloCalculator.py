@@ -445,7 +445,12 @@ class convertEloCSVs:
 
         df = df[df.index.isin(getGamesToday())]
         print('todays games inputs: ')
-        print(*list(df.index), sep = ',')
+        for gameId in getGamesToday():
+            if gameId in df_fin_upd.index:
+                df.drop(index = gameId, inplace=True, axis=0)
+                print('{} game is finished'.format(gameId))
+            else:
+                print('{} updated'.format(gameId))
         
         df_all = pd.concat([df_fin, df_fin_upd, df], axis=0)
         df_all = df_all.reindex(sortDate(df_all.index))

@@ -148,6 +148,29 @@ def testData(dfList, train_years, test_year, drop_na = True):
     Y_test = Y[Y.index.isin(X_test.index)].reindex(X_test.index)
     return X_train, X_test, Y_train
 
+
+def testDataNow(dfList, start_train_year, drop_na = True):
+    X = pd.concat(dfList, axis = 1)
+    X['home'] = X.index.get_level_values(1)
+    if drop_na == True:
+        ret_all = X.dropna(axis = 0).index.get_level_values(0)
+        ret = [i for i in ret_all if list(ret_all).count(i) == 2]
+        X = X[X.index.isin(sortDateMulti(ret))]
+    gameIdList = X.index.get_level_values(0).unique()
+    X_train = X[X.index.isin(sortAllDates(getPreviousGames()))]
+    X_train['game_id'] = X_train.index.get_level_values(0)
+    X_train['year'] = X_train.apply(lambda d: getYearFromId(d['game_id']), axis=1)
+    X_train = X_train[~X_train['year'].isin(range(2015, start_train_year))]
+    X_train.drop(['game_id', 'year'], axis=1)
+    try:
+        X_test = X[X.index.isin(getNextGames())]
+    except:
+        X_test = None
+        print('Data has not been updated or error in compilation')
+    Y = get_signal()
+    Y_train = Y[Y.index.isin(X_train.index)].reindex(X_train.index)
+    return X_train, X_test, Y_train    
+
 def get_signal():
     signal_home = pd.DataFrame(getSignal())
     signal_away = pd.DataFrame(1-getSignal())
@@ -163,13 +186,11 @@ perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','
 mlval = selectMLVal(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
 bettingOddsAll = selectColOdds(['1xBet (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)'])
 elo = selectColElo(['elo_prob', 'raptor_prob'])
-gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame'])
-#tr_in, te_in = splitTrainTestYear(bettingOddsAll.index, np.arange(2015,2022), 2022)
-#bettingOddsPCA = iteratedPCA(bettingOddsAll, 2, tr_in, te_in)
-#bettingOddsPCA, coeff = performPCA(bettingOddsAll, 2)
+gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins'])
 teamData = selectColTeamData(['3P%', 'Drtg', 'Ortg', 'TOV%', 'eFG%'], 5)
 
 X_train, X_test, Y_train = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2021, 2022], 2023, True)
+X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], 2021, True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
 
 def xgboost(clf, X_train, Y_train, X_test):
@@ -185,6 +206,8 @@ def xgboost(clf, X_train, Y_train, X_test):
     
     Y_pred = [1 if p > 0.5 else 0 for p in Y_pred_prob]
     Y_train_pred = [1 if p > 0.5 else 0 for p in Y_train_pred]
+    print("Train Accuracy : %.3f" %accuracy_score(Y_train, Y_train_pred))
+
     print(pd.DataFrame(data = list(model.feature_importances_), index = list(X_train.columns), columns = ["score"]).sort_values(by = "score", ascending = False).head(30))
 
     return Y_pred_prob
@@ -197,23 +220,44 @@ def findReturns(df, x_columns):
     df = df.reindex(sortDate(df.index))
     return df
 
+def get_firm(home, firm_home, firm_away):
+    if type(home) != bool:
+        return None
+    if home == True:
+        return firm_home
+    if home == False:
+        return firm_away
+
+
+def get_ret(home, retHome, retAway):
+    if type(home) != bool:
+        return None
+    if home == True:
+        return retHome
+    if home == False:
+        return retAway
+
+def getDataFrame(Y_pred_prob, x_columns, test_index):
+    df = pd.DataFrame(index = test_index, columns = ['Y_prob'], data = Y_pred_prob)[::2]
+    df = df.set_index(df.index.get_level_values(0))
+    df.index.name = 'game_id'
+    odds = pd.read_csv('../data/bettingOddsData/adj_prob_win_ALL.csv', header = [0,1], index_col = 0)
+    odds = odds[odds.index.isin(df.index)]
+    df['odds_mean'] = odds['homeProbAdj'].mean(axis=1)
+    df = findReturns(df, x_columns)
+    df['home_bet'], df['away_bet'] = returnBettingFirm(x_columns, df.index)
+    df['per_bet'] = df.apply(lambda d: kellyBet(d['Y_prob'], 0.2, d['retHome'], d['retAway'])[0], axis=1)
+    df['home'] = df.apply(lambda d: kellyBet(d['Y_prob'], 0.2, d['retHome'], d['retAway'])[1], axis=1)
+    df['firm'] = df.apply(lambda d: get_firm(d['home'], d['home_bet'], d['away_bet']), axis=1)
+    df['p_return'] = df.apply(lambda d: get_ret(d['home'], d['retHome'], d['retAway']), axis=1)
+    df.drop(['home_bet', 'away_bet', 'retHome', 'retAway'], axis=1, inplace=True)
+    return df
+
 Y_pred_prob = xgboost(clf, X_train, Y_train, X_test)
-df = pd.DataFrame(index = X_test.index, columns = ['Y_prob'], data = Y_pred_prob)
-df.reset_index(inplace = True)
-df = df[::2]
-df.drop(['level_1'], axis=1, inplace=True)
-df.set_index('level_0', inplace = True)
-df.index.name = 'game_id'
-
-x_columns = ['bet365_return']
-
-df = findReturns(df, x_columns)
-
-df['per_bet'] = df.apply(lambda d: kellyBet(d['Y_prob'], 0.2, d['retHome'], d['retAway'])[0], axis=1)
-df['home'] = df.apply(lambda d: kellyBet(d['Y_prob'], 0.2, d['retHome'], d['retAway'])[1], axis=1)
-print(returnBettingFirm(x_columns, df.index))
+x_columns = ['bet365_return', 'Unibet_return']
+Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_)
+df = getDataFrame(Y_pred_prob, x_columns, X_test.index)
+df = getDataFrame(Y_pred_prob_, x_columns, X_test.index_)
 
 
-odds = pd.read_csv('../data/bettingOddsData/adj_prob_win_ALL.csv', header = [0,1], index_col = 0)['homeProbAdj']['Pinnacle (%)']
-print(odds[odds.index.isin(df.index)])
-print(getSignal()[getSignal().index.isin(df.index)])
+

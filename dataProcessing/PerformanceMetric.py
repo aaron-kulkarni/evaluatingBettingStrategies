@@ -97,8 +97,7 @@ class PerformanceMetric:
 
 def updatePerMetric(year):
     df = PerformanceMetric(year).concatPerMetric(6).to_csv('../data/perMetric/performance_metric_{}.csv'.format(year))
-    dfAll = pd.read_csv('../data/perMetric/performance_metric_ALL.csv', header=[0,1], index_col=0)
-    dfAll = pd.concat([df, dfAll], axis = 0).drop_duplicates()
+    dfAll = concatAll(range(2015,int(year + 1)))
     dfAll.to_csv('../data/perMetric/performance_metric_ALL.csv')
     return 
 
@@ -107,8 +106,11 @@ def concatAll(years):
     for year in years:
         df_current = pd.read_csv('../data/perMetric/performance_metric_{}.csv'.format(year), header=[0,1], index_col=0)
         df = pd.concat([df, df_current], axis=0)
-    df.to_csv('../data/perMetric/performance_metric_ALL.csv')
-    return df
+    
+    dfAll.to_csv('../data/perMetric/performance_metric_ALL.csv')
+    return 
+
+
 
 
 #year = 2018
