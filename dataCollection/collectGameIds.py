@@ -214,6 +214,13 @@ def fillDependentStaticValues(year):
 
 #fillDependentStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
 
+def updateGameStateDataAll(years):
+    df = pd.DataFrame()
+    for year in years:
+        df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
+        df = pd.concat([df, df_current], axis = 0)
+    return df
+
 def updateGameStateData():
     """
     Checks if current year's CSV is up to date with game data information. If not, update it.
@@ -257,6 +264,7 @@ def updateGameStateData():
         df.loc[curId] = tempList
 
         #edit the next game data for both teams
+
         teamHome = tempList[1]
         teamAway = tempList[2]
         indexHome = getTeamsNextGame(teamHome, curId)
@@ -307,7 +315,7 @@ def getGameStateFutureData(game_id):
     return [None, teamHome, teamAway, location, rivalry, datetime, datetime, None, None, neutral]
 
 
-#updateGameStateData()
+updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
 #getTeamCurrentRoster('DET')
@@ -326,13 +334,6 @@ def fixFutureData(game_id, team_abbr):
     print(roster)
 
 #fixFutureData('202211030ORL', 'GSW')
-
-def updateGameStateDataAll(years):
-    df = pd.DataFrame()
-    for year in years:
-        df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
-        df = pd.concat([df, df_current], axis = 0)
-    return df
 
 #updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
 
