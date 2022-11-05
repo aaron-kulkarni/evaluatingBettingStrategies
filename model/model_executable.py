@@ -189,17 +189,18 @@ def check_dataframe_NaN(dfList, gameIdList):
     i = 0
     for df in dfList:
         df = df[df.index.isin(sortDateMulti(gameIdList))]
+        if df.empty:
+            print('ERROR - {} columns are empty'.format(df.columns))
         if df.isnull().values.any():
             i = i + 1
             col = df.columns[df.isna().any()].tolist()
             print('ERROR - {} columns are NaN'.format(col))
-            print(df)
     if i == 0:
         print('ALL ENTRIES ARE FILLED IN')
     return 
 
 
-perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1'])    
+perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1']) 
 mlval = selectMLVal(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
 bettingOddsAll = selectColOdds(['1xBet (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)'])
 elo = selectColElo(['elo_prob', 'raptor_prob'])
@@ -210,7 +211,13 @@ check_dataframe_NaN([bettingOddsAll, elo, perMetric, mlval, gameData, teamData],
 X_train, X_test, Y_train = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2021, 2022], 2023, True)
 X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], 2021, getNextGames(), True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
+save_training_data(X_test_)
 
+def save_training_data(X_test):
+    df = pd.read_csv('../data/testingData/test_data.csv', index_col = [0,1])
+    df = pd.concat([df, X_test], axis=0)
+    df.to_csv('../data/testingData/test_data.csv')
+    return 
 
 def xgboost(clf, X_train, Y_train, X_test):
     model = clf.fit(X_train, Y_train)
@@ -266,7 +273,7 @@ def get_team(home, teamHome, teamAway):
         
 
 def getDataFrame(Y_pred_prob, x_columns, test_index):
-    teamDict = {v: k for k, v in getTeamDict().items()}
+    #teamDict = {v: k for k, v in getTeamDict().items()}
     df = pd.DataFrame(index = test_index, columns = ['Y_prob'], data = Y_pred_prob)[::2]
     df = df.set_index(df.index.get_level_values(0))
     df.index.name = 'game_id'
@@ -281,11 +288,31 @@ def getDataFrame(Y_pred_prob, x_columns, test_index):
     df['p_return'] = df.apply(lambda d: get_ret(d['home'], d['retHome'], d['retAway']), axis=1)
     df = pd.concat([df, getTeamsAllYears()[getTeamsAllYears().index.isin(df.index)]], axis=1)
     df['team_abbr'] = df.apply(lambda d: get_team(d['home'], d['teamHome'], d['teamAway']), axis=1)
-    df['team'] = df.apply(lambda d: None if type(d['home']) != bool else teamDict[d['team_abbr']], axis=1)
-    df.drop(['teamHome', 'teamAway', 'home_bet', 'away_bet', 'retHome', 'retAway', 'team_abbr'], axis=1, inplace=True)
+    #df['team'] = df.apply(lambda d: None if type(d['home']) != bool else teamDict[d['team_abbr']], axis=1)
+    acc = get_accuracy(df)
+    print(acc)
+    df.drop(['teamHome', 'teamAway', 'home_bet', 'away_bet', 'retHome', 'retAway', 'home', 'acc'], axis=1, inplace=True)
     return df
 
+def get_acc(home, signal):
+    if type(home) != bool:
+        return None
+    if home == True and signal == 1:
+        return 1
+    if home == True and signal == 0:
+        return 0
+    if home == False and signal == 1:
+        return 0
+    if home == False and signal == 0:
+        return 1
 
+def get_accuracy(df):
+    df['signal'] = getSignal()[getSignal().index.isin(df.index)]
+    df['acc'] = df.apply(lambda d: get_acc(d['home'], d['signal']), axis=1)
+    df = df[df['acc'].notna()]
+    return df['acc'].sum()/(len(df.index))
+    
+             
 Y_pred_prob = xgboost(clf, X_train, Y_train, X_test)
 x_columns = ['bet365_return', 'Unibet_return']
 Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_)
