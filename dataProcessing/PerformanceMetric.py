@@ -107,7 +107,7 @@ def concatAll(years):
         df_current = pd.read_csv('../data/perMetric/performance_metric_{}.csv'.format(year), header=[0,1], index_col=0)
         df = pd.concat([df, df_current], axis=0)
     
-    dfAll.to_csv('../data/perMetric/performance_metric_ALL.csv')
+    df.to_csv('../data/perMetric/performance_metric_ALL.csv')
     return 
 
 

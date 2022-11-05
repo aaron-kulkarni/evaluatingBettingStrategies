@@ -182,16 +182,32 @@ def get_signal():
     return signal
 
 
+def check_dataframe_NaN(dfList, gameIdList):
+    i = 0
+    for df in dfList:
+        df = df[df.index.isin(sortDateMulti(gameIdList))]
+        if df.isnull().values.any():
+            i = i + 1
+            col = df.columns[df.isna().any()].tolist()
+            print('ERROR - {} columns are NaN'.format(col))
+            print(df)
+    if i == 0:
+        print('ALL ENTRIES ARE FILLED IN')
+    return 
+
+
 perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1'])    
 mlval = selectMLVal(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
 bettingOddsAll = selectColOdds(['1xBet (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)'])
 elo = selectColElo(['elo_prob', 'raptor_prob'])
 gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins'])
 teamData = selectColTeamData(['3P%', 'Drtg', 'Ortg', 'TOV%', 'eFG%'], 5)
+check_dataframe_NaN([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], getNextGames())
 
 X_train, X_test, Y_train = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2021, 2022], 2023, True)
-X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], 2021, getGamesToday()[0:4], True)
+X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], 2021, getNextGames(), True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
+
 
 def xgboost(clf, X_train, Y_train, X_test):
     model = clf.fit(X_train, Y_train)
@@ -253,11 +269,10 @@ def getDataFrame(Y_pred_prob, x_columns, test_index):
     df.drop(['home_bet', 'away_bet', 'retHome', 'retAway'], axis=1, inplace=True)
     return df
 
+
+
 Y_pred_prob = xgboost(clf, X_train, Y_train, X_test)
 x_columns = ['bet365_return', 'Unibet_return']
 Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_)
 df = getDataFrame(Y_pred_prob, x_columns, X_test.index)
 df_ = getDataFrame(Y_pred_prob_, x_columns, X_test_.index)
-
-
-

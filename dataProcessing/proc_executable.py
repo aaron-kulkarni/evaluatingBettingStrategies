@@ -13,6 +13,7 @@ concatBettingOdds(np.arange(2015, 2024)).to_csv('../data/bettingOddsData/closing
 fillBettingOdds(np.arange(2015,2024)).to_csv('../data/bettingOddsData/adj_prob_win_ALL.csv')
 #addReturns('../data/bettingOddsData/closing_betting_odds_all.csv')
 convAmericanOdds('../data/bettingOddsData/closing_betting_odds_all.csv').to_csv('../data/bettingOddsData/closing_betting_odds_returns.csv')
+
 # run after team performances
 TeamPerformance(2023).getTeamPerformanceDF(5, True)
 TeamPerformance(2023).getTeamPerformanceDF(5, False)
@@ -24,8 +25,8 @@ convertEloCSVs.concatCSV()
 # can only be run after odds
 updatePerMetric(2023)
 concatAll(np.arange(2015,2024))
-years=np.arange(2015,2024)
 
+#years=np.arange(2015,2024)
 #for year in years:
 #    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header=[0,1], index_col=0)
 #    df['gameState', 'datetime'] = pd.to_datetime(df['gameState', 'datetime'])
