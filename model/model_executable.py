@@ -21,6 +21,9 @@ from sklearn.svm import SVC
 from sklearn.calibration import CalibratedClassifierCV
 from xgboost import XGBClassifier
 
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+pd.set_option('display.width', 1000)
 
 # Assign # of cpus to work on process based on each computers total cpu count
 cpuCount = multiprocessing.cpu_count()
