@@ -142,12 +142,9 @@ def getTeamsCSV(game_id):
     return teamHome, teamAway
 
 
-def getTeamsAllYearsCSV(years):
-    df = pd.DataFrame()
-    for year in years:
-        teamDF = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header=[0, 1], index_col=0)
-        teams = pd.concat([teamDF['gameState']['teamHome'], teamDF['gameState']['teamAway']], axis=1)
-        df = pd.concat([df, teams], axis=0)
+def getTeamsAllYears():
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0, 1])['gameState']
+    df = df[['teamHome', 'teamAway']]
 
     return df
 

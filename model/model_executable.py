@@ -253,7 +253,17 @@ def get_ret(home, retHome, retAway):
     if home == False:
         return retAway
 
+def get_team(home, teamHome, teamAway):
+    if type(home) != bool:
+        return None
+    if home == True:
+        return teamHome
+    if home == False:
+        return teamAway
+        
+
 def getDataFrame(Y_pred_prob, x_columns, test_index):
+    teamDict = {v: k for k, v in getTeamDict().items()}
     df = pd.DataFrame(index = test_index, columns = ['Y_prob'], data = Y_pred_prob)[::2]
     df = df.set_index(df.index.get_level_values(0))
     df.index.name = 'game_id'
@@ -266,9 +276,11 @@ def getDataFrame(Y_pred_prob, x_columns, test_index):
     df['home'] = df.apply(lambda d: kellyBet(d['Y_prob'], 0.2, d['retHome'], d['retAway'])[1], axis=1)
     df['firm'] = df.apply(lambda d: get_firm(d['home'], d['home_bet'], d['away_bet']), axis=1)
     df['p_return'] = df.apply(lambda d: get_ret(d['home'], d['retHome'], d['retAway']), axis=1)
-    df.drop(['home_bet', 'away_bet', 'retHome', 'retAway'], axis=1, inplace=True)
+    df = pd.concat([df, getTeamsAllYears()[getTeamsAllYears().index.isin(df.index)]], axis=1)
+    df['team_abbr'] = df.apply(lambda d: get_team(d['home'], d['teamHome'], d['teamAway']), axis=1)
+    df['team'] = df.apply(lambda d: None if type(d['home']) != bool else teamDict[d['team_abbr']], axis=1)
+    df.drop(['teamHome', 'teamAway', 'home_bet', 'away_bet', 'retHome', 'retAway', 'team_abbr'], axis=1, inplace=True)
     return df
-
 
 
 Y_pred_prob = xgboost(clf, X_train, Y_train, X_test)
