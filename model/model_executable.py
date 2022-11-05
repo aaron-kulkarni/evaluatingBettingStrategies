@@ -21,8 +21,8 @@ from sklearn.svm import SVC
 from sklearn.calibration import CalibratedClassifierCV
 from xgboost import XGBClassifier
 
-pd.set_option('display.max_rows', 500)
-pd.set_option('display.max_columns', 500)
+pd.set_option('display.max_rows', 40)
+pd.set_option('display.max_columns', 10)
 pd.set_option('display.width', 1000)
 
 # Assign # of cpus to work on process based on each computers total cpu count
@@ -289,9 +289,9 @@ def getDataFrame(Y_pred_prob, x_columns, test_index):
     df = pd.concat([df, getTeamsAllYears()[getTeamsAllYears().index.isin(df.index)]], axis=1)
     df['team_abbr'] = df.apply(lambda d: get_team(d['home'], d['teamHome'], d['teamAway']), axis=1)
     #df['team'] = df.apply(lambda d: None if type(d['home']) != bool else teamDict[d['team_abbr']], axis=1)
-    acc = get_accuracy(df)
-    print(acc)
-    df.drop(['teamHome', 'teamAway', 'home_bet', 'away_bet', 'retHome', 'retAway', 'home', 'acc'], axis=1, inplace=True)
+    #acc = get_accuracy(df)
+    #print(acc)
+    df.drop(['teamHome', 'teamAway', 'home_bet', 'away_bet', 'retHome', 'retAway', 'home'], axis=1, inplace=True)
     return df
 
 def get_acc(home, signal):
