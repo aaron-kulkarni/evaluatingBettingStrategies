@@ -4,7 +4,8 @@ from utils.utils import *
 from TeamPerformance import * 
 from EloCalculator import *
 from cleanBettingOdds import * 
-from PerformanceMetric import * 
+from PerformanceMetric import *
+import os
 
 
 # can only be run after scraping odds
@@ -25,6 +26,9 @@ convertEloCSVs.concatCSV()
 # can only be run after odds
 updatePerMetric(2023)
 concatAll(np.arange(2015,2024))
+
+# R script (run after raptor and odds)
+os.system('Rscript /Users/jasonli/Projects/evaluatingBettingStrategies/dataProcessing/MLE.R')
 
 years=np.arange(2015,2024)
 for year in years:

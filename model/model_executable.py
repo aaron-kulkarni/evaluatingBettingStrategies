@@ -21,7 +21,7 @@ from sklearn.svm import SVC
 from sklearn.calibration import CalibratedClassifierCV
 from xgboost import XGBClassifier
 
-pd.set_option('display.max_rows', 40)
+pd.set_option('display.max_rows', 100)
 pd.set_option('display.max_columns', 10)
 pd.set_option('display.width', 1000)
 
