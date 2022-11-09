@@ -10,8 +10,8 @@ import sys
 sys.path.insert(0, "..")
 
 from utils.utils import *
-from collectStaticData import *
-from collectGameAttendanceReferees import *
+#from collectStaticData import *
+#from collectGameAttendanceReferees import *
 
 
 """
