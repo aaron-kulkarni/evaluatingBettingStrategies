@@ -8,5 +8,3 @@ from collectPlayerData import *
 updateGameStateData()
 
 update_team_stats(np.arange(2015, 2024))
-
-

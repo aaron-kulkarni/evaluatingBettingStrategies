@@ -42,6 +42,9 @@ def update_adj_prob(gameIdList):
     df = convert_betting_odds(year)
     df = df[df.index.isin(gameIdList)]
     df_all = pd.read_csv('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year), header = [0,1], index_col = 0)
+    index_in = list(set(gameIdList).intersection(set(df_all.index)))
+    if len(index_in) != 0:
+        df_all.drop(index=index_in, inplace=True, axis=0)
     df_all = pd.concat([df_all, df], axis=0)
     df_all.to_csv('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year))
     shutil.rmtree('../scrapeOP/nba')
