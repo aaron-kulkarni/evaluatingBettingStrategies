@@ -232,15 +232,16 @@ def updateGameStateData():
 
     df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header = [0,1], index_col = 0, dtype = object)
     df.dropna()
-    df = df['gameState', 'winner'] == 'nan'
-    df_dict = df.to_dict('index')
-    lastGameRecorded = 0 #most recent game that was played and we have data for
+    df2 = df[df['gameState']['winner'].isnull()]
+    df_dict = df2.to_dict('index')
     previousGameList = []
     for key, value in df_dict.items():
         if gameFinished(key):
             previousGameList.append(key)
         else:
             break
+
+    #previousGameList holds all gameids that have been played but do not have data in the files
     for curId in previousGameList:
         # fills in values for game that has already happened
         tempList = getGameData(curId, int(df.loc[curId]['gameState']['neutral']))
@@ -299,7 +300,7 @@ def getGameStateFutureData(game_id):
     return [None, teamHome, teamAway, location, rivalry, datetime, datetime, None, None, neutral]
 
 
-#updateGameStateData()
+updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
 #updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
