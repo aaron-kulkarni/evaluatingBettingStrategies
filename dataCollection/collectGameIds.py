@@ -232,27 +232,15 @@ def updateGameStateData():
 
     df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header = [0,1], index_col = 0, dtype = object)
     df.dropna()
+    df = df['gameState', 'winner'] == 'nan'
     df_dict = df.to_dict('index')
     lastGameRecorded = 0 #most recent game that was played and we have data for
     previousGameList = []
     for key, value in df_dict.items():
-        if str(value[('gameState', 'datetime')]) != 'nan' and gameFinished(key):
+        if gameFinished(key):
             previousGameList.append(key)
-            if str(value[('gameState', 'winner')]) != 'nan':
-                lastGameRecorded = key
         else:
             break
-    mostRecentGame = previousGameList[-1] #most recent game played
-    if lastGameRecorded == mostRecentGame:
-        # list is already fully updated
-        return
-
-    if lastGameRecorded != 0:
-        idx = previousGameList.index(lastGameRecorded)
-        previousGameList = previousGameList[idx + 1:]  # don't care about previous games that already have data
-
-    #intersection of all games played previously and all games where winner == 'nan'
-
     for curId in previousGameList:
         # fills in values for game that has already happened
         tempList = getGameData(curId, int(df.loc[curId]['gameState']['neutral']))
