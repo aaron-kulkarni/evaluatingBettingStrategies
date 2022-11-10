@@ -7,6 +7,9 @@ import os
 import datetime as dt
 import sys
 
+from dataCollection.collectGameAttendanceReferees import scrapeGameAttendanceReferees
+from dataCollection.collectStaticData import scrapePlayerSalaryData
+
 sys.path.insert(0, "..")
 
 from utils.utils import *
