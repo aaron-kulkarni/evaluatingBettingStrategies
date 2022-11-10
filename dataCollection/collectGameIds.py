@@ -1,3 +1,5 @@
+import urllib3
+
 import pandas as pd
 import numpy as np
 from dataCollection.collectGameData import *
@@ -169,7 +171,12 @@ def initGameStateData(year):
 
 def gameFinished(gameId):
     try:
+        print(gameId)
         r = requests.get("https://www.basketball-reference.com/boxscores/{}.html".format(gameId))
+        if r.status_code == 429:
+            print(int(r.headers["Retry-After"]))
+            time.sleep(int(r.headers["Retry-After"]))
+            r = requests.get("https://www.basketball-reference.com/boxscores/{}.html".format(gameId))
         if r.status_code == 200:
             return 1
         else:
@@ -233,17 +240,18 @@ def updateGameStateData():
 
     df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header = [0,1], index_col = 0, dtype = object)
     df.dropna()
-    df2 = df[df['gameState']['winner'].isnull()]
-    df_dict = df2.to_dict('index')
-    previousGameList = []
-    for key, value in df_dict.items():
-        if gameFinished(key):
-            previousGameList.append(key)
-        else:
-            break
-
-    #previousGameList holds all gameids that have been played but do not have data in the files
-    print(previousGameList)
+    # df2 = df[df['gameState']['winner'].isnull()]
+    # df_dict = df2.to_dict('index')
+    # previousGameList = []
+    # for key, value in df_dict.items():
+    #     if gameFinished(key):
+    #         previousGameList.append(key)
+    #     else:
+    #         break
+    #
+    # #previousGameList holds all gameids that have been played but do not have data in the files
+    # print(previousGameList)
+    previousGameList = ['202211090ORL', '202211090CHO', '202211090IND', '202211090ATL', '202211090BOS', '202211090BRK', '202211090TOR', '202211090CHI', '202211090MIN', '202211090OKC', '202211090SAS', '202211090LAC', '202211090SAC']
     for curId in previousGameList:
         # fills in values for game that has already happened
         tempList = getGameData(curId, int(df.loc[curId]['gameState']['neutral']))
@@ -303,7 +311,7 @@ def getGameStateFutureData(game_id):
     return [None, teamHome, teamAway, location, rivalry, datetime, datetime, None, None, neutral]
 
 
-updateGameStateData()
+#updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
 #updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
