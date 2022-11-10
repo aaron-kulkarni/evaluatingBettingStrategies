@@ -6,6 +6,7 @@ from datetime import timedelta
 import os
 import datetime as dt
 import sys
+import bs4 as bs
 
 from dataCollection.collectGameAttendanceReferees import scrapeGameAttendanceReferees
 from dataCollection.collectStaticData import scrapePlayerSalaryData
@@ -332,24 +333,42 @@ def getTeamSalaryData(team_abbr, game_id, playerRoster):
     """
     curSalary = 0
     totalSalary = 0
-    averageSalary = 0
+    avgSalary = 0
     i = 0
-
     year = getYearFromId(game_id)
-    for playerId in playerRoster:
-        try:
-            curSalary = scrapePlayerSalaryData(playerId, team_abbr)
-        except Exception as e:
-            #print(e)
-            curSalary = 0
-            i -= 1
-        totalSalary += curSalary
-        i += 1
-    if i != 0:
-        averageSalary = totalSalary / i
 
-    return totalSalary, averageSalary
+    url = 'https://www.basketball-reference.com/teams/{}/{}.html'.format(team_abbr, year)
 
+    try:
+        soup = bs.BeautifulSoup(urlopen(url), features='lxml')
+        salaryTable = re.split(r"<tr ><th scope=\"row\" class=\"center \" data-stat=\"ranker\" ",str(soup.find('div', {'id': 'all_salaries2'})))
+        regex = r"<a href='/players/./([a-z0-9]+).*\$([0-9,]*).*"
+        for row in salaryTable:
+            matches = re.findall(regex, row)
+            try:
+                if len(matches) != 1:
+                    raise Exception()
+                else:
+                    matches = matches[0]
+
+                if len(matches) != 2:
+                    raise Exception()
+                else:
+                    if matches[0] in playerRoster:
+                        curSalary = int(matches[1].replace(',', ''))
+                        if (curSalary != 0):
+                            i+=1
+                        totalSalary += curSalary
+
+            except Exception:
+                z = 1 #dont actually want to do anything
+
+        if i != 0:
+            avgSalary = totalSalary / i
+        return totalSalary, avgSalary
+
+    except Exception:
+        print("Some salary bullshit")
 
 def getRivalry(team_home, team_away):
     """

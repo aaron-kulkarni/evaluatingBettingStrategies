@@ -243,11 +243,13 @@ def updateGameStateData():
             break
 
     #previousGameList holds all gameids that have been played but do not have data in the files
+    print(previousGameList)
     for curId in previousGameList:
         # fills in values for game that has already happened
         tempList = getGameData(curId, int(df.loc[curId]['gameState']['neutral']))
         tempList = tempList[1:]
         df.loc[curId] = tempList
+        time.sleep(60)
 
         #edit the next game data for both teams
 
