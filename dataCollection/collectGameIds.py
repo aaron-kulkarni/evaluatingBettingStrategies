@@ -234,7 +234,7 @@ def update_game_state_data():
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0, dtype = object)
     
     update_index = list(set(getPreviousGames()) - set(df['gameState'].dropna(axis=0).index))
-    df_upd = update_games(gameIdList)
+    df_upd = update_games(update_index)
     df.drop(index = df_upd.index, inplace=True, axis=0)
     df = pd.concat([df, df_upd], axis=0)
     df = df.reindex(sortDate(df.index))
@@ -304,7 +304,7 @@ def updateGameStateData():
         print(curId)
 
     df.to_csv('../data/gameStats/game_state_data_2023.csv')
-    updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
+    #updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
     return
 
 def getTeamFutureData(game_id, team_abbr, opp_team, home):
@@ -328,6 +328,7 @@ def getGameStateFutureData(game_id):
     return [None, teamHome, teamAway, location, rivalry, datetime, datetime, None, None, neutral]
 
 
+update_game_state_data()
 #updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
