@@ -2,7 +2,6 @@ import urllib3
 
 import pandas as pd
 import numpy as np
-from dataCollection.collectGameData import *
 import bs4 as bs
 from urllib.request import urlopen
 import re
@@ -13,6 +12,7 @@ import time
 import sys
 sys.path.insert(0, '..')
 from utils.utils import *
+from dataCollection.collectGameData import *
 from dataProcessing.progress.rosterDict import scrapeRoster
 
 monthDict = {
@@ -171,12 +171,10 @@ def initGameStateData(year):
 
 def gameFinished(gameId):
     try:
-        print(gameId)
-        r = requests.get("https://www.basketball-reference.com/boxscores/{}.html".format(gameId))
+        headers = requests.get('https://google.com').headers
+        r = requests.get("https://www.basketball-reference.com/boxscores/{}.html".format(gameId), headers=headers)
         if r.status_code == 429:
-            print(int(r.headers["Retry-After"]))
-            time.sleep(int(r.headers["Retry-After"]))
-            r = requests.get("https://www.basketball-reference.com/boxscores/{}.html".format(gameId))
+            return print('blocked')
         if r.status_code == 200:
             return 1
         else:
@@ -218,12 +216,32 @@ def fillDependentStaticValues(year):
 
 #fillDependentStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
 
-def updateGameStateDataAll(years):
-    df = pd.DataFrame()
-    for year in years:
-        df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
-        df = pd.concat([df, df_current], axis = 0)
+
+def update_games(gameIdList):
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0, dtype = object)
+    df = df[df.index.isin(gameIdList)] 
+    for gameId in gameIdList:
+        try: 
+            data = getGameData(gameId, df['gameState', 'neutral'].loc[gameId])
+            df.loc[gameId] = data[1:]
+        except:
+            print('Error with gameId {}'.format(gameId))
     return df
+            
+def update_game_state_data(year):
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0, dtype = object)
+    
+    update_index = list(set(getPreviousGames()) - set(df['gameState'].dropna(axis=0).index))
+    df_upd = update_games(gameIdList)
+    df.drop(index = df_upd.index, inplace=True, axis=0)
+    df = pd.concat([df, df_upd], axis=0)
+    df = df.reindex(sortDate(df.index))
+    df.to_csv('../data/gameStats/game_state_data_ALL.csv')
+    return df
+        
+        
+    
+
 
 def updateGameStateData():
     """
