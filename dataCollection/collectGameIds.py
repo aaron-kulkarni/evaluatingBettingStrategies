@@ -13,7 +13,7 @@ import sys
 sys.path.insert(0, '..')
 from utils.utils import *
 from dataCollection.collectGameData import *
-from dataProcessing.progress.rosterDict import scrapeRoster
+from dataProcessing.progress.rosterDict import *
 
 monthDict = {
     "01": "january",
@@ -224,11 +224,13 @@ def update_games(gameIdList):
         try: 
             data = getGameData(gameId, df['gameState', 'neutral'].loc[gameId])
             df.loc[gameId] = data[1:]
+            print('Wait 60 seconds')
+            time.sleep(60)
         except:
             print('Error with gameId {}'.format(gameId))
     return df
             
-def update_game_state_data(year):
+def update_game_state_data():
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0, dtype = object)
     
     update_index = list(set(getPreviousGames()) - set(df['gameState'].dropna(axis=0).index))
@@ -238,9 +240,6 @@ def update_game_state_data(year):
     df = df.reindex(sortDate(df.index))
     df.to_csv('../data/gameStats/game_state_data_ALL.csv')
     return df
-        
-        
-    
 
 
 def updateGameStateData():
