@@ -15,6 +15,39 @@ from sportsipy.nba.schedule import Schedule
 The following functions collect data from the Sportsipy API
 """
 
+teamDict = {
+    "Toronto Raptors": "TOR",
+    "Boston Celtics": "BOS",
+    "Brooklyn Nets": "BRK",
+    "Philadelphia 76ers": "PHI",
+    "New York Knicks": "NYK",
+    "Cleveland Cavaliers": "CLE",
+    "Chicago Bulls": "CHI",
+    "Milwaukee Bucks": "MIL",
+    "Indiana Pacers": "IND",
+    "Detroit Pistons": "DET",
+    "Atlanta Hawks": "ATL",
+    "Washington Wizards": "WAS",
+    "Miami Heat": "MIA",
+    "Charlotte Hornets": "CHO",
+    "Orlando Magic": "ORL",
+    "Portland Trail Blazers": "POR",
+    "Oklahoma City Thunder": "OKC",
+    "Utah Jazz": "UTA",
+    "Denver Nuggets": "DEN",
+    "Minnesota Timberwolves": "MIN",
+    "Golden State Warriors": "GSW",
+    "Los Angeles Clippers": "LAC",
+    "Phoenix Suns": "PHO",
+    "Sacramento Kings": "SAC",
+    "Los Angeles Lakers": "LAL",
+    "Houston Rockets": "HOU",
+    "Memphis Grizzlies": "MEM",
+    "San Antonio Spurs": "SAS",
+    "Dallas Mavericks": "DAL",
+    "New Orleans Pelicans": "NOP"
+}
+
 
 def getGamesOnDate(date):
     return list(Boxscores(dateToDateTime(date)).games.values())[0]
@@ -179,19 +212,9 @@ def getTeamGameIds(team, year):
 
 
 def getAllTeams():
-    teamList = []
-    for team in Teams():
-        teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
-        teamList.append(teamAbbr)
-
-    return teamList
+    return list(teamDict.values())
 
 def getTeamDict():
-    teamDict = {}
-    for team in Teams():
-        teamAbbr = re.search(r'\((.*?)\)', str(team)).group(1)
-        teamDict[team.name] = teamAbbr
-
     return teamDict
 
 def getSeasonGames(gameId, team):
