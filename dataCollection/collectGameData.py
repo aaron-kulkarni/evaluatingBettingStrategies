@@ -8,14 +8,11 @@ import datetime as dt
 import sys
 import bs4 as bs
 
-from dataCollection.collectGameAttendanceReferees import scrapeGameAttendanceReferees
-from dataCollection.collectStaticData import scrapePlayerSalaryData
-
 sys.path.insert(0, "..")
 
 from utils.utils import *
-#from collectStaticData import *
-#from collectGameAttendanceReferees import *
+from dataCollection.collectGameAttendanceReferees import *
+from dataCollection.collectStaticData import *
 
 
 """

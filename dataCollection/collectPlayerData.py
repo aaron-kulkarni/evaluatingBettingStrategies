@@ -4,6 +4,7 @@ import bs4 as bs
 from urllib.request import urlopen
 from sportsipy.nba.boxscore import Boxscores
 import re
+import time
 
 import sys
 sys.path.insert(0, '..')
@@ -350,9 +351,15 @@ def update_stats(year):
     print('updating:')
     df_update = pd.DataFrame()
     for gameId in list((set(index_fin) - set(index_upd))):
-        print(gameId)
-        if gameFinished(gameId) == 1:
-            df_update = pd.concat([df_update, getTeamGameStat(gameId)], axis=0)
+        try:
+            team_game_stat = getTeamGameStat(gameId)
+            df_update = pd.concat([df_update, team_game_stat], axis=0)
+            print('{} updated'.format(gameId))
+            print('We wait 10 seconds')
+            time.sleep(10)
+        except:
+            print('{} error'.format(gameId))
+
     df = pd.concat([df_update, df.drop(df_update.index, axis=0)], axis=0)
     df = df.reindex(sortDate(df.index))
     df.to_csv('../data/teamStats/team_total_stats_{}.csv'.format(year))

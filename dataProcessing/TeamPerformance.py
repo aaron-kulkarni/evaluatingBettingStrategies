@@ -152,13 +152,13 @@ def concat(n, years):
 
 #concat(5, np.arange(2015,2024))
 
+
 def getSignal():
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0,1])
     signal = pd.DataFrame(df['gameState'])
     signal['signal'] = signal.apply(lambda d: return_signal(d['winner'], d['teamHome'], d['teamAway']), axis=1)
-    signal = signal.dropna(axis=0)
-    signal['signal'] = signal['signal'].apply(int)
-    return signal['signal']
+    return signal['signal'].dropna(axis=0)
+
 
 def return_signal(winner,home_team,away_team):
     if home_team == winner:
