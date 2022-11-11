@@ -234,7 +234,7 @@ def update_game_state_data():
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0, dtype = object)
     
     update_index = list(set(getPreviousGames()) - set(df['gameState'].dropna(axis=0).index))
-    df_upd = update_games(gameIdList)
+    df_upd = update_games(update_index)
     df.drop(index = df_upd.index, inplace=True, axis=0)
     df = pd.concat([df, df_upd], axis=0)
     df = df.reindex(sortDate(df.index))
