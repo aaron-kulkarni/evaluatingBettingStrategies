@@ -92,8 +92,14 @@ def getGameData(game_id, neutral):
     gameData = getBoxscoreData(game_id)
 
     # Gets the home and away past schedules and sorts the schedules by datetime
-    teamHomeSchedule = getTeamScheduleAPI(teamHome, game_id[0:8]).sort_values(by='datetime')
-    teamAwaySchedule = getTeamScheduleAPI(teamAway, game_id[0:8]).sort_values(by='datetime')
+    year = getYearFromId(game_id)
+    homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(teamHome, year)
+    teamHomeSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
+    teamHomeSchedule = teamHomeSchedule.sort_index(ascending=True)
+
+    homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(teamAway, year)
+    teamAwaySchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
+    teamAwaySchedule = teamAwaySchedule.sort_index(ascending=True)
 
     otherDict = scrapeGameAttendanceReferees(game_id)
     attendance = otherDict['att']
@@ -144,7 +150,6 @@ def getGameData(game_id, neutral):
 
 
     # Gets Number of Games Played
-    year = getYearFromId(game_id)
     homeGamesPlayed = getNumberGamesPlayed(teamHome, year, game_id)
     awayGamesPlayed = getNumberGamesPlayed(teamAway, year, game_id)
 
@@ -353,8 +358,8 @@ def getTeamSalaryData(team_abbr, game_id, playerRoster):
                 else:
                     if matches[0] in playerRoster:
                         curSalary = int(matches[1].replace(',', ''))
-                        if (curSalary != 0):
-                            i+=1
+                        if curSalary != 0:
+                            i += 1
                         totalSalary += curSalary
 
             except Exception:

@@ -8,7 +8,7 @@ from collectPlayerData import *
 
 
 
-def updateGameStateDataAllf(years):
+def updateGameStateDataAll(years):
     df = pd.DataFrame()
     for year in years:
         df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)

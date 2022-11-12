@@ -61,6 +61,7 @@ def getBoxscoreData(game_id):
     return Boxscore(game_id)
 
 
+
 def getTeamScheduleAPI(team, game_date):
     game_date = str(game_date)
     gameYear = game_date[0:4]
@@ -378,3 +379,6 @@ def getNextGames():
     index = df[df['datetime'] == next_date].index
     print(next_date)
     return index
+
+
+print(getGamesOnDate('20221018'))

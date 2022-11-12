@@ -70,31 +70,23 @@ def getStaticGameData(game_id):
     rowList = []
     for row in rows:
         rowList.append([td for td in row.findAll(['td', 'th'])])
-    gameIdList, dateTimeList, homeTeamList, awayTeamList, locationList, neutralList = [], [], [], [], [], []
     for i in range(1, len(rowList)):
         dateTime = parser.parse(rowList[i][0].getText())
         aChildrenH = str(rowList[i][4].findChildren('a'))
         homeTeam = aChildrenH.partition('teams/')[2][:3]
-        aChildrenA = str(rowList[i][2].findChildren('a'))
-        awayTeam = aChildrenA.partition('teams/')[2][:3]
-
         gameId = '{}0{}'.format(dateTime.strftime("%Y%m%d"), homeTeam)
-        dateTime = convDateTime(gameId, rowList[i][1].getText())
-        location = rowList[i][9].getText()
-        if rowList[i][10].getText() == '':
-            neutral = 0
-        else:
-            neutral = 1
-        gameIdList.append(gameId)
-        dateTimeList.append(dateTime)
-        homeTeamList.append(homeTeam)
-        awayTeamList.append(awayTeam)
-        locationList.append(location)
-        neutralList.append(neutral)
         if gameId == game_id:
-            break
+            aChildrenA = str(rowList[i][2].findChildren('a'))
+            awayTeam = aChildrenA.partition('teams/')[2][:3]
+            dateTime = convDateTime(gameId, rowList[i][1].getText())
+            location = rowList[i][9].getText()
+            if rowList[i][10].getText() == '':
+                neutral = 0
+            else:
+                neutral = 1
 
-    return dateTimeList[-1], homeTeamList[-1], awayTeamList[-1], locationList[-1], neutralList[-1]
+            return dateTime, homeTeam, awayTeam, location, neutral
+    raise Exception("Couldn't get static game data for {}".format(game_id))
 
 def getTeamCurrentRoster(team_abbr):
     """
@@ -241,6 +233,13 @@ def update_game_state_data():
     df.to_csv('../data/gameStats/game_state_data_ALL.csv')
     return df
 
+def updateGameStateDataAll(years):
+    df = pd.DataFrame()
+    for year in years:
+        df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
+        df = pd.concat([df, df_current], axis = 0)
+    return df
+
 
 def updateGameStateData():
     """
@@ -257,24 +256,22 @@ def updateGameStateData():
 
     df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header = [0,1], index_col = 0, dtype = object)
     df.dropna()
-    # df2 = df[df['gameState']['winner'].isnull()]
-    # df_dict = df2.to_dict('index')
-    # previousGameList = []
-    # for key, value in df_dict.items():
-    #     if gameFinished(key):
-    #         previousGameList.append(key)
-    #     else:
-    #         break
-    #
-    # #previousGameList holds all gameids that have been played but do not have data in the files
-    # print(previousGameList)
-    previousGameList = ['202211090ORL', '202211090CHO', '202211090IND', '202211090ATL', '202211090BOS', '202211090BRK', '202211090TOR', '202211090CHI', '202211090MIN', '202211090OKC', '202211090SAS', '202211090LAC', '202211090SAC']
+    df2 = df[df['gameState']['winner'].isnull()]
+    df_dict = df2.to_dict('index')
+    previousGameList = []
+    for key, value in df_dict.items():
+        if gameFinished(key):
+            previousGameList.append(key)
+        else:
+            break
+    print("Got previous game list. sleeping for 60 seconds")
+    time.sleep(60)
+    #previousGameList holds all gameids that have been played but do not have data in the files
     for curId in previousGameList:
         # fills in values for game that has already happened
         tempList = getGameData(curId, int(df.loc[curId]['gameState']['neutral']))
         tempList = tempList[1:]
         df.loc[curId] = tempList
-        time.sleep(60)
 
         #edit the next game data for both teams
 
@@ -301,14 +298,18 @@ def updateGameStateData():
         else:
             df.loc[indexAway, 'away'] = awayData
 
-        print(curId)
+        print("Finished game {}. Sleeping for 60 seconds".format(curId))
+        time.sleep(60)
 
     df.to_csv('../data/gameStats/game_state_data_2023.csv')
-    #updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
+    updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
     return
 
 def getTeamFutureData(game_id, team_abbr, opp_team, home):
-    teamSchedule = getTeamScheduleAPI(team_abbr, gameIdToDateTime(game_id).strftime('%Y%m%d'))
+    year = getYearFromId(game_id)
+    homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team_abbr, year)
+    teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
+    teamSchedule = teamSchedule.sort_index(ascending=True)
     streak = getTeamStreak(teamSchedule, game_id)
     days = getDaysSinceLastGame(teamSchedule, game_id)
     roster = getTeamCurrentRoster(team_abbr)
@@ -328,7 +329,7 @@ def getGameStateFutureData(game_id):
     return [None, teamHome, teamAway, location, rivalry, datetime, datetime, None, None, neutral]
 
 
-update_game_state_data()
+#update_game_state_data()
 #updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
