@@ -23,7 +23,7 @@ class PerformanceMetric:
         return adj_series
 
     def returnTeamSeries(self, series, team):
-        home_schedule, away_schedule = getTeamScheduleCSV(team, self.year)
+        home_schedule, away_schedule = getTeamScheduleCSVSplit(team, self.year)
         series_home = series[series.index.isin(home_schedule.index)]
         series = 1 - series
         series_away = series[series.index.isin(away_schedule.index)]

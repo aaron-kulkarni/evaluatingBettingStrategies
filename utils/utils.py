@@ -160,13 +160,28 @@ def writeCSV(df, filepath, **kwargs):
     return df.to_csv("../data/" + filepath, **kwargs)
 
 
-def getTeamScheduleCSV(team, year):
+def getTeamScheduleCSVSplit(team, year):
     df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
 
     dfHome = df[df['gameState']['teamHome'] == team]
     dfAway = df[df['gameState']['teamAway'] == team]
     return dfHome, dfAway
 
+def getTeamScheduleCSV(team, year):
+    df = pd.DataFrame(pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(2023), index_col=0, header=[0, 1]))
+
+    dfHome = df[df['gameState']['teamHome'] == team]
+    dfAway = df[df['gameState']['teamAway'] == team]
+
+    df = pd.concat([dfHome['home'], dfAway['away']], axis=0)
+    df = df.sort_index()
+
+    dfState = pd.concat([dfHome['gameState'], dfAway['gameState']], axis=0)
+    dfState = dfState.sort_index()
+
+    dfTotal = pd.concat([dfState, df], axis=1)
+
+    return dfTotal
 
 def getTeamsCSV(game_id):
     year = getYearFromId(game_id)
@@ -206,7 +221,7 @@ def getNumberGamesPlayed(team, year, game_id):
 
 
 def getTeamGameIds(team, year):
-    homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team, year)
+    homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSVSplit(team, year)
     teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
     teamSchedule = teamSchedule.sort_index(ascending=True)
     return list(teamSchedule.index)
@@ -349,18 +364,6 @@ def cumsum_reset_on_null(srs):
 
     return result.replace(0, np.nan)
 
-def gameFinished(gameId):
-    try:
-        r = requests.get('https://www.basketball-reference.com/boxscores/{}.html'.format(gameId))
-        if r.status_code == 200:
-            return 1
-        else:
-            return 0
-    except Exception as e:
-        print("Game id({}) does not exist".format(gameId))
-        return 0
-
-
 def returnDatetime(gameId):
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header=[0,1], index_col=0)['gameState']
     return df.loc[gameId]['datetime']
@@ -379,6 +382,3 @@ def getNextGames():
     index = df[df['datetime'] == next_date].index
     print(next_date)
     return index
-
-
-print(getGamesOnDate('20221018'))

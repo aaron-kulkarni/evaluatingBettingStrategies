@@ -163,16 +163,13 @@ def initGameStateData(year):
 
 def gameFinished(gameId):
     try:
-        headers = requests.get('https://google.com').headers
-        r = requests.get("https://www.basketball-reference.com/boxscores/{}.html".format(gameId), headers=headers)
-        if r.status_code == 429:
-            return print('blocked')
+        r = requests.get("https://www.basketball-reference.com/boxscores/{}.html".format(gameId))
         if r.status_code == 200:
             return 1
         else:
             return 0
     except Exception as e:
-        print("Game id({}) does not exist".format(gameId))
+        print("Game id({}) does not exist with status code {}".format(gameId, r.status_code))
         return 0
 
 def fillStaticValues(year):
@@ -264,19 +261,32 @@ def updateGameStateData():
             previousGameList.append(key)
         else:
             break
+    print(previousGameList)
     print("Got previous game list. sleeping for 60 seconds")
     time.sleep(60)
+
+    teamNamesList = []
     #previousGameList holds all gameids that have been played but do not have data in the files
     for curId in previousGameList:
         # fills in values for game that has already happened
+        print(curId)
         tempList = getGameData(curId, int(df.loc[curId]['gameState']['neutral']))
         tempList = tempList[1:]
         df.loc[curId] = tempList
+        teamNamesList.append([tempList[1], tempList[2]])
+        print("Sleeping for 20 seconds")
+        time.sleep(20)
 
-        #edit the next game data for both teams
+    df.to_csv('../data/gameStats/game_state_data_2023.csv')
+    #pushing previous changes to csv so that team_schedule updates properly
+    df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header=[0, 1], index_col=0, dtype=object)
+    df.dropna()
+    listIndex = 0
 
-        teamHome = tempList[1]
-        teamAway = tempList[2]
+    #edit the next game data for both teams
+    for curId in previousGameList:
+        teamHome = teamNamesList[listIndex][0]
+        teamAway = teamNamesList[listIndex][1]
         indexHome = getTeamsNextGame(teamHome, curId)
         indexAway = getTeamsNextGame(teamAway, curId)
 
@@ -298,8 +308,9 @@ def updateGameStateData():
         else:
             df.loc[indexAway, 'away'] = awayData
 
-        print("Finished game {}. Sleeping for 60 seconds".format(curId))
-        time.sleep(60)
+        print("Finished game {}. Sleeping for 30 seconds".format(curId))
+        time.sleep(30)
+        listIndex += 1
 
     df.to_csv('../data/gameStats/game_state_data_2023.csv')
     updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
@@ -307,13 +318,11 @@ def updateGameStateData():
 
 def getTeamFutureData(game_id, team_abbr, opp_team, home):
     year = getYearFromId(game_id)
-    homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(team_abbr, year)
-    teamSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
-    teamSchedule = teamSchedule.sort_index(ascending=True)
-    streak = getTeamStreak(teamSchedule, game_id)
-    days = getDaysSinceLastGame(teamSchedule, game_id)
+    teamSchedule = getTeamScheduleCSV(team_abbr, year)
+    streak = getTeamStreak(teamSchedule, game_id, team_abbr)
+    days = round(getDaysSinceLastGame(teamSchedule, game_id))
     roster = getTeamCurrentRoster(team_abbr)
-    record = getTeamRecord(teamSchedule, game_id)
+    record = getTeamRecord(teamSchedule, game_id, team_abbr)
     matchupRecord = getPastMatchUpWinLoss(teamSchedule, game_id, opp_team)
     if home == 1:
         matchupWins = matchupRecord[0]
@@ -330,7 +339,7 @@ def getGameStateFutureData(game_id):
 
 
 #update_game_state_data()
-#updateGameStateData()
+updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
 #updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')

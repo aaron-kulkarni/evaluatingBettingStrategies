@@ -93,13 +93,8 @@ def getGameData(game_id, neutral):
 
     # Gets the home and away past schedules and sorts the schedules by datetime
     year = getYearFromId(game_id)
-    homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(teamHome, year)
-    teamHomeSchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
-    teamHomeSchedule = teamHomeSchedule.sort_index(ascending=True)
-
-    homeTeamSchedule, awayTeamSchedule = getTeamScheduleCSV(teamAway, year)
-    teamAwaySchedule = pd.concat([homeTeamSchedule, awayTeamSchedule], axis=0)
-    teamAwaySchedule = teamAwaySchedule.sort_index(ascending=True)
+    homeTeamSchedule = getTeamScheduleCSV(teamHome, year)
+    awayTeamSchedule = getTeamScheduleCSV(teamAway, year)
 
     otherDict = scrapeGameAttendanceReferees(game_id)
     attendance = otherDict['att']
@@ -122,19 +117,19 @@ def getGameData(game_id, neutral):
     rivalry = getRivalry(teamHome, teamAway)
 
     # Gets each team's win/loss streak
-    streakHome = getTeamStreak(teamHomeSchedule, game_id)
-    streakAway = getTeamStreak(teamAwaySchedule, game_id)
+    streakHome = getTeamStreak(homeTeamSchedule, game_id, teamHome)
+    streakAway = getTeamStreak(awayTeamSchedule, game_id, teamAway)
 
     # Gets the record of each team
-    homeRecord = getTeamRecord(teamHomeSchedule, game_id)
-    awayRecord = getTeamRecord(teamAwaySchedule, game_id)
+    homeRecord = getTeamRecord(homeTeamSchedule, game_id, teamHome)
+    awayRecord = getTeamRecord(awayTeamSchedule, game_id, teamAway)
 
     # Gets all previous matchups between the two teams
-    matchupWinsHome, matchupWinsAway = getPastMatchUpWinLoss(teamHomeSchedule, game_id, teamAway)
+    matchupWinsHome, matchupWinsAway = getPastMatchUpWinLoss(homeTeamSchedule, game_id, teamAway)
 
     # Gets the number of days since the last game for each team
-    daysSinceLastGameHome = getDaysSinceLastGame(teamHomeSchedule, game_id)
-    daysSinceLastGameAway = getDaysSinceLastGame(teamAwaySchedule, game_id)
+    daysSinceLastGameHome = round(getDaysSinceLastGame(homeTeamSchedule, game_id))
+    daysSinceLastGameAway = round(getDaysSinceLastGame(awayTeamSchedule, game_id))
 
     # Gets team rosters
     homePlayerRoster = [player.player_id for player in gameData.home_players]
@@ -142,7 +137,7 @@ def getGameData(game_id, neutral):
 
     # Gets coaches and location
     # TODO coaches are unused right now, might add to dataframe later?
-    homeCoach, awayCoach = getCoaches(teamHome, teamAway, game_id[0:8])
+    #homeCoach, awayCoach = getCoaches(teamHome, teamAway, game_id[0:8])
 
     # Gets player and team salaries
     homeTotalSalary, homeAverageSalary = getTeamSalaryData(teamHome, game_id, homePlayerRoster)
@@ -154,7 +149,7 @@ def getGameData(game_id, neutral):
     awayGamesPlayed = getNumberGamesPlayed(teamAway, year, game_id)
 
     # Times of game
-    timeOfDay = convDateTime(game_id, teamHomeSchedule.loc[game_id][13])
+    timeOfDay = pd.to_datetime(homeTeamSchedule.loc[game_id]['datetime'])
     endTime = timeOfDay + (timedelta(hours=(2 + .5 * len(overtimeScoresHome))))
 
     # Condenses all the information into an array to return
@@ -205,58 +200,58 @@ def getQuarterScore(game_summary):
             (q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, overtimeScoresAway))
 
 
-def getDaysSinceLastGame(team_schedule, game_id):
+def getDaysSinceLastGame(schedule, game_id):
     """
     Gets the number of days it has been since a given
     team last played a game.
 
     Parameters
     ----------
-    team_schedule : the schedule of the specific team
+    schedule : the schedule of the specific team
     game_id : the basketball-reference.com id of the game
 
     Returns
     -------
     The number of days it has been
     """
-    team_schedule.sort_values(by='datetime')
 
-    prevHomeDate = team_schedule['datetime'].shift().loc[game_id]
-    currentdate = team_schedule.loc[game_id]['datetime']
+    prevHomeDate = pd.to_datetime(schedule['datetime'].shift().loc[game_id])
+    currentDate = pd.to_datetime(schedule.loc[game_id]['datetime'])
 
-    return (currentdate - prevHomeDate).total_seconds() / 86400
+    return (currentDate - prevHomeDate).total_seconds() / 86400
 
 
-def getTeamRecord(team_schedule, game_id):
+def getTeamRecord(schedule, game_id, team):
     """
     Gets a given team's win/loss record until a
     given game
 
     Parameters
     ----------
-    team_schedule : the schedule of the specific team
+    schedule : the schedule of the specific team
     game_id : the basketball-reference.com id of the game
+    team: the teams abbreviation
 
     Returns
     -------
     The win loss record as a tuple: (wins, losses)
     """
-    results = team_schedule.result.shift()
-    results = results.loc[results.index[0]:game_id]
-    homeRecord = results.value_counts(ascending=True)
-    try:
-        wins = homeRecord['Win']
-    except KeyError:
-        wins = 0
-    try:
-        losses = homeRecord['Loss']
-    except KeyError:
-        losses = 0
+    prevIndex = schedule.index.get_loc(game_id) - 1
+    if prevIndex == -1:
+        # on the first game of the season, team has 0 wins and 0 losses
+        return [0, 0]
+    prevRecord = schedule.iloc[prevIndex]['record']
+    prevRecord = (re.sub('\ |\[|\]', '', prevRecord)).split(',')
+    wins = int(prevRecord[0])
+    losses = int(prevRecord[1])
+    prevWon = schedule.iloc[prevIndex]['winner']
+    if prevWon == team:
+        return [wins + 1, losses]
+    else:
+        return [wins, losses + 1]
 
-    return [wins, losses]
 
-
-def getTeamStreak(team_schedule, game_id):
+def getTeamStreak(schedule, game_id, team):
     """
     Gets the winning or losing streak that the team is
     on for a game. The streak is > 0 for a win streak of
@@ -272,25 +267,34 @@ def getTeamStreak(team_schedule, game_id):
 
     Parameters
     ----------
-    team_schedule : the schedule of the specific team
+    schedule : the schedule of the specific team
     game_id : the basketball-reference.com id of the game
+    team: the teams abbreviation
 
     Returns
     -------
     The win/loss streak before the current game
     """
-    # since streak counts current game, look at streak based on last game
-    streak = team_schedule.shift().loc[game_id][12]
+    prevIndex = schedule.index.get_loc(game_id) - 1
+    if prevIndex == -1:
+        #first game of the season has a streak of 0
+        return 0
+    prevStreak = schedule.iloc[prevIndex]['streak']
+    prevWon = schedule.iloc[prevIndex]['winner']
+    if prevWon == team:
+        if prevStreak < 0:
+            return 1
+        else:
+            return prevStreak+1
+    else:
+        if prevStreak > 0:
+            return -1
+        else:
+            return prevStreak-1
 
-    # takes care of first game of season problem
-    # also changed format from 'L 5' to -5
-    streak = 0 if pd.isna(streak) else int(streak[-1:]) if streak.startswith('W') else -int(
-        streak[-1:])
-
-    return streak
 
 
-def getPastMatchUpWinLoss(home_team_schedule, game_id, away_team):
+def getPastMatchUpWinLoss(schedule, game_id, away_team):
     """
     Gets how many times the home team has won against the
     away team previously and how many times the away team
@@ -298,7 +302,7 @@ def getPastMatchUpWinLoss(home_team_schedule, game_id, away_team):
 
     Parameters
     ----------
-    home_team_schedule : the schedule of the home team
+    schedule : the schedule of the home team
     game_id : the basketball-reference.com id of the game
     away_team : the 3 letter basketball-reference.com
                 abbreviation of the away team
@@ -308,12 +312,16 @@ def getPastMatchUpWinLoss(home_team_schedule, game_id, away_team):
     The past match-up results between the two teams
     as a tuple: (home wins, away wins)
     """
-    current_date = home_team_schedule.loc[game_id]['datetime']
-    tempDf = home_team_schedule.loc[home_team_schedule['opponent_abbr'] == away_team]
-    tempDf = tempDf.loc[home_team_schedule['datetime'] < current_date]
+    current_date = schedule.loc[game_id]['datetime']
+    df1 = schedule.loc[schedule['teamAway'] == away_team]
+    df2 = schedule.loc[schedule['teamHome'] == away_team]
+    tempDf = pd.concat([df1, df2], axis=0)
 
-    wins = tempDf.loc[home_team_schedule['result'] == 'Win'].shape[0]
-    losses = tempDf.loc[home_team_schedule['result'] == 'Loss'].shape[0]
+    tempDf = tempDf.loc[schedule['datetime'] < current_date]
+    tempDf = tempDf.sort_index()
+
+    wins = tempDf.loc[schedule['winner'] != away_team].shape[0]
+    losses = tempDf.loc[schedule['winner'] == away_team].shape[0]
 
     return [wins, losses]
 
