@@ -339,7 +339,7 @@ def getGameStateFutureData(game_id):
 
 
 #update_game_state_data()
-updateGameStateData()
+#updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
 #updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
