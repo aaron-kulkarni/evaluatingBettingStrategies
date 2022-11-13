@@ -253,17 +253,18 @@ def updateGameStateData():
 
     df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header = [0,1], index_col = 0, dtype = object)
     df.dropna()
-    df2 = df[df['gameState']['winner'].isnull()]
-    df_dict = df2.to_dict('index')
-    previousGameList = []
-    for key, value in df_dict.items():
-        if gameFinished(key):
-            previousGameList.append(key)
-        else:
-            break
-    print(previousGameList)
-    print("Got previous game list. sleeping for 60 seconds")
-    time.sleep(60)
+    # df2 = df[df['gameState']['winner'].isnull()]
+    # df_dict = df2.to_dict('index')
+    # previousGameList = []
+    # for key, value in df_dict.items():
+    #     if gameFinished(key):
+    #         previousGameList.append(key)
+    #     else:
+    #         break
+    # print(previousGameList)
+    # print("Got previous game list. sleeping for 60 seconds")
+    # time.sleep(60)
+    previousGameList = ['202211120LAC', '202211120WAS', '202211120DET', '202211120IND', '202211120PHI', '202211120MIA', '202211120DAL', '202211120NOP']
 
     teamNamesList = []
     #previousGameList holds all gameids that have been played but do not have data in the files
@@ -271,7 +272,7 @@ def updateGameStateData():
         # fills in values for game that has already happened
         print(curId)
         tempList = getGameData(curId, int(df.loc[curId]['gameState']['neutral']))
-        tempList = tempList[1:]
+        tempList = np.array(tempList[1:], dtype=object)
         df.loc[curId] = tempList
         teamNamesList.append([tempList[1], tempList[2]])
         print("Sleeping for 20 seconds")
@@ -330,12 +331,12 @@ def getTeamFutureData(game_id, team_abbr, opp_team, home):
         matchupWins = matchupRecord[1]
     salary, avgSalary = getTeamSalaryData(team_abbr, game_id, roster)
     gamesPlayed = getNumberGamesPlayed(team_abbr, 2023, game_id)
-    return [None,None,None,None,None,None,streak, days, roster, record, matchupWins, salary, avgSalary, gamesPlayed]
+    return np.array([None,None,None,None,None,None,streak, days, roster, record, matchupWins, salary, avgSalary, gamesPlayed], dtype=object)
 
 def getGameStateFutureData(game_id):
     datetime, teamHome, teamAway, location, neutral = getStaticGameData(game_id)
     rivalry = getRivalry(teamHome, teamAway)
-    return [None, teamHome, teamAway, location, rivalry, datetime, datetime, None, None, neutral]
+    return np.array([None, teamHome, teamAway, location, rivalry, datetime, datetime, None, None, neutral], dtype=object)
 
 
 #update_game_state_data()
