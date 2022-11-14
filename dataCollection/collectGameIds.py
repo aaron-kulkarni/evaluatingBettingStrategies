@@ -205,31 +205,6 @@ def fillDependentStaticValues(year):
 
 #fillDependentStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
 
-
-def update_games(gameIdList):
-    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0, dtype = object)
-    df = df[df.index.isin(gameIdList)] 
-    for gameId in gameIdList:
-        try: 
-            data = getGameData(gameId, df['gameState', 'neutral'].loc[gameId])
-            df.loc[gameId] = data[1:]
-            print('Wait 60 seconds')
-            time.sleep(60)
-        except:
-            print('Error with gameId {}'.format(gameId))
-    return df
-            
-def update_game_state_data():
-    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header = [0,1], index_col = 0, dtype = object)
-    
-    update_index = list(set(getPreviousGames()) - set(df['gameState'].dropna(axis=0).index))
-    df_upd = update_games(update_index)
-    df.drop(index = df_upd.index, inplace=True, axis=0)
-    df = pd.concat([df, df_upd], axis=0)
-    df = df.reindex(sortDate(df.index))
-    df.to_csv('../data/gameStats/game_state_data_ALL.csv')
-    return df
-
 def updateGameStateDataAll(years):
     df = pd.DataFrame()
     for year in years:
@@ -253,19 +228,17 @@ def updateGameStateData():
 
     df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header = [0,1], index_col = 0, dtype = object)
     df.dropna()
-    # df2 = df[df['gameState']['winner'].isnull()]
-    # df_dict = df2.to_dict('index')
-    # previousGameList = []
-    # for key, value in df_dict.items():
-    #     if gameFinished(key):
-    #         previousGameList.append(key)
-    #     else:
-    #         break
-    # print(previousGameList)
-    # print("Got previous game list. sleeping for 60 seconds")
-    # time.sleep(60)
-    previousGameList = ['202211120LAC', '202211120WAS', '202211120DET', '202211120IND', '202211120PHI', '202211120MIA', '202211120DAL', '202211120NOP']
-
+    df2 = df[df['gameState']['winner'].isnull()]
+    df_dict = df2.to_dict('index')
+    previousGameList = []
+    for key, value in df_dict.items():
+        if gameFinished(key):
+            previousGameList.append(key)
+        else:
+            break
+    print(previousGameList)
+    print("Got previous game list. sleeping for 60 seconds")
+    time.sleep(60)
     teamNamesList = []
     #previousGameList holds all gameids that have been played but do not have data in the files
     for curId in previousGameList:
@@ -340,7 +313,7 @@ def getGameStateFutureData(game_id):
 
 
 #update_game_state_data()
-#updateGameStateData()
+updateGameStateData()
 #df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
 #updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')

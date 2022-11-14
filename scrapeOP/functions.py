@@ -1,11 +1,8 @@
 ### functions 
 
-# OddsPortal scraper functions 
-
-
+# OddsPortal scraper functions
 import os
 import urllib
-from selenium import webdriver
 import time
 from selenium.webdriver.common.keys import Keys
 import matplotlib.pyplot as plt

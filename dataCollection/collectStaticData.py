@@ -200,8 +200,6 @@ def scrapePlayerPastYearSalaryData(year, playerid):
     """
 
     regex = r"<tr ><th [^<>]* data-stat=\"season\" >" + str(year-1) + "-" + str(year)[2:4] \
-            + r"<\/th>[^\n]*<td [^<>]* data-stat=\"salary\" [^<>]*>\$([\d,]+)</td></tr>\n"
-    regex = r"<tr ><th [^<>]* data-stat=\"season\" >" + str(year-1) + "-" + str(year)[2:4] \
             + r"<\/th>[^\n]*<td [^<>]* data-stat=\"salary\" [^<>]*>(\$([\d,]+)|(<? \$Minimum))</td></tr>\n"
     MIN_NBA_SAL = 1e5
 
@@ -261,8 +259,6 @@ def scrapePlayerSalaryData(playerid, team_abbr):
     year = 2023;
     try:
         soup = bs.BeautifulSoup(urlopen(url), features='lxml')
-        # regex = r"<tr ><th [^<>]* data-stat=\"season\" >" + str(year - 1) + "-" + str(year)[2:4] \
-        #         + r"<\/th>[^\n]*<td [^<>]* data-stat=\"salary\" [^<>]*>(\$([\d,]+)|(<? \$Minimum))</td></tr>\n"
         regex = r"<table [^<>]* id=\"contracts_" + team_abbr.lower() + r"\" [^<>]*>[\W\w]*<tr>[\W\w]*<td[^<>]*>" \
                 + r"<span [^<>]*>(\$([\d,]+)|(<? \$Minimum))</span></td>\n*</tr>\n*</table>"
         matches = re.findall(regex, str(soup.find('div', {'id': 'all_contract'})))
