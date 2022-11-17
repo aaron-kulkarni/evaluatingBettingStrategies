@@ -551,6 +551,28 @@ def makeMultiIndexing(file):
 
     return
 
+def get_win_percentage(gameId):
+    teamHome, teamAway = getTeamsCSV(gameId)
+    year = getYearFromId(gameId)
+    dfHome = getTeamScheduleCSVSplit(teamHome, year)[0]['gameState'][:gameId].drop([gameId], axis=0)
+    dfAway = getTeamScheduleCSVSplit(teamAway, year)[1]['gameState'][:gameId].drop([gameId], axis=0)
+    if dfHome.isnull().values.any() == True:
+        return None, None 
+    if dfAway.isnull().values.any() == True:
+        return None, None
+    try: 
+        dfHome['signal'] = dfHome.apply(lambda d: 1 if d['winner'] == teamHome else 0, axis=1)
+        home_wp = dfHome['signal'].sum()/len(dfHome['signal'])
+    except:
+        home_wp = None
+
+    try:
+        dfAway['signal'] = dfAway.apply(lambda d: 1 if d['winner'] == teamAway else 0, axis=1)
+        away_wp = dfAway['signal'].sum()/len(dfAway['signal'])
+    except:
+        away_wp = None 
+    return home_wp, away_wp
+
 
 #addEndTime(np.arange(2015, 2023))
 # years = np.arange(2015, 2023)
