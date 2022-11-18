@@ -7,6 +7,7 @@ from dataCollection.collectGameIds import *
 from dataCollection.collectPlayerData import *
 
 updateGameStateData()
+
 update_team_stats(np.arange(2015, 2024))
 
 years = np.arange(2015,2024)
