@@ -355,8 +355,8 @@ def update_stats(year):
             team_game_stat = getTeamGameStat(gameId)
             df_update = pd.concat([df_update, team_game_stat], axis=0)
             print('{} updated'.format(gameId))
-            print('We wait 10 seconds')
-            time.sleep(10)
+            print('We wait 15 seconds')
+            time.sleep(15)
         except:
             print('{} error'.format(gameId))
 
