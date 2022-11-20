@@ -83,11 +83,12 @@ def getGameData(game_id, neutral):
     if not gameIdIsValid(game_id):
         raise Exception('Issue with Game ID')
 
-    # Get the boxscores of all games for the given date
-    gamesToday = getGamesOnDate(game_id[0:8])
-    a = next(item for item in gamesToday if item["boxscore"] == game_id)
-    teamHome = a['home_abbr']
-    teamAway = a['away_abbr']
+    # Gets team abbreviations, boxscore, attendance, and referees
+    otherDict = scrapeGameAttendanceReferees(game_id)
+    attendance = otherDict['att']
+    referees = otherDict['ref']
+    teamHome = otherDict['home']
+    teamAway = otherDict['away']
 
     gameData = getBoxscoreData(game_id)
 
@@ -95,11 +96,6 @@ def getGameData(game_id, neutral):
     year = getYearFromId(game_id)
     homeTeamSchedule = getTeamScheduleCSV(teamHome, year)
     awayTeamSchedule = getTeamScheduleCSV(teamAway, year)
-
-    otherDict = scrapeGameAttendanceReferees(game_id)
-    attendance = otherDict['att']
-    referees = otherDict['ref']
-
 
     # Gets the number of points scored in each quarter
     ((q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, overtimeScoresHome),
@@ -150,16 +146,22 @@ def getGameData(game_id, neutral):
 
     # Times of game
     timeOfDay = pd.to_datetime(homeTeamSchedule.loc[game_id]['datetime'])
-    endTime = timeOfDay + (timedelta(hours=(2 + .5 * len(overtimeScoresHome))))
+    # if the end time of a game is not available, use an estimation
+    endTime = timeOfDay + otherDict['end']
+    if endTime is None:
+        endTime = timeOfDay + (timedelta(hours=(2 + .5 * len(overtimeScoresHome))))
+
+    # Gets win percentages for home and away team when they are home and away
+    win_per_home, win_per_away = get_win_percentage(game_id)
 
     # Condenses all the information into an array to return
     gameData = [game_id, winner, teamHome, teamAway, location, rivalry, timeOfDay, endTime, referees, attendance, neutral,
                 q1ScoreHome, q2ScoreHome, q3ScoreHome, q4ScoreHome, overtimeScoresHome,
                 pointsHome, streakHome, daysSinceLastGameHome, homePlayerRoster, homeRecord, matchupWinsHome,
-                homeTotalSalary, homeAverageSalary, homeGamesPlayed,
+                homeTotalSalary, homeAverageSalary, homeGamesPlayed, win_per_home,
                 q1ScoreAway, q2ScoreAway, q3ScoreAway, q4ScoreAway, overtimeScoresAway,
                 pointsAway, streakAway, daysSinceLastGameAway, awayPlayerRoster, awayRecord, matchupWinsAway,
-                awayTotalSalary, awayAverageSalary, awayGamesPlayed]
+                awayTotalSalary, awayAverageSalary, awayGamesPlayed, win_per_home]
 
     return gameData
 
@@ -292,9 +294,8 @@ def getTeamStreak(schedule, game_id, team):
         else:
             return prevStreak-1
 
-
-
 def getPastMatchUpWinLoss(schedule, game_id, away_team):
+
     """
     Gets how many times the home team has won against the
     away team previously and how many times the away team
@@ -441,116 +442,6 @@ def getCoaches(team_home, team_away, game_date):
 
     return homeCoach, awayCoach
 
-
-def getGameDataframe(start_time, end_time):
-    """
-    Creates a dataframe with all the information for every game between
-    a given start date and a given end date.
-
-    Parameters
-    ----------
-    start_time : the start date in YYYYMMDD format
-    end_time : the end date in YYYYMMDD format
-
-    Returns
-    -------
-    A dataframe containing the relevant information for each game, with
-    the game_id column as the index.
-    """
-
-    # allGames = getGamesBetween(start_time, end_time)
-    # gameIdList = []
-    # for key in allGames.keys():
-    #     for i in range(len(allGames[key])):
-    #         gameIdList.append(allGames[key][i]['boxscore'])
-
-    gameIdList = []
-    gameDataList = []
-    for game_id in gameIdList:
-        gameDataList.append(getGameData(game_id))
-
-    cols = ['game_id', 'winner', 'teamHome', 'teamAway', 'location', 'rivalry', 'datetime', 'endtime', 'neutral',
-            'q1Score', 'q2Score', 'q3Score', 'q4Score', 'overtimeScores', 'points', 'streak', 'daysSinceLastGame',
-            'playerRoster', 'record', 'matchupWins', 'salary', 'avgSalary', 'numberOfGamesPlayed',
-            'q1Score', 'q2Score', 'q3Score', 'q4Score', 'overtimeScores', 'points', 'streak', 'daysSinceLastGame',
-            'playerRoster', 'record', 'matchupWins', 'salary', 'avgSalary', 'numberOfGamesPlayed']
-
-    df = pd.DataFrame(gameDataList, columns=cols)
-    df.set_index('game_id', inplace=True)
-    fileName = '../data/tempBullshit.csv'
-    df.to_csv(fileName)
-    makeMultiIndexing(fileName)
-    return df
-
-
-def getNumberGamesPlayedDF(year):
-    """
-    Gets dataframes for a given year with information
-    about each game.
-
-    Parameters
-    ----------
-    year : the year to get the games for
-
-    Returns
-    -------
-    The pandas dataframe
-    """
-    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
-    df['gameState', 'index'] = df.index.to_series()
-    df['home', 'numberOfGamesPlayed'] = df.apply(
-        lambda d: getNumberGamesPlayed(d['gameState', 'teamHome'], year, d['gameState', 'index']), axis=1)
-    df['away', 'numberOfGamesPlayed'] = df.apply(
-        lambda d: getNumberGamesPlayed(d['gameState', 'teamAway'], year, d['gameState', 'index']), axis=1)
-    df.drop('index', level=1, inplace=True, axis=1)
-
-    return df
-
-
-def convDateTimeDF(year):
-    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
-    df['gameState', 'index'] = df.index
-    df['gameState', 'datetime'] = df.apply(lambda d: convDateTime(d['gameState', 'index'], d['gameState', 'timeOfDay']),
-                                           axis=1)
-    df.drop(['index', 'timeOfDay'], level=1, inplace=True, axis=1)
-    return df
-
-
-def concatDF(years):
-    df = pd.DataFrame()
-    for year in years:
-        dfCurrent = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
-        df = pd.concat([df, dfCurrent], axis=0)
-
-    return df
-
-
-def addEndTime(years):
-    for year in years:
-        df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header=[0, 1], index_col=0)
-        df['gameState', 'datetime'] = pd.to_datetime(df['gameState']['datetime'])
-        df['gameState', 'endtime'] = df.apply(
-            lambda d: d['gameState', 'datetime'] + timedelta(hours=2 if d['home', 'overtimeScores'] == "[]" else
-            (2 + .5 * (len((str(d['home', 'overtimeScores'])).split(","))))), axis=1)
-        df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))
-    return df
-
-
-def makeMultiIndexing(file):
-    line = ',gameState,gameState,gameState,gameState,home,home,home,home,home,home,home,home,home,home,home,away,away,away,away,away,away,away,away,away,away,away,gameState,home,away,home,away,home,away,gameState,gameState'
-
-    tempfile = file + '.abc'
-    with open(file, 'r') as read_objc, open(tempfile, 'w') as write_objc:
-        write_objc.write(line + '\n')
-
-        for line in read_objc:
-            write_objc.write(line)
-
-    os.remove(file)
-    os.rename(tempfile, file)
-
-    return
-
 def get_win_percentage(gameId):
     teamHome, teamAway = getTeamsCSV(gameId)
     year = getYearFromId(gameId)
@@ -608,5 +499,8 @@ def get_win_percentage(gameId):
 #     return df
 
 # years = np.arange(2015, 2023)
-# for y in years:
-#    getNumberGamesPlayedDF(y).to_csv('../data/gameStats/game_state_data_{}.csv'.format(y))
+# for year in years:
+#     df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1])
+#     df['home', 'win_per'] = df.apply(lambda d: get_win_percentage(d.name)[0], axis = 1)
+#     df['away', 'win_per'] = df.apply(lambda d: get_win_percentage(d.name)[1], axis = 1)
+#     df.to_csv('../data/gameStats/game_state_data_{}.csv'.format(year))

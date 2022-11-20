@@ -4,7 +4,41 @@ import re
 import pandas as pd
 from sportsipy.nba.boxscore import Boxscores
 import datetime as dt
+import time
 import numpy as np
+
+teamAbbreviations = {
+    "Raptors": "TOR",
+    "Celtics": "BOS",
+    "Nets": "BRK",
+    "76ers": "PHI",
+    "Knicks": "NYK",
+    "Cavaliers": "CLE",
+    "Bulls": "CHI",
+    "Bucks": "MIL",
+    "Pacers": "IND",
+    "Pistons": "DET",
+    "Hawks": "ATL",
+    "Wizards": "WAS",
+    "Heat": "MIA",
+    "Hornets": "CHO",
+    "Magic": "ORL",
+    "Blazers": "POR",
+    "Thunder": "OKC",
+    "Jazz": "UTA",
+    "Nuggets": "DEN",
+    "Timberwolves": "MIN",
+    "Warriors": "GSW",
+    "Clippers": "LAC",
+    "Suns": "PHO",
+    "Kings": "SAC",
+    "Lakers": "LAL",
+    "Rockets": "HOU",
+    "Grizzlies": "MEM",
+    "Spurs": "SAS",
+    "Mavericks": "DAL",
+    "Pelicans": "NOP"
+}
 
 
 def getGameAttendanceReferees(str_time, end_time):
@@ -48,6 +82,7 @@ def scrapeGameAttendanceReferees(gameid=None):
         'gameid' : 123456789ABC,
         'ref' : ['referee 1 name', referee 2 name', ...],
         'att' : 12345
+        'end':
     }
     """
 
@@ -55,10 +90,19 @@ def scrapeGameAttendanceReferees(gameid=None):
         raise Exception("Issue with game ID")
 
     url = 'https://www.basketball-reference.com/boxscores/{0}.html'.format(gameid)
-    outdict = {'gameid': gameid, 'ref': [], 'att': 0}
+    outdict = {'gameid': gameid, 'ref': [], 'att': 0, 'end': None}
 
     try:
         soup = bs4.BeautifulSoup(urlopen(url), features='lxml')
+        teams = soup.title
+        teamsList = teams.next.split(' ')
+        if 'Trail' in teamsList:  # Portland's team name is "Trail Blazers" (two words), unlike all other single word team names
+            teamsList.remove('Trail')
+        # teamsList originally formats as ["HTeam", "vs", "ATeam,"]
+        outdict['away'] = teamAbbreviations[teamsList[0]]
+        # gets away team without comma at the end
+        outdict['home'] = teamAbbreviations[teamsList[2][:len(teamsList[2]) - 1]]
+
         divs = [div.getText() for div in
                 soup.find('div', {'id': 'content'}).findAll('div', recursive=False)[-2].findAll('div')]
         for div in divs:
@@ -66,6 +110,9 @@ def scrapeGameAttendanceReferees(gameid=None):
                 outdict['ref'] = div.replace('Officials:', '').replace('\xa0', '').strip().split(', ')
             elif 'Attendance' in div:
                 outdict['att'] = int(div.replace('Attendance:', '').replace('\xa0', '').strip().replace(',', ''))
+            elif 'Time of Game' in div:
+                gameTime = time.strptime(div.replace('Time of Game:', '').replace('\xa0', ''), "%H:%M")
+                outdict['end'] = dt.timedelta(hours=gameTime.tm_hour, minutes=gameTime.tm_min)
     except Exception as e:
         print("Referee/attendance failed to add game: {0}".format(gameid))
     # print(outdict)

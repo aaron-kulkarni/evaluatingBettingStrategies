@@ -10,6 +10,7 @@ import requests
 import time
 
 import sys
+
 sys.path.insert(0, '..')
 from utils.utils import *
 from dataCollection.collectGameData import *
@@ -29,6 +30,7 @@ monthDict = {
     "11": "november",
     "12": "december"
 }
+
 
 def getStaticMonthData(month, year):
     url = 'https://www.basketball-reference.com/leagues/NBA_{}_games-{}.html'.format(year, month)
@@ -61,6 +63,7 @@ def getStaticMonthData(month, year):
 
     return gameIdList, dateTimeList, homeTeamList, awayTeamList, locationList, neutralList
 
+
 def getStaticGameData(game_id):
     month = monthDict[game_id[4:6]]
     year = getYearFromId(game_id)
@@ -88,6 +91,7 @@ def getStaticGameData(game_id):
             return dateTime, homeTeam, awayTeam, location, neutral
     raise Exception("Couldn't get static game data for {}".format(game_id))
 
+
 def getTeamCurrentRoster(team_abbr):
     """
         Scrapes a teams current roster. Players who are injured and guaranteed not to play
@@ -109,7 +113,8 @@ def getTeamCurrentRoster(team_abbr):
     try:
         teamRoster = scrapeRoster(team_abbr, year)[0]
         soup = bs.BeautifulSoup(urlopen(url), features='lxml')
-        injuriesTable = re.split(r"<th scope=\"row\"[^<>]*class=\"left \"", str(soup.find('div', {'id': 'all_injuries'})))
+        injuriesTable = re.split(r"<th scope=\"row\"[^<>]*class=\"left \"",
+                                 str(soup.find('div', {'id': 'all_injuries'})))
         regex = r"data-append-csv=\"([a-z0-9]+)\"[^<>]*data-stat=\"player\"[^<>]*>[\W\w]*<td[^<>]*data-stat=\"note\"[^<>]*>([\S ]*)</td></tr>"
         for row in injuriesTable:
             matches = re.findall(regex, row)
@@ -126,7 +131,7 @@ def getTeamCurrentRoster(team_abbr):
                         teamRoster.remove(matches[0])
             except Exception:
                 formatString = matches[0] if len(matches) else 'UNKNOWN'
-                #print('Player {0} status not found on basketball-reference.com'.format(formatString))
+                # print('Player {0} status not found on basketball-reference.com'.format(formatString))
 
         return teamRoster
 
@@ -134,13 +139,14 @@ def getTeamCurrentRoster(team_abbr):
         print(e)
         raise Exception('UNABLE TO NAVIGATE TO: {}'.format(url))
 
-def getStaticYearData(year):
 
+def getStaticYearData(year):
     gameIdList, dateTimeList, homeTeamList, awayTeamList, locationList, neutralList = [], [], [], [], [], []
     months = ['october', 'november', 'december', 'january', 'february', 'march', 'april']
 
     for month in months:
-        gameIdMonth, dateTimeMonth, homeTeamMonth, awayTeamMonth, locationMonth, neutralMonth = getStaticMonthData(month, year)
+        gameIdMonth, dateTimeMonth, homeTeamMonth, awayTeamMonth, locationMonth, neutralMonth = getStaticMonthData(
+            month, year)
         gameIdList.extend(gameIdMonth)
         dateTimeList.extend(dateTimeMonth)
         homeTeamList.extend(homeTeamMonth)
@@ -152,11 +158,18 @@ def getStaticYearData(year):
 
 
 def initGameStateData(year):
+    col = [['gameState', 'gameState', 'gameState', 'gameState', 'gameState', 'gameState', 'gameState', 'gameState',
+            'gameState', 'gameState', 'home', 'home', 'home', 'home', 'home', 'home', 'home', 'home', 'home', 'home',
+            'home', 'home', 'home', 'home', 'home', 'away', 'away', 'away', 'away', 'away', 'away', 'away', 'away',
+            'away', 'away', 'away', 'away', 'away', 'away', 'away'],
+           ['winner', 'teamHome', 'teamAway', 'location', 'rivalry', 'datetime', 'neutral', 'endtime', 'attendance',
+            'referees', 'q1Score', 'q2Score', 'q3Score', 'q4Score', 'overtimeScores', 'points', 'streak',
+            'daysSinceLastGame', 'playerRoster', 'record', 'matchupWins', 'salary', 'avgSalary', 'numberOfGamesPlayed',
+            'q1Score', 'q2Score', 'q3Score', 'q4Score', 'overtimeScores', 'points', 'streak', 'daysSinceLastGame',
+            'playerRoster', 'record', 'matchupWins', 'salary', 'avgSalary', 'numberOfGamesPlayed']]
 
-    col = [['gameState','gameState','gameState','gameState','gameState','gameState','gameState','gameState', 'gameState', 'gameState', 'home','home','home','home','home','home','home','home','home','home','home','home','home','home','away','away','away','away','away','away','away','away','away','away','away','away','away','away'],['winner','teamHome','teamAway','location','rivalry','datetime','neutral', 'endtime', 'attendance', 'referees', 'q1Score','q2Score','q3Score','q4Score','overtimeScores','points','streak','daysSinceLastGame','playerRoster','record','matchupWins','salary','avgSalary','numberOfGamesPlayed','q1Score','q2Score','q3Score','q4Score','overtimeScores','points','streak','daysSinceLastGame','playerRoster','record','matchupWins','salary','avgSalary','numberOfGamesPlayed']]
-
-    col = pd.MultiIndex.from_arrays(col, names = ['','teamData'])
-    df = pd.DataFrame(index = getYearIds(year), columns = col)
+    col = pd.MultiIndex.from_arrays(col, names=['', 'teamData'])
+    df = pd.DataFrame(index=getYearIds(year), columns=col)
     df.index.name = 'game_id'
     return df
 
@@ -172,6 +185,7 @@ def gameFinished(gameId):
         print("Game id({}) does not exist with status code {}".format(gameId, r.status_code))
         return 0
 
+
 def fillStaticValues(year):
     df = initGameStateData(year)
     gameIdList, dateTimeList, homeTeamList, awayTeamList, locationList, neutralList = getStaticYearData(year)
@@ -183,33 +197,45 @@ def fillStaticValues(year):
     df['gameState', 'neutral'] = neutralList
     df['gameState', 'index'] = df.index
 
-    df['home', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamHome'], year, d['gameState', 'index']), axis=1)
-    df['away', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamAway'], year, d['gameState', 'index']), axis=1)
-    df['home', 'daysSinceLastGame'] = df.apply(lambda d: getDaysSinceLastGame(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
-    df['away', 'daysSinceLastGame'] = df.apply(lambda d: getDaysSinceLastGame(getTeamScheduleAPI(d['gameState', 'teamAway'], d['gameState', 'index']), d['gameState', 'index']), axis=1)
-    df['gameState', 'rivalry'] = df.apply(lambda d: getRivalry(d['gameState', 'teamHome'], d['gameState', 'teamAway']), axis=1)
+    df['home', 'numberOfGamesPlayed'] = df.apply(
+        lambda d: getNumberGamesPlayed(d['gameState', 'teamHome'], year, d['gameState', 'index']), axis=1)
+    df['away', 'numberOfGamesPlayed'] = df.apply(
+        lambda d: getNumberGamesPlayed(d['gameState', 'teamAway'], year, d['gameState', 'index']), axis=1)
+    df['home', 'daysSinceLastGame'] = df.apply(
+        lambda d: getDaysSinceLastGame(getTeamScheduleAPI(d['gameState', 'teamHome'], d['gameState', 'index']),
+                                       d['gameState', 'index']), axis=1)
+    df['away', 'daysSinceLastGame'] = df.apply(
+        lambda d: getDaysSinceLastGame(getTeamScheduleAPI(d['gameState', 'teamAway'], d['gameState', 'index']),
+                                       d['gameState', 'index']), axis=1)
+    df['gameState', 'rivalry'] = df.apply(lambda d: getRivalry(d['gameState', 'teamHome'], d['gameState', 'teamAway']),
+                                          axis=1)
     df.drop('index', inplace=True, level=1, axis=1)
     return df
 
-#fillStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
+
+# fillStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
 
 def fillDependentStaticValues(year):
-    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
+    df = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header=[0, 1], index_col=0)
     df['gameState', 'index'] = df.index
 
-    df['home', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamHome'], year, d['gameState', 'index']), axis = 1)
-    df['away', 'numberOfGamesPlayed'] = df.apply(lambda d: getNumberGamesPlayed(d['gameState', 'teamAway'], year, d['gameState', 'index']), axis = 1)
-    df['gameState', 'rivalry'] = df.apply(lambda d: getRivalry(d['gameState', 'teamHome'], d['gameState', 'teamAway']), axis = 1)
-    df.drop('index', inplace = True, level = 1, axis = 1)
+    df['home', 'numberOfGamesPlayed'] = df.apply(
+        lambda d: getNumberGamesPlayed(d['gameState', 'teamHome'], year, d['gameState', 'index']), axis=1)
+    df['away', 'numberOfGamesPlayed'] = df.apply(
+        lambda d: getNumberGamesPlayed(d['gameState', 'teamAway'], year, d['gameState', 'index']), axis=1)
+    df['gameState', 'rivalry'] = df.apply(lambda d: getRivalry(d['gameState', 'teamHome'], d['gameState', 'teamAway']),
+                                          axis=1)
+    df.drop('index', inplace=True, level=1, axis=1)
     return df
 
-#fillDependentStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
+
+# fillDependentStaticValues(2023).to_csv('../data/gameStats/game_state_data_2023.csv')
 
 def updateGameStateDataAll(years):
     df = pd.DataFrame()
     for year in years:
-        df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
-        df = pd.concat([df, df_current], axis = 0)
+        df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header=[0, 1], index_col=0)
+        df = pd.concat([df, df_current], axis=0)
     return df
 
 
@@ -226,7 +252,7 @@ def updateGameStateData():
     Nothing
     """
 
-    df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header = [0,1], index_col = 0, dtype = object)
+    df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header=[0, 1], index_col=0, dtype=object)
     df.dropna()
     df2 = df[df['gameState']['winner'].isnull()]
     df_dict = df2.to_dict('index')
@@ -240,7 +266,7 @@ def updateGameStateData():
     print("Got previous game list. sleeping for 60 seconds")
     time.sleep(60)
     teamNamesList = []
-    #previousGameList holds all gameids that have been played but do not have data in the files
+    # previousGameList holds all gameids that have been played but do not have data in the files
     for curId in previousGameList:
         # fills in values for game that has already happened
         print(curId)
@@ -252,12 +278,12 @@ def updateGameStateData():
         time.sleep(20)
 
     df.to_csv('../data/gameStats/game_state_data_2023.csv')
-    #pushing previous changes to csv so that team_schedule updates properly
+    # pushing previous changes to csv so that team_schedule updates properly
     df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', header=[0, 1], index_col=0, dtype=object)
     df.dropna()
     listIndex = 0
 
-    #edit the next game data for both teams
+    # edit the next game data for both teams
     for curId in previousGameList:
         teamHome = teamNamesList[listIndex][0]
         teamAway = teamNamesList[listIndex][1]
@@ -265,21 +291,22 @@ def updateGameStateData():
         indexAway = getTeamsNextGame(teamAway, curId)
 
         homeGameData = getGameStateFutureData(indexHome)
-        homeData = getTeamFutureData(indexHome, teamHome, teamAway, 1)
-
         awayGameData = getGameStateFutureData(indexAway)
-        awayData = getTeamFutureData(indexAway, teamAway, teamHome, 0)
 
         df.loc[indexHome, 'gameState'] = homeGameData
         if homeGameData[1] == teamHome:
+            homeData = getTeamFutureData(indexHome, teamHome, homeGameData[2], 1)
             df.loc[indexHome, 'home'] = homeData
         else:
+            homeData = getTeamFutureData(indexHome, teamHome, homeGameData[1], 0)
             df.loc[indexHome, 'away'] = homeData
 
         df.loc[indexAway, 'gameState'] = awayGameData
         if awayGameData[1] == teamAway:
+            awayData = getTeamFutureData(indexAway, teamAway, awayGameData[2], 1)
             df.loc[indexAway, 'home'] = awayData
         else:
+            awayData = getTeamFutureData(indexAway, teamAway, awayGameData[1], 0)
             df.loc[indexAway, 'away'] = awayData
 
         print("Finished game {}. Sleeping for 30 seconds".format(curId))
@@ -287,8 +314,9 @@ def updateGameStateData():
         listIndex += 1
 
     df.to_csv('../data/gameStats/game_state_data_2023.csv')
-    updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
+    updateGameStateDataAll(np.arange(2015, 2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
     return
+
 
 def getTeamFutureData(game_id, team_abbr, opp_team, home):
     year = getYearFromId(game_id)
@@ -297,24 +325,30 @@ def getTeamFutureData(game_id, team_abbr, opp_team, home):
     days = round(getDaysSinceLastGame(teamSchedule, game_id))
     roster = getTeamCurrentRoster(team_abbr)
     record = getTeamRecord(teamSchedule, game_id, team_abbr)
-    matchupRecord = getPastMatchUpWinLoss(teamSchedule, game_id, opp_team)
+    matchupWins = getPastMatchUpWinLoss(teamSchedule, game_id, opp_team)
+    win_per = get_win_percentage(game_id)
     if home == 1:
-        matchupWins = matchupRecord[0]
+        matchupWins = matchupWins[0]
+        win_per = win_per[0]
     else:
-        matchupWins = matchupRecord[1]
+        matchupWins = matchupWins[1]
+        win_per = win_per[1]
     salary, avgSalary = getTeamSalaryData(team_abbr, game_id, roster)
     gamesPlayed = getNumberGamesPlayed(team_abbr, 2023, game_id)
-    return np.array([None,None,None,None,None,None,streak, days, roster, record, matchupWins, salary, avgSalary, gamesPlayed], dtype=object)
+    return np.array(
+        [None, None, None, None, None, None, streak, days, roster, record, matchupWins, salary, avgSalary, gamesPlayed,
+         win_per], dtype=object)
+
 
 def getGameStateFutureData(game_id):
     datetime, teamHome, teamAway, location, neutral = getStaticGameData(game_id)
     rivalry = getRivalry(teamHome, teamAway)
-    return np.array([None, teamHome, teamAway, location, rivalry, datetime, datetime, None, None, neutral], dtype=object)
+    return np.array([None, teamHome, teamAway, location, rivalry, datetime, datetime, None, None, neutral],
+                    dtype=object)
 
 
-#update_game_state_data()
-#updateGameStateData()
-#df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
+# update_game_state_data()
+updateGameStateData()
+# df = pd.read_csv('../data/gameStats/game_state_data_2023.csv', index_col=0, header=[0, 1])
 
-#updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
-
+# updateGameStateDataAll(np.arange(2015,2024)).to_csv('../data/gameStats/game_state_data_ALL.csv')
