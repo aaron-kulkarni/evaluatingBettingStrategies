@@ -39,10 +39,8 @@ def getSignal():
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0,1])
     signal = pd.DataFrame(df['gameState'])
     signal['signal'] = signal.apply(lambda d: return_signal(d['winner'], d['teamHome'], d['teamAway']), axis=1)
-    signal = signal.dropna(axis=0)
-    signal['signal'] = signal['signal'].apply(int)
-    return signal['signal']
-
+    return signal['signal'].dropna(axis=0)
+    
 def return_signal(winner,home_team,away_team):
     if home_team == winner:
         return int(1)
@@ -152,7 +150,7 @@ def testData(dfList, train_years, test_year, drop_na = True):
     return X_train, X_test, Y_train
 
 
-def testDataNow(dfList, start_train_year, test_games, drop_na = True):
+def testDataNow(dfList, start_train_year, test_games, train_size, drop_na = True):
     X = pd.concat(dfList, axis = 1)
     X['home'] = X.index.get_level_values(1)
     if drop_na == True:
@@ -165,6 +163,7 @@ def testDataNow(dfList, start_train_year, test_games, drop_na = True):
     X_train['year'] = X_train.apply(lambda d: getYearFromId(d['game_id']), axis=1)
     X_train = X_train[~X_train['year'].isin(range(2015, start_train_year))]
     X_train.drop(['game_id', 'year'], inplace = True, axis=1)
+    X_train =  X_train.tail(train_size)
     try:
         X_test = X[X.index.isin(sortDateMulti(test_games))]
     except:
@@ -209,7 +208,7 @@ teamData = selectColTeamData(['3P%', 'Drtg', 'Ortg', 'TOV%', 'eFG%'], 5)
 check_dataframe_NaN([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], getNextGames())
 
 X_train, X_test, Y_train = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2021, 2022], 2023, True)
-X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], 2021, getNextGames(), True)
+X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, mlval, gameData, teamData, perMetric], 2021, getNextGames(), 4244, True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
 save_training_data(X_test_)
 
@@ -291,7 +290,7 @@ def getDataFrame(Y_pred_prob, x_columns, test_index):
     #df['team'] = df.apply(lambda d: None if type(d['home']) != bool else teamDict[d['team_abbr']], axis=1)
     #acc = get_accuracy(df)
     #print(acc)
-    df.drop(['teamHome', 'teamAway', 'home_bet', 'away_bet', 'retHome', 'retAway', 'home'], axis=1, inplace=True)
+    df.drop(['teamHome', 'teamAway', 'home_bet', 'away_bet', 'retHome', 'retAway'], axis=1, inplace=True)
     return df
 
 def get_acc(home, signal):
@@ -318,3 +317,117 @@ x_columns = ['bet365_return', 'Unibet_return']
 Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_)
 df = getDataFrame(Y_pred_prob, x_columns, X_test.index)
 df_ = getDataFrame(Y_pred_prob_, x_columns, X_test_.index)
+print(df[df.index.isin(getGamesToday())])
+
+def rec_prob(df_):
+    df_all = pd.read_csv('../data/testingData/model_2_prob_2023.csv', index_col=0)
+    df_ = pd.concat([df_all, df_], axis=0)
+    df_.to_csv('../data/testingData/model_2_prob_2023.csv')
+    return
+
+rec_prob(df_)
+
+
+'''
+BACKTESTING
+----------------------------
+
+'''
+
+
+def get_different_rows(source_df, new_df):
+    merged_df = source_df.merge(new_df, indicator=True, how='outer')
+    changed_rows_df = merged_df[merged_df['_merge'] == 'right_only']
+    return changed_rows_df.drop('_merge', axis=1)
+
+def backtesting_curr_yr(dfList, train_years, test_years, size, clf, x_columns):
+    X_train, X_test, Y_train = testData(dfList, train_years, test_year, True)
+    col = X_train.columns
+    X_test['date'] = [i[:8] for i in X_test.index.get_level_values(0)]
+    X_test['batch'] = (~X_test['date'].duplicated()).cumsum()
+    df = pd.DataFrame()
+    for i in range(1, X_test['batch'].max() + 1):
+        X_test_batch = X_test[X_test['batch'] < i]
+        X_test_batch = X_test_batch[col]
+        X_train_all = pd.concat([X_train, X_test_batch], axis=0).tail(size)
+        X_test_batch = X_test[X_test['batch'] == i]
+        X_test_batch = X_test_batch[col]
+        X_train_all = X_train_all.reindex(sortDateMulti(X_train_all.index.get_level_values(0)))
+        Y_train_all = get_signal()[get_signal().index.isin(X_train_all.index)]
+        Y_train_all = Y_train_all.reindex(X_train_all.index)
+        Y_pred_prob = xgboost(clf, X_train_all, Y_train_all, X_test_batch)
+        df_current = getDataFrame(Y_pred_prob, x_columns, X_test_batch.index)
+        df = pd.concat([df, df_current], axis=0)
+    return df
+
+def findTotal(dictReturns):
+    dictReturns[list(dictReturns)[0]]['pre_total'] = 1
+    dictReturns[list(dictReturns)[0]]['total'] = 1 - dictReturns[list(dictReturns)[0]]['per_bet']
+
+    keys = list(dictReturns.keys())
+    for k in keys[1:] :
+        dictReturns[k]['pre_total'] = dictReturns[keys[keys.index(k) - 1]]['total']
+        if k[1] == 1:
+            dictReturns[k]['total'] = dictReturns[k]['pre_total'] * (1 - dictReturns[k]['per_bet'])
+        if k[1] == 0:
+            if dictReturns[k]['return'] == 0:
+                dictReturns[k]['total'] = dictReturns[k]['pre_total']
+            else:
+                dictReturns[k]['total'] = dictReturns[k]['pre_total'] + dictReturns[(k[0], 1)]['pre_total'] * (dictReturns[k]['return'] + dictReturns[k]['per_bet'])
+            
+    return dictReturns
+
+def convertReturns(series, index):
+    df1 = pd.DataFrame(series)
+    df1['start'] = 1
+    df2 = pd.DataFrame(series)
+    df2['start'] = 0
+
+    df = pd.concat([df1, df2], axis = 0)
+    df.reset_index(inplace = True)
+    df.set_index(['game_id', 'start'], inplace = True)
+    df = df.reindex(index)
+    return df
+
+def get_signal_adj(signal, home):
+    if type(home) != bool:
+        return None
+    if home == True:
+        return signal
+    if home == False:
+        return 1 - signal
+    
+
+def backtesting_returns(df):
+    df['signal_adj'] = getSignal()[getSignal().index.isin(df.index)]
+    df = df[df['signal_adj'].notna()]
+    df['signal'] = df.apply(lambda d: get_signal_adj(d['signal_adj'], d['home']), axis=1)     
+    df['return'] = df.apply(lambda d: d['p_return'] if d['signal'] == 1 else 0, axis=1)
+    df['adj_return'] = df.apply(lambda d: d['return'] * d['per_bet'], axis=1)
+    index = sortAllDates(df.index)
+    per_bet = convertReturns(df['per_bet'], index)
+    returns = convertReturns(df['adj_return'], index)
+    returns.rename(columns = {'adj_return' : 'return'}, inplace = True)
+    dictReturns = pd.concat([per_bet, returns], axis = 1).T.to_dict()
+    dfAll = pd.DataFrame(findTotal(dictReturns)).T
+    print(dfAll['total'])
+    return dfAll['total']
+
+
+dfList = [bettingOddsAll, elo, mlval, gameData, teamData, perMetric]
+train_years = [2021, 2022]
+test_years = 2023
+size = 4244
+df_backtesting = backtesting_curr_yr(dfList, train_years, test_years, size,  clf, x_columns)
+total = backtesting_returns(df)
+total_ =  backtesting_returns(df_backtesting)
+
+x = np.arange(1, len(total) + 1)
+y = list(total.array)
+plt.plot(x, y, label = 'PERCENTAGE RETURN')
+plt.show()
+
+x = np.arange(1, len(total_) + 1)
+y = list(total_.array)
+plt.plot(x, y, label = 'PERCENTAGE RETURN')
+plt.show()
