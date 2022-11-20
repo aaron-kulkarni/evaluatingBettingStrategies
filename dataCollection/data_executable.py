@@ -17,6 +17,7 @@ def updateGameStateDataAllf(years):
     for year in years:
         df_current = pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), header = [0,1], index_col = 0)
         df = pd.concat([df, df_current], axis = 0)
+    df.to_csv('../data/gameStats/game_state_data_ALL.csv')
     return df
 
 #updateGameStateDataAllf(years)
