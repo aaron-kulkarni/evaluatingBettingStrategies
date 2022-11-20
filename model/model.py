@@ -280,11 +280,11 @@ def findTotal(dictReturns):
             
     return dictReturns
 
+x_columns = ['bet365_return', 'Unibet_return']
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
 Y_pred_prob, Y_pred_prob_adj = xgboost(clf, X_train, Y_train, X_test, Y_test)
 df, odds_all = getOddBreakdown(Y_pred_prob, Y_test, bettingOddsAll)
 dfAll, returns = Kelly(df, odds_all, 0.2, x_columns, 1, [0, 100])
-x_columns = ['bet365_return', 'Unibet_return']
 
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
