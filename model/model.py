@@ -161,7 +161,7 @@ gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGam
 #bettingOddsPCA = iteratedPCA(bettingOddsAll, 2, tr_in, te_in)
 #bettingOddsPCA, coeff = performPCA(bettingOddsAll, 2)
 teamData = selectColTeamData(['3P%', 'Ortg', 'Drtg', 'PTS', 'TOV%', 'eFG%'], 5)
-X_train, X_test, Y_train, Y_test = testData([teamData, bettingOddsAll, elo, mlval, gameData, perMetric], [2020, 2019], 2021, True)
+X_train, X_test, Y_train, Y_test = testData([teamData, bettingOddsAll, elo, mlval, gameData, perMetric], [2020, 2021], 2022, True)
 
 # PARAMATER TUNING
 def findParamsXGB(X_train, Y_train):
