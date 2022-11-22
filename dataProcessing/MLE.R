@@ -250,7 +250,7 @@ predictProbUsingEloScore <- function(game.date, elo.prev.date, home.advantage){
   ##game.date <- dat2021[dat2021$date==date,]
   ##browser()
   ngame <- nrow(game.date)
-  if(length(home.advantage)==1) home.advantage <- rep(1, ngame)
+  if(length(home.advantage)==1) home.advantage <- rep(home.advantage, ngame)
   winprob <- rep(NA, ngame)
   home.id <- game.date$home.or.away=="home"
   winprob[home.id] <- rbind(win_probs(home_elo=elo.prev.date[game.date$team[home.id]], away_elo=elo.prev.date[game.date$opp.team[home.id]], 
@@ -268,7 +268,7 @@ predictProbUsingEloScore2 <- function(game.date, team.elo.colnme="team.elo", opp
   
   game.date <- as.data.frame(game.date)
   ngame <- nrow(game.date)
-  if(length(home.advantage)==1) home.advantage <- rep(1, ngame)
+  #if(length(home.advantage)==1) home.advantage <- rep(1, ngame)
   winprob <- rep(NA, ngame)
   home.id <- game.date$home.or.away=="home"
   ##browser()
