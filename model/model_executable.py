@@ -201,9 +201,9 @@ def check_dataframe_NaN(dfList, gameIdList):
 
 perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1']) 
 mlval = selectMLVal(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
-bettingOddsAll = selectColOdds(['1xBet (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)'])
+bettingOddsAll = selectColOdds(['bet365 (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)'])
 elo = selectColElo(['elo_prob', 'raptor_prob'])
-gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins'])
+gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins', 'win_per'])
 teamData = selectColTeamData(['3P%', 'Drtg', 'Ortg', 'TOV%', 'eFG%'], 5)
 check_dataframe_NaN([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], getNextGames())
 
@@ -271,7 +271,7 @@ def get_team(home, teamHome, teamAway):
         return teamAway
         
 
-def getDataFrame(Y_pred_prob, x_columns, test_index):
+def getDataFrame(Y_pred_prob, x_columns, test_index, alpha):
     #teamDict = {v: k for k, v in getTeamDict().items()}
     df = pd.DataFrame(index = test_index, columns = ['Y_prob'], data = Y_pred_prob)[::2]
     df = df.set_index(df.index.get_level_values(0))
@@ -281,8 +281,8 @@ def getDataFrame(Y_pred_prob, x_columns, test_index):
     df['odds_mean'] = odds['homeProbAdj'].mean(axis=1)
     df = findReturns(df, x_columns)
     df['home_bet'], df['away_bet'] = returnBettingFirm(x_columns, df.index)
-    df['per_bet'] = df.apply(lambda d: kellyBet(d['Y_prob'], 0.2, d['retHome'], d['retAway'])[0], axis=1)
-    df['home'] = df.apply(lambda d: kellyBet(d['Y_prob'], 0.2, d['retHome'], d['retAway'])[1], axis=1)
+    df['per_bet'] = df.apply(lambda d: kellyBet(d['Y_prob'], alpha, d['retHome'], d['retAway'])[0], axis=1)
+    df['home'] = df.apply(lambda d: kellyBet(d['Y_prob'], alpha, d['retHome'], d['retAway'])[1], axis=1)
     df['firm'] = df.apply(lambda d: get_firm(d['home'], d['home_bet'], d['away_bet']), axis=1)
     df['p_return'] = df.apply(lambda d: get_ret(d['home'], d['retHome'], d['retAway']), axis=1)
     df = pd.concat([df, getTeamsAllYears()[getTeamsAllYears().index.isin(df.index)]], axis=1)
@@ -315,8 +315,8 @@ def get_accuracy(df):
 Y_pred_prob = xgboost(clf, X_train, Y_train, X_test)
 x_columns = ['bet365_return', 'Unibet_return']
 Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_)
-df = getDataFrame(Y_pred_prob, x_columns, X_test.index)
-df_ = getDataFrame(Y_pred_prob_, x_columns, X_test_.index)
+df = getDataFrame(Y_pred_prob, x_columns, X_test.index, 0.125)
+df_ = getDataFrame(Y_pred_prob_, x_columns, X_test_.index, 0.125)
 print(df[df.index.isin(getGamesToday())])
 
 def rec_prob(df_):
@@ -398,9 +398,10 @@ def get_signal_adj(signal, home):
         return 1 - signal
     
 
-def backtesting_returns(df):
+def backtesting_returns(df, returns):
     df['signal_adj'] = getSignal()[getSignal().index.isin(df.index)]
     df = df[df['signal_adj'].notna()]
+    df['p_return'] = df['p_return'].apply(lambda x: x if x > returns else 0)
     df['signal'] = df.apply(lambda d: get_signal_adj(d['signal_adj'], d['home']), axis=1)     
     df['return'] = df.apply(lambda d: d['p_return'] if d['signal'] == 1 else 0, axis=1)
     df['adj_return'] = df.apply(lambda d: d['return'] * d['per_bet'], axis=1)
@@ -411,7 +412,7 @@ def backtesting_returns(df):
     dictReturns = pd.concat([per_bet, returns], axis = 1).T.to_dict()
     dfAll = pd.DataFrame(findTotal(dictReturns)).T
     print(dfAll['total'])
-    return dfAll['total']
+    return dfAll, dfAll['total']
 
 
 dfList = [bettingOddsAll, elo, mlval, gameData, teamData, perMetric]
@@ -419,8 +420,8 @@ train_years = [2021, 2022]
 test_years = 2023
 size = 4244
 df_backtesting = backtesting_curr_yr(dfList, train_years, test_years, size,  clf, x_columns)
-total = backtesting_returns(df)
-total_ =  backtesting_returns(df_backtesting)
+df_All_, total = backtesting_returns(df, 0)
+dfAll_, total_ =  backtesting_returns(df_backtesting, 0)
 
 x = np.arange(1, len(total) + 1)
 y = list(total.array)
@@ -429,5 +430,41 @@ plt.show()
 
 x = np.arange(1, len(total_) + 1)
 y = list(total_.array)
+plt.plot(x, y, label = 'PERCENTAGE RETURN')
+plt.show()
+
+def perform_post_analysis(df_schedule, df_returns):
+    
+    gameIdList = list(df_returns.index.get_level_values(0).unique())
+    endGames = pd.MultiIndex.from_arrays([gameIdList, [0]*len(gameIdList)])
+    df_end = df_returns[df_returns.index.isin(endGames)]
+    df_lost = df_end[df_end['return'] == 0]
+    df_lost = df_lost[df_lost['per_bet'] != 0]
+    df_won = df_end[df_end['return'] != 0]
+    df_won = df_won[df_won['per_bet'] != 0]
+    
+    df_schedule_lost = df_schedule[df_schedule.index.isin(df_lost.index.get_level_values(0))]
+    df_schedule_lost_home = df_schedule_lost[df_schedule_lost['home'] == True]
+    df_schedule_lost_away = df_schedule_lost[df_schedule_lost['home'] == False]
+
+    df_schedule_won = df_schedule[df_schedule.index.isin(df_won.index.get_level_values(0))]
+    df_schedule_won_home = df_schedule_won[df_schedule_won['home'] == True]
+    df_schedule_won_away = df_schedule_won[df_schedule_won['home'] == False]
+
+    return df_schedule_won_home, df_schedule_won_away, df_schedule_lost_home, df_schedule_lost_away
+
+df_schedule_won_home, df_schedule_won_away, df_schedule_lost_home, df_schedule_lost_away = perform_post_analysis(df_backtesting, dfAll_)
+
+index = list(df_schedule_won_away[df_schedule_won_away['p_return'] > 0].index) +  list(df_schedule_lost_away[df_schedule_lost_away['p_return'] > 0].index)
+
+
+def test_returns_index(df, index):
+    df.drop(index = index, inplace = True, axis = 0)
+    return backtesting_returns(df, 0)
+
+dfAll_total_in, total_in =  test_returns_index(df_backtesting,index)
+
+x = np.arange(1, len(total_in) + 1)
+y = list(total_in.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')
 plt.show()
