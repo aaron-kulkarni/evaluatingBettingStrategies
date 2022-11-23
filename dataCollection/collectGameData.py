@@ -447,21 +447,24 @@ def get_win_percentage(gameId):
     year = getYearFromId(gameId)
     dfHome = getTeamScheduleCSVSplit(teamHome, year)[0]['gameState'][:gameId].drop([gameId], axis=0)
     dfAway = getTeamScheduleCSVSplit(teamAway, year)[1]['gameState'][:gameId].drop([gameId], axis=0)
-    if dfHome.isnull().values.any() == True:
-        return None, None 
-    if dfAway.isnull().values.any() == True:
-        return None, None
-    try: 
-        dfHome['signal'] = dfHome.apply(lambda d: 1 if d['winner'] == teamHome else 0, axis=1)
-        home_wp = dfHome['signal'].sum()/len(dfHome['signal'])
-    except:
-        home_wp = None
 
-    try:
-        dfAway['signal'] = dfAway.apply(lambda d: 1 if d['winner'] == teamAway else 0, axis=1)
-        away_wp = dfAway['signal'].sum()/len(dfAway['signal'])
-    except:
-        away_wp = None 
+    if dfHome.isnull().values.any():
+        home_wp = None
+    else:
+        try:
+            dfHome['signal'] = dfHome.apply(lambda d: 1 if d['winner'] == teamHome else 0, axis=1)
+            home_wp = dfHome['signal'].sum() / len(dfHome['signal'])
+        except:
+            home_wp = None
+
+    if dfAway.isnull().values.any():
+        away_wp = None
+    else:
+        try:
+            dfAway['signal'] = dfAway.apply(lambda d: 1 if d['winner'] == teamAway else 0, axis=1)
+            away_wp = dfAway['signal'].sum() / len(dfAway['signal'])
+        except:
+            away_wp = None
     return home_wp, away_wp
 
 
