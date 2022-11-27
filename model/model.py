@@ -154,14 +154,14 @@ EXECUTION (BETTING ODDS)
 
 perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1'])    
 mlval = selectMLVal(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
-bettingOddsAll = selectColOdds(['Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)', 'bet365 (%)'])
+bettingOddsAll = selectColOdds(['1xBet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)', 'bet365 (%)'])
 elo = selectColElo(['elo_prob', 'raptor_prob'])
 gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins', 'win_per'])
 #tr_in, te_in = splitTrainTestYear(bettingOddsAll.index, np.arange(2015,2022), 2022)
 #bettingOddsPCA = iteratedPCA(bettingOddsAll, 2, tr_in, te_in)
 #bettingOddsPCA, coeff = performPCA(bettingOddsAll, 2)
 teamData = selectColTeamData(['3P%', 'Ortg', 'Drtg', 'PTS', 'TOV%', 'eFG%'], 5)
-X_train, X_test, Y_train, Y_test = testData([teamData, bettingOddsAll, elo, mlval, gameData, perMetric], [2019, 2018], 2020, True)
+X_train, X_test, Y_train, Y_test = testData([teamData, bettingOddsAll, elo, mlval, gameData, perMetric], [2020, 2021], 2022, True)
 
 # PARAMATER TUNING
 def findParamsXGB(X_train, Y_train):

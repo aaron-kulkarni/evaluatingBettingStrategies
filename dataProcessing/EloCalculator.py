@@ -456,6 +456,25 @@ class convertEloCSVs:
         df_all = df_all.reindex(sortDate(df_all.index))
         df_all.to_csv('../data/eloData/nba_elo_all.csv')
         return 
-    
-    
+
+
+def get_raptor_change(gameId, home):
+    df = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col=0)
+    if home == True:
+        team = df.loc[gameId]['team1']
+        raptor = df.loc[gameId]['raptor1_pre']
+    if home == False:
+        team = df.loc[gameId]['team2']
+        raptor = df.loc[gameId]['raptor2_pre']
+    try:
+        gameId_ = getRecentNGames(gameId, 1, team)[0]
+    except:
+        return None 
+    if df.loc[gameId_]['team1'] == team:
+        raptor_pre = df.loc[gameId_]['raptor1_pre']
+    if df.loc[gameId_]['team2'] == team:
+        raptor_pre = df.loc[gameId_]['raptor2_pre']
+
+    return raptor - raptor_pre
+
 #EloCalculator.getEloProb(2023).to_csv('../data/eloData/elo_2023.csv')

@@ -30,3 +30,7 @@ concatAll(np.arange(2015,2024))
 
 # R script (run after raptor and odds)
 os.system('Rscript /Users/jasonli/Projects/evaluatingBettingStrategies/dataProcessing/MLE.R')
+
+for gameId in getNextGames():
+    print('{} - home team raptor-change: {}'.format(gameId, get_raptor_change(gameId, True)))
+    print('{} - away team raptor-change: {}'.format(gameId, get_raptor_change(gameId, False)))

@@ -201,7 +201,7 @@ def check_dataframe_NaN(dfList, gameIdList):
 
 perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1']) 
 mlval = selectMLVal(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
-bettingOddsAll = selectColOdds(['bet365 (%)', 'Marathonbet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)'])
+bettingOddsAll = selectColOdds(['Marathonbet (%)', '1xBet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)'])
 elo = selectColElo(['elo_prob', 'raptor_prob'])
 gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins', 'win_per'])
 teamData = selectColTeamData(['3P%', 'Drtg', 'Ortg', 'TOV%', 'eFG%'], 5)
@@ -209,7 +209,8 @@ check_dataframe_NaN([bettingOddsAll, elo, perMetric, mlval, gameData, teamData],
 
 X_train, X_test, Y_train = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2021, 2022], 2023, True)
 X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, mlval, gameData, teamData, perMetric], 2021, getNextGames(), 4244, True)
-clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
+clf = XGBClassifier(learning_rate = 0.02, max_depth = 4, min_child_weight = 6, n_estimators = 150)
+#clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
 save_training_data(X_test_)
 
 def save_training_data(X_test):
@@ -281,6 +282,7 @@ def getDataFrame(Y_pred_prob, x_columns, test_index, alpha):
     df['odds_mean'] = odds['homeProbAdj'].mean(axis=1)
     df = findReturns(df, x_columns)
     df['home_bet'], df['away_bet'] = returnBettingFirm(x_columns, df.index)
+    df.dropna(axis=0, inplace=True)
     df['per_bet'] = df.apply(lambda d: kellyBet(d['Y_prob'], alpha, d['retHome'], d['retAway'])[0], axis=1)
     df['home'] = df.apply(lambda d: kellyBet(d['Y_prob'], alpha, d['retHome'], d['retAway'])[1], axis=1)
     df['firm'] = df.apply(lambda d: get_firm(d['home'], d['home_bet'], d['away_bet']), axis=1)
@@ -315,7 +317,7 @@ def get_accuracy(df):
 Y_pred_prob = xgboost(clf, X_train, Y_train, X_test)
 x_columns = ['bet365_return', 'Unibet_return']
 Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_)
-df = getDataFrame(Y_pred_prob, x_columns, X_test.index, 0.125)
+df = getDataFrame(Y_pred_prob, x_columns, X_test.index, 0.2)
 df_ = getDataFrame(Y_pred_prob_, x_columns, X_test_.index, 0.125)
 print(df[df.index.isin(getGamesToday())])
 
@@ -340,8 +342,8 @@ def get_different_rows(source_df, new_df):
     changed_rows_df = merged_df[merged_df['_merge'] == 'right_only']
     return changed_rows_df.drop('_merge', axis=1)
 
-def backtesting_curr_yr(dfList, train_years, test_years, size, clf, x_columns):
-    X_train, X_test, Y_train = testData(dfList, train_years, test_year, True)
+def backtesting_curr_yr(dfList, train_years, test_years, size, clf, x_columns, alpha, drop_na = True):
+    X_train, X_test, Y_train = testData(dfList, train_years, test_year, drop_na)
     col = X_train.columns
     X_test['date'] = [i[:8] for i in X_test.index.get_level_values(0)]
     X_test['batch'] = (~X_test['date'].duplicated()).cumsum()
@@ -356,7 +358,7 @@ def backtesting_curr_yr(dfList, train_years, test_years, size, clf, x_columns):
         Y_train_all = get_signal()[get_signal().index.isin(X_train_all.index)]
         Y_train_all = Y_train_all.reindex(X_train_all.index)
         Y_pred_prob = xgboost(clf, X_train_all, Y_train_all, X_test_batch)
-        df_current = getDataFrame(Y_pred_prob, x_columns, X_test_batch.index)
+        df_current = getDataFrame(Y_pred_prob, x_columns, X_test_batch.index, alpha)
         df = pd.concat([df, df_current], axis=0)
     return df
 
@@ -419,7 +421,7 @@ dfList = [bettingOddsAll, elo, mlval, gameData, teamData, perMetric]
 train_years = [2021, 2022]
 test_years = 2023
 size = 4244
-df_backtesting = backtesting_curr_yr(dfList, train_years, test_years, size,  clf, x_columns)
+df_backtesting = backtesting_curr_yr(dfList, train_years, test_years, size,  clf, x_columns, 0.15, True)
 df_All_, total = backtesting_returns(df, 0)
 dfAll_, total_ =  backtesting_returns(df_backtesting, 0)
 
