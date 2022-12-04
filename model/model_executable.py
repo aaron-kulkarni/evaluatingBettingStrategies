@@ -208,7 +208,7 @@ teamData = selectColTeamData(['3P%', 'Drtg', 'Ortg', 'TOV%', 'eFG%'], 5)
 check_dataframe_NaN([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], getNextGames())
 
 X_train, X_test, Y_train = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2021, 2022], 2023, True)
-X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, mlval, gameData, teamData, perMetric], 2021, getNextGames(), 4244, True)
+X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, mlval, gameData, teamData, perMetric], 2021,  getNextGames(), 4244, True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 4, min_child_weight = 6, n_estimators = 150)
 #clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
 save_training_data(X_test_)
@@ -317,8 +317,8 @@ def get_accuracy(df):
 Y_pred_prob = xgboost(clf, X_train, Y_train, X_test)
 x_columns = ['bet365_return', 'Unibet_return']
 Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_)
-df = getDataFrame(Y_pred_prob, x_columns, X_test.index, 0.2)
-df_ = getDataFrame(Y_pred_prob_, x_columns, X_test_.index, 0.125)
+df = getDataFrame(Y_pred_prob, x_columns, X_test.index, 0.15)
+df_ = getDataFrame(Y_pred_prob_, x_columns, X_test_.index, 0.15)
 print(df[df.index.isin(getGamesToday())])
 
 def rec_prob(df_):
@@ -343,7 +343,7 @@ def get_different_rows(source_df, new_df):
     return changed_rows_df.drop('_merge', axis=1)
 
 def backtesting_curr_yr(dfList, train_years, test_years, size, clf, x_columns, alpha, drop_na = True):
-    X_train, X_test, Y_train = testData(dfList, train_years, test_year, drop_na)
+    X_train, X_test, Y_train = testData(dfList, train_years, test_years, drop_na)
     col = X_train.columns
     X_test['date'] = [i[:8] for i in X_test.index.get_level_values(0)]
     X_test['batch'] = (~X_test['date'].duplicated()).cumsum()
@@ -457,6 +457,8 @@ def perform_post_analysis(df_schedule, df_returns):
 
 df_schedule_won_home, df_schedule_won_away, df_schedule_lost_home, df_schedule_lost_away = perform_post_analysis(df_backtesting, dfAll_)
 
+df_schedule_won_home, df_schedule_won_away, df_schedule_lost_home, df_schedule_lost_away = perform_post_analysis(df, df_All_)
+
 index = list(df_schedule_won_away[df_schedule_won_away['p_return'] > 0].index) +  list(df_schedule_lost_away[df_schedule_lost_away['p_return'] > 0].index)
 
 
@@ -470,3 +472,23 @@ x = np.arange(1, len(total_in) + 1)
 y = list(total_in.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')
 plt.show()
+
+def test_comp_year(year, bettingOddsAll, per_bet, x_columns):
+    odds = pd.DataFrame(index = bettingOddsAll.index.get_level_values(0).unique())
+    bettingOddsAll.index = bettingOddsAll.index.get_level_values(0)
+    odds['prob'] = bettingOddsAll[::2].mean(axis=1)
+    odds['game_id'] = odds.index
+    odds['year'] = odds.apply(lambda d: getYearFromId(d['game_id']), axis=1)
+    odds = odds[odds['year'] == year]
+    odds['per_bet'] = per_bet
+    odds = findReturns(odds, x_columns)
+    odds['p_return'] = odds.apply(lambda d: d['retHome'] if d['prob'] > 0.5 else d['retAway'], axis=1)
+    odds['home'] = odds.apply(lambda d: True if d['prob'] > 0.5 else False, axis=1)
+    odds.drop(['game_id', 'retHome', 'retAway'], axis=1, inplace=True)
+    odds.index.name = 'game_id'
+    return backtesting_returns(odds, 0)
+
+test_comp_year(2023, bettingOddsAll, 0.02, x_columns)
+
+    
+    
