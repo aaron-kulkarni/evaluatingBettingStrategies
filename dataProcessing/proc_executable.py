@@ -8,28 +8,29 @@ from cleanBettingOdds import *
 from PerformanceMetric import *
 import os
 
-
-# can only be run after scraping odds
-addAdjProb('../data/bettingOddsData/closing_betting_odds_2023_clean.csv').to_csv('../data/bettingOddsData/adj_prob_2023.csv')
-concatBettingOdds(np.arange(2015, 2024)).to_csv('../data/bettingOddsData/closing_betting_odds_all.csv')
-fillBettingOdds(np.arange(2015,2024)).to_csv('../data/bettingOddsData/adj_prob_win_ALL.csv')
-addReturns('../data/bettingOddsData/closing_betting_odds_all.csv')
-convAmericanOdds('../data/bettingOddsData/closing_betting_odds_all.csv').to_csv('../data/bettingOddsData/closing_betting_odds_returns.csv')
+current_year = getYearHelper(dt.datetime.now().year, dt.datetime.now().month)
 
 # run after team performances
-TeamPerformance(2023).getTeamPerformanceDF(5, True)
-TeamPerformance(2023).getTeamPerformanceDF(5, False)
-concat(5, np.arange(2015,2024))
+TeamPerformance(current_year).getTeamPerformanceDF(5, True)
+TeamPerformance(current_year).getTeamPerformanceDF(5, False)
+concat(5, np.arange(2015, current_year + 1))
+
+# can only be run after scraping odds
+addAdjProb('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(current_year)).to_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(current_year))
+concatBettingOdds(np.arange(2015, current_year + 1)).to_csv('../data/bettingOddsData/closing_betting_odds_all.csv')
+fillBettingOdds(np.arange(2015, current_year + 1)).to_csv('../data/bettingOddsData/adj_prob_win_ALL.csv')
+addReturns('../data/bettingOddsData/closing_betting_odds_all.csv')
+convAmericanOdds('../data/bettingOddsData/closing_betting_odds_all.csv').to_csv('../data/bettingOddsData/closing_betting_odds_returns.csv')
 
 # can be run anytime (preferably run a bit before game starts)
 convertEloCSVs.concatCSV()
 
 # can only be run after odds
-updatePerMetric(2023)
-concatAll(np.arange(2015,2024))
+updatePerMetric(current_year)
+concatAll(np.arange(2015, current_year + 1))
 
 # R script (run after raptor and odds)
-os.system('Rscript /Users/jasonli/Projects/evaluatingBettingStrategies/dataProcessing/MLE.R')
+os.system('Rscript {}'.format(os.path.abspath('MLE.R')))
 
 for gameId in getNextGames():
     print('{} - home team raptor-change: {}'.format(gameId, get_raptor_change(gameId, True)))
