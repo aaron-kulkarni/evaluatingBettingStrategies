@@ -6,11 +6,12 @@ sys.path.insert(0, '..')
 from dataCollection.collectGameIds import *
 from dataCollection.collectPlayerData import *
 
+current_year = getYearHelper(dt.datetime.now().year, dt.datetime.now().month)
+
 updateGameStateData()
+update_team_stats(np.arange(2015, current_year + 1))
 
-update_team_stats(np.arange(2015, 2024))
-
-years = np.arange(2015,2024)
+years = np.arange(2015, current_year + 1)
 
 def updateGameStateDataAllf(years):
     df = pd.DataFrame()
