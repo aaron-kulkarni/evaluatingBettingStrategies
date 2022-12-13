@@ -208,7 +208,7 @@ teamData = selectColTeamData(['3P%', 'Drtg', 'Ortg', 'TOV%', 'eFG%'], 5)
 check_dataframe_NaN([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], getNextGames())
 
 X_train, X_test, Y_train = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2021, 2022], 2023, True)
-X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, mlval, gameData, teamData, perMetric], 2021,  getNextGames(), 4244, True)
+X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, mlval, gameData, teamData, perMetric], 2021, getNextGames(), 4244, True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 4, min_child_weight = 6, n_estimators = 150)
 #clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
 save_training_data(X_test_)
@@ -416,7 +416,6 @@ def backtesting_returns(df, returns):
     print(dfAll['total'])
     return dfAll, dfAll['total']
 
-
 dfList = [bettingOddsAll, elo, mlval, gameData, teamData, perMetric]
 train_years = [2021, 2022]
 test_years = 2023
@@ -425,9 +424,33 @@ df_backtesting = backtesting_curr_yr(dfList, train_years, test_years, size,  clf
 df_All_, total = backtesting_returns(df, 0)
 dfAll_, total_ =  backtesting_returns(df_backtesting, 0)
 
+def plot_returns(total):
+    gameIdList = total.index.get_level_values(0).unique()
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0,1])
+    df1, df2 = pd.DataFrame(), pd.DataFrame()
+    df1['date'] = pd.to_datetime(df['gameState']['datetime'])
+    df1['start'] = 1
+    df2['date'] = pd.to_datetime(df['gameState']['endtime'])
+    df2['start'] = 0
+    df1.reset_index(inplace=True)
+    df2.reset_index(inplace=True)
+    df = pd.concat([df1, df2], axis=0)
+    df.sort_values(by='date', ascending=True, inplace=True)
+    df.set_index(['game_id'], inplace=True)
+    df = df[df.index.isin(gameIdList)]
+    df.reset_index(inplace=True)
+    df.set_index(['game_id', 'start'], inplace=True)
+    total = pd.concat([total, df], axis=1)
+    return total['date'].array
+
+
+#re['date'] = [i[:8] for i in re.index.get_level_values(0)]
+#re['batch'] = (~re['date'].duplicated()).cumsum()
+
 x = np.arange(1, len(total) + 1)
 y = list(total.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')
+#plt.xticks(x, plot_returns(total))
 plt.show()
 
 x = np.arange(1, len(total_) + 1)
@@ -473,7 +496,7 @@ y = list(total_in.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')
 plt.show()
 
-def test_comp_year(year, bettingOddsAll, per_bet, x_columns):
+def test_comp_year(year, bettingOddsAll, per_bet, x_columns, cond):
     odds = pd.DataFrame(index = bettingOddsAll.index.get_level_values(0).unique())
     bettingOddsAll.index = bettingOddsAll.index.get_level_values(0)
     odds['prob'] = bettingOddsAll[::2].mean(axis=1)
@@ -488,7 +511,4 @@ def test_comp_year(year, bettingOddsAll, per_bet, x_columns):
     odds.index.name = 'game_id'
     return backtesting_returns(odds, 0)
 
-test_comp_year(2023, bettingOddsAll, 0.02, x_columns)
-
-    
-    
+test_comp_year(2023, bettingOddsAll, 0.02, x_columns, 0)
