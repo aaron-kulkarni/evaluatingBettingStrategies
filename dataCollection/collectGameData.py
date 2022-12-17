@@ -147,9 +147,11 @@ def getGameData(game_id, neutral):
     # Times of game
     timeOfDay = pd.to_datetime(homeTeamSchedule.loc[game_id]['datetime'])
     # if the end time of a game is not available, use an estimation
-    endTime = timeOfDay + otherDict['end']
-    if endTime is None:
+    if otherDict['end'] is None:
         endTime = timeOfDay + (timedelta(hours=(2 + .5 * len(overtimeScoresHome))))
+    else:
+        endTime = timeOfDay + otherDict['end']
+
 
     # Gets win percentages for home and away team when they are home and away
     win_per_home, win_per_away = get_win_percentage(game_id)
