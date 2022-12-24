@@ -1,13 +1,12 @@
-import pandas as pd
-import numpy as np
 import sys
-import itertools
 sys.path.insert(0, "..")
 
 from utils.utils import *
 from dataProcessing.PCA import *
 from kelly import *
 
+import itertools
+from collections import Counter
 import matplotlib.pyplot as plt
 import ray 
 import multiprocessing
@@ -45,66 +44,65 @@ def get_signal():
     signal = signal.reindex(sortDateMulti(getSignal().index))
     return signal
 
-def selectColOdds(select_x):
-    select_x.append('home')
-    bettingOdds = pd.read_csv('../data/bettingOddsData/adj_prob_win_ALL.csv', header = [0,1], index_col = 0)
-    bettingOdds['homeProbAdj', 'home'], bettingOdds['awayProbAdj', 'home'] = 1, 0
-    df = pd.concat([bettingOdds['homeProbAdj'][select_x], bettingOdds['awayProbAdj'][select_x]], axis=0)
-    df.reset_index(inplace = True)
-    df.set_index(['game_id', 'home'], inplace = True)
-    df = df.reindex(sortDateMulti(bettingOdds.index))
-    return df
+class select_attributes:
+    def __init__(self, n):
+        self.game_df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col = 0, header = [0,1])
+        self.odds_df = pd.read_csv('../data/bettingOddsData/adj_prob_win_ALL.csv', header = [0,1], index_col = 0)
+        self.per_metric_df = pd.read_csv('../data/perMetric/performance_metric_ALL.csv', index_col = 0, header = [0,1])
+        self.team_avg_df = pd.read_csv('../data/averageTeamData/average_team_stats_per_{}.csv'.format(n), index_col = [0,1])
+        self.mlval_df = pd.read_csv('../data/eloData/adj_elo_ml.csv', index_col = 0)
+        self.elo_df = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
 
-def selectMLVal(select_x):
-    mlval = pd.read_csv('../data/eloData/adj_elo_ml.csv', index_col = 0)
-    mlval.reset_index(inplace = True)
-    mlval['home'] = mlval.apply(lambda d: 1 if d['team'] == d['gameid'][-3:] else 0, axis=1)
-    mlval.set_index(['gameid', 'home'], inplace = True)
-    mlval = mlval.reindex(sortDateMulti(mlval.index.get_level_values(0)))
-    return mlval[select_x]
+    def select_col_odds(self, select_x):
+         select_x.append('home')
+         odds_df = self.odds_df 
+         odds_df['homeProbAdj', 'home'], odds_df['awayProbAdj', 'home'] = 1, 0
+         df = pd.concat([odds_df['homeProbAdj'][select_x], odds_df['awayProbAdj'][select_x]], axis=0)
+         df.reset_index(inplace = True)
+         df.set_index(['game_id', 'home'], inplace = True)
+         df = df.reindex(sortDateMulti(odds_df.index))
+         return df
 
-def selectColElo(select_x):
-    elo_data = pd.read_csv('../data/eloData/nba_elo_all.csv', index_col = 0)
-    home_elo = elo_data[['elo_prob1', 'raptor_prob1']].rename(columns = lambda x : str(x)[:-1])
-    away_elo = elo_data[['elo_prob2', 'raptor_prob2']].rename(columns = lambda x : str(x)[:-1])
-    home_elo['home'], away_elo['home'] = 1, 0
-    df = pd.concat([home_elo, away_elo], axis=0)
-    df.reset_index(inplace = True)
-    df.set_index(['index', 'home'], inplace = True)
-    df = df.reindex(sortDateMulti(elo_data.index))
-    return df[select_x]
+    def select_mlval(self, select_x):
+        mlval_df = self.mlval_df
+        mlval_df.reset_index(inplace = True)
+        mlval_df['home'] = mlval_df.apply(lambda d: 1 if d['team'] == d['gameid'][-3:] else 0, axis=1)
+        mlval_df.set_index(['gameid', 'home'], inplace = True)
+        mlval_df = mlval_df.reindex(sortDateMulti(mlval_df.index.get_level_values(0)))
+        return mlval_df[select_x]
 
-def selectColPerMetric(select_x):
-    perMetric = pd.read_csv('../data/perMetric/performance_metric_ALL.csv', index_col = 0, header = [0,1])
-    perMetric['home', 'home'], perMetric['away', 'home'] = 1, 0
-    df = pd.concat([perMetric['home'], perMetric['away']], axis=0)
-    df.reset_index(inplace = True)
-    df.set_index(['game_id', 'home'], inplace = True)
-    df = df.reindex(sortDateMulti(perMetric.index))
-    return df[select_x]
+    def select_elo(self, select_x):
+        elo_df = self.elo_df 
+        home_elo = elo_df[['elo_prob1', 'raptor_prob1']].rename(columns = lambda x : str(x)[:-1])
+        away_elo = elo_df[['elo_prob2', 'raptor_prob2']].rename(columns = lambda x : str(x)[:-1])
+        home_elo['home'], away_elo['home'] = 1, 0
+        df = pd.concat([home_elo, away_elo], axis=0)
+        df.reset_index(inplace = True)
+        df.set_index(['index', 'home'], inplace = True)
+        df = df.reindex(sortDateMulti(elo_df.index))
+        return df[select_x]
 
-def selectColGameData(select_x):
-    game_data = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col = 0, header = [0,1])
-    game_data['home', 'home'], game_data['away', 'home'] = 1, 0
-    df = pd.concat([game_data['home'], game_data['away']], axis=0)
-    df.reset_index(inplace = True)
-    df.set_index(['game_id', 'home'], inplace = True)
-    df = df.reindex(sortDateMulti(game_data.index))
-    return df[select_x]
+    def select_col_per(self, select_x):
+        per_metric = self.per_metric_df
+        per_metric['home', 'home'], per_metric['away', 'home'] = 1, 0
+        df = pd.concat([per_metric['home'], per_metric['away']], axis=0)
+        df.reset_index(inplace = True)
+        df.set_index(['game_id', 'home'], inplace = True)
+        df = df.reindex(sortDateMulti(per_metric.index))
+        return df[select_x]
 
-def selectColTeamData(select_x, n):
-    team_avg = pd.read_csv('../data/averageTeamData/average_team_stats_per_{}.csv'.format(n), index_col = [0,1])
-    return team_avg[select_x]
+    def select_col_game(self, select_x):
+        game_df = self.game_df
+        game_df['home', 'home'], game_df['away', 'home'] = 1, 0
+        df = pd.concat([game_df['home'], game_df['away']], axis=0)
+        df.reset_index(inplace = True)
+        df.set_index(['game_id', 'home'], inplace = True)
+        df = df.reindex(sortDateMulti(game_df.index))
+        return df[select_x]
 
-
-def splitTrainTestYear(index, train_years, test_year):
-    df = pd.DataFrame(index = index)
-    df['index'] = df.index.get_level_values(0)
-    df['year'] = df.apply(lambda d: getYearFromId(d['index']), axis = 1)
-    df.drop('index', axis = 1, inplace = True)
-    X_train = df[df['year'].isin(train_years)]
-    X_test = df[df['year'] == test_year]
-    return X_train.index, X_test.index
+    def select_col_team(self, select_x):
+        team_avg_df = self.team_avg_df
+        return team_avg_df[select_x]
 
 def iteratedPCA(df, n, train_index, test_index):
     df_train = df[df.index.isin(train_index)].reindex(train_index)
@@ -122,40 +120,97 @@ def iteratedPCA(df, n, train_index, test_index):
     dfPCA = pd.concat([df_train_PCA, df_test_PCA], axis = 0)
     return dfPCA
 
-def testData(dfList, train_years, test_year, drop_na = True):
-    X = pd.concat(dfList, axis = 1)
+def split_train_test_year(index, train_years, test_year):
+    df = pd.DataFrame(index = index)
+    df['index'] = df.index.get_level_values(0)
+    df['year'] = df.apply(lambda d: getYearFromId(d['index']), axis = 1)
+    df.drop('index', axis = 1, inplace = True)
+    X_train = df[df['year'].isin(train_years)]
+    X_test = df[df['year'] == test_year]
+    return X_train.index, X_test.index
+
+def split_data(data_list, train_years, test_year, drop_na = True):
+    Y = get_signal()
+    X = pd.concat(data_list, axis = 1)
     X['home'] = X.index.get_level_values(1)
     if drop_na == True:
         ret_all = X.dropna(axis = 0).index.get_level_values(0)
-        ret = [i for i in ret_all if list(ret_all).count(i) == 2]
+        counter = Counter(list(ret_all))
+        ret = [i for i in ret_all if counter[i] == 2]
         X = X[X.index.isin(sortDateMulti(ret))]
-    gameIdList = X.index.get_level_values(0).unique()
-    X_train_index, X_test_index = splitTrainTestYear(X.index, train_years, test_year)
-    X_train = X[X.index.isin(X_train_index)]
-    X_test = X[X.index.isin(X_test_index)]
-    Y = get_signal()
-    Y_train = Y[Y.index.isin(X_train.index)].reindex(X_train.index)
-    Y_test = Y[Y.index.isin(X_test.index)].reindex(X_test.index)
+    X_train_index, X_test_index = split_train_test_year(X.index, train_years, test_year)
+    X_train, X_test = X[X.index.isin(X_train_index)], X[X.index.isin(X_test_index)]
+    Y_train, Y_test = Y[Y.index.isin(X_train.index)].reindex(X_train.index), Y[Y.index.isin(X_test.index)].reindex(X_test.index)
     return X_train, X_test, Y_train, Y_test
 
+def split_data_test_games(data_list, train_window, test_games, size_cons = True, drop_na = True):
+    X = pd.concat(data_list, axis = 1)
+    X['home'] = X.index.get_level_values(1)
+    if drop_na == True:
+        ret_all = X.dropna(axis = 0).index.get_level_values(0)
+        counter = Counter(list(ret_all))
+        ret = [i for i in ret_all if counter[i] == 2]
+        X = X[X.index.isin(sortDateMulti(ret))]
+    if len(set([getYearFromId(i) for i in test_games])) == 1:
+        test_year = getYearFromId(test_games[0])
+    else:
+        return print('test games are not in same year')
+    train_years = list(range(test_year - train_window, test_year + 1))
+    X_test = X[X.index.isin(sortDateMulti(test_games))]
+    X_train_index = split_train_test_year(X.index, train_years, test_year)[0]
+    X_train = X[X.index.isin(X_train_index)].sort_index(level=0)[:X_test.index[0]].drop(index = X_test.index)
+    if size_cons == True:
+        size = len(split_train_test_year(X_train.index, list(range(test_year - train_window, test_year)), test_year)[0])
+        X_train = X_train.tail(size)
+    Y_train, Y_test = Y[Y.index.isin(X_train.index)].reindex(X_train.index), Y[Y.index.isin(X_test.index)].reindex(X_test.index)
+    return X_train, X_test, Y_train, Y_test 
+
+def check_dataframe_NaN(df_list, gameIdList):
+    i = 0
+    for df in df_list:
+        df = df[df.index.isin(sortDateMulti(gameIdList))]
+        if df.empty:
+            print('ERROR - {} columns are empty'.format(df.columns))
+        if df.isnull().values.any():
+            i = i + 1
+            col = df.columns[df.isna().any()].tolist()
+            print('ERROR - {} columns are NaN'.format(col))
+    if i == 0:
+        print('ALL ENTRIES ARE FILLED IN')
+    return 
 
 '''
-EXECUTION (BETTING ODDS)
+EXECUTION 
 ---------------------------------------------
 '''
 
 init_ray()
-perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1'])    
-mlval = selectMLVal(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
-bettingOddsAll = selectColOdds(['1xBet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)', 'bet365 (%)'])
-elo = selectColElo(['elo_prob', 'raptor_prob'])
-gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins', 'win_per'])
-teamData = selectColTeamData(['3P%', 'Ortg', 'Drtg', 'PTS', 'TOV%', 'eFG%'], 5)
-dfList = [teamData, bettingOddsAll, elo, mlval, gameData, perMetric]
-train_years = [2020, 2021]
-test_year = [2022]
 
-X_train, X_test, Y_train, Y_test = testData([teamData, bettingOddsAll, elo, mlval, gameData, perMetric], [2020, 2021], 2022, True)
+train_years = [2021, 2022]
+test_year = 2023
+train_window = 2
+
+odds_df = select_attributes(5).select_col_odds(['1xBet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)', 'bet365 (%)'])
+mlval_df = select_attributes(5).select_mlval(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
+per_metric_df = select_attributes(5).select_col_per(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1'])
+elo_df = select_attributes(5).select_elo(['elo_prob', 'raptor_prob'])
+game_df = select_attributes(5).select_col_game(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins', 'win_per'])
+team_stat_df = select_attributes(5).select_col_team(['3P%', 'Ortg', 'Drtg', 'PTS', 'TOV%', 'eFG%'])
+data_list = [odds_df, mlval_df, per_metric_df, elo_df, game_df, team_stat_df]
+
+X_train, X_test, Y_train, Y_test = split_data(data_list, train_years, test_year, True)
+X_train_, X_test_, Y_train_, Y_test_ = split_data_test_games(data_list, train_window, test_games, True, True)
+
+
+
+
+
+
+
+
+
+
+
 
 def findParamsXGB(X_train, Y_train):
     param_grid = {

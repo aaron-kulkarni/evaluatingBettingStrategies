@@ -5,7 +5,22 @@ sys.path.insert(0, "..")
 import numpy as np
 import pandas as pd
 from utils.utils import *
+   
+def return_signal(winner,home_team,away_team):
+    if home_team == winner:
+        return int(1)
+    if away_team == winner:
+        return int(0)
+    else:
+        return winner
 
+def getSignal():
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', index_col=0, header=[0,1])
+    signal = pd.DataFrame(df['gameState'])
+    signal['signal'] = signal.apply(lambda d: return_signal(d['winner'], d['teamHome'], d['teamAway']), axis=1)
+    signal = signal.dropna(axis=0)
+    signal['signal'] = signal['signal'].apply(int)
+    return signal['signal']
 
 def concatTeamStats(years):
     df = pd.DataFrame()
@@ -14,22 +29,6 @@ def concatTeamStats(years):
         df = pd.concat([df, teamStats], axis=0)
 
     return df
-
-
-# years = np.arange(2015, 2023)
-# concatTeamStats(years).to_csv('team_total_stats_all.csv')
-
-def getSignal():
-    df = pd.DataFrame()
-    years = np.arange(2015, 2023)
-    for year in years:
-        dfCurrent = pd.DataFrame(
-            pd.read_csv('../data/gameStats/game_state_data_{}.csv'.format(year), index_col=0, header=[0, 1]))
-        df = pd.concat([df, dfCurrent], axis=0)
-    df = df['gameState']
-    df['signal'] = df.apply(lambda d: 1 if d['winner'] == d['teamHome'] else 0, axis=1)
-    return df['signal']
-
 
 def getDataFrame():
     df = pd.read_csv('../data/teamStats/team_total_stats_all.csv', index_col=0, header=[0, 1])
