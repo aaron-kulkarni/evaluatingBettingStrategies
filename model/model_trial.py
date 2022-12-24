@@ -335,6 +335,11 @@ def backtesting_returns(df):
     df_all = pd.DataFrame(find_total(dict_returns)).T
     return df_all
 
+def plot_day_increments(df):
+    df['date'] = [gameIdToDateTime(i) for i in df.index.get_level_values(0)]
+    df_grouped = df.groupby('date').last()
+    return df_grouped.index, df_grouped['total'].array
+
 df = perform_bet(Y_pred_prob, x_columns, 0.2, odds_df)
 df_all = backtesting_returns(df)
 returns = df_all['total']
@@ -343,3 +348,9 @@ x = np.arange(1, len(returns) + 1)
 y = list(returns.array)
 plt.plot(x, y, label = 'PERCENTAGE RETURN')
 plt.show()
+
+x, y = plot_day_increments(df_all)
+plt.plot(x, y, label = 'PERCENTAGE RETURN')
+plt.show()
+
+ray.shutdown()
