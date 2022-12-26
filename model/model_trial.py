@@ -161,11 +161,16 @@ def split_data_test_games(data_list, train_window, test_games, size_cons = True,
     X_test = X[X.index.isin(sortDateMulti(test_games))]
     X_train_index = split_train_test_year(X.index, train_years, test_year)[0]
     X_train = X[X.index.isin(X_train_index)].sort_index(level=0)[:X_test.index[0]].drop(index = X_test.index)
+    X_train = X_train.reindex(sortDateMulti(X_train.index.get_level_values(0).unique()))
+    Y = get_signal()
+    Y_train = Y[Y.index.isin(X_train.index)].reindex(X_train.index)
+    Y_train = Y_train.dropna()
+    X_train = X_train[X_train.index.isin(Y_train.index)]
     if size_cons == True:
         size = len(split_train_test_year(X_train.index, list(range(test_year - train_window, test_year)), test_year)[0])
         X_train = X_train.tail(size)
-    Y = get_signal()
     Y_train, Y_test = Y[Y.index.isin(X_train.index)].reindex(X_train.index), Y[Y.index.isin(X_test.index)].reindex(X_test.index)
+    
     return X_train, X_test, Y_train, Y_test 
 
 def check_dataframe_NaN(df_list, gameIdList):
@@ -214,19 +219,19 @@ elo_df = select_attributes(5).select_elo(['elo_prob', 'raptor_prob'])
 game_df = select_attributes(5).select_col_game(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins', 'win_per'])
 team_stat_df = select_attributes(5).select_col_team(['3P%', 'Ortg', 'Drtg', 'TOV%', 'eFG%', 'PTS'])
 data_list = [odds_df, mlval_df, per_metric_df, elo_df, game_df, team_stat_df]
+check_dataframe_NaN(data_list, getNextGames())
 
 X_train, X_test, Y_train, Y_test = split_data(data_list, train_years, test_year, True)
-#X_train_, X_test_, Y_train_, Y_test_ = split_data_test_games(data_list, train_window, test_games, True, True)
+X_train_, X_test_, Y_train_, Y_test_ = split_data_test_games(data_list, train_window, getNextGames(), True, True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 4, min_child_weight = 6, n_estimators = 150)
 
-Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test)
-#Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_, Y_test_)
-
+Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test, 10)
+Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_, Y_test_, 10)
 x_columns = ['bet365_return', 'Unibet_return']
 
-def xgboost(clf, X_train, Y_train, X_test, Y_test):
+def xgboost(clf, X_train, Y_train, X_test, Y_test, cv_value):
     model = clf.fit(X_train, Y_train)
-    calibrated_clf = CalibratedClassifierCV(clf, cv = 5)
+    calibrated_clf = CalibratedClassifierCV(clf, cv = cv_value)
     calibrated_clf.fit(X_train, Y_train)
 
     Y_pred_prob_adj = calibrated_clf.predict_proba(X_test)[:, 1]
@@ -237,25 +242,29 @@ def xgboost(clf, X_train, Y_train, X_test, Y_test):
     Y_pred = [1 if p > 0.5 else 0 for p in Y_pred_prob]
     Y_train_pred = [1 if p > 0.5 else 0 for p in Y_train_pred]
     print(pd.DataFrame(data = list(model.feature_importances_), index = list(X_train.columns), columns = ["score"]).sort_values(by = "score", ascending = False).head(30))
-    if Y_test.isnull().any().any(): 
-        print("\nTest Accuracy is not available")
-    elif Y_test.size == 0: 
+    Y_test = Y_test.dropna()
+    if Y_test.size == 0: 
         print("\nTest Accuracy is not available")
     elif len(Y_test) == len(Y_pred):
         acc = accuracy_score(Y_test, Y_pred)
         print("\nTest Accuracy is %s"%(acc))
     else:
-        acc = accuracy_score(Y_test, Y_pred[:len(Y)])
+        acc = accuracy_score(Y_test, Y_pred[:len(Y_test)])
         print("\nTest Accuracy is %s"%(acc))
     print("Train Accuracy is %.3f" %accuracy_score(Y_train, Y_train_pred))
     return pd.DataFrame(index = X_test.index, data = Y_pred_prob, columns = ['Y_prob'])
 
-def get_odd_acc(Y_test, odds_all):
+def get_odd_acc(Y_pred_prob, Y_test, odds_all):
+    Y_test = Y_test.dropna()
+    Y_pred_prob = Y_pred_prob[Y_pred_prob.index.isin(Y_test.index)]
     odds_all = odds_all[odds_all.index.isin(Y_test.index)]
+    print('{} home wins this season'.format(int(Y_test[::2].sum())))
+    print('{} predicted wins this season'.format(int(Y_pred_prob[::2].sum())))
     for col in odds_all.columns:
         odd_preds = [1 if odd > 0.5 else 0 for odd in list(odds_all[col])]
         print("Odd Accuracy of {}".format(col) + ": %.3f"%accuracy_score(Y_test, odd_preds))
-    return 
+        print('Predicted home wins of {}: {}'.format(col, odds_all[col][::2].sum()))
+    return
 
 def init_home(home, plc_home, plc_away):
     if type(home) != bool:
@@ -327,7 +336,6 @@ def backtesting_returns(df):
     df['signal'] = df.apply(lambda d: init_signal(d['home'], d['signal_adj']), axis=1)
     df['return'] = df.apply(lambda d: d['p_return'] if d['signal'] == 1 else 0, axis=1)
     df['adj_return'] = df.apply(lambda d: d['return'] * d['per_bet'], axis=1)
-
     index = sortAllDates(df.index)
     per_bet, returns = convert_returns(df['per_bet'], index), convert_returns(df['adj_return'], index)
     returns.rename(columns = {'adj_return' : 'return'}, inplace = True)
@@ -340,9 +348,31 @@ def plot_day_increments(df):
     df_grouped = df.groupby('date').last()
     return df_grouped.index, df_grouped['total'].array
 
-df = perform_bet(Y_pred_prob, x_columns, 0.2, odds_df)
+def write_day_trade(init_amount, df):
+    team_dict = {v:k for k,v in getTeamDict().items()}
+    bet_dict = df.T.to_dict()
+    bet_df = pd.DataFrame(index = df.index, columns = ['amount_bet', 'team', 'potential_return', 'firm'])
+    for key in bet_dict.keys():
+        amount_bet = round(init_amount * bet_dict[key]['per_bet'], 2)
+        init_amount = init_amount - amount_bet
+        if amount_bet != 0:
+            team = team_dict[bet_dict[key]['team_abbr']]
+            potential_return = round(bet_dict[key]['p_return'] * amount_bet, 2)
+            firm = bet_dict[key]['firm']
+            print('{} - Bet {} on {} with betting firm {}. Potential return {}'.format(key, amount_bet, team, firm, potential_return))
+        else:
+            print('{} - Empty bet'.format(key))
+        bet_df.loc[key] = [amount_bet, team, potential_return, firm]
+    return bet_df
+        
+df = perform_bet(Y_pred_prob, x_columns, 0.15, odds_df)
+df_ = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
+
+write_day_trade(23550, df[df.index.isin(getGamesToday())])
+write_day_trade(23550, df_)
 df_all = backtesting_returns(df)
 returns = df_all['total']
+get_odd_acc(Y_pred_prob, Y_test, odds_df)
 
 x = np.arange(1, len(returns) + 1)
 y = list(returns.array)

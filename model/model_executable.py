@@ -7,6 +7,8 @@ sys.path.insert(0, "..")
 from utils.utils import *
 from dataProcessing.PCA import *
 from kelly import *
+from collections import Counter
+
 
 import matplotlib.pyplot as plt
 import ray 
@@ -170,6 +172,7 @@ def testDataNow(dfList, start_train_year, test_games, train_size, drop_na = True
         X_test = None
         print('Data has not been updated or error in compilation')
     Y = get_signal()
+    X_train = X_train.sample(frac=1)
     Y_train = Y[Y.index.isin(X_train.index)].reindex(X_train.index)
     return X_train, X_test, Y_train    
 
@@ -196,7 +199,7 @@ def check_dataframe_NaN(dfList, gameIdList):
             print('ERROR - {} columns are NaN'.format(col))
     if i == 0:
         print('ALL ENTRIES ARE FILLED IN')
-    return 
+    return
 
 
 perMetric = selectColPerMetric(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1']) 
@@ -204,11 +207,11 @@ mlval = selectMLVal(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker
 bettingOddsAll = selectColOdds(['Marathonbet (%)', '1xBet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)'])
 elo = selectColElo(['elo_prob', 'raptor_prob'])
 gameData = selectColGameData(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins', 'win_per'])
-teamData = selectColTeamData(['3P%', 'Drtg', 'Ortg', 'TOV%', 'eFG%'], 5)
+teamData = selectColTeamData(['3P%', 'Drtg', 'Ortg', 'TOV%', 'eFG%', 'PTS'], 5)
 check_dataframe_NaN([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], getNextGames())
 
 X_train, X_test, Y_train = testData([bettingOddsAll, elo, perMetric, mlval, gameData, teamData], [2021, 2022], 2023, True)
-X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, mlval, gameData, teamData, perMetric], 2021, getNextGames(), 4244, True)
+X_train_, X_test_, Y_train_ = testDataNow([bettingOddsAll, elo, mlval, gameData, teamData, perMetric], 2021, ['202212250NYK'], 4244, True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 4, min_child_weight = 6, n_estimators = 150)
 #clf = XGBClassifier(learning_rate = 0.02, max_depth = 6, min_child_weight = 6, n_estimators = 150)
 save_training_data(X_test_)
@@ -219,10 +222,11 @@ def save_training_data(X_test):
     df.to_csv('../data/testingData/test_data.csv')
     return 
 
-def xgboost(clf, X_train, Y_train, X_test):
+def xgboost(clf, X_train, Y_train, X_test, cv_value):
     model = clf.fit(X_train, Y_train)
     name = 'XGBOOST'
-    calibrated_clf = CalibratedClassifierCV(clf, cv = 5)
+    
+    calibrated_clf = CalibratedClassifierCV(clf, cv = cv_value)
     calibrated_clf.fit(X_train, Y_train)
 
     Y_pred_prob_adj = calibrated_clf.predict_proba(X_test)[:, 1]
@@ -314,12 +318,13 @@ def get_accuracy(df):
     return df['acc'].sum()/(len(df.index))
     
              
-Y_pred_prob = xgboost(clf, X_train, Y_train, X_test)
+Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, 10)
 x_columns = ['bet365_return', 'Unibet_return']
-Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_)
+#Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_)
 df = getDataFrame(Y_pred_prob, x_columns, X_test.index, 0.15)
-df_ = getDataFrame(Y_pred_prob_, x_columns, X_test_.index, 0.15)
-print(df[df.index.isin(getGamesToday())])
+#df_ = getDataFrame(Y_pred_prob_, x_columns, X_test_.index, 0.15)
+df_All_, total = backtesting_returns(df, 0)
+#print(df[df.index.isin(getGamesToday())])
 
 def rec_prob(df_):
     df_all = pd.read_csv('../data/testingData/model_2_prob_2023.csv', index_col=0)
