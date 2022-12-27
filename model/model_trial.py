@@ -160,7 +160,7 @@ def split_data_test_games(data_list, train_window, test_games, size_cons = True,
     train_years = list(range(test_year - train_window, test_year + 1))
     X_test = X[X.index.isin(sortDateMulti(test_games))]
     X_train_index = split_train_test_year(X.index, train_years, test_year)[0]
-    X_train = X[X.index.isin(X_train_index)].sort_index(level=0)[:X_test.index[0]].drop(index = X_test.index)
+    X_train = X[X.index.isin(X_train_index)].sort_index(level=0)[:X_test.index[0]]
     X_train = X_train.reindex(sortDateMulti(X_train.index.get_level_values(0).unique()))
     Y = get_signal()
     Y_train = Y[Y.index.isin(X_train.index)].reindex(X_train.index)
@@ -222,11 +222,11 @@ data_list = [odds_df, mlval_df, per_metric_df, elo_df, game_df, team_stat_df]
 check_dataframe_NaN(data_list, getNextGames())
 
 X_train, X_test, Y_train, Y_test = split_data(data_list, train_years, test_year, True)
-X_train_, X_test_, Y_train_, Y_test_ = split_data_test_games(data_list, train_window, getNextGames(), True, True)
+#X_train_, X_test_, Y_train_, Y_test_ = split_data_test_games(data_list, train_window, getNextGames(), True, True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 4, min_child_weight = 6, n_estimators = 150)
 
 Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test, 10)
-Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_, Y_test_, 10)
+#Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_, Y_test_, 10)
 x_columns = ['bet365_return', 'Unibet_return']
 
 def xgboost(clf, X_train, Y_train, X_test, Y_test, cv_value):
