@@ -367,7 +367,13 @@ def cumsum_reset_on_null(srs):
 def returnDatetime(gameId):
     df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header=[0,1], index_col=0)['gameState']
     return df.loc[gameId]['datetime']
-    
+
+def previous_games_from_id(game_id_list):
+    game_id = min(game_id_list)
+    df = pd.read_csv('../data/gameStats/game_state_data_ALL.csv', header=[0,1], index_col=0)['gameState']
+    df['id'] = df.apply(lambda d: str(d['datetime'])[0:10].replace('-', ''), axis=1)
+    index = df[df['id'] < gameIdToDateTime(game_id).strftime('%Y%m%d')].index
+    return index
     
 def getGameInfo():
     for i in getGamesToday():

@@ -5,6 +5,7 @@ from utils.utils import *
 from dataProcessing.PCA import *
 from kelly import *
 
+import pandas as pd
 import itertools
 from collections import Counter
 import matplotlib.pyplot as plt
@@ -21,7 +22,11 @@ from sklearn.svm import SVC
 from sklearn.calibration import CalibratedClassifierCV
 from xgboost import XGBClassifier
 
-warnings.filterwarnings("ignore", category = DeprecationWarning) 
+warnings.filterwarnings("ignore", category = DeprecationWarning)
+
+pd.set_option('display.max_rows', 100)
+pd.set_option('display.max_columns', 10)
+pd.set_option('display.width', 1000)
 
 def init_ray():
     cpuCount = multiprocessing.cpu_count()
@@ -160,17 +165,13 @@ def split_data_test_games(data_list, train_window, test_games, size_cons = True,
     train_years = list(range(test_year - train_window, test_year + 1))
     X_test = X[X.index.isin(sortDateMulti(test_games))]
     X_train_index = split_train_test_year(X.index, train_years, test_year)[0]
-    X_train = X[X.index.isin(X_train_index)].sort_index(level=0)[:X_test.index[0]]
-    X_train = X_train.reindex(sortDateMulti(X_train.index.get_level_values(0).unique()))
-    Y = get_signal()
-    Y_train = Y[Y.index.isin(X_train.index)].reindex(X_train.index)
-    Y_train = Y_train.dropna()
-    X_train = X_train[X_train.index.isin(Y_train.index)]
+    X_train = X[X.index.isin(X_train_index)].sort_index(level=0)
+    X_train = X_train[X_train.index.isin(sortDateMulti(previous_games_from_id(test_games)))]
     if size_cons == True:
         size = len(split_train_test_year(X_train.index, list(range(test_year - train_window, test_year)), test_year)[0])
         X_train = X_train.tail(size)
+    Y = get_signal()
     Y_train, Y_test = Y[Y.index.isin(X_train.index)].reindex(X_train.index), Y[Y.index.isin(X_test.index)].reindex(X_test.index)
-    
     return X_train, X_test, Y_train, Y_test 
 
 def check_dataframe_NaN(df_list, gameIdList):
@@ -211,6 +212,7 @@ init_ray()
 train_years = [2021, 2022]
 test_year = 2023
 train_window = 2
+test_games = getNextGames()
 
 odds_df = select_attributes(5).select_col_odds(['Marathonbet (%)', '1xBet (%)', 'Pinnacle (%)', 'Unibet (%)', 'William Hill (%)'])
 mlval_df = select_attributes(5).select_mlval(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
@@ -219,14 +221,14 @@ elo_df = select_attributes(5).select_elo(['elo_prob', 'raptor_prob'])
 game_df = select_attributes(5).select_col_game(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins', 'win_per'])
 team_stat_df = select_attributes(5).select_col_team(['3P%', 'Ortg', 'Drtg', 'TOV%', 'eFG%', 'PTS'])
 data_list = [odds_df, mlval_df, per_metric_df, elo_df, game_df, team_stat_df]
-check_dataframe_NaN(data_list, getNextGames())
+check_dataframe_NaN(data_list, test_games)
 
 X_train, X_test, Y_train, Y_test = split_data(data_list, train_years, test_year, True)
-#X_train_, X_test_, Y_train_, Y_test_ = split_data_test_games(data_list, train_window, getNextGames(), True, True)
+X_train_, X_test_, Y_train_, Y_test_ = split_data_test_games(data_list, train_window, test_games, True, True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 4, min_child_weight = 6, n_estimators = 150)
 
 Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test, 10)
-#Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_, Y_test_, 10)
+Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_, Y_test_, 10)
 x_columns = ['bet365_return', 'Unibet_return']
 
 def xgboost(clf, X_train, Y_train, X_test, Y_test, cv_value):
@@ -265,6 +267,22 @@ def get_odd_acc(Y_pred_prob, Y_test, odds_all):
         print("Odd Accuracy of {}".format(col) + ": %.3f"%accuracy_score(Y_test, odd_preds))
         print('Predicted home wins of {}: {}'.format(col, odds_all[col][::2].sum()))
     return
+
+def iterative_training(data_params, clf, cv_value):
+    if len(data_params) != 5:
+        return print('paramaters for training/testing data division is not specified according to proper format')
+    data_list, train_window, test_games_all, size_cons, drop_na = data_params
+    df = pd.DataFrame(index = test_games_all, data = [i[:8] for i in test_games_all], columns = ['date'])
+    df['batch'] = (~df['date'].duplicated()).cumsum()
+    Y_pred = pd.DataFrame()
+    for i in df['batch'].unique():
+        with HiddenPrints():
+            test_games = df[df['batch'] == i].index
+            X_train, X_test, Y_train, Y_test = split_data_test_games(data_list, train_window, test_games, size_cons, drop_na)
+            Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test, cv_value)
+            Y_pred = pd.concat([Y_pred, Y_pred_prob], axis=0)
+        print('Finished: {}'.format(gameIdToDateTime(test_games[0]).strftime("%Y-%m-%d")))    
+    return Y_pred
 
 def init_home(home, plc_home, plc_away):
     if type(home) != bool:
@@ -359,18 +377,23 @@ def write_day_trade(init_amount, df):
             team = team_dict[bet_dict[key]['team_abbr']]
             potential_return = round(bet_dict[key]['p_return'] * amount_bet, 2)
             firm = bet_dict[key]['firm']
-            print('{} - Bet {} on {} with betting firm {}. Potential return {}'.format(key, amount_bet, team, firm, potential_return))
         else:
-            print('{} - Empty bet'.format(key))
+            amount_bet, team, potential_return, firm = None, None, None ,None 
         bet_df.loc[key] = [amount_bet, team, potential_return, firm]
     return bet_df
-        
+
+data_params = [data_list, train_window, X_test.index.get_level_values(0).unique(), True, True]
+Y_pred_prob_all = iterative_training(data_params, clf, 10)
+
 df = perform_bet(Y_pred_prob, x_columns, 0.15, odds_df)
-df_ = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
+#df_ = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
+df_ = perform_bet(Y_pred_prob_all, x_columns, 0.15, odds_df)
 
 write_day_trade(23550, df[df.index.isin(getGamesToday())])
 write_day_trade(23550, df_)
 df_all = backtesting_returns(df)
+df_all_ = backtesting_returns(df_)
+
 returns = df_all['total']
 get_odd_acc(Y_pred_prob, Y_test, odds_df)
 
