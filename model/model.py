@@ -250,7 +250,7 @@ if __name__ == "__main__":
     clf = XGBClassifier(learning_rate = 0.02, max_depth = 4, min_child_weight = 6, n_estimators = 150)
 
     Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test, 10)
-    Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_, Y_test_, 10)
+    #Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_, Y_test_, 10)
     x_columns = ['bet365_return', 'Unibet_return']
 
 def get_odd_acc(Y_pred_prob, Y_test, odds_all):
@@ -380,11 +380,15 @@ def write_day_trade(init_amount, df):
     return bet_df
 
 def return_team_winnings(df):
+    df['signal_adj'] = getSignal()[getSignal().index.isin(df.index)]
+    df = df[df['signal_adj'].notna()]
+    df['signal'] = df.apply(lambda d: init_signal(d['home'], d['signal_adj']), axis=1)
+    
     res_win, res_loss = {}, {}
     team_df = df[df['per_bet'] != 0]
     for name, team in team_df.groupby('team_abbr'):
-        amount_won = (team[team['signal_adj'] == 1]['per_bet'] * team[team['signal_adj'] == 1]['p_return']).sum()
-        amount_lost = team[team['signal_adj'] == 0]['per_bet'].sum()
+        amount_won = (team[team['signal'] == 1]['per_bet'] * team[team['signal'] == 1]['p_return']).sum()
+        amount_lost = team[team['signal'] == 0]['per_bet'].sum()
         net_amount = amount_won - amount_lost
         res_win[name] = net_amount
         
@@ -394,16 +398,16 @@ def return_team_winnings(df):
     team_df['opp_team_abbr'] = teams_all['opp_team_abbr']
     
     for name, team in team_df.groupby('opp_team_abbr'):
-        amount_won = (team[team['signal_adj'] == 1]['per_bet'] * team[team['signal_adj'] == 1]['p_return']).sum()
-        amount_lost = team[team['signal_adj'] == 0]['per_bet'].sum()
+        amount_won = (team[team['signal'] == 1]['per_bet'] * team[team['signal'] == 1]['p_return']).sum()
+        amount_lost = team[team['signal'] == 0]['per_bet'].sum()
         net_amount = amount_won - amount_lost
         res_loss[name] = net_amount
     return res_win, res_loss
 
 
 if __name__ == "__main__":
-    #data_params = [data_list, train_window, X_test.index.get_level_values(0).unique(), True, True]
-    #Y_pred_prob_all = iterative_training(data_params, clf, 10)
+    data_params = [data_list, train_window, X_test.index.get_level_values(0).unique(), True, True]
+    Y_pred_prob_all = iterative_training(data_params, clf, 10)
 
     df = perform_bet(Y_pred_prob, x_columns, 0.15, odds_df)
     df_test = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
