@@ -382,19 +382,42 @@ def write_day_trade(init_amount, df):
         bet_df.loc[key] = [amount_bet, team, potential_return, firm]
     return bet_df
 
-data_params = [data_list, train_window, X_test.index.get_level_values(0).unique(), True, True]
-Y_pred_prob_all = iterative_training(data_params, clf, 10)
+def return_team_winnings(df):
+    res_win, res_loss = {}, {}
+    team_df = df[df['per_bet'] != 0]
+    for name, team in team_df.groupby('team_abbr'):
+        amount_won = (team[team['signal_adj'] == 1]['per_bet'] * team[team['signal_adj'] == 1]['p_return']).sum()
+        amount_lost = team[team['signal_adj'] == 0]['per_bet'].sum()
+        net_amount = amount_won - amount_lost
+        res_win[name] = net_amount
+        
+    teams_all = getTeamsAllYears()[getTeamsAllYears().index.isin(team_df.index)]
+    teams_all = pd.concat([team_df, teams_all], axis=1)
+    teams_all['opp_team_abbr'] = teams_all.apply(lambda d: init_home(not d['home'], d['teamHome'], d['teamAway']), axis=1)
+    team_df['opp_team_abbr'] = teams_all['opp_team_abbr']
+    
+    for name, team in team_df.groupby('opp_team_abbr'):
+        amount_won = (team[team['signal_adj'] == 1]['per_bet'] * team[team['signal_adj'] == 1]['p_return']).sum()
+        amount_lost = team[team['signal_adj'] == 0]['per_bet'].sum()
+        net_amount = amount_won - amount_lost
+        res_loss[name] = net_amount
+    return res_win, res_loss
+
+
+#data_params = [data_list, train_window, X_test.index.get_level_values(0).unique(), True, True]
+#Y_pred_prob_all = iterative_training(data_params, clf, 10)
 
 df = perform_bet(Y_pred_prob, x_columns, 0.15, odds_df)
-#df_ = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
+df_test = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
 df_ = perform_bet(Y_pred_prob_all, x_columns, 0.15, odds_df)
 
-write_day_trade(23550, df[df.index.isin(getGamesToday())])
-write_day_trade(23550, df_)
+df_bet = write_day_trade(24450, df[df.index.isin(getGamesToday())])
+write_day_trade(24450, df_test)
 df_all = backtesting_returns(df)
 df_all_ = backtesting_returns(df_)
 
 returns = df_all['total']
+returns = df_all_['total']
 get_odd_acc(Y_pred_prob, Y_test, odds_df)
 
 x = np.arange(1, len(returns) + 1)
