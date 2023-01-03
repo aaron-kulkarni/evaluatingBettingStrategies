@@ -16,15 +16,15 @@ if __name__ == "__main__":
     TeamPerformance(current_year).getTeamPerformanceDF(5, False)
     concat(5, np.arange(2015, current_year + 1))
 
+# can be run anytime (preferably run a bit before game starts)
+convertEloCSVs.concatCSV()
+
 # can only be run after scraping odds
 addAdjProb('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(current_year)).to_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(current_year))
 concatBettingOdds(np.arange(2015, current_year + 1)).to_csv('../data/bettingOddsData/closing_betting_odds_all.csv')
 fillBettingOdds(np.arange(2015, current_year + 1)).to_csv('../data/bettingOddsData/adj_prob_win_ALL.csv')
 addReturns('../data/bettingOddsData/closing_betting_odds_all.csv')
 convAmericanOdds('../data/bettingOddsData/closing_betting_odds_all.csv').to_csv('../data/bettingOddsData/closing_betting_odds_returns.csv')
-
-# can be run anytime (preferably run a bit before game starts)
-convertEloCSVs.concatCSV()
 
 # can only be run after odds
 updatePerMetric(current_year)
@@ -33,7 +33,7 @@ concatAll(np.arange(2015, current_year + 1))
 # R script (run after raptor and odds)
 os.system('Rscript {}'.format(os.path.abspath('MLE.R')))
 
-#test_games = getNextGames()
+test_games = getNextGames()
 
 for gameId in test_games:
     print('{} - home team raptor-change: {}'.format(gameId, get_raptor_change(gameId, True)))
