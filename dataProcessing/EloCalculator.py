@@ -451,6 +451,19 @@ class convertEloCSVs:
                 print('{} game is finished'.format(gameId))
             else:
                 print('{} updated'.format(gameId))
+            try:
+                raptor_home_prob = df_all.loc[gameId]['raptor_prob1']
+                raptor_away_prob = df_all.loc[gameId]['raptor_prob2']
+                raptor_home_prob_upd = df.loc[gameId]['raptor_prob1']
+                raptor_away_prob_upd = df.loc[gameId]['raptor_prob2']
+                raptor_change_home = raptor_home_prob_upd - raptor_home_prob
+                raptor_change_away = raptor_away_prob_upd - raptor_away_prob
+                if raptor_change_home != 0:
+                    print('raptor home probability change: {}'.format(raptor_change_home))
+                if raptor_change_away != 0:
+                    print('raptor away probability change: {}'.format(raptor_change_away))
+            except:
+                print('first initialization')
         
         df_all = pd.concat([df_fin, df_fin_upd, df], axis=0)
         df_all = df_all.reindex(sortDate(df_all.index))

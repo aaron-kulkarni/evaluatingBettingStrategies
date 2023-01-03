@@ -11,9 +11,10 @@ import os
 current_year = getYearHelper(dt.datetime.now().year, dt.datetime.now().month)
 
 # run after team performances
-TeamPerformance(current_year).getTeamPerformanceDF(5, True)
-TeamPerformance(current_year).getTeamPerformanceDF(5, False)
-concat(5, np.arange(2015, current_year + 1))
+if __name__ == "__main__":
+    TeamPerformance(current_year).getTeamPerformanceDF(5, True)
+    TeamPerformance(current_year).getTeamPerformanceDF(5, False)
+    concat(5, np.arange(2015, current_year + 1))
 
 # can only be run after scraping odds
 addAdjProb('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(current_year)).to_csv('../data/bettingOddsData/adj_prob_{}.csv'.format(current_year))
@@ -32,6 +33,8 @@ concatAll(np.arange(2015, current_year + 1))
 # R script (run after raptor and odds)
 os.system('Rscript {}'.format(os.path.abspath('MLE.R')))
 
-for gameId in getNextGames():
+#test_games = getNextGames()
+
+for gameId in test_games:
     print('{} - home team raptor-change: {}'.format(gameId, get_raptor_change(gameId, True)))
     print('{} - away team raptor-change: {}'.format(gameId, get_raptor_change(gameId, False)))
