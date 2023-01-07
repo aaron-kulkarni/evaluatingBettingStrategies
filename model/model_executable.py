@@ -38,9 +38,38 @@ df = perform_bet(Y_pred_prob, x_columns, 0.15, odds_df)
 df_test = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
 #df_ = perform_bet(Y_pred_prob_all, x_columns, 0.15, odds_df)
 
+pool = 31614.45
+
+df_bet = write_day_trade(pool, df[df.index.isin(getGamesToday())])
+print(df_bet)
+print(df[df.index.isin(getGamesToday())])
+write_day_trade(pool, df_test)
+
+def kelly_simulation(df):
+    rand_floats = np.random.rand(len(df))
+    df['signal'] = np.where(rand_floats <= df['Y_prob'], 1, 0)
+    df['return'] = df.apply(lambda d: d['p_return'] if d['signal'] == 1 else 0, axis=1)
+    df['adj_return'] = df.apply(lambda d: d['return'] * d['per_bet'], axis=1)
+    index = sortAllDates(df.index)
+    per_bet, returns = convert_returns(df['per_bet'], index), convert_returns(df['adj_return'], index)
+    returns.rename(columns = {'adj_return' : 'return'}, inplace = True)
+    dict_returns = pd.concat([per_bet, returns], axis = 1).T.to_dict()
+    df_all = pd.DataFrame(find_total(dict_returns)).T
+    df.drop(['signal'], axis=1, inplace=True)
+    return df_all
+
+def run_simulation(df, n):
+    return_array = []
+    for i in range(0, n):
+        return_val = kelly_simulation(df)['total'][-1]
+        return_array.append(return_val)
+    return return_array
+    
 if __name__ == "__main__":
-    df_bet = write_day_trade(24450, df[df.index.isin(getGamesToday())])
-    write_day_trade(24450, df_test)
+    values = run_simulation(df, 1000)
+    plt.hist(values, bins = 100)
+    plt.show()
+    
     df_all = backtesting_returns(df)
     df_all_ = backtesting_returns(df_)
 
@@ -57,4 +86,4 @@ if __name__ == "__main__":
     plt.plot(x, y, label = 'PERCENTAGE RETURN')
     plt.show()
 
-ray.shutdown()
+    ray.shutdown()
