@@ -9,6 +9,10 @@ for name in dir(file):
 
 init_ray()
 
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", category=UserWarning, module="pandas")
+
+
 train_years = [2021, 2022]
 test_year = 2023
 train_window = 2
@@ -38,16 +42,35 @@ df = perform_bet(Y_pred_prob, x_columns, 0.15, odds_df)
 df_test = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
 #df_ = perform_bet(Y_pred_prob_all, x_columns, 0.15, odds_df)
 
-pool = 31614.45
+pool = 32883.68
 
 df_bet = write_day_trade(pool, df[df.index.isin(getGamesToday())])
 print(df_bet)
 print(df[df.index.isin(getGamesToday())])
 write_day_trade(pool, df_test)
 
-def kelly_simulation(df):
+def get_model_acc(df):
+    df = df.drop(df[df['per_bet'] == 0].index)
+    df['signal_adj'] = getSignal()[getSignal().index.isin(df.index)]
+    df = df[df['signal_adj'].notna()]
+    df['signal'] = df.apply(lambda d: init_signal(d['home'], d['signal_adj']), axis=1)
+    df['prob_win'] = df.apply(lambda d: d['Y_prob'] if d['home'] == True else 1-d['Y_prob'], axis=1)
+    df['odd_win'] = df.apply(lambda d: d['odds_mean'] if d['home'] == True else 1-d['odds_mean'], axis=1)
+    
+    print('model predicted wins: {}'.format(df['prob_win'].sum()))
+    print('odds mean predicted wins: {}'.format(df['odd_win'].sum()))
+    print('actual wins: {}'.format(df['signal'].sum()))
+    
+    df.drop(['signal_adj', 'prob_win', 'odd_win'], axis=1, inplace=True)
+    return
+
+def kelly_simulation(df, dev_value):
+    df = df.drop(df[df['per_bet'] == 0].index)
     rand_floats = np.random.rand(len(df))
-    df['signal'] = np.where(rand_floats <= df['Y_prob'], 1, 0)
+    dev = np.random.uniform(-dev_value, dev_value, len(df))
+    df['prob_win'] = df.apply(lambda d: d['Y_prob'] if d['home'] == True else 1-d['Y_prob'], axis=1)
+    df['dev_value'] = np.add(df['prob_win'], dev)
+    df['signal'] = np.where(rand_floats <= df['dev_value'], 1, 0)
     df['return'] = df.apply(lambda d: d['p_return'] if d['signal'] == 1 else 0, axis=1)
     df['adj_return'] = df.apply(lambda d: d['return'] * d['per_bet'], axis=1)
     index = sortAllDates(df.index)
@@ -55,18 +78,18 @@ def kelly_simulation(df):
     returns.rename(columns = {'adj_return' : 'return'}, inplace = True)
     dict_returns = pd.concat([per_bet, returns], axis = 1).T.to_dict()
     df_all = pd.DataFrame(find_total(dict_returns)).T
-    df.drop(['signal'], axis=1, inplace=True)
+    df.drop(['signal_adj', 'signal', 'dev_value'], axis=1, inplace=True)
     return df_all
 
-def run_simulation(df, n):
+def run_simulation(df, dev_value, n):
     return_array = []
     for i in range(0, n):
-        return_val = kelly_simulation(df)['total'][-1]
+        return_val = kelly_simulation(df, dev_value)['total'][-1]
         return_array.append(return_val)
     return return_array
     
 if __name__ == "__main__":
-    values = run_simulation(df, 1000)
+    values = run_simulation(df, 0.2, 100)
     plt.hist(values, bins = 100)
     plt.show()
     
