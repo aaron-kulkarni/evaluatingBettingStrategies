@@ -13,10 +13,42 @@ from utils.utils import *
 import os
 import shutil
 
+import bs4 as bs
 
 #scrape_oddsportal_current_season(sport = 'basketball', country = 'usa', league = 'nba', season = '2022-2023', max_page = 2)
 
 #scrape_oddsportal_next_games(sport = 'basketball', country = 'usa', league = 'nba', season = '2022-2023', nmax= 30)
+
+
+def temp_input_odds(gameIdList):
+    year = getYearFromDate(dt.datetime.now())
+    df_all = pd.read_csv('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year), header = [0,1], index_col = 0)
+    booker_list = ['10x10bet', '1xBet', 'Alphabet', 'bet-at-home', 'bet365', 'bwin', 'Coolbet', 'Curebet', 'GGBET', 'Lasbet', 'Marathonbet', 'Marsbet', 'Pinnacle', 'Unibet', 'VOBET', 'William Hill']
+    df = pd.DataFrame(index = gameIdList, columns = df_all.columns)
+    for gameId in gameIdList:
+        print('Navigate to game_id {}'.format(gameId))
+        for booker in booker_list:
+            print('BOOKER NAME: {}'.format(booker))
+            oddHome = int(input('Enter odd home: '))
+            oddAway = int(input('Enter odd away: '))
+            df['OddHome', booker].loc[gameId] = oddHome
+            df['OddAway', booker].loc[gameId] = oddAway
+
+    df_ = pd.concat([df_all, df], axis=0)
+    df_.to_csv('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year))
+    return
+
+def scrape_page_oddsportal(link):
+    driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
+    driver.get(link)
+    html = driver.page_source
+    soup = bs.BeautifulSoup(html, 'html.parser')
+
+    div_app = soup.find('div', id = 'app')
+    text_list = []
+    for p in div_app.find_all('p', class_ = 'height-content'):
+        text_list.append(p.text)
+    text = '\n'.join(text_list)
 
 def convert_betting_odds(year):
     scrape_oddsportal_next_games(sport = 'basketball', country = 'usa', league = 'nba', season = '2022-2023', nmax= 30)

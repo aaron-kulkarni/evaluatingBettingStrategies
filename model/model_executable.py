@@ -42,7 +42,7 @@ df = perform_bet(Y_pred_prob, x_columns, 0.15, odds_df)
 df_test = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
 #df_ = perform_bet(Y_pred_prob_all, x_columns, 0.15, odds_df)
 
-pool = 32883.68
+pool = 33335.17
 
 df_bet = write_day_trade(pool, df[df.index.isin(getGamesToday())])
 print(df_bet)
@@ -66,11 +66,14 @@ def get_model_acc(df):
 
 def kelly_simulation(df, dev_value):
     df = df.drop(df[df['per_bet'] == 0].index)
+    df = df[df.index.isin(getPreviousGames())]
     rand_floats = np.random.rand(len(df))
     dev = np.random.uniform(-dev_value, dev_value, len(df))
     df['prob_win'] = df.apply(lambda d: d['Y_prob'] if d['home'] == True else 1-d['Y_prob'], axis=1)
     df['dev_value'] = np.add(df['prob_win'], dev)
     df['signal'] = np.where(rand_floats <= df['dev_value'], 1, 0)
+
+
     df['return'] = df.apply(lambda d: d['p_return'] if d['signal'] == 1 else 0, axis=1)
     df['adj_return'] = df.apply(lambda d: d['return'] * d['per_bet'], axis=1)
     index = sortAllDates(df.index)
@@ -78,8 +81,9 @@ def kelly_simulation(df, dev_value):
     returns.rename(columns = {'adj_return' : 'return'}, inplace = True)
     dict_returns = pd.concat([per_bet, returns], axis = 1).T.to_dict()
     df_all = pd.DataFrame(find_total(dict_returns)).T
-    df.drop(['signal_adj', 'signal', 'dev_value'], axis=1, inplace=True)
+    df.drop(['prob_win', 'signal', 'dev_value'], axis=1, inplace=True)
     return df_all
+ 
 
 def run_simulation(df, dev_value, n):
     return_array = []
@@ -89,7 +93,7 @@ def run_simulation(df, dev_value, n):
     return return_array
     
 if __name__ == "__main__":
-    values = run_simulation(df, 0.2, 100)
+    values = run_simulation(df, 0.05, 500)
     plt.hist(values, bins = 100)
     plt.show()
     
