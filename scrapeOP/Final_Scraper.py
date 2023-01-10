@@ -14,6 +14,7 @@ import os
 import shutil
 import itertools
 import bs4 as bs
+import string
 
 #scrape_oddsportal_current_season(sport = 'basketball', country = 'usa', league = 'nba', season = '2022-2023', max_page = 2)
 
@@ -42,6 +43,11 @@ def scrape_current_season_page_next_games(sport, country, league, game_list):
     driver = webdriver.Chrome(executable_path = DRIVER_LOCATION)
     url = 'https://www.oddsportal.com/{}/{}/{}/'.format(sport, country, league)
     driver.get(url)
+    time.sleep(2)
+    print('We wait 2 seconds:')
+    driver.refresh()
+    time.sleep(2)
+    print('We wait to refresh:')
     html = driver.page_source
     soup = bs.BeautifulSoup(html, 'html.parser')
     links = []
@@ -56,29 +62,29 @@ def scrape_current_season_page_next_games(sport, country, league, game_list):
         text, game_id = scrape_page_oddsportal(link, game_list)
         df = convert_dataframe(text, game_id)
         df_all = pd.concat([df, df_all], axis=0)
-        driver.get(url)
+        driver.execute_script('window.history.go(-1)')
+        if sorted(list(df.index)) == list(game_list):
+            break
         time.sleep(2)
         print('We wait 2 seconds:')
     driver.quit()
     return df_all
 
 def scrape_page_oddsportal(link, game_list):
-
-    driver.get(link)
-    html = driver.page_source
-    soup = bs.BeautifulSoup(html, 'html.parser')
-
+    link_element = driver.find_element("xpath", "//a[@href='" + link + "']")
+    link_element.click()
+    time.sleep(2)
+    print('We wait 2 seconds:')
     div_app = soup.find('div', id = 'app')
     text_list = []
- 
-    teams = div_app.find('li', class_= 'capitalize font-normal text-[0.70rem] leading-4 max-mt:!hidden').text
-    home_team = teamDict[teams.split(' - ')[0]]
+
+    home_team = find_home_team(link)
     
     for div in div_app.find_all('div', class_= 'flex text-xs font-normal text-gray-dark font-main item-center'):
         date_str = div.text.split(',')[1].strip()
         date = dt.datetime.strptime(date_str, '%d %b %Y')
 
-        game_id = '{}0{}'.format(f'{date.year}{date.month:02d}{date.day:02d}', home_team)
+    game_id = '{}0{}'.format(f'{date.year}{date.month:02d}{date.day:02d}', home_team)
 
     if game_id not in game_list:
             return None, None
@@ -90,7 +96,23 @@ def scrape_page_oddsportal(link, game_list):
 
     return text, game_id
 
+
+def find_home_team(link):
+    teamsDict = getTeamDict()
     
+    teams = re.findall(r'/([\w-]+)-[\w-]+/', link)[0]
+    textSplit = string.capwords(teams.replace('-', ' ')).split(' ')
+    team = textSplit[0] + ' ' + textSplit[1]
+    teamAbbr = teamsDict.get(team)
+    if teamAbbr is None:
+        team = team + textSplit[2]
+        teamAbbr = teamsDict.get(team)
+    if teamAbbr is None:
+        print("Error")
+
+    return teamAbbr
+
+
 def convert_dataframe(text, game_id):
     if text == None:
         print('Not in List')
