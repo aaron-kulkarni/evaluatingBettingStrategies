@@ -20,6 +20,14 @@ import string
 
 #scrape_oddsportal_next_games(sport = 'basketball', country = 'usa', league = 'nba', season = '2022-2023', nmax= 30)
 
+def update_odds(game_list):
+    year = getYearFromDate(dt.datetime.now())
+    df = scrape_current_season_page_next_games('basketball', 'usa', 'nba', game_list)
+    df_all = pd.read_csv('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year), header = [0,1], index_col = 0)
+    df_ = pd.concat([df_all, df], axis=0)
+    df_.to_csv('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year))
+
+    return
 
 def temp_input_odds(gameIdList):
     year = getYearFromDate(dt.datetime.now())
@@ -75,6 +83,8 @@ def scrape_page_oddsportal(link, game_list):
     link_element.click()
     time.sleep(2)
     print('We wait 2 seconds:')
+    html = driver.page_source
+    soup = bs.BeautifulSoup(html, 'html.parser')
     div_app = soup.find('div', id = 'app')
     text_list = []
 
