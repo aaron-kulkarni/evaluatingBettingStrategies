@@ -18,6 +18,7 @@ import warnings
 from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import log_loss
 from sklearn.svm import SVC
 from sklearn.calibration import CalibratedClassifierCV
 from xgboost import XGBClassifier
@@ -403,6 +404,18 @@ def return_team_winnings(df):
         net_amount = amount_won - amount_lost
         res_loss[name] = net_amount
     return res_win, res_loss
+
+
+def return_log_loss(df):
+    df['signal'] = getSignal()[getSignal().index.isin(df.index)]
+    y_true = df['signal'].tolist()
+    y_pred = [[p, 1-p] for p in df['Y_prob']]
+    y_pred_odds = [[p, 1-p] for p in df['odds_mean']]
+    print('loss function for odds is {}'.format(log_loss(y_true, y_pred_odds)))
+    print('loss function for forecasted probability is {}'.format(log_loss(y_true, y_pred)))
+
+    return
+
 
 
 if __name__ == "__main__":
