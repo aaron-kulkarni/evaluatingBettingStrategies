@@ -22,7 +22,7 @@ odds_df = select_attributes(5).select_col_odds(['Marathonbet (%)', '1xBet (%)', 
 mlval_df = select_attributes(5).select_mlval(['team.elo.booker.lm', 'opp.elo.booker.lm', 'team.elo.booker.combined', 'opp.elo.booker.combined', 'elo.prob', 'predict.prob.booker', 'predict.prob.combined', 'elo.court30.prob', 'raptor.court30.prob', 'booker_odds.Pinnacle'])
 per_metric_df = select_attributes(5).select_col_per(['pm_elo_prob1','pm_odd_prob','pm_raptor_prob1','pm_6_elo_prob1','pm_6_odd_prob','pm_6_raptor_prob1'])
 elo_df = select_attributes(5).select_elo(['elo_prob', 'raptor_prob'])
-game_df = select_attributes(5).select_col_game(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins', 'win_per'])
+game_df = select_attributes(5).select_col_game(['streak', 'numberOfGamesPlayed', 'daysSinceLastGame', 'matchupWins'])
 team_stat_df = select_attributes(5).select_col_team(['3P%', 'Ortg', 'Drtg', 'TOV%', 'eFG%', 'PTS'])
 data_list = [odds_df, mlval_df, per_metric_df, elo_df, game_df, team_stat_df]
 check_dataframe_NaN(data_list, test_games)
@@ -42,12 +42,28 @@ df = perform_bet(Y_pred_prob, x_columns, 0.15, odds_df)
 df_test = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
 #df_ = perform_bet(Y_pred_prob_all, x_columns, 0.15, odds_df)
 
-pool = 33335.17
+pool = 34348.2
 
 df_bet = write_day_trade(pool, df[df.index.isin(getGamesToday())])
 print(df_bet)
 print(df[df.index.isin(getGamesToday())])
 write_day_trade(pool, df_test)
+
+#def record_testing_data(X_test, df):
+    
+#    data = pd.read_csv('../data/testingData/test_data.csv', index_col = [0,1])
+#    df_bets = pd.read_csv('../data/testingData/df_bets.csv', index_col = 0)
+#    df_add = pd.DataFrame()
+#    if len(set(df.index) - set(df_bets.index)) != 0:
+#        df_add = df[df.index.isin(list(set(df.index) - set(df_bets.index)))]
+#        df = df[df.index.isin(df_bets.index)]
+#        print('Adding indexes: {}'.format(list(set(df.index) - set(df_bets.index)))))
+#    if any(np.where(df['Y_prob'] - df_bets['Y_prob'] > 0.01)):
+#        print(np.where(df['Y_prob'] - df_bets['Y_prob'] > 0.01))
+        #print(df.loc)
+        
+#    return X_test[X_test.index.isin(getGamesToday())]
+
 
 def get_model_acc(df):
     df = df.drop(df[df['per_bet'] == 0].index)
@@ -71,7 +87,8 @@ def kelly_simulation(df, dev_value):
     dev = np.random.uniform(-dev_value, dev_value, len(df))
     df['prob_win'] = df.apply(lambda d: d['Y_prob'] if d['home'] == True else 1-d['Y_prob'], axis=1)
     df['dev_value'] = np.add(df['prob_win'], dev)
-    df['signal'] = np.where(rand_floats <= df['dev_value'], 1, 0)
+    df['odd_win'] = df.apply(lambda d: d['odds_mean'] if d['home'] == True else 1-d['Y_prob'], axis=1)
+    df['signal'] = np.where(rand_floats <= df['odd_win'], 1, 0)
 
 
     df['return'] = df.apply(lambda d: d['p_return'] if d['signal'] == 1 else 0, axis=1)
@@ -81,7 +98,7 @@ def kelly_simulation(df, dev_value):
     returns.rename(columns = {'adj_return' : 'return'}, inplace = True)
     dict_returns = pd.concat([per_bet, returns], axis = 1).T.to_dict()
     df_all = pd.DataFrame(find_total(dict_returns)).T
-    df.drop(['prob_win', 'signal', 'dev_value'], axis=1, inplace=True)
+    df.drop(['prob_win', 'signal', 'dev_value', 'odd_win'], axis=1, inplace=True)
     return df_all
  
 
@@ -93,8 +110,8 @@ def run_simulation(df, dev_value, n):
     return return_array
     
 if __name__ == "__main__":
-    values = run_simulation(df, 0.05, 500)
-    plt.hist(values, bins = 100)
+    values = run_simulation(df, 0, 500)
+    plt.hist(values, bins = 50)
     plt.show()
     
     df_all = backtesting_returns(df)
