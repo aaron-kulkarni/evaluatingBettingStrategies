@@ -28,26 +28,26 @@ data_list = [odds_df, mlval_df, per_metric_df, elo_df, game_df, team_stat_df]
 check_dataframe_NaN(data_list, test_games)
 
 X_train, X_test, Y_train, Y_test = split_data(data_list, train_years, test_year, True)
-X_train_, X_test_, Y_train_, Y_test_ = split_data_test_games(data_list, train_window, test_games, True, True)
+#X_train_, X_test_, Y_train_, Y_test_ = split_data_test_games(data_list, train_window, test_games, True, True)
 clf = XGBClassifier(learning_rate = 0.02, max_depth = 4, min_child_weight = 6, n_estimators = 150)
 
 Y_pred_prob = xgboost(clf, X_train, Y_train, X_test, Y_test, 10)
-Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_, Y_test_, 10)
+#Y_pred_prob_ = xgboost(clf, X_train_, Y_train_, X_test_, Y_test_, 10)
 x_columns = ['bet365_return', 'Unibet_return']
 
 #data_params = [data_list, train_window, X_test.index.get_level_values(0).unique(), True, True]
 #Y_pred_prob_all = iterative_training(data_params, clf, 10)
 
 df = perform_bet(Y_pred_prob, x_columns, 0.15, odds_df)
-df_test = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
+#df_test = perform_bet(Y_pred_prob_, x_columns, 0.15, odds_df)
 #df_ = perform_bet(Y_pred_prob_all, x_columns, 0.15, odds_df)
 
-pool = 34348.2
+pool = 31902.06
 
 df_bet = write_day_trade(pool, df[df.index.isin(getGamesToday())])
 print(df_bet)
 print(df[df.index.isin(getGamesToday())])
-write_day_trade(pool, df_test)
+#write_day_trade(pool, df_test)
 
 #def record_testing_data(X_test, df):
     
