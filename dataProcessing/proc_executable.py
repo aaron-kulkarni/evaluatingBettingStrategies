@@ -31,9 +31,9 @@ updatePerMetric(current_year)
 concatAll(np.arange(2015, current_year + 1))
 
 # R script (run after raptor and odds)
-os.system('Rscript {}'.format(os.path.abspath('MLE.R')))
+os.system('Rscript {}'.format(os.path.abspath('MLE_prev_datetime.R')))
 
-test_games = getNextGames()
+test_games = getGamesToday()
 
 for gameId in test_games:
     print('{} - home team raptor-change: {}'.format(gameId, get_raptor_change(gameId, True)))
