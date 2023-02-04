@@ -103,8 +103,25 @@ def scrape_page_oddsportal(link, game_list):
         for p in div.find_all('p'):
             text_list.append(p.text)
     text = '\n'.join(text_list)
-
+    df_update = convert_dataframe(text, game_id)
     return text, game_id
+
+
+def update_odds(game_id):
+    year = getYearFromId(game_id)
+    html = open('../data/html/text.txt', 'r')
+    soup = bs.BeautifulSoup(html, 'html.parser')
+    div_app = soup.find('div', id = 'app')
+    text_list = []
+    for div in div_app.find_all('div', class_ = 'flex text-xs max-sm:h-[60px] h-9 border-b'):
+        for p in div.find_all('p'):
+            text_list.append(p.text)
+    text = '\n'.join(text_list)
+    df = convert_dataframe(text, game_id)
+    df_all = pd.read_csv('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year), header = [0,1], index_col = 0)
+    df_ = pd.concat([df_all, df], axis=0)
+    df_.to_csv('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year))
+    return 
 
 
 def find_home_team(link):
@@ -135,8 +152,8 @@ def convert_dataframe(text, game_id):
     df = pd.DataFrame(columns = col, index = [game_id])
     
     for firm in matches:
-        df['OddHome', firm[0]].loc[game_id] = firm[0]
-        df['OddAway', firm[0]].loc[game_id] = firm[1]
+        df['OddHome', firm[0]].loc[game_id] = firm[1]
+        df['OddAway', firm[0]].loc[game_id] = firm[2]
         print('{}: \n OddHome: {} \n OddAway: {}'.format(firm[0], firm[1], firm[2]))
     
     return df
