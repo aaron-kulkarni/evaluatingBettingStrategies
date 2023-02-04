@@ -120,6 +120,7 @@ def update_odds(game_id):
     df = convert_dataframe(text, game_id)
     df_all = pd.read_csv('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year), header = [0,1], index_col = 0)
     df_ = pd.concat([df_all, df], axis=0)
+    df_.index.name = 'game_id'
     df_.to_csv('../data/bettingOddsData/closing_betting_odds_{}_clean.csv'.format(year))
     return 
 
